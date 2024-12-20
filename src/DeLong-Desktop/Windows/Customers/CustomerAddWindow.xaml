@@ -65,7 +65,7 @@
 
             <TextBox x:Name="txtYurJSHSHIR" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="JSHSHIR" Background="#476072" Foreground="#EEEEEE"/>
 
-            <Button x:Name="btnYurAdd" Content="Add Yurdik" BorderThickness="0" Click="AddUserButton_Click" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0"/>
+            <Button x:Name="btnYurAdd" Content="Add Yurdik" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0"/>
         </StackPanel>
 
         <StackPanel x:Name="spYattCutomer" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
@@ -88,12 +88,12 @@
 
             <TextBox x:Name="txtYattJSHSHIR" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="JSHSHIR" Background="#476072" Foreground="#EEEEEE"/>
 
-            <Button x:Name="btnYattAdd" Content="Add YaTT" BorderThickness="0" Click="AddUserButton_Click" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0"/>
+            <Button x:Name="btnYattAdd" Content="Add YaTT" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0"/>
         </StackPanel>
 
         <StackPanel x:Name="spJisCutomer"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
 
-            <TextBox x:Name="txtFamiliya" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Familiya" Background="#476072" Foreground="#EEEEEE"/>
+            <TextBox x:Name="txtFamiliya" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Familiya" Background="#476072" Foreground="#EEEEEE" />
             <TextBox x:Name="txtIsmi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Ismi" Background="#476072" Foreground="#EEEEEE"/>
             <TextBox x:Name="txtSharifi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Otasining ismi" Background="#476072" Foreground="#EEEEEE"/>
             <TextBox x:Name="txtPasportSeria" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Pasport seria va raqami" Background="#476072" Foreground="#EEEEEE"/>
@@ -102,14 +102,14 @@
             <TextBox x:Name="txtJisTelegramRaqam" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telegram raqam" Background="#476072" Foreground="#EEEEEE"/>
             <TextBox x:Name="txtJisJSHSHIR" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="JSHSHIR" Background="#476072" Foreground="#EEEEEE"/>
             <StackPanel Orientation="Horizontal" Height="30" Margin="0 10 0 5" Background="#476072">
-                <RadioButton x:Name="rbtnErkak" Margin="30 0 70 0" Background="Snow" FontSize="18" Content="Erkak" Foreground="Snow" GroupName="Gender"/>
-                <RadioButton x:Name="rbtnAyol" Margin="20 0 30 0" Background="Snow" FontSize="18" Content="Ayol" Foreground="Snow" GroupName="Gender" />
+                <RadioButton x:Name="rbtnErkak" Checked="RadioButton_Checked" Margin="30 0 70 0" Background="Snow" FontSize="18" Content="Erkak" Foreground="Snow" GroupName="Gender"/>
+                <RadioButton x:Name="rbtnAyol" Checked="RadioButton_Checked" Margin="20 0 30 0" Background="Snow" FontSize="18" Content="Ayol" Foreground="Snow" GroupName="Gender" />
             </StackPanel>
             <DatePicker x:Name="dateOfBirthPicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Tug'ilgan sana" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
             <DatePicker x:Name="dateOfIssuePicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Pasport berilgan sana" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
             <DatePicker x:Name="dateOfExpiryPicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Amal qilish muddati" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
 
-            <Button x:Name="btnJisAdd" Content="Add User" BorderThickness="0" Click="AddUserButton_Click" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0"/>
+            <Button x:Name="btnJisAdd" Content="Add User" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0" Click="btnJisAdd_Click"/>
         </StackPanel>
     </Grid>
 </Window>

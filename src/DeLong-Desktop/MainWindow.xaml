@@ -28,7 +28,7 @@
                         Background="#476072"
                         Foreground="Snow"
                         Style="{DynamicResource MaterialDesignPaperLightButton}"
-                        md:ButtonAssist.CornerRadius="17"/>
+                        md:ButtonAssist.CornerRadius="17" Click="bntMijoz_Click"/>
                 <Button x:Name="btnMaxsulot"
                         Height="45"
                         Margin="0 0 0 5"

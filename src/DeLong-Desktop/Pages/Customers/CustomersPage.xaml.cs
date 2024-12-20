@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using DeLong_Desktop.Windows.Customers;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Xml.XPath;
 
-namespace DeLong_Desktop.Pages.Customers
+namespace DeLong_Desktop.Pages.Customers;
+
+/// <summary>
+/// Interaction logic for CustomersPage.xaml
+/// </summary>
+public partial class CustomersPage : Page
 {
-    /// <summary>
-    /// Interaction logic for CustomersPage.xaml
-    /// </summary>
-    public partial class CustomersPage : Page
+    private readonly IServiceProvider services;
+
+    public CustomersPage(IServiceProvider services)
     {
-        public CustomersPage()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        this.services = services;
+    }
+
+    private void btnAdd_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        CustomerAddWindow customerAddWindow = new CustomerAddWindow(services);
+        customerAddWindow.ShowDialog();
     }
 }

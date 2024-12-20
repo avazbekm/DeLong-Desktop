@@ -5,8 +5,8 @@ namespace DeLong_Desktop.ApiService.Interfaces;
 
 interface IUserService
 {
-    ValueTask<UserResultDto> AddAsync(UserCreationDto dto);
-    ValueTask<UserResultDto> ModifyAsync(UserUpdateDto dto);
+    ValueTask<bool> AddAsync(UserCreationDto dto);
+    ValueTask<bool> ModifyAsync(UserUpdateDto dto);
     ValueTask<bool> RemoveAsync(long id);
     ValueTask<UserResultDto> RetrieveByIdAsync(long id);
     ValueTask<UserResultDto> RetrieveByJSHSHIRAsync(long Jshshir);

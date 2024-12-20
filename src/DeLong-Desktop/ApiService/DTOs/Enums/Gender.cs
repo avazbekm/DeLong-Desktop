@@ -2,6 +2,6 @@
 
 enum Gender
 {
-    Erkak,
-    Ayol
+    Erkak = 0,
+    Ayol = 1
 }
