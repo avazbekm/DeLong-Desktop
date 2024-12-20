@@ -5,8 +5,151 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DeLong_Desktop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Bosh sahifa" Height="500" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <DropShadowEffect x:Key="DefaultDropShadowEffect" ShadowDepth="5" Opacity="0.5" BlurRadius="10"/>
+    </Window.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
+        <Grid Grid.Column="0" Background="#334257">
+            <StackPanel Margin="20">
+                <Button x:Name="bntMijoz" 
+                        Height="45"
+                        Margin="0 0 0 5"
+                        Content="Mijoz"
+                        FontSize="18"
+                        BorderThickness="0"
+                        Background="#476072"
+                        Foreground="Snow"
+                        Style="{DynamicResource MaterialDesignPaperLightButton}"
+                        md:ButtonAssist.CornerRadius="17"/>
+                <Button x:Name="btnMaxsulot"
+                        Height="45"
+                        Margin="0 0 0 5"
+                        Content="Maxsulot"
+                        FontSize="18"
+                        BorderThickness="0"
+                        Foreground="Snow"
+                        Style="{DynamicResource MaterialDesignPaperLightButton}"
+                        Background="#476072"
+                        md:ButtonAssist.CornerRadius="17"/>
+
+                <Button x:Name="btnOmbor"
+                        Height="45"
+                        Margin="0 0 0 5"
+                        Content="Ombor"
+                        FontSize="18"
+                        BorderThickness="0"
+                        Foreground="Snow"                        
+                        Style="{DynamicResource MaterialDesignPaperLightButton}"
+                        Background="#476072"
+                        md:ButtonAssist.CornerRadius="17"/>
+
+                <Button x:Name="btnKirim"
+                        Height="45"
+                        Margin="0 0 0 5"
+                        Content="Kirim"
+                        FontSize="18"
+                        BorderThickness="0"
+                        Foreground="Snow"                        
+                        Style="{DynamicResource MaterialDesignPaperLightButton}"
+                        Background="#476072"
+                        md:ButtonAssist.CornerRadius="17"/>
+
+                <Button x:Name="btnChiqim"
+                        Height="45"
+                        Margin="0 0 0 5"
+                        Content="Chiqim"
+                        FontSize="18"
+                        BorderThickness="0"
+                        Foreground="Snow"                        
+                        Style="{DynamicResource MaterialDesignPaperLightButton}"
+                        Background="#476072"
+                        md:ButtonAssist.CornerRadius="17"/>
+
+                <Border 
+                     Height="45" 
+                     Background="#476072" 
+                     CornerRadius="15" 
+                     Margin="0,0,0,10"
+                     Effect="{StaticResource DefaultDropShadowEffect}">
+
+                    <StackPanel 
+                         Orientation="Horizontal" 
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Center"
+                                         >
+
+                        <Image Height="24"
+                                 Width="24"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Left">
+                        </Image>
+                        <ComboBox x:Name="languageComboBox"
+                                  Width="150"
+                                  Foreground="#7AB2D3" 
+                                  Background="#476072"
+                                  FontFamily="JetBrains Mono" 
+                                  FontSize="18">
+
+                            <ComboBox.Resources>
+                                <Style TargetType="{x:Type ComboBoxItem}">
+                                    <Setter Property="Foreground" Value="#AB886D" />
+                                    <Setter Property="Background" Value="#333333" />
+                                    <Setter Property="FontFamily" Value="JetBrains Mono" />
+                                    <Setter Property="FontSize" Value="16" />
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Style>
+                            </ComboBox.Resources>
+
+                            <ComboBoxItem Tag="en-US" Background="Black">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Uzbek" Foreground="#ADD8E6" />
+                                </StackPanel>
+                            </ComboBoxItem>
+
+                            <ComboBoxItem Tag="zh-CN" Background="Black">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="国" Foreground="#ADD8E6" />
+                                </StackPanel>
+                            </ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <Button x:Name="btnHisobot"
+                       Height="45"
+                       Margin="0 0 0 5"
+                       Content="Hisobot"
+                       FontSize="18"
+                       BorderThickness="0"
+                       Foreground="Snow"                        
+                       Style="{DynamicResource MaterialDesignPaperLightButton}"
+                       Background="#476072"
+                       md:ButtonAssist.CornerRadius="17"/>
+
+                <Button x:Name="btnChiqish"
+                       Height="45"
+                       Margin="0 0 0 5"
+                       Content="Chiqish"
+                       FontSize="18"
+                       BorderThickness="0"
+                       Foreground="Snow"                        
+                       Style="{DynamicResource MaterialDesignPaperLightButton}"
+                       Background="#476072"
+                       md:ButtonAssist.CornerRadius="17"/>
+
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Column="1" Background="#548CA8">
+            <Frame x:Name="Navigator" Margin="20,20,20,20" NavigationUIVisibility="Hidden"/>
+        </Grid>
     </Grid>
 </Window>
