@@ -1,4 +1,7 @@
-﻿namespace DeLong_Desktop.ApiService.Interfaces;
+﻿using DeLong_Desktop.ApiService.Configurations;
+using DeLong_Desktop.ApiService.DTOs.Users;
+
+namespace DeLong_Desktop.ApiService.Interfaces;
 
 interface IUserService
 {

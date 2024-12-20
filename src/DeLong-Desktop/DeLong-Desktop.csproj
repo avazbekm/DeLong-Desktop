@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ApiService\Models\Services\" />
+    <Folder Include="ApiService\Services\" />
   </ItemGroup>
 
 </Project>
