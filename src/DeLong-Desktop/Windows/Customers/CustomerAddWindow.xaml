@@ -1,0 +1,115 @@
+﻿<Window x:Class="DeLong_Desktop.Windows.Customers.CustomerAddWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DeLong_Desktop.Windows.Customers"
+        mc:Ignorable="d"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Mijozlar qo'shish oynasi" Height="700" Width="400"
+        WindowStartupLocation="CenterScreen">
+    <Grid  Background="#334257">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Margin="20 5 20 5"  Orientation="Horizontal" Grid.Row="0">
+
+            <!-- Yuridik shaxs RadioButton -->
+            <RadioButton x:Name="rbtnYurdik"
+                     Margin="10 0 10 0"
+                     Background="Snow"
+                     Content="Yuridik shaxs"
+                     Foreground="Snow"
+                     GroupName="PersonType" Checked="rbtnYurdik_Checked"/>
+
+            <!-- YaTT RadioButton -->
+            <RadioButton x:Name="rbtnYaTT"
+                     Margin="20 0 30 0"
+                     Background="Snow"
+                     Content="YaTT"
+                     Foreground="Snow"
+                     GroupName="PersonType" Checked="rbtnYaTT_Checked"/>
+
+            <!-- Jismoniy shaxs RadioButton -->
+            <RadioButton x:Name="rbtnJismoniy"
+                     Background="Snow"
+                     Content="Jismoniy shaxs"
+                     Foreground="Snow"
+                     GroupName="PersonType" Checked="rbtnJismoniy_Checked" />
+
+        </StackPanel>
+        <StackPanel x:Name="spYurCutomer" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
+
+            <TextBox x:Name="txtYurNomi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Mijoz nomi" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYurINN" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="INN" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYurMFO" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Bank MFO" Background="#476072" Foreground="#E4E0E1"/>
+
+            <TextBox x:Name="txtYurXisobRaqam" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Xisob raqam" Background="#476072" Foreground="#E4E0E1"/>
+
+            <TextBox x:Name="txtYurBank" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Bank nomi" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYurOKONX" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="OKONX" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYurFirmaAdres" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Firma manzili" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYurRahbar" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Rahbar FIO" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYurTelefon" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telefon nomer" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYurTelegramRaqam" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telegram raqam" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYurYashashManzili" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Yashash manzili" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYurJSHSHIR" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="JSHSHIR" Background="#476072" Foreground="#EEEEEE"/>
+
+            <Button x:Name="btnYurAdd" Content="Add Yurdik" BorderThickness="0" Click="AddUserButton_Click" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0"/>
+        </StackPanel>
+
+        <StackPanel x:Name="spYattCutomer" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
+
+            <TextBox x:Name="txtYattNomi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="YaTT Familiya Ismi Sharifi" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYattINN" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="INN" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYattMFO" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Bank MFO" Background="#476072" Foreground="#E4E0E1"/>
+
+            <TextBox x:Name="txtYattXisobRaqam" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Xisob raqam" Background="#476072" Foreground="#E4E0E1"/>
+
+            <TextBox x:Name="txtYattBank" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Bank nomi" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYattFirmaAdres" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="YaTT manzili" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYattTelefon" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telefon nomer" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYattTelegramRaqam" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telegram raqam" Background="#476072" Foreground="#EEEEEE"/>
+
+            <TextBox x:Name="txtYattJSHSHIR" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="JSHSHIR" Background="#476072" Foreground="#EEEEEE"/>
+
+            <Button x:Name="btnYattAdd" Content="Add YaTT" BorderThickness="0" Click="AddUserButton_Click" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0"/>
+        </StackPanel>
+
+        <StackPanel x:Name="spJisCutomer"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
+
+            <TextBox x:Name="txtFamiliya" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Familiya" Background="#476072" Foreground="#EEEEEE"/>
+            <TextBox x:Name="txtIsmi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Ismi" Background="#476072" Foreground="#EEEEEE"/>
+            <TextBox x:Name="txtSharifi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Otasining ismi" Background="#476072" Foreground="#EEEEEE"/>
+            <TextBox x:Name="txtPasportSeria" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Pasport seria va raqami" Background="#476072" Foreground="#EEEEEE"/>
+            <TextBox x:Name="txtJisAdres" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Manzili" Background="#476072" Foreground="#EEEEEE"/>
+            <TextBox x:Name="txtJisTelefon" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telefon nomer" Background="#476072" Foreground="#EEEEEE"/>
+            <TextBox x:Name="txtJisTelegramRaqam" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telegram raqam" Background="#476072" Foreground="#EEEEEE"/>
+            <TextBox x:Name="txtJisJSHSHIR" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="JSHSHIR" Background="#476072" Foreground="#EEEEEE"/>
+            <StackPanel Orientation="Horizontal" Height="30" Margin="0 10 0 5" Background="#476072">
+                <RadioButton x:Name="rbtnErkak" Margin="30 0 70 0" Background="Snow" FontSize="18" Content="Erkak" Foreground="Snow" GroupName="Gender"/>
+                <RadioButton x:Name="rbtnAyol" Margin="20 0 30 0" Background="Snow" FontSize="18" Content="Ayol" Foreground="Snow" GroupName="Gender" />
+            </StackPanel>
+            <DatePicker x:Name="dateOfBirthPicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Tug'ilgan sana" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
+            <DatePicker x:Name="dateOfIssuePicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Pasport berilgan sana" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
+            <DatePicker x:Name="dateOfExpiryPicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Amal qilish muddati" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
+
+            <Button x:Name="btnJisAdd" Content="Add User" BorderThickness="0" Click="AddUserButton_Click" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0"/>
+        </StackPanel>
+    </Grid>
+</Window>
