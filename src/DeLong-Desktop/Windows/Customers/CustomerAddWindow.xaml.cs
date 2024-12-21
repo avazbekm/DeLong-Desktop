@@ -77,9 +77,9 @@ public partial class CustomerAddWindow : Window
                 MessageBox.Show($" Saqlandi.");
             }
             else
-                MessageBox.Show($"{result.Result}");
+                MessageBox.Show($"{"nimadur xato"}");
         }
-        this.Close();
+        
 
     }
 

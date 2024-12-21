@@ -1,5 +1,6 @@
 ﻿using DeLong_Desktop.ApiService.Configurations;
 using DeLong_Desktop.ApiService.DTOs.Users;
+using DeLong_Desktop.ApiService.Models.Commons;
 
 namespace DeLong_Desktop.ApiService.Interfaces;
 
