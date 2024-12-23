@@ -1,4 +1,5 @@
-﻿using DeLong_Desktop.Windows.Customers;
+﻿using DeLong_Desktop.ApiService.Interfaces;
+using DeLong_Desktop.Windows.Customers;
 using System.Windows.Controls;
 using System.Xml.XPath;
 
@@ -9,6 +10,8 @@ namespace DeLong_Desktop.Pages.Customers;
 /// </summary>
 public partial class CustomersPage : Page
 {
+    private readonly IUserService userService;
+    
     private readonly IServiceProvider services;
 
     public CustomersPage(IServiceProvider services)
