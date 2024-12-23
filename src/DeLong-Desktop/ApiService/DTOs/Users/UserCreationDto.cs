@@ -1,10 +1,9 @@
-﻿using DeLong_Desktop.ApiService.DTOs.Enums;
-using System.Reflection;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using DeLong_Desktop.ApiService.DTOs.Enums;
 
 namespace DeLong_Desktop.ApiService.DTOs.Users;
 
-class UserCreationDto
+public class UserCreationDto
 {
     [JsonPropertyName("lastName")]
     public string LastName { get; set; } = string.Empty;

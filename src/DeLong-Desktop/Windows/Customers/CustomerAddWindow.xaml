@@ -91,7 +91,7 @@
             <Button x:Name="btnYattAdd" Content="Add YaTT" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0"/>
         </StackPanel>
 
-        <StackPanel x:Name="spJisCutomer"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
+        <StackPanel x:Name="spJisCutomer" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
 
             <TextBox x:Name="txtFamiliya" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Familiya" Background="#476072" Foreground="#EEEEEE" />
             <TextBox x:Name="txtIsmi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Ismi" Background="#476072" Foreground="#EEEEEE"/>

@@ -5,11 +5,10 @@ using DeLong_Desktop.ApiService.DTOs.Users;
 using DeLong_Desktop.ApiService.Interfaces;
 using DeLong_Desktop.ApiService.Models.Commons;
 using DeLong_Desktop.ApiService.Configurations;
-using System.Net.Http.Json;
 
 namespace DeLong_Desktop.ApiService.Services;
 
-class UserService : IUserService
+public class UserService : IUserService
 {
     private readonly HttpClient _httpClient;
     public UserService()
@@ -20,21 +19,15 @@ class UserService : IUserService
         };
     }
 
-     public async ValueTask<bool> AddAsync(UserCreationDto user)
-    {
+    public async ValueTask<bool> AddAsync(UserCreationDto user)
+    
+     {
         var jsonContent = JsonConvert.SerializeObject(user);
         var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
         var response = await _httpClient.PostAsync("api/User/create", content);
         response.EnsureSuccessStatusCode();
-        if (!response.IsSuccessStatusCode)
-        {
-            var error = await response.Content.ReadAsStringAsync();
-            throw new Exception($"Error: {response.StatusCode}, Details: {error}");
-        }
-
         return response.IsSuccessStatusCode;
-        //return (await response.Content.ReadFromJsonAsync<Response<UserResultDto>>())!;
     }
 
     public async ValueTask<bool> ModifyAsync(UserUpdateDto user)

@@ -1,6 +1,6 @@
 ﻿namespace DeLong_Desktop.ApiService.Configurations;
 
-class PaginationMetaData
+public class PaginationMetaData
 {
     public int CurrentPage { get; set; }
     public int TotalPages { get; set; }

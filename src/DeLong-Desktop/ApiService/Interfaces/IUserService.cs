@@ -1,10 +1,9 @@
-﻿using DeLong_Desktop.ApiService.Configurations;
-using DeLong_Desktop.ApiService.DTOs.Users;
-using DeLong_Desktop.ApiService.Models.Commons;
+﻿using DeLong_Desktop.ApiService.DTOs.Users;
+using DeLong_Desktop.ApiService.Configurations;
 
 namespace DeLong_Desktop.ApiService.Interfaces;
 
-interface IUserService
+public interface IUserService
 {
     ValueTask<bool> AddAsync(UserCreationDto dto);
     ValueTask<bool> ModifyAsync(UserUpdateDto dto);

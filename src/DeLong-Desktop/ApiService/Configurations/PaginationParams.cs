@@ -1,6 +1,6 @@
 ﻿namespace DeLong_Desktop.ApiService.Configurations;
 
-class PaginationParams
+public class PaginationParams
 {
     private const int maxSize = 20;
     private int pageSize;

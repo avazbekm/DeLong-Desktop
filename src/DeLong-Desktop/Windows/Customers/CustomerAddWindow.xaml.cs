@@ -55,9 +55,9 @@ public partial class CustomerAddWindow : Window
         userCreationDto.Phone = txtJisTelefon.Text;
         userCreationDto.TelegramPhone = txtJisTelegramRaqam.Text;
         userCreationDto.JSHSHIR = long.Parse(txtJisJSHSHIR.Text);
-        userCreationDto.DateOfBirth = dateOfBirthPicker.SelectedDate.Value;
-        userCreationDto.DateOfIssue = dateOfIssuePicker.SelectedDate.Value;
-        userCreationDto.DateOfExpiry = dateOfExpiryPicker.SelectedDate.Value;
+        userCreationDto.DateOfBirth =dateOfBirthPicker.SelectedDate.Value.ToUniversalTime();
+        userCreationDto.DateOfIssue = dateOfIssuePicker.SelectedDate.Value.ToUniversalTime();
+        userCreationDto.DateOfExpiry = dateOfExpiryPicker.SelectedDate.Value.ToUniversalTime();
         if (gender.Equals("Erkak"))
             userCreationDto.Gender = (Gender)0;
         else if (gender.Equals("Ayol"))
@@ -72,12 +72,12 @@ public partial class CustomerAddWindow : Window
         {
             var result = this.userService.AddAsync(userCreationDto);
 
-            if (result.IsCompletedSuccessfully)
+            if (!result.IsCompletedSuccessfully)
             {
                 MessageBox.Show($" Saqlandi.");
             }
             else
-                MessageBox.Show($"{"nimadur xato"}");
+                MessageBox.Show($"{"Saqlashda xatolik"}");
         }
         
 
