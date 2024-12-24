@@ -79,7 +79,7 @@ public class UserService : IUserService
 
     public async ValueTask<IEnumerable<UserResultDto>> RetrieveAllAsync()
     {
-        var response = await _httpClient.GetAsync("api/User/get-all");
+        var response = await _httpClient.GetAsync("api/User/get-allUsers");
         response.EnsureSuccessStatusCode();
 
         var jsonResponse = await response.Content.ReadAsStringAsync();

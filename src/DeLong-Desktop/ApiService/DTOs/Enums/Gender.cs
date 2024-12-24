@@ -3,5 +3,5 @@
 public enum Gender
 {
     Erkak = 0,
-    Ayol = 1
+    Ayol 
 }

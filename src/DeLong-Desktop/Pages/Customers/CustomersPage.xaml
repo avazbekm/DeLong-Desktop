@@ -31,7 +31,7 @@
         <DataGrid x:Name="userDataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="#548CA8" Foreground="Black">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Firma nomi" Binding="{Binding FirmaName}" Width="*"/>
-                <DataGridTextColumn Header="Mijoz F.I.O" Binding="{Binding Name}" Width="100"/>
+                <DataGridTextColumn Header="Mijoz F.I.O" Binding="{Binding Name}" Width="*"/>
                 <DataGridTextColumn Header="Telefon" Binding="{Binding Phone}" Width="*"/>
                 <DataGridTextColumn Header="Telegram raqam" Binding="{Binding TelegramPhone}" Width="*"/>
                 <DataGridTextColumn Header="JSHSHIR" Binding="{Binding JSHSHIR}" Width="*"/>
