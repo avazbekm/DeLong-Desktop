@@ -7,6 +7,6 @@ class Item
     public string Name { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;
     public string TelegramPhone {  get; set; } = string.Empty;
-    public long JSHSHIR {  get; set; }
+    public string JSHSHIR { get; set; } = string.Empty;
     public string Adress {  get; set; } = string.Empty;
 }

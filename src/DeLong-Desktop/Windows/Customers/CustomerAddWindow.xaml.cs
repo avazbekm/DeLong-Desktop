@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using DeLong_Desktop.ApiService.DTOs.Customers;
 using DeLong_Desktop.ApiService.DTOs.Enums;
 using DeLong_Desktop.ApiService.DTOs.Users;
 using DeLong_Desktop.ApiService.Interfaces;
@@ -52,6 +53,7 @@ public partial class CustomerAddWindow : Window
         spQaytish.Visibility = Visibility.Hidden;
     }
     string gender = "";
+    string userJshshir = "";
     private void btnJisAdd_Click(object sender, RoutedEventArgs e)
     {
         UserCreationDto userCreationDto = new UserCreationDto();
@@ -63,13 +65,10 @@ public partial class CustomerAddWindow : Window
         userCreationDto.Address = txtJisAdres.Text;
         userCreationDto.Phone = txtJisTelefon.Text;
         userCreationDto.TelegramPhone = txtJisTelegramRaqam.Text;
-        if(txtJisJSHSHIR.Text.Equals(""))
-        {
-            MessageBox.Show("JSHSHIRni kiriting iltimos");
-            return;
-        }
-        userCreationDto.JSHSHIR = long.Parse(txtJisJSHSHIR.Text);
-        
+        userCreationDto.JSHSHIR = txtJisJSHSHIR.Text;
+        userJshshir = userCreationDto.JSHSHIR;
+
+
         if (!dateOfBirthPicker.SelectedDate.HasValue)
         {
             MessageBox.Show("Tug'ulgan sanani kiriting iltimos.");
@@ -97,11 +96,13 @@ public partial class CustomerAddWindow : Window
 
 
         if (userCreationDto.FirstName.Equals("") ||
-         userCreationDto.LastName.Equals("") || 
-         userCreationDto.SeriaPasport.Equals("") ||
-         userCreationDto.Address.Equals("") || 
-         userCreationDto.TelegramPhone.Equals("") ||
-         userCreationDto.Phone.Equals(""))
+            userCreationDto.LastName.Equals("") || 
+            userCreationDto.SeriaPasport.Equals("") ||
+            userCreationDto.Address.Equals("") ||
+            userCreationDto.JSHSHIR.Equals("") || 
+            userCreationDto.TelegramPhone.Equals("") ||
+            userCreationDto.Phone.Equals(""))
+
             MessageBox.Show("Malumotni to'liq kiriting!");
         else
         {
@@ -114,8 +115,6 @@ public partial class CustomerAddWindow : Window
             else
                 MessageBox.Show($"{"Saqlashda xatolik"}");
         }
-        
-
     }
 
     private void RadioButton_Checked(object sender, RoutedEventArgs e)
@@ -133,18 +132,72 @@ public partial class CustomerAddWindow : Window
 
     }
 
-    private void btnYurAdd_Click(object sender, RoutedEventArgs e)
+    private async void btnYurAdd_Click(object sender, RoutedEventArgs e)
     {
+        CustomerCreationDto customerCreationDto = new CustomerCreationDto();
+
+        customerCreationDto.Name = txtYurNomi.Text;
+        if(txtYurINN.Text is null) 
+        {
+            MessageBox.Show("INN kiriting iltimos.");
+            return;
+        }
+        customerCreationDto.INN = int.Parse(txtYurINN.Text);
+        customerCreationDto.MFO = txtYurMFO.Text;
+
+        if (txtYurXisobRaqam.Text.Length != 23)
+        {
+            MessageBox.Show("Xisob raqamni to'liq kiriting iltimos.");
+            return;
+        }
+
+        customerCreationDto.BankAccount = RemoveDashes(txtYurXisobRaqam.Text);
+        customerCreationDto.BankName = txtYurBank.Text;
+        customerCreationDto.OKONX = txtYurOKONX.Text;
+        customerCreationDto.YurAddress = txtYurFirmaAdres.Text;
+
+        var user = await userService.RetrieveByJSHSHIRAsync(userJshshir);
+        if (user is null)
+        {
+            MessageBox.Show("Rahbar ma'lumotini kiriting.");
+            return;
+        }
+        customerCreationDto.UserId = user.Id;
+
+        if (customerCreationDto.Name.Equals("") ||
+           customerCreationDto.INN.Equals("") ||
+           customerCreationDto.MFO.Equals("") ||
+           customerCreationDto.BankName.Equals("") ||
+           customerCreationDto.OKONX.Equals("") ||
+           customerCreationDto.YurAddress.Equals(""))
+
+            MessageBox.Show("Ma'lumotni to'liq kiriting!");
+        else
+        {
+            var result = this.customerService.AddAsync(customerCreationDto);
+
+            if (!result.IsCompletedSuccessfully)
+            {
+                MessageBox.Show($" Saqlandi.");
+            }
+            else
+                MessageBox.Show($"{"Saqlashda xatolik"}");
+        }
 
     }
+
+    // xisob raqamni - larni olib tashlaydigan function
+    public string RemoveDashes(string input)
+        => new string(input.Where(char.IsDigit).ToArray());
 
     private void btnRahbar_Click(object sender, RoutedEventArgs e)
     {
         spYurYattJis.Visibility = Visibility.Hidden;
         spYurCutomer.Visibility = Visibility.Hidden;
-        spJisCutomer.Visibility = Visibility.Visible;
+        spJisCutomer.Visibility = Visibility.Hidden;
         spYattCutomer.Visibility = Visibility.Hidden;
         spQaytish.Visibility = Visibility.Visible;
+        spJisNew.Visibility = Visibility.Visible;
     }
 
     private void btnQaytish_Click(object sender, RoutedEventArgs e)
@@ -154,6 +207,8 @@ public partial class CustomerAddWindow : Window
         spYattCutomer.Visibility = Visibility.Hidden;
         spYurYattJis.Visibility = Visibility.Visible;
         spQaytish.Visibility = Visibility.Hidden;
+        spJisNew.Visibility = Visibility.Hidden;
+
     }
 
     private void txtJisJSHSHIR_TextChanged(object sender, TextChangedEventArgs e)
@@ -358,6 +413,13 @@ public partial class CustomerAddWindow : Window
         }
     }
 
-
-
+    private void btnNewAdd_Click(object sender, RoutedEventArgs e)
+    {
+        spYurCutomer.Visibility = Visibility.Hidden;
+        spJisCutomer.Visibility = Visibility.Visible;
+        spYattCutomer.Visibility = Visibility.Hidden;
+        spYurYattJis.Visibility = Visibility.Hidden;
+        spQaytish.Visibility = Visibility.Visible;
+        spJisNew.Visibility = Visibility.Hidden;
+    }
 }

@@ -40,8 +40,8 @@ public class UserResultDto
     
     [JsonPropertyName("address")]
     public string Address { get; set; } = string.Empty;
-    
+
     [JsonPropertyName("jshshir")]
-    public long JSHSHIR { get; set; }
+    public string JSHSHIR { get; set; } = string.Empty;
 }
 

@@ -9,7 +9,7 @@ public interface IUserService
     ValueTask<bool> ModifyAsync(UserUpdateDto dto);
     ValueTask<bool> RemoveAsync(long id);
     ValueTask<UserResultDto> RetrieveByIdAsync(long id);
-    ValueTask<UserResultDto> RetrieveByJSHSHIRAsync(long Jshshir);
+    ValueTask<UserResultDto> RetrieveByJSHSHIRAsync(string Jshshir);
     ValueTask<IEnumerable<UserResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null);
     ValueTask<IEnumerable<UserResultDto>> RetrieveAllAsync();
 }

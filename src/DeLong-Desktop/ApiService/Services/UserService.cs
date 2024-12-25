@@ -57,7 +57,7 @@ public class UserService : IUserService
         return result.Data;
     }
 
-    public async ValueTask<UserResultDto> RetrieveByJSHSHIRAsync(long Jshshir)
+    public async ValueTask<UserResultDto> RetrieveByJSHSHIRAsync(string Jshshir)
     {
         var response = await _httpClient.GetAsync($"api/User/get/{Jshshir}");
         response.EnsureSuccessStatusCode();

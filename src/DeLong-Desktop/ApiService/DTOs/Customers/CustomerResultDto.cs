@@ -18,7 +18,7 @@ class CustomerResultDto
     public string MFO { get; set; } = string.Empty;
 
     [JsonPropertyName("bankAccount")]
-    public long BankAccount { get; set; }
+    public string BankAccount { get; set; } = string.Empty;
 
     [JsonPropertyName("bankName")]
     public string BankName { get; set; } = string.Empty;

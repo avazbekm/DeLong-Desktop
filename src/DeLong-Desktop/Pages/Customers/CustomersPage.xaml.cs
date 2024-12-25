@@ -22,7 +22,7 @@ public partial class CustomersPage : Page
         userService = services.GetRequiredService<IUserService>();
         customerService = services.GetRequiredService<ICustomerService>();
 
-       // Loading();
+        Loading();
     }
 
     private async void Loading()
