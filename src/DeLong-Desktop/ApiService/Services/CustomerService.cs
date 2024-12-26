@@ -57,7 +57,7 @@ class CustomerService : ICustomerService
 
     public async ValueTask<CustomerResultDto> RetrieveByInnAsync(int INN)
     {
-        var response = await _httpClient.GetAsync($"api/User/get/{INN}");
+        var response = await _httpClient.GetAsync($"api/Customer/get/INN?inn={INN}");
         response.EnsureSuccessStatusCode();
 
         var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -65,6 +65,15 @@ class CustomerService : ICustomerService
         return result.Data;
     }
 
+    public async ValueTask<CustomerResultDto> RetrieveByJshshirAsync(string jshshir)
+    {
+        var response = await _httpClient.GetAsync($"api/Customer/get/Jshshir?jshshir={jshshir}");
+        response.EnsureSuccessStatusCode();
+
+        var jsonResponse = await response.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<Response<CustomerResultDto>>(jsonResponse);
+        return result.Data;
+    }
 
     public async ValueTask<IEnumerable<CustomerResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null)
     {

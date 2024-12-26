@@ -2,7 +2,7 @@
 
 class Item
 {
-    public int Id { get; set; }
+    public long Id { get; set; }
     public string FirmaName {  get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Phone { get; set; } = string.Empty;

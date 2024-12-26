@@ -10,6 +10,7 @@ interface ICustomerService
     ValueTask<bool> RemoveAsync(long id);
     ValueTask<CustomerResultDto> RetrieveByIdAsync(long id);
     ValueTask<CustomerResultDto> RetrieveByInnAsync(int INN);
+    ValueTask<CustomerResultDto> RetrieveByJshshirAsync(string jshshir);
     ValueTask<IEnumerable<CustomerResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null);
     ValueTask<IEnumerable<CustomerResultDto>> RetrieveAllAsync();
 }

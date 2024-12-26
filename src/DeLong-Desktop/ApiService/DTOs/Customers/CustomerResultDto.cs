@@ -17,6 +17,12 @@ class CustomerResultDto
     [JsonPropertyName("mfo")]
     public string MFO { get; set; } = string.Empty;
 
+    [JsonPropertyName("jshshir")]
+    public string JSHSHIR { get; set; } = string.Empty;
+
+    [JsonPropertyName("phone")]
+    public string Phone { get; set; } = string.Empty;
+
     [JsonPropertyName("bankAccount")]
     public string BankAccount { get; set; } = string.Empty;
 

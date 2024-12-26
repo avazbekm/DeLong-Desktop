@@ -20,4 +20,9 @@ public partial class MainWindow : Window
         // Navigate to CustomerPage
         Navigator.Navigate(new CustomersPage(services));
     }
+
+    private void btnChiqish_Click(object sender, RoutedEventArgs e)
+    {
+        this.Close();
+    }
 }

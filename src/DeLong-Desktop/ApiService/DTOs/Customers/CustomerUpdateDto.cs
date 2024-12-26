@@ -14,6 +14,12 @@ class CustomerUpdateDto
     [JsonPropertyName("inn")]
     public int INN { get; set; }
 
+    [JsonPropertyName("jshshir")]
+    public string JSHSHIR { get; set; } = string.Empty;
+
+    [JsonPropertyName("phone")]
+    public string Phone { get; set; } = string.Empty;
+
     [JsonPropertyName("mfo")]
     public string MFO { get; set; } = string.Empty;
 

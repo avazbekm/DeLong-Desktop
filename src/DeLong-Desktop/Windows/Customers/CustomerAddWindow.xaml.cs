@@ -17,6 +17,8 @@ public partial class CustomerAddWindow : Window
     private readonly IUserService userService;
     private readonly ICustomerService customerService;
     private readonly IServiceProvider services;
+    public bool IsCreated { get; set; } = false;
+
 
     public CustomerAddWindow(IServiceProvider services)
     {
@@ -32,7 +34,7 @@ public partial class CustomerAddWindow : Window
         spJisCutomer.Visibility = Visibility.Hidden;
         spYattCutomer.Visibility = Visibility.Hidden;
         spYurYattJis.Visibility = Visibility.Visible;
-        spQaytish.Visibility= Visibility.Hidden;
+        spQaytish.Visibility = Visibility.Hidden;
     }
 
     private void rbtnYaTT_Checked(object sender, RoutedEventArgs e)
@@ -58,11 +60,11 @@ public partial class CustomerAddWindow : Window
     {
         UserCreationDto userCreationDto = new UserCreationDto();
 
-        userCreationDto.LastName = txtFamiliya.Text;
-        userCreationDto.FirstName = txtIsmi.Text;
-        userCreationDto.Patronomyc = txtSharifi.Text;
-        userCreationDto.SeriaPasport = txtPasportSeria.Text;
-        userCreationDto.Address = txtJisAdres.Text;
+        userCreationDto.LastName = txtFamiliya.Text.ToLower();
+        userCreationDto.FirstName = txtIsmi.Text.ToLower();
+        userCreationDto.Patronomyc = txtSharifi.Text.ToLower();
+        userCreationDto.SeriaPasport = txtPasportSeria.Text.ToLower();
+        userCreationDto.Address = txtJisAdres.Text.ToLower();
         userCreationDto.Phone = txtJisTelefon.Text;
         userCreationDto.TelegramPhone = txtJisTelegramRaqam.Text;
         userCreationDto.JSHSHIR = txtJisJSHSHIR.Text;
@@ -96,10 +98,10 @@ public partial class CustomerAddWindow : Window
 
 
         if (userCreationDto.FirstName.Equals("") ||
-            userCreationDto.LastName.Equals("") || 
+            userCreationDto.LastName.Equals("") ||
             userCreationDto.SeriaPasport.Equals("") ||
             userCreationDto.Address.Equals("") ||
-            userCreationDto.JSHSHIR.Equals("") || 
+            userCreationDto.JSHSHIR.Equals("") ||
             userCreationDto.TelegramPhone.Equals("") ||
             userCreationDto.Phone.Equals(""))
 
@@ -111,6 +113,7 @@ public partial class CustomerAddWindow : Window
             if (!result.IsCompletedSuccessfully)
             {
                 MessageBox.Show($" Saqlandi.");
+                IsCreated = true;
             }
             else
                 MessageBox.Show($"{"Saqlashda xatolik"}");
@@ -136,8 +139,8 @@ public partial class CustomerAddWindow : Window
     {
         CustomerCreationDto customerCreationDto = new CustomerCreationDto();
 
-        customerCreationDto.Name = txtYurNomi.Text;
-        if (txtYurINN.Text.Length != 9)  
+        customerCreationDto.Name = txtYurNomi.Text.ToLower();
+        if (txtYurINN.Text.Length != 9)
         {
             MessageBox.Show("INN kiriting iltimos.");
             return;
@@ -152,9 +155,9 @@ public partial class CustomerAddWindow : Window
         }
 
         customerCreationDto.BankAccount = RemoveDashes(txtYurXisobRaqam.Text);
-        customerCreationDto.BankName = txtYurBank.Text;
+        customerCreationDto.BankName = txtYurBank.Text.ToLower();
         customerCreationDto.OKONX = txtYurOKONX.Text;
-        customerCreationDto.YurAddress = txtYurFirmaAdres.Text;
+        customerCreationDto.YurAddress = txtYurFirmaAdres.Text.ToLower();
 
         var user = await userService.RetrieveByJSHSHIRAsync(userJshshir);
         if (user is null)
@@ -179,6 +182,7 @@ public partial class CustomerAddWindow : Window
             if (!result.IsCompletedSuccessfully)
             {
                 MessageBox.Show($" Saqlandi.");
+                IsCreated = true;
             }
             else
                 MessageBox.Show($"{"Saqlashda xatolik"}");
@@ -202,19 +206,30 @@ public partial class CustomerAddWindow : Window
 
     private void btnQaytish_Click(object sender, RoutedEventArgs e)
     {
-        spYurCutomer.Visibility = Visibility.Visible;
-        spJisCutomer.Visibility = Visibility.Hidden;
-        spYattCutomer.Visibility = Visibility.Hidden;
-        spYurYattJis.Visibility = Visibility.Visible;
-        spQaytish.Visibility = Visibility.Hidden;
-        spJisNew.Visibility = Visibility.Hidden;
-
+        if (rbtnYurdik.IsChecked.Equals(true))
+        {
+            spYurCutomer.Visibility = Visibility.Visible;
+            spJisCutomer.Visibility = Visibility.Hidden;
+            spYattCutomer.Visibility = Visibility.Hidden;
+            spYurYattJis.Visibility = Visibility.Visible;
+            spQaytish.Visibility = Visibility.Hidden;
+            spJisNew.Visibility = Visibility.Hidden;
+        }
+        else if (rbtnYaTT.IsChecked.Equals(true))
+        {
+            spYurCutomer.Visibility = Visibility.Hidden;
+            spJisCutomer.Visibility = Visibility.Hidden;
+            spYattCutomer.Visibility = Visibility.Visible;
+            spYurYattJis.Visibility = Visibility.Visible;
+            spQaytish.Visibility = Visibility.Hidden;
+            spJisNew.Visibility = Visibility.Hidden;
+        }
     }
 
-    private void txtJisJSHSHIR_TextChanged(object sender, TextChangedEventArgs e)
+    private async void txtJisJSHSHIR_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-      
+
         if (textBox != null)
         {
             // Faqat raqamlarni qoldirish
@@ -226,6 +241,25 @@ public partial class CustomerAddWindow : Window
                 int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
                 textBox.Text = numericText;
                 textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
+            }
+        }
+
+        if (txtJisJSHSHIR.Text.Length.Equals(14))
+        {
+            var existUser = await this.userService.RetrieveByJSHSHIRAsync(txtJisJSHSHIR.Text);
+            if (existUser is not null)
+            {
+                txtFamiliya.Text = existUser.LastName.ToUpper();
+                txtIsmi.Text = existUser.FirstName.ToUpper();
+                txtSharifi.Text = existUser.Patronomyc.ToUpper();
+                txtPasportSeria.Text = existUser.SeriaPasport;
+                txtJisAdres.Text =existUser.Address.ToUpper();
+                txtJisTelefon.Text = existUser.Phone;
+                txtJisTelegramRaqam.Text = existUser.TelegramPhone;
+
+                btnJisAdd.Visibility = Visibility.Hidden;
+
+                MessageBox.Show($"JSHSHIR = {txtJisJSHSHIR.Text} li Jismoniy shaxs mavjud. Qayta ro'yxatdan o'tish shart emas.");
             }
         }
     }
@@ -308,7 +342,7 @@ public partial class CustomerAddWindow : Window
         }
     }
 
-    private void txtYurINN_TextChanged(object sender, TextChangedEventArgs e)
+    private async void txtYurINN_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
 
@@ -323,6 +357,25 @@ public partial class CustomerAddWindow : Window
                 int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
                 textBox.Text = numericText;
                 textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
+            }
+        }
+
+        if (txtYurINN.Text.Length == 9)
+        {
+            var inn = int.Parse(txtYurINN.Text);
+            var existCustomer = await this.customerService.RetrieveByInnAsync(inn);
+            if (existCustomer is not null)
+            {
+                txtYurNomi.Text = existCustomer.Name.ToUpper();
+                txtYurPhone.Text = existCustomer.Phone;
+                txtYurMFO.Text = existCustomer.MFO;
+                txtYurXisobRaqam.Text = existCustomer.BankAccount;
+                txtYurBank.Text = existCustomer.BankName.ToUpper();
+                txtYurOKONX.Text = existCustomer.OKONX;
+                txtYurFirmaAdres.Text = existCustomer.YurAddress.ToUpper();
+
+                btnYurAdd.Visibility = Visibility.Hidden;
+                MessageBox.Show($"INN:{txtYurINN.Text} mijoz mavjud. Qayta ro'yxatdan o'tkazish shart emas. ");
             }
         }
     }
@@ -446,11 +499,227 @@ public partial class CustomerAddWindow : Window
 
     private void btnExistClient_Click(object sender, RoutedEventArgs e)
     {
-        spYurCutomer.Visibility = Visibility.Visible;
+        if (rbtnYurdik.IsChecked.Equals(true))
+        {
+            spYurCutomer.Visibility = Visibility.Visible;
+            spJisCutomer.Visibility = Visibility.Hidden;
+            spYattCutomer.Visibility = Visibility.Hidden;
+            spYurYattJis.Visibility = Visibility.Visible;
+            spQaytish.Visibility = Visibility.Hidden;
+            spJisNew.Visibility = Visibility.Hidden;
+        }
+        else if (rbtnYaTT.IsChecked.Equals(true))
+        {
+            spYurCutomer.Visibility = Visibility.Hidden;
+            spJisCutomer.Visibility = Visibility.Hidden;
+            spYattCutomer.Visibility = Visibility.Visible;
+            spYurYattJis.Visibility = Visibility.Visible;
+            spQaytish.Visibility = Visibility.Hidden;
+            spJisNew.Visibility = Visibility.Hidden;
+        }
+    }
+
+    private void txtYurPhone_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var textBox = sender as TextBox;
+        if (textBox != null)
+        {
+            // Faqat raqamlar va bo'sh joylarni qoldirish
+            string filteredText = new string(textBox.Text.Where(c => char.IsDigit(c) || c == ' ').ToArray());
+
+            // Agar noto'g'ri belgilar kirgan bo'lsa, matnni yangilash
+            if (textBox.Text != filteredText)
+            {
+                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
+                textBox.Text = filteredText;
+                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni to'g'ri joylash
+            }
+        }
+    }
+
+    private void btnYaTTRahbar_Click(object sender, RoutedEventArgs e)
+    {
+
+        spYurYattJis.Visibility = Visibility.Hidden;
+        spYurCutomer.Visibility = Visibility.Hidden;
         spJisCutomer.Visibility = Visibility.Hidden;
         spYattCutomer.Visibility = Visibility.Hidden;
-        spYurYattJis.Visibility = Visibility.Visible;
-        spQaytish.Visibility = Visibility.Hidden;
-        spJisNew.Visibility = Visibility.Hidden;
+        spQaytish.Visibility = Visibility.Visible;
+        spJisNew.Visibility = Visibility.Visible;
+    }
+
+    private async void txtYattJSHSHIR_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var textBox = sender as TextBox;
+
+        if (textBox != null)
+        {
+            // Faqat raqamlarni qoldirish
+            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
+
+            // Eski noto'g'ri matnni to'g'rilash
+            if (textBox.Text != numericText)
+            {
+                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
+                textBox.Text = numericText;
+                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
+            }
+        }
+
+        if (txtYattJSHSHIR.Text.Length.Equals(14))
+        {
+            var existYaTT = await this.customerService.RetrieveByJshshirAsync(txtYattJSHSHIR.Text);
+            if (existYaTT is not null)
+            {
+                txtYattNomi.Text = existYaTT.Name.ToUpper();
+                txtYattMFO.Text = existYaTT.MFO;
+                txtYattXisobRaqam.Text = existYaTT.BankAccount;
+                txtYattBank.Text = existYaTT.BankName.ToUpper();
+                txtYattFirmaAdres.Text = existYaTT.YurAddress.ToUpper();
+                txtYattTelefon.Text = existYaTT.Phone;
+                btnYattAdd.Visibility = Visibility.Hidden;
+
+                MessageBox.Show($"JSHSHIR = {txtYattJSHSHIR.Text} li YaTT mavjud. Qayta ro'yxatdan o'tish shart emas.");
+            }
+        }
+    }
+
+    private async void btnYattAdd_Click(object sender, RoutedEventArgs e)
+    {
+        CustomerCreationDto customerCreationDto = new CustomerCreationDto();
+
+        customerCreationDto.Name = txtYattNomi.Text.ToLower();
+        if (txtYattJSHSHIR.Text.Length != 14)
+        {
+            MessageBox.Show("JSHSHIR ni to'liq kiriting iltimos.");
+            return;
+        }
+        customerCreationDto.JSHSHIR = txtYattJSHSHIR.Text;
+        customerCreationDto.MFO = txtYattMFO.Text;
+
+        if (txtYattXisobRaqam.Text.Length != 23)
+        {
+            MessageBox.Show("Xisob raqamni to'liq kiriting iltimos.");
+            return;
+        }
+        customerCreationDto.BankAccount = RemoveDashes(txtYattXisobRaqam.Text);
+        
+        customerCreationDto.BankName = txtYattBank.Text.ToLower();
+        customerCreationDto.YurAddress = txtYattFirmaAdres.Text.ToLower();
+        customerCreationDto.Phone = txtYattTelefon.Text;
+        
+
+
+        if (userJshshir.Equals(""))
+        {
+            MessageBox.Show("YaTT rahbarini ma'lumotni kiriting.");
+            return;
+        }
+        var existUser = await this.userService.RetrieveByJSHSHIRAsync(userJshshir);
+        customerCreationDto.UserId = existUser.Id;
+
+        if (customerCreationDto.Name.Equals("") ||
+            customerCreationDto.Phone.Equals("") ||
+            customerCreationDto.MFO.Equals("") ||
+            customerCreationDto.BankName.Equals("") ||
+            customerCreationDto.YurAddress.Equals(""))
+            MessageBox.Show("Ma'lumotni to'liq kiriting!");
+        else
+        {
+            var result = this.customerService.AddAsync(customerCreationDto);
+
+            if (!result.IsCompletedSuccessfully)
+            {
+                MessageBox.Show($" Saqlandi.");
+                IsCreated = true;
+            }
+            else
+                MessageBox.Show($"{"Saqlashda xatolik"}");
+        }
+    }
+
+    private void txtYattXisobRaqam_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var textBox = sender as TextBox;
+        if (textBox == null) return;
+
+        // Retrieve only digits from the current text
+        string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
+
+        // Format: XXXXX-XXX-X-XXXXXXXX-XXX
+        StringBuilder formattedText = new StringBuilder();
+        int[] groupSizes = { 5, 3, 1, 8, 3 };
+        int currentIndex = 0;
+
+        foreach (int groupSize in groupSizes)
+        {
+            if (numericText.Length > currentIndex)
+            {
+                int charsToTake = Math.Min(groupSize, numericText.Length - currentIndex);
+                formattedText.Append(numericText.Substring(currentIndex, charsToTake));
+                currentIndex += charsToTake;
+
+                // Add a separator unless it's the last group
+                if (currentIndex < numericText.Length && formattedText.Length < 20)
+                    formattedText.Append('-');
+            }
+        }
+
+        // Save the original caret position
+        int oldCaretIndex = textBox.CaretIndex;
+
+        // Update the text only if it has changed
+        if (textBox.Text != formattedText.ToString())
+        {
+            textBox.Text = formattedText.ToString();
+
+            // Adjust caret position dynamically
+            int newCaretIndex = oldCaretIndex;
+
+            // Prevent cursor from being stuck after separators
+            if (oldCaretIndex > 0 && oldCaretIndex < formattedText.Length && formattedText[oldCaretIndex - 1] == '-')
+            {
+                newCaretIndex++;
+            }
+
+            textBox.CaretIndex = Math.Min(newCaretIndex, textBox.Text.Length);
+        }
+    }
+
+    private void txtYattMFO_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var textBox = sender as TextBox;
+
+        if (textBox != null)
+        {
+            // Faqat raqamlarni qoldirish
+            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
+
+            // Eski noto'g'ri matnni to'g'rilash
+            if (textBox.Text != numericText)
+            {
+                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
+                textBox.Text = numericText;
+                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
+            }
+        }
+    }
+
+    private void txtYattTelefon_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var textBox = sender as TextBox;
+        if (textBox != null)
+        {
+            // Faqat raqamlar va bo'sh joylarni qoldirish
+            string filteredText = new string(textBox.Text.Where(c => char.IsDigit(c) || c == ' ').ToArray());
+
+            // Agar noto'g'ri belgilar kirgan bo'lsa, matnni yangilash
+            if (textBox.Text != filteredText)
+            {
+                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
+                textBox.Text = filteredText;
+                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni to'g'ri joylash
+            }
+        }
     }
 }
