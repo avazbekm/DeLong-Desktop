@@ -15,7 +15,7 @@ public class UserService : IUserService
     {
         _httpClient = new HttpClient
         {
-            BaseAddress = new Uri("http://localhost:5208/") // API URL manzilini o'rnating
+            BaseAddress = new Uri("https://localhost:7049/") // API URL manzilini o'rnating
         };
     }
 
@@ -57,9 +57,9 @@ public class UserService : IUserService
         return result.Data;
     }
 
-    public async ValueTask<UserResultDto> RetrieveByJSHSHIRAsync(string Jshshir)
+    public async ValueTask<UserResultDto> RetrieveByJSHSHIRAsync(string jshshir)
     {
-        var response = await _httpClient.GetAsync($"api/User/get/{Jshshir}");
+        var response = await _httpClient.GetAsync($"api/User/get/jshshir?jshshir={jshshir}");
         response.EnsureSuccessStatusCode();
 
         var jsonResponse = await response.Content.ReadAsStringAsync();

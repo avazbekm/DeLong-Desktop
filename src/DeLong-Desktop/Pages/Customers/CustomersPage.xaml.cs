@@ -34,31 +34,31 @@ public partial class CustomersPage : Page
         List<long> ids = new List<long>();
 
         // mijozlarni databasadan chaqirvodik
-        //var existCustomers = await customerService.RetrieveAllAsync();
+        var existCustomers = await customerService.RetrieveAllAsync();
         
         // jami mavjud jismoniy shaxslarni chaqirib oldik
         var existUsers = await userService.RetrieveAllAsync();
         
         int Tartib = 1;  // datagridga tartib raqam uchun
-        //if (existCustomers is not null)
-        //{
-        //    foreach (var custom in existCustomers)
-        //    {
-        //        var existUser = existUsers.FirstOrDefault(x => x.Id.Equals(custom.UserId));
-        //        items.Add(new Item()
-        //        {
-        //            Id = Tartib,
-        //            FirmaName = custom.Name,
-        //            Name = $"{existUser.LastName} {existUser.FirstName} {existUser.Patronomyc}",
-        //            Phone = existUser.Phone,
-        //            TelegramPhone = existUser.TelegramPhone,
-        //            JSHSHIR = existUser.JSHSHIR,
-        //            Adress = custom.YurAddress
-        //        });
-        //        Tartib++;
-        //        ids.Add(custom.UserId);
-        //    }
-        //}
+        if (existCustomers is not null)
+        {
+            foreach (var custom in existCustomers)
+            {
+                var existUser = existUsers.FirstOrDefault(x => x.Id.Equals(custom.UserId));
+                items.Add(new Item()
+                {
+                    Id = Tartib,
+                    FirmaName = custom.Name,
+                    Name = $"{existUser.LastName} {existUser.FirstName} {existUser.Patronomyc}",
+                    Phone = existUser.Phone,
+                    TelegramPhone = existUser.TelegramPhone,
+                    JSHSHIR = existUser.JSHSHIR,
+                    Adress = custom.YurAddress
+                });
+                Tartib++;
+                ids.Add(custom.UserId);
+            }
+        }
         if (existUsers is not null)
         {
             foreach (var user in existUsers)

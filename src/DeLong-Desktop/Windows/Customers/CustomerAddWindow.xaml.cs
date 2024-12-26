@@ -1,11 +1,11 @@
 ﻿using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using DeLong_Desktop.ApiService.DTOs.Customers;
 using DeLong_Desktop.ApiService.DTOs.Enums;
 using DeLong_Desktop.ApiService.DTOs.Users;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using DeLong_Desktop.ApiService.DTOs.Customers;
 
 namespace DeLong_Desktop.Windows.Customers;
 
@@ -66,7 +66,7 @@ public partial class CustomerAddWindow : Window
         userCreationDto.Phone = txtJisTelefon.Text;
         userCreationDto.TelegramPhone = txtJisTelegramRaqam.Text;
         userCreationDto.JSHSHIR = txtJisJSHSHIR.Text;
-        userJshshir = userCreationDto.JSHSHIR;
+        userJshshir = txtJisJSHSHIR.Text;
 
 
         if (!dateOfBirthPicker.SelectedDate.HasValue)
@@ -137,7 +137,7 @@ public partial class CustomerAddWindow : Window
         CustomerCreationDto customerCreationDto = new CustomerCreationDto();
 
         customerCreationDto.Name = txtYurNomi.Text;
-        if(txtYurINN.Text is null) 
+        if (txtYurINN.Text.Length != 9)  
         {
             MessageBox.Show("INN kiriting iltimos.");
             return;
@@ -420,6 +420,37 @@ public partial class CustomerAddWindow : Window
         spYattCutomer.Visibility = Visibility.Hidden;
         spYurYattJis.Visibility = Visibility.Hidden;
         spQaytish.Visibility = Visibility.Visible;
+        spJisNew.Visibility = Visibility.Hidden;
+    }
+
+    private async void btnSearch_Click(object sender, RoutedEventArgs e)
+    {
+        if (txtSearchJ.Text.Length != 14)
+        {
+            MessageBox.Show("JSHSHIRni to'liq kiriting iltimos.");
+            return;
+        }
+        var existUser = await userService.RetrieveByJSHSHIRAsync(txtSearchJ.Text);
+        if (existUser is not null)
+        {
+            userJshshir = existUser.JSHSHIR;
+            MessageBox.Show($"{txtSearchJ.Text} JSHSHIR li mijoz mavjud.");
+            btnExistClient.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            MessageBox.Show($"{txtSearchJ.Text} JSHSHIR li mijoz mavjud emas.");
+            btnNewAdd.Visibility = Visibility.Visible;
+        }
+    }
+
+    private void btnExistClient_Click(object sender, RoutedEventArgs e)
+    {
+        spYurCutomer.Visibility = Visibility.Visible;
+        spJisCutomer.Visibility = Visibility.Hidden;
+        spYattCutomer.Visibility = Visibility.Hidden;
+        spYurYattJis.Visibility = Visibility.Visible;
+        spQaytish.Visibility = Visibility.Hidden;
         spJisNew.Visibility = Visibility.Hidden;
     }
 }

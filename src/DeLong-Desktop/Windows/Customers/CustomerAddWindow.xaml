@@ -42,9 +42,9 @@
                      GroupName="PersonType" Checked="rbtnJismoniy_Checked" />
 
         </StackPanel>
-        <StackPanel x:Name="spYurCutomer" Visibility="Hidden"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
+        <StackPanel x:Name="spYurCutomer" Visibility="Visible"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
 
-            <TextBox x:Name="txtYurNomi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Mijoz nomi" Background="#476072" Foreground="#EEEEEE"/>
+            <TextBox x:Name="txtYurNomi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Firma nomi" Background="#476072" Foreground="#EEEEEE"/>
 
             <TextBox x:Name="txtYurINN" MaxLength="9" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="INN" Background="#476072" Foreground="#EEEEEE" TextChanged="txtYurINN_TextChanged"/>
 
@@ -108,11 +108,12 @@
         </StackPanel>
         <StackPanel x:Name="spJisNew" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
             <Border x:Name="brQidiruvJ" Background="#476072" CornerRadius="15" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="0 0 10 0" Height="30">
-                <TextBox x:Name="txtSearchJ" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="JSHSHIR"  md:HintAssist.Foreground="Snow"  Height="32" Width="310" VerticalAlignment="Center" Background="#476072" Foreground="#EEEEEE"/>
+                <TextBox x:Name="txtSearchJ" MaxLength="14" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="JSHSHIR"  md:HintAssist.Foreground="Snow"  Height="32" Width="310" VerticalAlignment="Center" Background="#476072" Foreground="#EEEEEE"/>
 
             </Border>
-            <Button x:Name="btnSearch" md:ButtonAssist.CornerRadius="15" Content="Qidiruv" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0,20,0,0"/>
-            <Button x:Name="btnNewAdd" md:ButtonAssist.CornerRadius="15" Content="Qo'shish" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0,20,0,0" Click="btnNewAdd_Click"/>
+            <Button x:Name="btnSearch" md:ButtonAssist.CornerRadius="15" Content="Qidiruv" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0,20,0,0" Click="btnSearch_Click"/>
+            <Button x:Name="btnNewAdd" md:ButtonAssist.CornerRadius="15" Visibility="Hidden" Content="Qo'shish" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0,20,0,0" Click="btnNewAdd_Click"/>
+            <Button x:Name="btnExistClient" md:ButtonAssist.CornerRadius="15" Visibility="Hidden" Content="Davom etish" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0,20,0,0" Click="btnExistClient_Click"/>
         </StackPanel>
     </Grid>
 </Window>
