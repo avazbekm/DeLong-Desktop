@@ -1,4 +1,4 @@
-﻿<Window x:Class="DeLong_Desktop.Windows.Customers.CustomerAddWindow"
+﻿<Window x:Class="DeLong_Desktop.Windows.Customers.CustomerEditWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,29 +6,26 @@
         xmlns:local="clr-namespace:DeLong_Desktop.Windows.Customers"
         mc:Ignorable="d"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Mijozlar qo'shish oynasi" Height="700" Width="400"
+        Title="Hamkorlarni o'zgartirish oynasi" Height="700" Width="400"
         WindowStartupLocation="CenterScreen">
-
+  
     <Grid  Background="#334257">
+ 
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-       <!--qaytish button-->
-        <StackPanel x:Name="spQaytish" Margin="20 5 20 5" Visibility="Hidden"  Orientation="Horizontal" Grid.Row="0">
-            <Button x:Name="btnQaytish" Content="Qaytish" md:ButtonAssist.CornerRadius="15" BorderThickness="0" Background="#548CA8" Margin="2 0" Foreground="#EEEEEE" Height="30" Width="100" Click="btnQaytish_Click" />
-        </StackPanel>
-        <!--radio buttonlar-->
+
         <StackPanel x:Name="spYurYattJis" Margin="20 5 20 5" Visibility="Visible"  Orientation="Horizontal" Grid.Row="0">
             <!-- Yuridik shaxs RadioButton -->
-            <RadioButton x:Name="rbtnYurdik" Margin="10 0 10 0" Background="Snow" Content="Yuridik shaxs" Foreground="Snow" GroupName="PersonType" Checked="rbtnYurdik_Checked"/>
+            <RadioButton x:Name="rbtnYurdik" Margin="10 0 10 0" Background="Snow" Content="Yuridik shaxs" Foreground="Snow" GroupName="PersonType"/>
             <!-- YaTT RadioButton -->
-            <RadioButton x:Name="rbtnYaTT" Margin="20 0 30 0" Background="Snow" Content="YaTT" Foreground="Snow" GroupName="PersonType" Checked="rbtnYaTT_Checked"/>
+            <RadioButton x:Name="rbtnYaTT" Margin="20 0 30 0" Background="Snow" Content="YaTT" Foreground="Snow" GroupName="PersonType"/>
             <!-- Jismoniy shaxs RadioButton -->
-            <RadioButton x:Name="rbtnJismoniy" Background="Snow" Content="Jismoniy shaxs" Foreground="Snow" GroupName="PersonType" Checked="rbtnJismoniy_Checked" />
+            <RadioButton x:Name="rbtnJismoniy" Background="Snow" Content="Jismoniy shaxs" Foreground="Snow" GroupName="PersonType"/>
         </StackPanel>
-            <!--Yurdik shaxs-->
-        <StackPanel x:Name="spYurCutomer" Visibility="Hidden"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
+            <!--Yurdik Shaxs-->
+        <StackPanel x:Name="spYurCutomer" Visibility="Visible"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
             <TextBox x:Name="txtYurINN" MaxLength="9" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="INN" Background="#476072" Foreground="#EEEEEE" TextChanged="txtYurINN_TextChanged"/>
             <TextBox x:Name="txtYurNomi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Firma nomi" Background="#476072" Foreground="#EEEEEE"/>
             <TextBox x:Name="txtYurPhone" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telefon nomer" Background="#476072" Foreground="#EEEEEE" TextChanged="txtYurPhone_TextChanged"/>
@@ -37,8 +34,8 @@
             <TextBox x:Name="txtYurBank" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Bank nomi" Background="#476072" Foreground="#EEEEEE"/>
             <TextBox x:Name="txtYurOKONX" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="OKONX" Background="#476072" Foreground="#EEEEEE" TextChanged="txtYurOKONX_TextChanged"/>
             <TextBox x:Name="txtYurFirmaAdres" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Firma manzili" Background="#476072" Foreground="#EEEEEE"/>
-            <Button x:Name="btnRahbar" Content="Firma rahbari" BorderThickness="0" FontSize="17" Height="30" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Click="btnRahbar_Click"/>
-            <Button x:Name="btnYurAdd" Visibility="Visible" Content="Add Yurdik" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0" Click="btnYurAdd_Click"/>
+            <Button x:Name="btnRahbar" Content="Firma rahbari" BorderThickness="0" FontSize="17" Height="30" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE"/>
+            <Button x:Name="btnYurAdd" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0"/>
         </StackPanel>
             <!--YaTT-->
         <StackPanel x:Name="spYattCutomer" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
@@ -49,8 +46,8 @@
             <TextBox x:Name="txtYattBank" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Bank nomi" Background="#476072" Foreground="#EEEEEE"/>
             <TextBox x:Name="txtYattFirmaAdres" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="YaTT manzili" Background="#476072" Foreground="#EEEEEE"/>
             <TextBox x:Name="txtYattTelefon" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telefon nomer" Background="#476072" Foreground="#EEEEEE" TextChanged="txtYattTelefon_TextChanged"/>
-            <Button x:Name="btnYaTTRahbar" Content="YaTT rahbari" BorderThickness="0" FontSize="17" Height="30" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Click="btnYaTTRahbar_Click"/>
-            <Button x:Name="btnYattAdd" Visibility="Visible" Content="Add YaTT" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0" Click="btnYattAdd_Click"/>
+            <Button x:Name="btnYaTTRahbar" Content="YaTT rahbari" BorderThickness="0" FontSize="17" Height="30" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE"/>
+            <Button x:Name="btnYattAdd" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0"/>
         </StackPanel>
             <!--Jismoniy shaxs-->
         <StackPanel x:Name="spJisCutomer" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
@@ -69,16 +66,15 @@
             <DatePicker x:Name="dateOfBirthPicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Tug'ilgan sana" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
             <DatePicker x:Name="dateOfIssuePicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Pasport berilgan sana" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
             <DatePicker x:Name="dateOfExpiryPicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Amal qilish muddati" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
-            <Button x:Name="btnJisAdd" Visibility="Visible" Content="Add User" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0" Click="btnJisAdd_Click"/>
+            <Button x:Name="btnJisAdd" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0 20 0 0"/>
         </StackPanel>
         <!--qo'shimcha buttonlar-->
         <StackPanel x:Name="spJisNew" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
             <Border x:Name="brQidiruvJ" Background="#476072" CornerRadius="15" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="0 0 10 0" Height="30">
                 <TextBox x:Name="txtSearchJ" MaxLength="14" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="JSHSHIR"  md:HintAssist.Foreground="Snow"  Height="32" Width="310" VerticalAlignment="Center" Background="#476072" Foreground="#EEEEEE"/>
             </Border>
-            <Button x:Name="btnSearch" md:ButtonAssist.CornerRadius="15" Content="Qidiruv" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0,20,0,0" Click="btnSearch_Click"/>
-            <Button x:Name="btnNewAdd" md:ButtonAssist.CornerRadius="15" Visibility="Hidden" Content="Qo'shish" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0,20,0,0" Click="btnNewAdd_Click"/>
-            <Button x:Name="btnExistClient" md:ButtonAssist.CornerRadius="15" Visibility="Hidden" Content="Davom etish" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0,20,0,0" Click="btnExistClient_Click"/>
+            <Button x:Name="btnSearch" md:ButtonAssist.CornerRadius="15" Content="Qidiruv" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0 20 0 0"/>
+            <Button x:Name="btnExistClient" md:ButtonAssist.CornerRadius="15" Visibility="Hidden" Content="Davom etish" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0 20 0 0"/>
         </StackPanel>
     </Grid>
 </Window>
