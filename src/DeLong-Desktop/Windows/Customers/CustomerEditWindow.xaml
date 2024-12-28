@@ -15,17 +15,21 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <StackPanel x:Name="spYurYattJis" Margin="20 5 20 5" Visibility="Visible"  Orientation="Horizontal" Grid.Row="0">
+        <!--qaytish button-->
+        <StackPanel x:Name="spQaytish" Margin="20 5 20 5" Visibility="Hidden"  Orientation="Horizontal" Grid.Row="0">
+            <Button x:Name="btnQaytish" Content="Qaytish" md:ButtonAssist.CornerRadius="15" BorderThickness="0" Background="#548CA8" Margin="2 0" Foreground="#EEEEEE" Height="30" Width="100" Click="btnQaytish_Click"/>
+        </StackPanel>
+        <!--radio buttonlar-->
+        <StackPanel x:Name="spYurYattJis" Visibility="Hidden" Margin="20 5 20 5" Orientation="Horizontal" Grid.Row="0">
             <!-- Yuridik shaxs RadioButton -->
-            <RadioButton x:Name="rbtnYurdik" Margin="10 0 10 0" Background="Snow" Content="Yuridik shaxs" Foreground="Snow" GroupName="PersonType"/>
+            <RadioButton x:Name="rbtnYurdik" Checked="rbtnYurdik_Checked" Margin="10 0 10 0" Background="Snow" Content="Yuridik shaxs" Foreground="Snow" GroupName="PersonType"/>
             <!-- YaTT RadioButton -->
             <RadioButton x:Name="rbtnYaTT" Margin="20 0 30 0" Background="Snow" Content="YaTT" Foreground="Snow" GroupName="PersonType"/>
             <!-- Jismoniy shaxs RadioButton -->
             <RadioButton x:Name="rbtnJismoniy" Background="Snow" Content="Jismoniy shaxs" Foreground="Snow" GroupName="PersonType"/>
         </StackPanel>
             <!--Yurdik Shaxs-->
-        <StackPanel x:Name="spYurCutomer" Visibility="Visible"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
+        <StackPanel x:Name="spYurCutomer" Visibility="Hidden"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
             <TextBox x:Name="txtYurINN" MaxLength="9" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="INN" Background="#476072" Foreground="#EEEEEE" TextChanged="txtYurINN_TextChanged"/>
             <TextBox x:Name="txtYurNomi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Firma nomi" Background="#476072" Foreground="#EEEEEE"/>
             <TextBox x:Name="txtYurPhone" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telefon nomer" Background="#476072" Foreground="#EEEEEE" TextChanged="txtYurPhone_TextChanged"/>
@@ -34,7 +38,7 @@
             <TextBox x:Name="txtYurBank" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Bank nomi" Background="#476072" Foreground="#EEEEEE"/>
             <TextBox x:Name="txtYurOKONX" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="OKONX" Background="#476072" Foreground="#EEEEEE" TextChanged="txtYurOKONX_TextChanged"/>
             <TextBox x:Name="txtYurFirmaAdres" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Firma manzili" Background="#476072" Foreground="#EEEEEE"/>
-            <Button x:Name="btnRahbar" Content="Firma rahbari" BorderThickness="0" FontSize="17" Height="30" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE"/>
+            <Button x:Name="btnRahbar" Content="Firma rahbarini o'zgartirish" BorderThickness="0" FontSize="17" Height="30" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Click="btnRahbar_Click"/>
             <Button x:Name="btnYurAdd" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0"/>
         </StackPanel>
             <!--YaTT-->
@@ -47,7 +51,7 @@
             <TextBox x:Name="txtYattFirmaAdres" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="YaTT manzili" Background="#476072" Foreground="#EEEEEE"/>
             <TextBox x:Name="txtYattTelefon" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telefon nomer" Background="#476072" Foreground="#EEEEEE" TextChanged="txtYattTelefon_TextChanged"/>
             <Button x:Name="btnYaTTRahbar" Content="YaTT rahbari" BorderThickness="0" FontSize="17" Height="30" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE"/>
-            <Button x:Name="btnYattAdd" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0"/>
+            <Button x:Name="btnYattAdd" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0" Click="btnYattAdd_Click"/>
         </StackPanel>
             <!--Jismoniy shaxs-->
         <StackPanel x:Name="spJisCutomer" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
@@ -66,9 +70,9 @@
             <DatePicker x:Name="dateOfBirthPicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Tug'ilgan sana" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
             <DatePicker x:Name="dateOfIssuePicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Pasport berilgan sana" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
             <DatePicker x:Name="dateOfExpiryPicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Amal qilish muddati" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
-            <Button x:Name="btnJisAdd" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0 20 0 0"/>
+            <Button x:Name="btnJisAdd" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0 20 0 0" Click="btnJisAdd_Click"/>
         </StackPanel>
-        <!--qo'shimcha buttonlar-->
+            <!--qo'shimcha buttonlar-->
         <StackPanel x:Name="spJisNew" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
             <Border x:Name="brQidiruvJ" Background="#476072" CornerRadius="15" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="0 0 10 0" Height="30">
                 <TextBox x:Name="txtSearchJ" MaxLength="14" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="JSHSHIR"  md:HintAssist.Foreground="Snow"  Height="32" Width="310" VerticalAlignment="Center" Background="#476072" Foreground="#EEEEEE"/>

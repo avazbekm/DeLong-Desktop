@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using DeLong_Desktop.Windows.Customers;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using static MaterialDesignThemes.Wpf.Theme;
 
 namespace DeLong_Desktop.Pages.Customers;
 
@@ -20,7 +19,6 @@ public partial class CustomersPage : Page
     
     private readonly IServiceProvider services;
     public bool IsCreated { get; set; } = false;
-
     public CustomersPage(IServiceProvider services)
     {
         InitializeComponent();
@@ -55,10 +53,11 @@ public partial class CustomersPage : Page
                     Id = custom.Id,
                     FirmaName = custom.Name.ToUpper(),
                     Name = $"{existUser.LastName.ToUpper()} {existUser.FirstName.ToUpper()} {existUser.Patronomyc.ToUpper()}",
-                    Phone = existUser.Phone,
+                    Phone = custom.Phone,
                     TelegramPhone = existUser.TelegramPhone,
                     JSHSHIR = existUser.JSHSHIR,
-                    Adress = custom.YurAddress.ToUpper()
+                    Adress = custom.YurAddress.ToUpper(),
+                    YurJshshir = custom.JSHSHIR.ToUpper()
                 });
                 ids.Add(custom.UserId);
             }
@@ -115,12 +114,14 @@ public partial class CustomersPage : Page
                     var existUser = existUsers.FirstOrDefault(x => x.Id.Equals(custom.UserId));
                     items.Add(new Item()
                     {
+                        Id = custom.Id,
                         FirmaName = custom.Name.ToUpper(),
                         Name = $"{existUser.LastName.ToUpper()} {existUser.FirstName.ToUpper()} {existUser.Patronomyc.ToUpper()}",
-                        Phone = existUser.Phone,
+                        Phone = custom.Phone,
                         TelegramPhone = existUser.TelegramPhone,
                         JSHSHIR = existUser.JSHSHIR,
-                        Adress = custom.YurAddress.ToUpper()
+                        Adress = custom.YurAddress.ToUpper(),
+                        YurJshshir = custom.JSHSHIR.ToUpper(),
                     });
                     ids.Add(custom.UserId);
                 }
@@ -211,5 +212,53 @@ public partial class CustomersPage : Page
         {
             MessageBox.Show($"{selectedUser.FirmaName} o'chirmoqda! \n \tHA \t YO'Q");
         }
+    }
+
+    private async void Edit_Button_Click(object sender, RoutedEventArgs e)
+    {
+        CustomerEditWindow customerEditWindow = new CustomerEditWindow(services);
+        if (userDataGrid.SelectedItem is Item selectedUser)
+        { 
+            CustomerInfo.CustomerId = selectedUser.Id;
+            CustomerInfo.UserJshshir = selectedUser.JSHSHIR;
+            CustomerInfo.YurJshshir = selectedUser.YurJshshir;
+        }
+        
+        if (CustomerInfo.CustomerId > 0 && CustomerInfo.YurJshshir.Equals(""))
+        {
+            customerEditWindow.spYurYattJis.Visibility = Visibility.Hidden;
+            customerEditWindow.spYurCutomer.Visibility = Visibility.Visible;
+            customerEditWindow.spYattCutomer.Visibility = Visibility.Hidden;
+            customerEditWindow.spJisCutomer.Visibility = Visibility.Hidden;
+            customerEditWindow.spJisNew.Visibility = Visibility.Hidden;
+            customerEditWindow.spQaytish.Visibility = Visibility.Hidden;
+        }
+        else if (CustomerInfo.CustomerId > 0 && !CustomerInfo.YurJshshir.Equals(""))
+        {
+            customerEditWindow.spYurYattJis.Visibility = Visibility.Hidden;
+            customerEditWindow.spYurCutomer.Visibility = Visibility.Hidden;
+            customerEditWindow.spYattCutomer.Visibility = Visibility.Visible;
+            customerEditWindow.spJisCutomer.Visibility = Visibility.Hidden;
+            customerEditWindow.spJisNew.Visibility = Visibility.Hidden;
+            customerEditWindow.spQaytish.Visibility = Visibility.Hidden;
+
+            var existYaTT = await this.customerService.RetrieveByJshshirAsync(CustomerInfo.YurJshshir);
+            customerEditWindow.txtYattJSHSHIR.Text = existYaTT.JSHSHIR;
+            CustomerInfo.UserId = existYaTT.UserId;
+        }
+        else if (CustomerInfo.CustomerId == 0)
+        {
+            customerEditWindow.spYurYattJis.Visibility = Visibility.Hidden;
+            customerEditWindow.spYurCutomer.Visibility = Visibility.Hidden;
+            customerEditWindow.spYattCutomer.Visibility = Visibility.Hidden;
+            customerEditWindow.spJisCutomer.Visibility = Visibility.Visible;
+            customerEditWindow.spJisNew.Visibility = Visibility.Hidden;
+            customerEditWindow.spQaytish.Visibility = Visibility.Hidden;
+
+            var existUser = await this.userService.RetrieveByJSHSHIRAsync(CustomerInfo.UserJshshir);
+            customerEditWindow.txtJisJSHSHIR.Text = existUser.JSHSHIR;
+        }
+
+        customerEditWindow.ShowDialog();
     }
 }

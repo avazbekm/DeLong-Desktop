@@ -9,4 +9,5 @@ class Item
     public string TelegramPhone {  get; set; } = string.Empty;
     public string JSHSHIR { get; set; } = string.Empty;
     public string Adress {  get; set; } = string.Empty;
+    public string YurJshshir {  get; set; } = string.Empty;
 }

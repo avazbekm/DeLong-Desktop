@@ -38,7 +38,4 @@ class CustomerUpdateDto
     // firma rahbari malumotlari
     [JsonPropertyName("userId")]
     public long UserId { get; set; }
-
-    [JsonPropertyName("user")]
-    public UserResultDto User { get; set; }
 }
