@@ -242,10 +242,10 @@ public partial class CustomersPage : Page
                 // Foydalanuvchi "Yes" tugmasini bossagina o'chirish
                 if (result == MessageBoxResult.Yes)
                 {
-                    var existUser = await this.customerService.RemoveAsync(selectedUser.UserId);
+                    var existUser = await this.userService.RemoveAsync(selectedUser.UserId);
                     if (existUser.Equals(true))
                         // O'chirish kodi bu yerga qo'shiladi
-                        MessageBox.Show($"{selectedUser.FirmaName} o'chirildi!", "Ma'lumot", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show($"{selectedUser.Name} o'chirildi!", "Ma'lumot", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
         }
