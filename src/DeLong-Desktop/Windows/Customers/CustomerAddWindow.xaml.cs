@@ -152,8 +152,8 @@ public partial class CustomerAddWindow : Window
             MessageBox.Show("Xisob raqamni to'liq kiriting iltimos.");
             return;
         }
-
         customerCreationDto.BankAccount = RemoveDashes(txtYurXisobRaqam.Text);
+        customerCreationDto.Phone = txtYurPhone.Text;
         customerCreationDto.BankName = txtYurBank.Text.ToLower();
         customerCreationDto.OKONX = txtYurOKONX.Text;
         customerCreationDto.YurAddress = txtYurFirmaAdres.Text.ToLower();
@@ -168,6 +168,7 @@ public partial class CustomerAddWindow : Window
 
         if (customerCreationDto.Name.Equals("") ||
            customerCreationDto.INN.Equals("") ||
+           customerCreationDto.Phone.Equals("") ||
            customerCreationDto.MFO.Equals("") ||
            customerCreationDto.BankName.Equals("") ||
            customerCreationDto.OKONX.Equals("") ||
@@ -186,7 +187,6 @@ public partial class CustomerAddWindow : Window
             else
                 MessageBox.Show($"{"Saqlashda xatolik"}");
         }
-
     }
     private void btnRahbar_Click(object sender, RoutedEventArgs e)
     {
@@ -301,8 +301,6 @@ public partial class CustomerAddWindow : Window
         customerCreationDto.BankName = txtYattBank.Text.ToLower();
         customerCreationDto.YurAddress = txtYattFirmaAdres.Text.ToLower();
         customerCreationDto.Phone = txtYattTelefon.Text;
-        
-
 
         if (userJshshir.Equals(""))
         {

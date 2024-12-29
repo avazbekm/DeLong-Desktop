@@ -189,9 +189,6 @@ public partial class CustomerEditWindow : Window
                 txtYurBank.Text = existCustomer.BankName.ToUpper();
                 txtYurOKONX.Text = existCustomer.OKONX;
                 txtYurFirmaAdres.Text = existCustomer.YurAddress.ToUpper();
-
-                btnYurAdd.Visibility = Visibility.Hidden;
-                MessageBox.Show($"INN:{txtYurINN.Text} mijoz mavjud. Qayta ro'yxatdan o'tkazish shart emas. ");
             }
         }
     }
@@ -409,11 +406,29 @@ public partial class CustomerEditWindow : Window
             }
         }
     }
+    private void txtSearchJ_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var textBox = sender as TextBox;
+
+        if (textBox != null)
+        {
+            // Faqat raqamlarni qoldirish
+            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
+
+            // Eski noto'g'ri matnni to'g'rilash
+            if (textBox.Text != numericText)
+            {
+                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
+                textBox.Text = numericText;
+                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
+            }
+        }
+    }
 
     // buttonlar
     private void btnRahbar_Click(object sender, RoutedEventArgs e)
     {
-        spYurYattJis.Visibility = Visibility.Hidden;
+        //spYurYattJis.Visibility = Visibility.Hidden;
         spYurCutomer.Visibility = Visibility.Hidden;
         spJisCutomer.Visibility = Visibility.Hidden;
         spYattCutomer.Visibility = Visibility.Hidden;
@@ -430,7 +445,6 @@ public partial class CustomerEditWindow : Window
     {
         if (CustomerInfo.CustomerId > 0 && CustomerInfo.YurJshshir.Equals(""))
         {
-            spYurYattJis.Visibility = Visibility.Hidden;
             spYurCutomer.Visibility = Visibility.Visible;
             spYattCutomer.Visibility = Visibility.Hidden;
             spJisCutomer.Visibility = Visibility.Hidden;
@@ -439,7 +453,6 @@ public partial class CustomerEditWindow : Window
         }
         else if (CustomerInfo.CustomerId > 0 && !CustomerInfo.YurJshshir.Equals(""))
         {
-            spYurYattJis.Visibility = Visibility.Hidden;
             spYurCutomer.Visibility = Visibility.Hidden;
             spYattCutomer.Visibility = Visibility.Visible;
             spJisCutomer.Visibility = Visibility.Hidden;
@@ -450,16 +463,17 @@ public partial class CustomerEditWindow : Window
 
     private async void btnJisAdd_Click(object sender, RoutedEventArgs e)
     {
-        UserCreationDto userCreationDto = new UserCreationDto();
+        UserUpdateDto userUpdateDto = new UserUpdateDto();
 
-        userCreationDto.LastName = txtFamiliya.Text.ToLower();
-        userCreationDto.FirstName = txtIsmi.Text.ToLower();
-        userCreationDto.Patronomyc = txtSharifi.Text.ToLower();
-        userCreationDto.SeriaPasport = txtPasportSeria.Text.ToLower();
-        userCreationDto.Address = txtJisAdres.Text.ToLower();
-        userCreationDto.Phone = txtJisTelefon.Text;
-        userCreationDto.TelegramPhone = txtJisTelegramRaqam.Text;
-        userCreationDto.JSHSHIR = txtJisJSHSHIR.Text;
+        userUpdateDto.Id = CustomerInfo.UserId;
+        userUpdateDto.LastName = txtFamiliya.Text.ToLower();
+        userUpdateDto.FirstName = txtIsmi.Text.ToLower();
+        userUpdateDto.Patronomyc = txtSharifi.Text.ToLower();
+        userUpdateDto.SeriaPasport = txtPasportSeria.Text.ToLower();
+        userUpdateDto.Address = txtJisAdres.Text.ToLower();
+        userUpdateDto.Phone = txtJisTelefon.Text;
+        userUpdateDto.TelegramPhone = txtJisTelegramRaqam.Text;
+        userUpdateDto.JSHSHIR = txtJisJSHSHIR.Text;
         userJshshir = txtJisJSHSHIR.Text;
 
 
@@ -468,7 +482,7 @@ public partial class CustomerEditWindow : Window
             MessageBox.Show("Tug'ulgan sanani kiriting iltimos.");
             return;
         }
-        userCreationDto.DateOfBirth = dateOfBirthPicker.SelectedDate.Value.ToUniversalTime();
+        userUpdateDto.DateOfBirth = dateOfBirthPicker.SelectedDate.Value.ToUniversalTime();
 
         if (!dateOfIssuePicker.SelectedDate.HasValue)
         {
@@ -476,31 +490,31 @@ public partial class CustomerEditWindow : Window
             return;
         }
 
-        userCreationDto.DateOfIssue = dateOfIssuePicker.SelectedDate.Value.ToUniversalTime();
+        userUpdateDto.DateOfIssue = dateOfIssuePicker.SelectedDate.Value.ToUniversalTime();
         if (!dateOfExpiryPicker.SelectedDate.HasValue)
         {
             MessageBox.Show("Pasportni amal qilish sanani kiriting iltimos.");
             return;
         }
-        userCreationDto.DateOfExpiry = dateOfExpiryPicker.SelectedDate.Value.ToUniversalTime();
+        userUpdateDto.DateOfExpiry = dateOfExpiryPicker.SelectedDate.Value.ToUniversalTime();
         if (gender.Equals("Erkak"))
-            userCreationDto.Gender = (Gender)0;
+            userUpdateDto.Gender = (Gender)0;
         else if (gender.Equals("Ayol"))
-            userCreationDto.Gender = (Gender)1;
+            userUpdateDto.Gender = (Gender)1;
 
 
-        if (userCreationDto.FirstName.Equals("") ||
-            userCreationDto.LastName.Equals("") ||
-            userCreationDto.SeriaPasport.Equals("") ||
-            userCreationDto.Address.Equals("") ||
-            userCreationDto.JSHSHIR.Equals("") ||
-            userCreationDto.TelegramPhone.Equals("") ||
-            userCreationDto.Phone.Equals(""))
+        if (userUpdateDto.FirstName.Equals("") ||
+            userUpdateDto.LastName.Equals("") ||
+            userUpdateDto.SeriaPasport.Equals("") ||
+            userUpdateDto.Address.Equals("") ||
+            userUpdateDto.JSHSHIR.Equals("") ||
+            userUpdateDto.TelegramPhone.Equals("") ||
+            userUpdateDto.Phone.Equals(""))
 
             MessageBox.Show("Malumotni to'liq kiriting!");
         else
         {
-            var result = this.userService.AddAsync(userCreationDto);
+            var result = this.userService.ModifyAsync(userUpdateDto);
 
             if (!result.IsCompletedSuccessfully)
             {
@@ -558,6 +572,105 @@ public partial class CustomerEditWindow : Window
         {
             var result = customerService.ModifyAsync(customerUpdateDto);
              
+            if (!result.IsCompletedSuccessfully)
+            {
+                MessageBox.Show($" Saqlandi.");
+                IsCreated = true;
+            }
+            else
+                MessageBox.Show($"{"Saqlashda xatolik"}");
+        }
+    }
+
+    private void btnYaTTRahbar_Click(object sender, RoutedEventArgs e)
+    {
+        spYurCutomer.Visibility = Visibility.Hidden;
+        spYattCutomer.Visibility = Visibility.Hidden;
+        spJisCutomer.Visibility = Visibility.Hidden;
+        spJisNew.Visibility = Visibility.Visible;
+        spQaytish.Visibility = Visibility.Visible;
+    }
+
+    private async void btnSearch_Click(object sender, RoutedEventArgs e)
+    {
+
+        var existUser = await this.userService.RetrieveByJSHSHIRAsync(txtSearchJ.Text);
+
+        if (existUser is not null)
+        {
+            btnExistClient.Visibility = Visibility.Visible;
+            userJshshir = existUser.JSHSHIR;
+        }
+        else
+            MessageBox.Show($"{txtSearchJ.Text} Jshshirli hamkor mavjud emas.");
+    }
+
+    private void btnExistClient_Click(object sender, RoutedEventArgs e)
+    {
+        if (CustomerInfo.CustomerId > 0 && CustomerInfo.YurJshshir.Equals(""))
+        {
+            spYurCutomer.Visibility = Visibility.Visible;
+            spYattCutomer.Visibility = Visibility.Hidden;
+            spJisCutomer.Visibility = Visibility.Hidden;
+            spJisNew.Visibility = Visibility.Hidden;
+            spQaytish.Visibility = Visibility.Hidden;
+        }
+        else if (CustomerInfo.CustomerId > 0 && !CustomerInfo.YurJshshir.Equals(""))
+        {
+            spYurCutomer.Visibility = Visibility.Hidden;
+            spYattCutomer.Visibility = Visibility.Visible;
+            spJisCutomer.Visibility = Visibility.Hidden;
+            spJisNew.Visibility = Visibility.Hidden;
+            spQaytish.Visibility = Visibility.Hidden;
+        }
+    }
+
+    private async void btnYurAdd_Click(object sender, RoutedEventArgs e)
+    {
+        CustomerUpdateDto customerUpdateDto = new CustomerUpdateDto();
+
+        customerUpdateDto.Id = CustomerInfo.CustomerId;
+        customerUpdateDto.Name = txtYurNomi.Text.ToLower();
+        if (txtYurINN.Text.Length != 9)
+        {
+            MessageBox.Show("INN kiriting iltimos.");
+            return;
+        }
+        customerUpdateDto.INN = int.Parse(txtYurINN.Text);
+        customerUpdateDto.MFO = txtYurMFO.Text;
+
+        if (txtYurXisobRaqam.Text.Length != 23)
+        {
+            MessageBox.Show("Xisob raqamni to'liq kiriting iltimos."); 
+            return;
+        }
+        customerUpdateDto.Phone = txtYurPhone.Text;
+        customerUpdateDto.BankAccount = RemoveDashes(txtYurXisobRaqam.Text);
+        customerUpdateDto.BankName = txtYurBank.Text.ToLower();
+        customerUpdateDto.OKONX = txtYurOKONX.Text;
+        customerUpdateDto.YurAddress = txtYurFirmaAdres.Text.ToLower();
+
+        if (!userJshshir.Equals(""))
+        {
+            var user = await userService.RetrieveByJSHSHIRAsync(userJshshir);
+            customerUpdateDto.UserId = user.Id;
+        }
+        else
+            customerUpdateDto.UserId = CustomerInfo.UserId;
+
+        if (customerUpdateDto.Name.Equals("") || 
+           customerUpdateDto.INN.Equals("") ||
+           customerUpdateDto.Phone.Equals("") ||
+           customerUpdateDto.MFO.Equals("") ||
+           customerUpdateDto.BankName.Equals("") ||
+           customerUpdateDto.OKONX.Equals("") ||
+           customerUpdateDto.YurAddress.Equals(""))
+
+            MessageBox.Show("Ma'lumotni to'liq kiriting!");
+        else
+        {
+            var result = this.customerService.ModifyAsync(customerUpdateDto);
+
             if (!result.IsCompletedSuccessfully)
             {
                 MessageBox.Show($" Saqlandi.");

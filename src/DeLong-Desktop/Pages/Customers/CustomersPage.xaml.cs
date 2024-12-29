@@ -57,7 +57,7 @@ public partial class CustomersPage : Page
                     TelegramPhone = existUser.TelegramPhone,
                     JSHSHIR = existUser.JSHSHIR,
                     Adress = custom.YurAddress.ToUpper(),
-                    YurJshshir = custom.JSHSHIR.ToUpper()
+                    YurJshshir = custom.JSHSHIR.ToUpper(),
                 });
                 ids.Add(custom.UserId);
             }
@@ -75,7 +75,8 @@ public partial class CustomersPage : Page
                         Phone = user.Phone,
                         TelegramPhone = user.TelegramPhone,
                         JSHSHIR = user.JSHSHIR,
-                        Adress = user.Address.ToUpper()
+                        Adress = user.Address.ToUpper(),
+                        UserId = user.Id
                     });
                 }
             }
@@ -133,21 +134,22 @@ public partial class CustomersPage : Page
             {
                 if (!ids.Contains(user.Id))
                 {
-                    if(user.LastName.Contains(txtSearch.Text)||
-                        user.FirstName.Contains(txtSearch.Text)||
-                        user.JSHSHIR.Contains(txtSearch.Text)||
-                        user.Phone.Contains(txtSearch.Text)||
+                    if (user.LastName.Contains(txtSearch.Text) ||
+                        user.FirstName.Contains(txtSearch.Text) ||
+                        user.JSHSHIR.Contains(txtSearch.Text) ||
+                        user.Phone.Contains(txtSearch.Text) ||
                         user.TelegramPhone.Contains(txtSearch.Text))
 
-                    items.Add(new Item()
-                    {
-                        FirmaName = "-",
-                        Name = $"{user.LastName.ToUpper()} {user.FirstName.ToUpper()}",
-                        Phone = user.Phone,
-                        TelegramPhone = user.TelegramPhone,
-                        JSHSHIR = user.JSHSHIR,
-                        Adress = user.Address.ToUpper()
-                    });
+                        items.Add(new Item()
+                        {
+                            FirmaName = "-",
+                            Name = $"{user.LastName.ToUpper()} {user.FirstName.ToUpper()}",
+                            Phone = user.Phone,
+                            TelegramPhone = user.TelegramPhone,
+                            JSHSHIR = user.JSHSHIR,
+                            Adress = user.Address.ToUpper(),
+                            UserId = user.Id
+                        });
                 }
             }
         }
@@ -206,11 +208,46 @@ public partial class CustomersPage : Page
         }
     }
 
-    private void Delete_Button_Click(object sender, RoutedEventArgs e)
+    private async void Delete_Button_Click(object sender, RoutedEventArgs e)
     {
         if (userDataGrid.SelectedItem is Item selectedUser)
         {
-            MessageBox.Show($"{selectedUser.FirmaName} o'chirmoqda! \n \tHA \t YO'Q");
+            if (!selectedUser.FirmaName.Equals("-"))
+            {
+                // Tasdiqlash uchun MessageBox ko'rsatish
+                var result = MessageBox.Show(
+                    $"{selectedUser.FirmaName} o'chirmoqchimisiz?", // Xabar matni
+                    "Tasdiqlash",                                  // Oyna sarlavhasi
+                    MessageBoxButton.YesNo,                       // HA/YO'Q tugmalari
+                    MessageBoxImage.Question);                    // Savol belgisi bilan tasvir
+
+                // Foydalanuvchi "Yes" tugmasini bossagina o'chirish
+                if (result == MessageBoxResult.Yes)
+                {
+                    var existCustomer = await this.customerService.RemoveAsync(selectedUser.Id);
+                    if (existCustomer.Equals(true))
+                        // O'chirish kodi bu yerga qo'shiladi
+                        MessageBox.Show($"{selectedUser.FirmaName} o'chirildi!", "Ma'lumot", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            else 
+            {
+                // Tasdiqlash uchun MessageBox ko'rsatish
+                var result = MessageBox.Show(
+                    $"{selectedUser.Name} o'chirmoqchimisiz?", // Xabar matni
+                    "Tasdiqlash",                                  // Oyna sarlavhasi
+                    MessageBoxButton.YesNo,                       // HA/YO'Q tugmalari
+                    MessageBoxImage.Question);                    // Savol belgisi bilan tasvir
+
+                // Foydalanuvchi "Yes" tugmasini bossagina o'chirish
+                if (result == MessageBoxResult.Yes)
+                {
+                    var existUser = await this.customerService.RemoveAsync(selectedUser.UserId);
+                    if (existUser.Equals(true))
+                        // O'chirish kodi bu yerga qo'shiladi
+                        MessageBox.Show($"{selectedUser.FirmaName} o'chirildi!", "Ma'lumot", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
         }
     }
 
@@ -226,16 +263,18 @@ public partial class CustomersPage : Page
         
         if (CustomerInfo.CustomerId > 0 && CustomerInfo.YurJshshir.Equals(""))
         {
-            customerEditWindow.spYurYattJis.Visibility = Visibility.Hidden;
             customerEditWindow.spYurCutomer.Visibility = Visibility.Visible;
             customerEditWindow.spYattCutomer.Visibility = Visibility.Hidden;
             customerEditWindow.spJisCutomer.Visibility = Visibility.Hidden;
             customerEditWindow.spJisNew.Visibility = Visibility.Hidden;
             customerEditWindow.spQaytish.Visibility = Visibility.Hidden;
+
+            var existCustomer = await this.customerService.RetrieveByIdAsync(CustomerInfo.CustomerId);
+            CustomerInfo.UserId = existCustomer.UserId;
+            customerEditWindow.txtYurINN.Text = existCustomer.INN.ToString();
         }
         else if (CustomerInfo.CustomerId > 0 && !CustomerInfo.YurJshshir.Equals(""))
         {
-            customerEditWindow.spYurYattJis.Visibility = Visibility.Hidden;
             customerEditWindow.spYurCutomer.Visibility = Visibility.Hidden;
             customerEditWindow.spYattCutomer.Visibility = Visibility.Visible;
             customerEditWindow.spJisCutomer.Visibility = Visibility.Hidden;
@@ -248,7 +287,6 @@ public partial class CustomersPage : Page
         }
         else if (CustomerInfo.CustomerId == 0)
         {
-            customerEditWindow.spYurYattJis.Visibility = Visibility.Hidden;
             customerEditWindow.spYurCutomer.Visibility = Visibility.Hidden;
             customerEditWindow.spYattCutomer.Visibility = Visibility.Hidden;
             customerEditWindow.spJisCutomer.Visibility = Visibility.Visible;
@@ -256,6 +294,7 @@ public partial class CustomersPage : Page
             customerEditWindow.spQaytish.Visibility = Visibility.Hidden;
 
             var existUser = await this.userService.RetrieveByJSHSHIRAsync(CustomerInfo.UserJshshir);
+            CustomerInfo.UserId = existUser.Id;
             customerEditWindow.txtJisJSHSHIR.Text = existUser.JSHSHIR;
         }
 
