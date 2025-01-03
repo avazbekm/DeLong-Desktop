@@ -5,8 +5,8 @@ namespace DeLong_Desktop.ApiService.Interfaces;
 
 interface IProductService
 {
-    ValueTask<ProductResultDto> AddAsync(ProductCreationDto dto);
-    ValueTask<ProductResultDto> ModifyAsync(ProductUpdateDto dto);
+    ValueTask<bool> AddAsync(ProductCreationDto dto);
+    ValueTask<bool> ModifyAsync(ProductUpdateDto dto);
     ValueTask<bool> RemoveAsync(long id);
     ValueTask<ProductResultDto> RetrieveByIdAsync(long id);
     ValueTask<IEnumerable<ProductResultDto>> RetrieveAllAsync(PaginationParams @params, Filter filter, string search = null);
