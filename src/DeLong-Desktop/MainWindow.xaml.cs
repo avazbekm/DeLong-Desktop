@@ -1,5 +1,6 @@
-﻿using DeLong_Desktop.Pages.Customers;
-using System.Windows;
+﻿using System.Windows;
+using DeLong_Desktop.Pages.Products;
+using DeLong_Desktop.Pages.Customers;
 
 namespace DeLong_Desktop;
 
@@ -24,5 +25,10 @@ public partial class MainWindow : Window
     private void btnChiqish_Click(object sender, RoutedEventArgs e)
     {
         this.Close();
+    }
+
+    private void btnMaxsulot_Click(object sender, RoutedEventArgs e)
+    {
+        Navigator.Navigate(new ProductsPage(services));
     }
 }

@@ -14,37 +14,31 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
+        <!--qidiruv category add qismlari-->
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Margin="10">
-            <Border x:Name="brQidiruv"
-                Background="#476072"
-                CornerRadius="10"
-                Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}"
-                Margin="0 0 10 0"
-                    Width="220"
-                Height="30">
-
-                <TextBox x:Name="txtSearch" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="Qidiruv" Style="{DynamicResource MaterialDesignFilledTextBox}" md:HintAssist.Foreground="Snow" md:HintAssist.IsFloating="True" Width="200" Height="32"  Background="#476072" Foreground="#EEEEEE" TextChanged="txtSearch_TextChanged"/>
+            <Border x:Name="brQidiruv" Background="#476072" CornerRadius="10" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="0 0 10 0" Width="220" Height="30">
+                <TextBox x:Name="txtSearch" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="Qidiruv" Style="{DynamicResource MaterialDesignFilledTextBox}" md:HintAssist.Foreground="Snow" md:HintAssist.IsFloating="True" Width="200" Height="32"  Background="#476072" Foreground="#EEEEEE"/>
             </Border>
-            <ComboBox x:Name="cmbCategory"
-              Width="150"
-              Height="30"
-              VerticalAlignment="Center"
-              Margin="0 0 10 0"
-              Padding="10,0"
-              Background="#476072"
-              Foreground="#EEEEEE"
-              BorderBrush="Transparent"
-              md:HintAssist.Hint="Category"
-              md:HintAssist.Foreground="Snow"
-              md:TextFieldAssist.TextFieldCornerRadius="10">
+            <ComboBox x:Name="cmbCategory" Width="150" Height="30" VerticalAlignment="Center" Margin="0 0 10 0" Padding="10 0" Background="#476072" Foreground="#EEEEEE" BorderBrush="Transparent" md:HintAssist.Hint="Category" md:HintAssist.Foreground="Snow" md:TextFieldAssist.TextFieldCornerRadius="10" DisplayMemberPath="Name" SelectedValuePath="Id"  SelectionChanged="cmbCategory_SelectionChanged">
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem">
+                        <Setter Property="Background" Value="Gray"/>
+                        <Setter Property="Foreground" Value="Snow"/>
+                        <Setter Property="FontWeight" Value="Normal"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="DarkGray"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.ItemContainerStyle>
             </ComboBox>
-
             <Button x:Name="btnAdd" Content="Add" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Width="80" Height="30" VerticalAlignment="Center" Margin="0 0 10 0" Background="#476072" Foreground="#EEEEEE" Click="btnAdd_Click"/>
-            <Button x:Name="btnExcel" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Content="Excelga o'tkazish" Width="140" Height="30" VerticalAlignment="Center" Background="#476072" Foreground="#EEEEEE" Click="btnExcel_Click"/>
+            <Button x:Name="btnExcel" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Content="Excelga o'tkazish" Width="140" Height="30" VerticalAlignment="Center" Background="#476072" Foreground="#EEEEEE"/>
         </StackPanel>
 
-        <DataGrid x:Name="userDataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="#548CA8" Foreground="Black">
+        <DataGrid x:Name="dataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="#548CA8" Foreground="Black">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Product Name" Binding="{Binding Name}" Width="*"/>
                 <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>

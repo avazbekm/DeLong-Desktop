@@ -38,7 +38,7 @@
                         Foreground="Snow"
                         Style="{DynamicResource MaterialDesignPaperLightButton}"
                         Background="#476072"
-                        md:ButtonAssist.CornerRadius="17"/>
+                        md:ButtonAssist.CornerRadius="17" Click="btnMaxsulot_Click"/>
 
                 <Button x:Name="btnOmbor"
                         Height="45"
@@ -149,7 +149,7 @@
         </Grid>
 
         <Grid Grid.Column="1" Background="#548CA8">
-            <Frame x:Name="Navigator" Margin="20,20,20,20" NavigationUIVisibility="Hidden"/>
+            <Frame x:Name="Navigator" Margin="20 20 20 20" NavigationUIVisibility="Hidden"/>
         </Grid>
     </Grid>
 </Window>

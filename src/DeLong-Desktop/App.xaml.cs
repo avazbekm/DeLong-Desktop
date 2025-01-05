@@ -19,9 +19,10 @@ public partial class App : Application
         // Services
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ICustomerService, CustomerService>();
-        //services.AddScoped<ICardService, CardService>();
-        //services.AddScoped<IBlockService, BlockService>();
-        ////services.AddScoped<IAssetService, AssetService>();
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IPriceService, PriceService>();
+        services.AddScoped<IProductService, ProductService>();
+        //services.AddScoped<IAssetService, AssetService>();
 
 
 
