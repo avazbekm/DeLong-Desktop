@@ -17,7 +17,7 @@
         <!--qidiruv category add qismlari-->
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Margin="10">
             <Border x:Name="brQidiruv" Background="#476072" CornerRadius="10" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="0 0 10 0" Width="220" Height="30">
-                <TextBox x:Name="txtSearch" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="Qidiruv" Style="{DynamicResource MaterialDesignFilledTextBox}" md:HintAssist.Foreground="Snow" md:HintAssist.IsFloating="True" Width="200" Height="32"  Background="#476072" Foreground="#EEEEEE"/>
+                <TextBox x:Name="txtSearch" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="Qidiruv" Style="{DynamicResource MaterialDesignFilledTextBox}" md:HintAssist.Foreground="Snow" md:HintAssist.IsFloating="True" Width="200" Height="32"  Background="#476072" Foreground="#EEEEEE" TextChanged="txtSearch_TextChanged" Margin="10,0,10,0" VerticalAlignment="Top"/>
             </Border>
             <ComboBox x:Name="cmbCategory" Width="150" Height="30" VerticalAlignment="Center" Margin="0 0 10 0" Padding="10 0" Background="#476072" Foreground="#EEEEEE" BorderBrush="Transparent" md:HintAssist.Hint="Category" md:HintAssist.Foreground="Snow" md:TextFieldAssist.TextFieldCornerRadius="10" DisplayMemberPath="Name" SelectedValuePath="Id"  SelectionChanged="cmbCategory_SelectionChanged">
                 <ComboBox.ItemContainerStyle>
@@ -42,15 +42,13 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Product Name" Binding="{Binding Name}" Width="*"/>
                 <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
-                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="*"/>
-                <DataGridTextColumn Header="Unit Of Mesure" Binding="{Binding UnitOfMesure}" Width="*"/>
-                <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="*"/>
+                <DataGridTextColumn Header="Kategoriya" Binding="{Binding Category}" Width="*"/>
                 <DataGridTextColumn Header="IsActive" Binding="{Binding IsActive}" Width="*"/>
                 <DataGridTemplateColumn Header="Actions" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button x:Name="Edit_Button" Content="✍🏻" ToolTip="Edit" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="Black"  Padding="0" Width="28" Height="28" Background="LightBlue" />
+                                <Button x:Name="Edit_Button" Content="✍🏻" ToolTip="Edit" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="Black"  Padding="0" Width="28" Height="28" Background="LightBlue" Click="Edit_Button_Click"/>
                                 <Button x:Name="Delete_Button" Content="🗑️" ToolTip="Delete" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="Black" Padding="0" Width="28" Height="28" Background="LightBlue" Margin="10 0 0 0"/>
                             </StackPanel>
                         </DataTemplate>

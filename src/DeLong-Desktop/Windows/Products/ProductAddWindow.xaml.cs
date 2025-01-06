@@ -1,9 +1,9 @@
 ﻿using System.Windows;
+using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.ApiService.Interfaces;
 using DeLong_Desktop.ApiService.DTOs.Category;
-using Microsoft.Extensions.DependencyInjection;
-using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.ApiService.DTOs.Products;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Windows.Products;
 
@@ -31,7 +31,6 @@ public partial class ProductAddWindow : Window
         spProduct.Visibility = Visibility.Visible;
         spQaytish.Visibility = Visibility.Collapsed;
         spCategoryPanel.Visibility = Visibility.Collapsed;
-        spPrice.Visibility = Visibility.Collapsed;
         spJisNew.Visibility = Visibility.Collapsed;
         grProductShow.Visibility = Visibility.Visible;
         grCategoryShow.Visibility = Visibility.Collapsed;
@@ -61,7 +60,6 @@ public partial class ProductAddWindow : Window
         spProduct.Visibility = Visibility.Collapsed;
         spQaytish.Visibility = Visibility.Collapsed;
         spCategoryPanel.Visibility = Visibility.Visible;
-        spPrice.Visibility = Visibility.Collapsed;
         spJisNew.Visibility = Visibility.Collapsed;
         grCategoryShow.Visibility = Visibility.Visible;
         grProductShow.Visibility = Visibility.Collapsed;
@@ -78,7 +76,7 @@ public partial class ProductAddWindow : Window
                 {
                     Id = category.Id,
                     TartibRaqam = ++Number,
-                    Name = category.Name
+                    Name = category.Name.ToUpper(),
                 });
             }
         }
@@ -90,7 +88,6 @@ public partial class ProductAddWindow : Window
         spProduct.Visibility = Visibility.Collapsed;
         spQaytish.Visibility = Visibility.Collapsed;
         spCategoryPanel.Visibility = Visibility.Collapsed;
-        spPrice.Visibility = Visibility.Visible;
         spJisNew.Visibility = Visibility.Collapsed;
     }
 
@@ -99,7 +96,6 @@ public partial class ProductAddWindow : Window
         spProduct.Visibility = Visibility.Collapsed;
         spQaytish.Visibility = Visibility.Collapsed;
         spCategoryPanel.Visibility = Visibility.Visible;
-        spPrice.Visibility = Visibility.Collapsed;
         spJisNew.Visibility = Visibility.Collapsed;
         spQaytish.Visibility = Visibility.Visible;
         spCategory.Visibility = Visibility.Collapsed;
@@ -117,7 +113,7 @@ public partial class ProductAddWindow : Window
                 {
                     Id = category.Id,
                     TartibRaqam = ++Number,
-                    Name = category.Name
+                    Name = category.Name.ToUpper(),
                 });
             }
         }
@@ -129,7 +125,6 @@ public partial class ProductAddWindow : Window
         spProduct.Visibility = Visibility.Visible;
         spQaytish.Visibility = Visibility.Collapsed;
         spCategoryPanel.Visibility = Visibility.Collapsed;
-        spPrice.Visibility = Visibility.Collapsed;
         spJisNew.Visibility = Visibility.Collapsed;
         spCategory.Visibility = Visibility.Visible;
         grCategoryShow.Visibility = Visibility.Collapsed;
@@ -170,6 +165,13 @@ public partial class ProductAddWindow : Window
         string searchText = txtbCategoryName.Text.Trim();
         FilterCategories(searchText);
     }
+
+    private void txtbName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    {
+        string searchText = txtbName.Text.Trim();
+        FilterProducts(searchText);
+    }
+    
     private async void FilterCategories(string searchText)
     {
         List<Item> items = new List<Item>();
@@ -191,12 +193,6 @@ public partial class ProductAddWindow : Window
             }
             categoryDataGrid.ItemsSource = items;
         }
-    }
-
-    private async void txtbName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-    {
-        string searchText = txtbName.Text.Trim();
-        FilterProducts(searchText);
     }
 
     private async void FilterProducts(string searchText)
@@ -225,13 +221,17 @@ public partial class ProductAddWindow : Window
 
     private void Edit_Button_Click(object sender, RoutedEventArgs e)
     {
+        
+        if (rbtnCategory.IsChecked.HasValue.Equals(true) && spQaytish.Visibility != Visibility.Visible )
+        {
+            return;
+        }
         if (categoryDataGrid.SelectedItem is Item selectedUser)
             CustomerInfo.CategoryId = selectedUser.Id;
 
         spProduct.Visibility = Visibility.Visible;
         spQaytish.Visibility = Visibility.Collapsed;
         spCategoryPanel.Visibility = Visibility.Collapsed;
-        spPrice.Visibility = Visibility.Collapsed;
         spJisNew.Visibility = Visibility.Collapsed;
         spCategory.Visibility = Visibility.Visible;
         grCategoryShow.Visibility = Visibility.Collapsed;

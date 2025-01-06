@@ -64,8 +64,7 @@ public partial class ProductsPage : Page
         if (cmbCategory.SelectedValue is long selectedCategoryId)
         {
             // dataGrid.ItemSource ni tozalaymiz.
-            dataGrid.ItemsSource = null;
-            
+            dataGrid.ItemsSource = string.Empty;
             // Bu yerda tanlangan kategoriya bo'yicha mahsulotlarni filtrlashni qo'shishingiz mumkin
             LoadData(selectedCategoryId);
         }
@@ -80,35 +79,28 @@ public partial class ProductsPage : Page
         List<Item> items = new List<Item>();
 
         // Narxlarni olish
-        var prices = await priceService.RetrieveAllAsync();
+        var categories = await categoryService.RetrieveAllAsync();
 
         // Mahsulotlarni olish
         var products = await productService.RetrieveAllAsync();
 
         // Agar mahsulotlar mavjud bo'lsa, ularni ro'yxatga qo'shish
-        if (products is not null && prices is not null)
+        if (products is not null)
         {
             foreach (var product in products)
             {
-                // Tanlangan kategoriya bo'yicha mahsulotlarni filtrlaymiz
-                if (product.CategoryId.Equals(categoryId))
+                if (product.CategoryId == categoryId) 
                 {
-                    // Shu mahsulotga tegishli barcha narxlarni topamiz
-                    var productPrices = prices.Where(p => p.ProductId.Equals(product.Id));
-
-                    foreach (var price in productPrices)
+                    var category = categories.FirstOrDefault(p => p.Id.Equals(categoryId));
+                    items.Add(new Item()
                     {
-                        items.Add(new Item()
-                        {
-                            Id = product.Id,
-                            Name = product.Name.ToUpper(),
-                            Description = product.Description.ToUpper(),
-                            Quantity = price.Quantity,
-                            UnitOfMesure = price.UnitOfMeasure,
-                            Price = price.SellingPrice,
-                            IsActive = product.IsActive
-                        });
-                    }
+                        Id = product.Id,
+                        Name = product.Name.ToUpper(),
+                        Description = product.Description.ToUpper(),
+                        Category = category.Name.ToUpper(),
+                        IsActive = product.IsActive,
+                        CategoryId = category.Id
+                    });
                 }
             }
         }
@@ -120,38 +112,32 @@ public partial class ProductsPage : Page
     private async void LoadData()
     {
         // dataGrid.ItemSource ni tozalaymiz.
-        dataGrid.ItemsSource = null;
+        dataGrid.ItemsSource = string.Empty;
 
         // Mahsulotlar ro'yxati
         List<Item> items = new List<Item>();
 
-        // Narxlarni olish
-        var prices = await priceService.RetrieveAllAsync();
+        // kategoriyalar olish
+        var categories  = await categoryService.RetrieveAllAsync();
 
         // Mahsulotlarni olish
         var products = await productService.RetrieveAllAsync();
 
         // Agar mahsulotlar mavjud bo'lsa, ularni ro'yxatga qo'shish
-        if (products is not null && prices is not null)
+        if (products is not null)
         {
             foreach (var product in products)
             {
-                // Shu mahsulotga tegishli barcha narxlarni topamiz
-                var productPrices = prices.Where(p => p.ProductId.Equals(product.Id));
-
-                foreach (var price in productPrices)
+                var category = categories.FirstOrDefault(c => c.Id.Equals(product.CategoryId));
+                items.Add(new Item()
                 {
-                    items.Add(new Item()
-                    {
-                        Id = product.Id,
-                        Name = product.Name.ToUpper(),
-                        Description = product.Description.ToUpper(),
-                        Quantity = price.Quantity,
-                        UnitOfMesure = price.UnitOfMeasure,
-                        Price = price.SellingPrice,
-                        IsActive = product.IsActive
-                    });
-                }
+                    Id = product.Id,
+                    Name = product.Name.ToUpper(),
+                    Description = product.Description.ToUpper(),
+                    Category = category.Name.ToUpper(),
+                    IsActive = product.IsActive,
+                    CategoryId = category.Id
+                });
             }
         }
 
@@ -163,5 +149,82 @@ public partial class ProductsPage : Page
     {
         ProductAddWindow productAddWindow = new ProductAddWindow(services);
         productAddWindow.ShowDialog();
+    }
+
+    private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        string searchText = txtSearch.Text.Trim();
+        FilterProducts(searchText);
+    }
+
+    private async void FilterProducts(string searchText)
+    {
+        long categoryId = 0;
+        dataGrid.ItemsSource = string.Empty;
+
+        if (cmbCategory.SelectedValue is long selectedCategoryId)
+            categoryId = selectedCategoryId;
+        
+        // Mahsulotlar ro'yxati
+        List<Item> items = new List<Item>();
+
+        // kategoriyalar olish
+        var categories = await categoryService.RetrieveAllAsync();
+
+        // Mahsulotlarni olish
+        var products = await productService.RetrieveAllAsync();
+
+        // Agar mahsulotlar mavjud bo'lsa, ularni ro'yxatga qo'shish
+        if (products is not null)
+        {
+            if (categoryId == 0)
+            {
+                foreach (var product in products)
+                {
+                    var category = categories.FirstOrDefault(c => c.Id.Equals(product.CategoryId));
+
+                        if (product.Name.Contains(searchText.ToLower()))
+                            items.Add(new Item()
+                            {
+                                Id = product.Id,
+                                Name = product.Name.ToUpper(),
+                                Description = product.Description.ToUpper(),
+                                Category = category.Name.ToUpper(),
+                                IsActive = product.IsActive,
+                                CategoryId = category.Id
+                            });
+                }
+            }
+            else 
+            {
+                foreach (var product in products)
+                {
+                    if (product.Name.Contains(searchText.ToLower()) && product.CategoryId == categoryId)
+                    {
+                        var category = categories.FirstOrDefault(c => c.Id.Equals(product.CategoryId));
+                        items.Add(new Item()
+                        {
+                            Id = product.Id,
+                            Name = product.Name.ToUpper(),
+                            Description = product.Description.ToUpper(),
+                            Category = category.Name.ToUpper(),
+                            IsActive = product.IsActive,
+                            CategoryId = category.Id
+                        });
+                    }
+                }
+            }
+            dataGrid.ItemsSource = items;
+        }
+    }
+
+    private void Edit_Button_Click(object sender, RoutedEventArgs e)
+    {
+        if (dataGrid.SelectedItem is Item selectedProduct)
+        {
+            ProductInfo.ProductId = selectedProduct.Id;
+            ProductInfo.CategoryId = selectedProduct.CategoryId;
+        }
+
     }
 }
