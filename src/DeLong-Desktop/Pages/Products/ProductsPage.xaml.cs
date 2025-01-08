@@ -225,6 +225,9 @@ public partial class ProductsPage : Page
             ProductInfo.ProductId = selectedProduct.Id;
             ProductInfo.CategoryId = selectedProduct.CategoryId;
         }
+        ProductEditWindow productEditWindow = new ProductEditWindow(services);
+        productEditWindow.spCategory.Visibility = Visibility.Visible;
 
+        productEditWindow.ShowDialog();
     }
 }

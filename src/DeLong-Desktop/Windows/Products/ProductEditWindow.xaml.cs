@@ -1,27 +1,202 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using DeLong_Desktop.ApiService.DTOs.Category;
+using DeLong_Desktop.ApiService.DTOs.Products;
+using DeLong_Desktop.ApiService.DTOs.Users;
+using DeLong_Desktop.ApiService.Interfaces;
+using DeLong_Desktop.Pages.Customers;
+using DeLong_Desktop.Pages.Products;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace DeLong_Desktop.Windows.Products
+namespace DeLong_Desktop.Windows.Products;
+
+/// <summary>
+/// Interaction logic for ProductEditWindow.xaml
+/// </summary>
+public partial class ProductEditWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for ProductEditWindow.xaml
-    /// </summary>
-    public partial class ProductEditWindow : Window
+    private readonly ICategoryService categoryService;
+    private readonly IProductService productService;
+    private readonly IPriceService priceService;
+    private readonly IServiceProvider services;
+
+    public ProductEditWindow(IServiceProvider services)
     {
-        public ProductEditWindow()
+        InitializeComponent();
+        this.services = services;
+        categoryService = services.GetRequiredService<ICategoryService>();
+        productService = services.GetRequiredService<IProductService>();
+        priceService = services.GetRequiredService<IPriceService>();
+    }
+
+    private async void rbtnProduct_Click(object sender, RoutedEventArgs e)
+    {
+        spCategory.Visibility = Visibility.Visible;
+        spProduct.Visibility = Visibility.Visible;
+        spCategoryPanel.Visibility = Visibility.Collapsed;
+        spJisNew.Visibility = Visibility.Collapsed;
+        spQaytish.Visibility = Visibility.Collapsed;
+        grCategoryShow.Visibility = Visibility.Hidden;
+
+        var product = await productService.RetrieveByIdAsync(ProductInfo.ProductId);
+
+        txtbName.Text = product.Name.ToUpper();
+        txtbDescription.Text = product.Description.ToUpper();
+    }
+
+    private async void rbtnCategory_Click(object sender, RoutedEventArgs e)
+    {
+        spCategory.Visibility = Visibility.Visible;
+        spProduct.Visibility = Visibility.Collapsed;
+        spCategoryPanel.Visibility = Visibility.Visible;
+        spJisNew.Visibility = Visibility.Collapsed;
+        spQaytish.Visibility = Visibility.Collapsed;
+        grCategoryShow.Visibility = Visibility.Collapsed;
+
+        var category = await categoryService.RetrieveByIdAsync(ProductInfo.CategoryId);
+
+        txtbCategoryName.Text = category.Name.ToUpper();
+        txtbDescriptionCategory.Text = category.Description.ToUpper();
+    }
+
+    private async void btnCategory_Click(object sender, RoutedEventArgs e)
+    {
+        spCategory.Visibility = Visibility.Collapsed;
+        spProduct.Visibility = Visibility.Collapsed;
+        spCategoryPanel.Visibility = Visibility.Visible;
+        spJisNew.Visibility = Visibility.Collapsed;
+        spQaytish.Visibility = Visibility.Visible;
+        grCategoryShow.Visibility = Visibility.Visible;
+
+        var existCategory = await categoryService.RetrieveByIdAsync(ProductInfo.CategoryId);
+
+        txtbCategoryName.Text = existCategory.Name.ToUpper();
+        txtbDescriptionCategory.Text = existCategory.Description.ToUpper();
+
+        // categoryDatagrid malumotlar bilan to'ldiryapti
+        List<Item> items = new List<Item>();
+        var existCategories = await categoryService.RetrieveAllAsync();
+        int Number = 0;
+        if (existCategories is not null)
         {
-            InitializeComponent();
+            foreach (var category in existCategories)
+            {
+                items.Add(new Item()
+                {
+                    Id = category.Id,
+                    TartibRaqam = ++Number,
+                    Name = category.Name.ToUpper(),
+                });
+            }
+        }
+        categoryDataGrid.ItemsSource = items;
+    }
+
+    private void btnQaytish_Click(object sender, RoutedEventArgs e)
+    {
+        spCategory.Visibility = Visibility.Visible;
+        spProduct.Visibility = Visibility.Visible;
+        spCategoryPanel.Visibility = Visibility.Collapsed;
+        spJisNew.Visibility = Visibility.Collapsed;
+        spQaytish.Visibility = Visibility.Collapsed;
+        grCategoryShow.Visibility = Visibility.Collapsed;
+    }
+
+    private void txtbCategoryName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    {
+        string searchText = txtbCategoryName.Text.Trim();
+        FilterCategories(searchText);
+    }
+    private async void FilterCategories(string searchText)
+    {
+        List<Item> items = new List<Item>();
+        var categories = await categoryService.RetrieveAllAsync();
+
+        if (categories is not null)
+        {
+            int Number = 0;
+            categoryDataGrid.ItemsSource = string.Empty;
+            foreach (var category in categories)
+            {
+                if (category.Name.Contains(searchText.ToLower()))
+                    items.Add(new Item()
+                    {
+                        Id = category.Id,
+                        TartibRaqam = ++Number,
+                        Name = category.Name.ToUpper()
+                    });
+            }
+            categoryDataGrid.ItemsSource = items;
+        }
+    }
+
+    private void Edit_Button_Click(object sender, RoutedEventArgs e)
+    {
+
+        if (rbtnCategory.IsChecked.HasValue.Equals(true) && spQaytish.Visibility != Visibility.Visible)
+        {
+            return;
+        }
+        if (categoryDataGrid.SelectedItem is Item selectedUser)
+            ProductInfo.CategoryId = selectedUser.Id;
+
+        spProduct.Visibility = Visibility.Visible;
+        spQaytish.Visibility = Visibility.Collapsed;
+        spCategoryPanel.Visibility = Visibility.Collapsed;
+        spJisNew.Visibility = Visibility.Collapsed;
+        spCategory.Visibility = Visibility.Visible;
+        grCategoryShow.Visibility = Visibility.Collapsed;
+    }
+
+    private void btnProductEdit_Click(object sender, RoutedEventArgs e)
+    {
+        ProductUpdateDto productUpdateDto = new ProductUpdateDto();
+
+        productUpdateDto.Id = ProductInfo.ProductId;
+        productUpdateDto.Name = txtbName.Text.ToLower();
+        productUpdateDto.Description = txtbDescription.Text.ToLower();
+        productUpdateDto.CategoryId = ProductInfo.CategoryId;
+        productUpdateDto.IsActive = true;
+
+
+        if (txtbName.Text.Equals("") ||
+            txtbDescription.Text.Equals(""))
+
+            MessageBox.Show("Malumotni to'liq kiriting!");
+        else
+        {
+            var result = this.productService.ModifyAsync(productUpdateDto);
+
+            if (!result.IsCompletedSuccessfully)
+            {
+                MessageBox.Show($" Saqlandi.");
+            }
+            else
+                MessageBox.Show($"{"Saqlashda xatolik"}");
+        }
+    }
+
+    private void btnEditCategory_Click(object sender, RoutedEventArgs e)
+    {
+        CategoryUpdateDto categoryUpdateDto = new CategoryUpdateDto();
+
+        categoryUpdateDto.Id = ProductInfo.CategoryId;
+        categoryUpdateDto.Name = txtbCategoryName.Text.ToLower();
+        categoryUpdateDto.Description = txtbDescriptionCategory.Text.ToLower();
+
+        if (txtbCategoryName.Text.Equals("") ||
+            txtbDescriptionCategory.Text.Equals(""))
+
+            MessageBox.Show("Malumotni to'liq kiriting!");
+        else
+        {
+            var result = this.categoryService.ModifyAsync(categoryUpdateDto);
+
+            if (!result.IsCompletedSuccessfully)
+            {
+                MessageBox.Show($" Saqlandi.");
+            }
+            else
+                MessageBox.Show($"{"Saqlashda xatolik"}");
         }
     }
 }

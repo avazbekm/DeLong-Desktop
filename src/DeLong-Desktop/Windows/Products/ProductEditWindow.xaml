@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DeLong_Desktop.Windows.Products"
         mc:Ignorable="d"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="ProductEditWindow" Height="600" Width="400"
+        Title="Mahsulot va kategoriyani yangilash oynasi" Height="600" Width="400"
         WindowStartupLocation="CenterScreen">
     <Grid  Background="#334257">
         <Grid.RowDefinitions>
@@ -17,28 +17,28 @@
         <!--radio buttonlar-->
         <StackPanel x:Name="spCategory" Margin="20 5 20 5" Visibility="Visible"  Orientation="Horizontal" Grid.Row="0">
             <!-- Mahsulot -->
-            <RadioButton x:Name="rbtnProduct" Margin="30 0 30 0" Background="Snow" Content="Mahsulot" Foreground="Snow" GroupName="ProductType"/>
+            <RadioButton x:Name="rbtnProduct" Margin="30 0 30 0" Background="Snow" Content="Mahsulot" Foreground="Snow" GroupName="ProductType" Click="rbtnProduct_Click"/>
             <!-- Kategoriya -->
-            <RadioButton x:Name="rbtnCategory" Content="Kategoriya" Margin="70 0 30 0" Background="Snow" Foreground="Snow" GroupName="ProductType"/>
+            <RadioButton x:Name="rbtnCategory" Content="Kategoriya" Margin="70 0 30 0" Background="Snow" Foreground="Snow" GroupName="ProductType" Click="rbtnCategory_Click"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1">
             <!--qaytish button-->
             <StackPanel x:Name="spQaytish" Margin="20 5 20 5" Visibility="Hidden"  Orientation="Horizontal" Grid.Row="0">
-                <Button x:Name="btnQaytish" Content="Qaytish" md:ButtonAssist.CornerRadius="15" BorderThickness="0" Background="#548CA8" Margin="2 0" Foreground="#EEEEEE" Height="30" Width="100"/>
+                <Button x:Name="btnQaytish" Content="Qaytish" md:ButtonAssist.CornerRadius="15" BorderThickness="0" Background="#548CA8" Margin="2 0" Foreground="#EEEEEE" Height="30" Width="100" Click="btnQaytish_Click"/>
             </StackPanel>
             <!--Mahsulotlar-->
             <StackPanel x:Name="spProduct" Visibility="Hidden"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
-                <Button x:Name="btnCategory" Content="Kategoriyani tanlang" BorderThickness="0" FontSize="17" Height="30" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE"/>
+                <Button x:Name="btnCategory" Content="Kategoriyani tanlang" BorderThickness="0" FontSize="17" Height="30" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Click="btnCategory_Click"/>
                 <TextBox x:Name="txtbName" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Mahsulot nomi" Background="#476072" Foreground="#EEEEEE"/>
                 <TextBox x:Name="txtbDescription" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Batafsil ma'lumot" Background="#476072" Foreground="#EEEEEE"/>
-                <Button x:Name="btnProductAdd" Visibility="Visible" Content="Add Product" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0 20 0 0"/>
+                <Button x:Name="btnProductEdit" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0 20 0 0" Click="btnProductEdit_Click"/>
             </StackPanel>
             <!--Kategoriyalar-->
             <StackPanel x:Name="spCategoryPanel" Visibility="Hidden" Margin="20 0 20 20" VerticalAlignment="Top">
-                <TextBox x:Name="txtbCategoryName" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Kategoriya nomi" Background="#476072" Foreground="#EEEEEE"/>
+                <TextBox x:Name="txtbCategoryName" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Kategoriya nomi" Background="#476072" Foreground="#EEEEEE" TextChanged="txtbCategoryName_TextChanged"/>
                 <TextBox x:Name="txtbDescriptionCategory" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Batafsil ma'lumot" Background="#476072" Foreground="#EEEEEE"/>
-                <Button x:Name="btnAddCategory" Visibility="Visible" Content="Add Category" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0 20 0 0"/>
+                <Button x:Name="btnEditCategory" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0 20 0 0" Click="btnEditCategory_Click"/>
             </StackPanel>
             <!--qo'shimcha buttonlar-->
             <StackPanel x:Name="spJisNew" Visibility="Hidden" Margin="20 0 20 20" VerticalAlignment="Top">
@@ -61,7 +61,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <Button x:Name="Edit_Button" Content="➡️" ToolTip="Edit" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="Black" Padding="0" Width="28" Height="28" Background="LightBlue"/>
+                                        <Button x:Name="Edit_Button" Content="➡️" ToolTip="Edit" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="Black" Padding="0" Width="28" Height="28" Background="LightBlue" Click="Edit_Button_Click"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
