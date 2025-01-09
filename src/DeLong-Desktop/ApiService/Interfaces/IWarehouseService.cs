@@ -5,8 +5,8 @@ namespace DeLong_Desktop.ApiService.Interfaces;
 
 interface IWarehouseService
 {
-    ValueTask<WarehouseResultDto> AddAsync(WarehouseCreationDto dto);
-    ValueTask<WarehouseResultDto> ModifyAsync(WarehouseUpdatedDto dto);
+    ValueTask<bool> AddAsync(WarehouseCreationDto dto);
+    ValueTask<bool> ModifyAsync(WarehouseUpdatedDto dto);
     ValueTask<bool> RemoveAsync(long id);
     ValueTask<WarehouseResultDto> RetrieveByIdAsync(long id);
     ValueTask<IEnumerable<WarehouseResultDto>> RetrieveAllAsync();
