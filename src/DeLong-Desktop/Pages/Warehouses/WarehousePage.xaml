@@ -17,10 +17,10 @@
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Margin="10">
             <Border x:Name="brQidiruv" Background="#476072" CornerRadius="10" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="0 0 10 0" Width="220" Height="30">
-                <TextBox x:Name="txtSearch" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="Qidiruv" Style="{DynamicResource MaterialDesignFilledTextBox}" md:HintAssist.Foreground="Snow" md:HintAssist.IsFloating="True" Width="200" Height="32"  Background="#476072" Foreground="#EEEEEE" TextChanged="txtSearch_TextChanged"/>
+                <TextBox x:Name="txtSearch" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="Qidiruv" Style="{DynamicResource MaterialDesignFilledTextBox}" md:HintAssist.Foreground="Snow" md:HintAssist.IsFloating="True" Width="200" Height="32"  Background="#476072" Foreground="#EEEEEE" />
             </Border>
-            <Button x:Name="btnAdd" Content="Add" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Width="80" Height="30" VerticalAlignment="Center" Margin="0 0 10 0" Background="#476072" Foreground="#EEEEEE" Click="btnAdd_Click"/>
-            <Button x:Name="btnExcel" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Content="Excelga o'tkazish" Width="140" Height="30" VerticalAlignment="Center" Background="#476072" Foreground="#EEEEEE" Click="btnExcel_Click"/>
+            <Button x:Name="btnAdd" Content="Add" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Width="80" Height="30" VerticalAlignment="Center" Margin="0 0 10 0" Background="#476072" Foreground="#EEEEEE"/>
+            <Button x:Name="btnExcel" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Content="Excelga o'tkazish" Width="140" Height="30" VerticalAlignment="Center" Background="#476072" Foreground="#EEEEEE"/>
         </StackPanel>
 
         <DataGrid x:Name="userDataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="#548CA8" Foreground="Black">
@@ -32,8 +32,8 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button x:Name="Edit_Button" Content="✍🏻" ToolTip="Edit" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="Black"  Padding="0" Width="28" Height="28" Background="LightBlue" Click="Edit_Button_Click" />
-                                <Button x:Name="Delete_Button" Content="🗑️" ToolTip="Delete" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="Black" Padding="0" Width="28" Height="28" Background="LightBlue" Margin="10 0 0 0" Click="Delete_Button_Click"/>
+                                <Button x:Name="Edit_Button" Content="✍🏻" ToolTip="Edit" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="Black"  Padding="0" Width="28" Height="28" Background="LightBlue"/>
+                                <Button x:Name="Delete_Button" Content="🗑️" ToolTip="Delete" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="Black" Padding="0" Width="28" Height="28" Background="LightBlue" Margin="10 0 0 0"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

@@ -22,7 +22,7 @@ public partial class App : Application
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IPriceService, PriceService>();
         services.AddScoped<IProductService, ProductService>();
-        //services.AddScoped<IAssetService, AssetService>();
+        services.AddScoped<IWarehouseService, WarehouseService>();
 
 
 

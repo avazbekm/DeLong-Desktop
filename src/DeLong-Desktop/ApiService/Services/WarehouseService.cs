@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using DeLong_Desktop.ApiService.Interfaces;
 using DeLong_Desktop.ApiService.Models.Commons;
 using DeLong_Desktop.ApiService.DTOs.Warehouses;
-using DeLong_Desktop.ApiService.DTOs.Category;
 
 namespace DeLong_Desktop.ApiService.Services;
 
@@ -12,7 +11,7 @@ class WarehouseService : IWarehouseService
 {
     private readonly HttpClient _httpClient;
 
-    public WarehouseService(HttpClient httpClient)
+    public WarehouseService()
     {
         _httpClient = new HttpClient
         {

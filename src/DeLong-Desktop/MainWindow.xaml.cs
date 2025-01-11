@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using DeLong_Desktop.Pages.Products;
 using DeLong_Desktop.Pages.Customers;
+using DeLong_Desktop.Pages.Warehouses;
 
 namespace DeLong_Desktop;
 
@@ -30,5 +31,10 @@ public partial class MainWindow : Window
     private void btnMaxsulot_Click(object sender, RoutedEventArgs e)
     {
         Navigator.Navigate(new ProductsPage(services));
+    }
+
+    private void btnOmbor_Click(object sender, RoutedEventArgs e)
+    {
+        Navigator.Navigate(new WarehousePage(services));
     }
 }
