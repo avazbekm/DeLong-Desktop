@@ -13,7 +13,7 @@
                 <TextBox x:Name="txtbName" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Ombor nomi" Background="#476072" Foreground="#EEEEEE"/>
                 <TextBox x:Name="txtbMudir" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Ombor mudirining FIO" Background="#476072" Foreground="#EEEEEE"/>
                 <TextBox x:Name="txtbAddress" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Ombor manzili" Background="#476072" Foreground="#EEEEEE"/>
-                <Button x:Name="btnAddWarehouse" Visibility="Visible" Content="Add Product" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0 20 0 0"/>
+                <Button x:Name="btnAddWarehouse" Visibility="Visible" Content="Add Product" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0 20 0 0" Click="btnAddWarehouse_Click"/>
             </StackPanel>
     </Grid>
 </Window>

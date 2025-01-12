@@ -28,59 +28,73 @@ public partial class ProductAddWindow : Window
 
     private async void rbtnProduct_Checked(object sender, RoutedEventArgs e)
     {
-        spProduct.Visibility = Visibility.Visible;
-        spQaytish.Visibility = Visibility.Collapsed;
-        spCategoryPanel.Visibility = Visibility.Collapsed;
-        spJisNew.Visibility = Visibility.Collapsed;
-        grProductShow.Visibility = Visibility.Visible;
-        grCategoryShow.Visibility = Visibility.Collapsed;
-
-        List<ItemProduct> items = new List<ItemProduct>();
-        var products = await productService.RetrieveAllAsync();
-
-        if (products is not null)
+        try
         {
-            int Number = 0;
-            productDataGrid.ItemsSource = string.Empty;
-            foreach (var product in products)
+            spProduct.Visibility = Visibility.Visible;
+            spQaytish.Visibility = Visibility.Collapsed;
+            spCategoryPanel.Visibility = Visibility.Collapsed;
+            spJisNew.Visibility = Visibility.Collapsed;
+            grProductShow.Visibility = Visibility.Visible;
+            grCategoryShow.Visibility = Visibility.Collapsed;
+
+            List<ItemProduct> items = new List<ItemProduct>();
+            var products = await productService.RetrieveAllAsync();
+
+            if (products is not null)
             {
-                items.Add(new ItemProduct()
+                int Number = 0;
+                productDataGrid.ItemsSource = string.Empty;
+                foreach (var product in products)
                 {
-                    Id = product.Id,
-                    TartibRaqam = ++Number,
-                    Name = product.Name.ToUpper()
-                });
+                    items.Add(new ItemProduct()
+                    {
+                        Id = product.Id,
+                        TartibRaqam = ++Number,
+                        Name = product.Name.ToUpper()
+                    });
+                }
+                productDataGrid.ItemsSource = items;
             }
-            productDataGrid.ItemsSource = items;
+        }
+        catch (Exception ex) 
+        {
+            MessageBox.Show(ex.Message);
         }
     }
 
     private async void rbtnCategory_Checked(object sender, RoutedEventArgs e)
     {
-        spProduct.Visibility = Visibility.Collapsed;
-        spQaytish.Visibility = Visibility.Collapsed;
-        spCategoryPanel.Visibility = Visibility.Visible;
-        spJisNew.Visibility = Visibility.Collapsed;
-        grCategoryShow.Visibility = Visibility.Visible;
-        grProductShow.Visibility = Visibility.Collapsed;
-
-
-        List<Item> items = new List<Item>();
-        var existCategories = await categoryService.RetrieveAllAsync();
-        int Number = 0;
-        if (existCategories is not null) 
+        try
         {
-            foreach (var category in existCategories) 
+            spProduct.Visibility = Visibility.Collapsed;
+            spQaytish.Visibility = Visibility.Collapsed;
+            spCategoryPanel.Visibility = Visibility.Visible;
+            spJisNew.Visibility = Visibility.Collapsed;
+            grCategoryShow.Visibility = Visibility.Visible;
+            grProductShow.Visibility = Visibility.Collapsed;
+
+
+            List<Item> items = new List<Item>();
+            var existCategories = await categoryService.RetrieveAllAsync();
+            int Number = 0;
+            if (existCategories is not null)
             {
-                items.Add(new Item()
+                foreach (var category in existCategories)
                 {
-                    Id = category.Id,
-                    TartibRaqam = ++Number,
-                    Name = category.Name.ToUpper(),
-                });
+                    items.Add(new Item()
+                    {
+                        Id = category.Id,
+                        TartibRaqam = ++Number,
+                        Name = category.Name.ToUpper(),
+                    });
+                }
             }
+            categoryDataGrid.ItemsSource = items;
         }
-        categoryDataGrid.ItemsSource = items;
+        catch (Exception ex) 
+        {
+            MessageBox.Show(ex.Message);
+        }
     }
 
     private void rbtnPrice_Checked(object sender, RoutedEventArgs e)
@@ -93,31 +107,38 @@ public partial class ProductAddWindow : Window
 
     private async void btnCategory_Click(object sender, RoutedEventArgs e)
     {
-        spProduct.Visibility = Visibility.Collapsed;
-        spQaytish.Visibility = Visibility.Collapsed;
-        spCategoryPanel.Visibility = Visibility.Visible;
-        spJisNew.Visibility = Visibility.Collapsed;
-        spQaytish.Visibility = Visibility.Visible;
-        spCategory.Visibility = Visibility.Collapsed;
-        grCategoryShow.Visibility = Visibility.Visible;
-        grProductShow.Visibility = Visibility.Collapsed;
-
-        List<Item> items = new List<Item>();
-        var existCategories = await categoryService.RetrieveAllAsync();
-        int Number = 0;
-        if (existCategories is not null)
+        try
         {
-            foreach (var category in existCategories)
+            spProduct.Visibility = Visibility.Collapsed;
+            spQaytish.Visibility = Visibility.Collapsed;
+            spCategoryPanel.Visibility = Visibility.Visible;
+            spJisNew.Visibility = Visibility.Collapsed;
+            spQaytish.Visibility = Visibility.Visible;
+            spCategory.Visibility = Visibility.Collapsed;
+            grCategoryShow.Visibility = Visibility.Visible;
+            grProductShow.Visibility = Visibility.Collapsed;
+
+            List<Item> items = new List<Item>();
+            var existCategories = await categoryService.RetrieveAllAsync();
+            int Number = 0;
+            if (existCategories is not null)
             {
-                items.Add(new Item()
+                foreach (var category in existCategories)
                 {
-                    Id = category.Id,
-                    TartibRaqam = ++Number,
-                    Name = category.Name.ToUpper(),
-                });
+                    items.Add(new Item()
+                    {
+                        Id = category.Id,
+                        TartibRaqam = ++Number,
+                        Name = category.Name.ToUpper(),
+                    });
+                }
             }
+            categoryDataGrid.ItemsSource = items;
         }
-        categoryDataGrid.ItemsSource = items;
+        catch (Exception ex) 
+        { 
+            MessageBox.Show(ex.Message); 
+        }
     }
 
     private void btnQaytish_Click(object sender, RoutedEventArgs e)
@@ -174,48 +195,62 @@ public partial class ProductAddWindow : Window
     
     private async void FilterCategories(string searchText)
     {
-        List<Item> items = new List<Item>();
-        var categories =await categoryService.RetrieveAllAsync();
-
-        if (categories is not null)
+        try
         {
-            int Number = 0;
-            categoryDataGrid.ItemsSource = string.Empty;
-            foreach (var category in categories)
+            List<Item> items = new List<Item>();
+            var categories = await categoryService.RetrieveAllAsync();
+
+            if (categories is not null)
             {
-                if (category.Name.Contains(searchText.ToLower()))
+                int Number = 0;
+                categoryDataGrid.ItemsSource = string.Empty;
+                foreach (var category in categories)
+                {
+                    if (category.Name.Contains(searchText.ToLower()))
                         items.Add(new Item()
                         {
                             Id = category.Id,
                             TartibRaqam = ++Number,
                             Name = category.Name.ToUpper()
-                        }); 
+                        });
+                }
+                categoryDataGrid.ItemsSource = items;
             }
-            categoryDataGrid.ItemsSource = items;
+        }
+        catch (Exception ex) 
+        { 
+            MessageBox.Show(ex.Message);
         }
     }
 
     private async void FilterProducts(string searchText)
     {
-        List<ItemProduct> items = new List<ItemProduct>();
-        var products = await productService.RetrieveAllAsync();
-
-        if (products is not null)
+        try
         {
-            int Number = 0;
-            productDataGrid.ItemsSource = string.Empty;
-            foreach (var product in products)
-            {
-                if (product.Name.Contains(searchText.ToLower()))
-                    items.Add(new ItemProduct()
-                    {
-                        Id = product.Id,
-                        TartibRaqam = ++Number,
-                        Name = product.Name.ToUpper()
-                    });
+            List<ItemProduct> items = new List<ItemProduct>();
+            var products = await productService.RetrieveAllAsync();
 
+            if (products is not null)
+            {
+                int Number = 0;
+                productDataGrid.ItemsSource = string.Empty;
+                foreach (var product in products)
+                {
+                    if (product.Name.Contains(searchText.ToLower()))
+                        items.Add(new ItemProduct()
+                        {
+                            Id = product.Id,
+                            TartibRaqam = ++Number,
+                            Name = product.Name.ToUpper()
+                        });
+
+                }
+                productDataGrid.ItemsSource = items;
             }
-            productDataGrid.ItemsSource = items;
+        }
+        catch (Exception ex) 
+        {
+            MessageBox.Show(ex.Message);
         }
     }
 

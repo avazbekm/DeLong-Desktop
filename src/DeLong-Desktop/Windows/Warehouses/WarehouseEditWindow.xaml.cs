@@ -2,24 +2,25 @@
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.Warehouses;
+using DeLong_Desktop.Pages.Warehouses;
 
 namespace DeLong_Desktop.Windows.Warehouses;
 
 /// <summary>
-/// Interaction logic for WarehouseWindow.xaml
+/// Interaction logic for WarehouseEditWindow.xaml
 /// </summary>
-public partial class WarehouseWindow : Window
+public partial class WarehouseEditWindow : Window
 {
     private readonly IServiceProvider services;
     private readonly IWarehouseService warehouseService;
-    public WarehouseWindow(IServiceProvider services)
+    public WarehouseEditWindow(IServiceProvider services)
     {
         InitializeComponent();
         this.services = services;
         warehouseService = services.GetRequiredService<IWarehouseService>();
     }
 
-    private async void btnAddWarehouse_Click(object sender, RoutedEventArgs e)
+    private async void btnUpdateWarehouse_Click(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -30,19 +31,20 @@ public partial class WarehouseWindow : Window
                 return;
             }
             // malumotlarni dtoga beramiz
-            WarehouseCreationDto warehouseCreationDto = new WarehouseCreationDto
+            WarehouseUpdatedDto warehouseUpdatedDto = new WarehouseUpdatedDto
             {
+                Id = WarehouseInfo.WarehouseId,
                 Name = txtbName.Text.ToLower(),
                 ManagerName = txtbMudir.Text.ToLower(),
                 Location = txtbAddress.Text.ToLower()
             };
 
             // Warehouseni qo'shish uchun xizmat chaqirilyapti
-            bool result = await warehouseService.AddAsync(warehouseCreationDto);
+            bool result = await warehouseService.ModifyAsync(warehouseUpdatedDto);
 
             if (result)
             {
-                MessageBox.Show("Ombor muvaffaqiyatli saqlandi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Ombor muvaffaqiyatli yangilandi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
@@ -54,6 +56,5 @@ public partial class WarehouseWindow : Window
             // Kutilmagan xatoliklar uchun
             MessageBox.Show($"Kutilmagan xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-
     }
 }

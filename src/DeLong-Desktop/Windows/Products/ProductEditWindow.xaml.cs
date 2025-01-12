@@ -1,10 +1,8 @@
 ﻿using System.Windows;
-using DeLong_Desktop.ApiService.DTOs.Category;
-using DeLong_Desktop.ApiService.DTOs.Products;
-using DeLong_Desktop.ApiService.DTOs.Users;
-using DeLong_Desktop.ApiService.Interfaces;
-using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.Pages.Products;
+using DeLong_Desktop.ApiService.Interfaces;
+using DeLong_Desktop.ApiService.DTOs.Products;
+using DeLong_Desktop.ApiService.DTOs.Category;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Windows.Products;
@@ -147,56 +145,78 @@ public partial class ProductEditWindow : Window
         grCategoryShow.Visibility = Visibility.Collapsed;
     }
 
-    private void btnProductEdit_Click(object sender, RoutedEventArgs e)
+    private async void btnProductEdit_Click(object sender, RoutedEventArgs e)
     {
-        ProductUpdateDto productUpdateDto = new ProductUpdateDto();
-
-        productUpdateDto.Id = ProductInfo.ProductId;
-        productUpdateDto.Name = txtbName.Text.ToLower();
-        productUpdateDto.Description = txtbDescription.Text.ToLower();
-        productUpdateDto.CategoryId = ProductInfo.CategoryId;
-        productUpdateDto.IsActive = true;
-
-
-        if (txtbName.Text.Equals("") ||
-            txtbDescription.Text.Equals(""))
-
-            MessageBox.Show("Malumotni to'liq kiriting!");
-        else
+        try
         {
-            var result = this.productService.ModifyAsync(productUpdateDto);
-
-            if (!result.IsCompletedSuccessfully)
+            if (txtbName.Text.Equals("") || txtbDescription.Text.Equals(""))
             {
-                MessageBox.Show($" Saqlandi.");
+                MessageBox.Show("Malumotni to'liq kiriting!");
+                return;
+            }
+
+            ProductUpdateDto productUpdateDto = new ProductUpdateDto
+            {
+                Id = ProductInfo.ProductId,
+                Name = txtbName.Text.ToLower(),
+                Description = txtbDescription.Text.ToLower(),
+                CategoryId = ProductInfo.CategoryId,
+                IsActive = true
+            };
+
+            // Productni yangilash uchun xizmat chaqirilyapti
+            bool result = await this.productService.ModifyAsync(productUpdateDto);
+
+            if (result)
+            {
+                MessageBox.Show("Mahsulot muvaffaqiyatli yangilandi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
-                MessageBox.Show($"{"Saqlashda xatolik"}");
+            {
+                MessageBox.Show("Saqlashda xatolik yuz berdi.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Kutilmagan xatoliklar uchun
+            MessageBox.Show($"Kutilmagan xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
-    private void btnEditCategory_Click(object sender, RoutedEventArgs e)
+    private async void btnEditCategory_Click(object sender, RoutedEventArgs e)
     {
-        CategoryUpdateDto categoryUpdateDto = new CategoryUpdateDto();
-
-        categoryUpdateDto.Id = ProductInfo.CategoryId;
-        categoryUpdateDto.Name = txtbCategoryName.Text.ToLower();
-        categoryUpdateDto.Description = txtbDescriptionCategory.Text.ToLower();
-
-        if (txtbCategoryName.Text.Equals("") ||
-            txtbDescriptionCategory.Text.Equals(""))
-
-            MessageBox.Show("Malumotni to'liq kiriting!");
-        else
+        try
         {
-            var result = this.categoryService.ModifyAsync(categoryUpdateDto);
-
-            if (!result.IsCompletedSuccessfully)
+            if (txtbCategoryName.Text.Equals("") || txtbDescriptionCategory.Text.Equals(""))
             {
-                MessageBox.Show($" Saqlandi.");
+                MessageBox.Show("Malumotni to'liq kiriting!");
+                return;
+            }
+
+            CategoryUpdateDto categoryUpdateDto = new CategoryUpdateDto
+            {
+                Id = ProductInfo.CategoryId,
+                Name = txtbCategoryName.Text.ToLower(),
+                Description = txtbDescriptionCategory.Text.ToLower()
+            };
+
+            // categoriyani yangilash uchun chaqirildi
+            bool result = await this.categoryService.ModifyAsync(categoryUpdateDto);
+
+            if (result)
+            {
+                MessageBox.Show("Kategoriya muvaffaqiyatli yangilandi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
-                MessageBox.Show($"{"Saqlashda xatolik"}");
+            {
+                MessageBox.Show("Saqlashda xatolik yuz berdi.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+        catch (Exception ex)
+        {
+            // Kutilmagan xatoliklar uchun
+            MessageBox.Show($"Kutilmagan xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        
     }
 }
