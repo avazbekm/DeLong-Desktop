@@ -60,7 +60,7 @@
                         Foreground="Snow"                        
                         Style="{DynamicResource MaterialDesignPaperLightButton}"
                         Background="#476072"
-                        md:ButtonAssist.CornerRadius="17"/>
+                        md:ButtonAssist.CornerRadius="17" Click="btnKirim_Click"/>
 
                 <Button x:Name="btnChiqim"
                         Height="45"

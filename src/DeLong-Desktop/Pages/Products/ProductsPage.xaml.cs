@@ -1,12 +1,12 @@
-﻿using System.Windows;
+﻿using System.Data;
+using System.Windows;
+using ClosedXML.Excel;
+using System.Windows.Data;
 using System.Windows.Controls;
 using DeLong_Desktop.Windows.Products;
 using Page = System.Windows.Controls.Page;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using ClosedXML.Excel;
-using System.Data;
-using System.Windows.Data;
 
 namespace DeLong_Desktop.Pages.Products;
 
@@ -17,7 +17,6 @@ public partial class ProductsPage : Page
 {
     private readonly IProductService productService;
     private readonly ICategoryService categoryService;
-    private readonly IPriceService priceService;
     private readonly IServiceProvider services;
 
     public ProductsPage(IServiceProvider services)
@@ -26,7 +25,6 @@ public partial class ProductsPage : Page
         this.services = services;
         categoryService = services.GetRequiredService<ICategoryService>();
         productService = services.GetRequiredService<IProductService>();
-        priceService = services.GetRequiredService<IPriceService>();
 
         LoadCategoriesAsync();
         LoadData();

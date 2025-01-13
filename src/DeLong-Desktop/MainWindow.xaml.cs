@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using DeLong_Desktop.Pages.Input;
 using DeLong_Desktop.Pages.Products;
 using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.Pages.Warehouses;
@@ -36,5 +37,10 @@ public partial class MainWindow : Window
     private void btnOmbor_Click(object sender, RoutedEventArgs e)
     {
         Navigator.Navigate(new WarehousePage(services));
+    }
+
+    private void btnKirim_Click(object sender, RoutedEventArgs e)
+    {
+        Navigator.Navigate(new InputPage(services));
     }
 }
