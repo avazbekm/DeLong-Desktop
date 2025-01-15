@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="DeLong_Desktop.Companents.PriceViewControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DeLong_Desktop.Companents"
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="300">
+    <StackPanel x:Name="spPrice" Grid.Row="1" Grid.Column="2" Margin="0 10">
+        <StackPanel Orientation="Vertical">
+            <!-- Mahsulot nomi Label -->
+
+            <!-- Chiziq (ostki chegara) uchun Border -->
+            <Border BorderThickness="0,0,0,1" BorderBrush="Snow" Margin="0,0,0,5" />
+
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Tax Rate -->
+                <Label Content="Tax rate in % *" FontSize="16" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
+                <TextBox Text="20.00" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="0" Grid.Column="1"
+                 VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+                <!-- Actual Price -->
+                <Label Content="Actual price *" FontSize="16" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
+                <TextBox Text="100.00" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="1" Grid.Column="1"
+                 VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+                <!-- Granted Rebate -->
+                <Label Content="Granted rebate" FontSize="16" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
+                <TextBox Text="20.00" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="2" Grid.Column="1"
+                 VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+
+                <!-- Shipping/Item -->
+                <Label Content="Shipping/item" FontSize="16" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
+                <TextBox Text="5.00" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="3" Grid.Column="1"
+                 VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            </Grid>
+        </StackPanel>
+
+    </StackPanel>
+
+</UserControl>

@@ -39,7 +39,7 @@ public partial class InputPage : Page
                 datagridItems.Add(new ItemCategory
                 {
                     Id = category.Id,
-                    Category = category.Name
+                    Category = category.Name.ToUpper()
                 });
             }
             categoryDataGrid.ItemsSource = datagridItems;
@@ -224,6 +224,10 @@ public partial class InputPage : Page
     }
     private void RadioButton_Click(object sender, RoutedEventArgs e)
     {
-
+        rbtnProductHeader.Header = "🔳";
+        if (productDataGrid.SelectedItem is ItemProduct product)
+        { 
+            tbProductName.Text = product.Product.ToUpper();
+        }
     }
 }
