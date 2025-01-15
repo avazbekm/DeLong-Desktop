@@ -19,6 +19,7 @@ public partial class CustomersPage : Page
     
     private readonly IServiceProvider services;
     public bool IsCreated { get; set; } = false;
+    
     public CustomersPage(IServiceProvider services)
     {
         InitializeComponent();

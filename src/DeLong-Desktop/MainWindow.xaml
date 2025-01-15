@@ -88,6 +88,7 @@
 
                         <Image Height="24"
                                  Width="24"
+                                 Source="🌐"
                                  VerticalAlignment="Center"
                                  HorizontalAlignment="Left">
                         </Image>
