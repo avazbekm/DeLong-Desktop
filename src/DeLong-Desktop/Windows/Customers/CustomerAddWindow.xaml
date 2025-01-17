@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DeLong_Desktop.Windows.Customers"
         mc:Ignorable="d"
+        x:Name="wdMijozOyna"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Mijozlar qo'shish oynasi" Height="700" Width="400"
         WindowStartupLocation="CenterScreen">
