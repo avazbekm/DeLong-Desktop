@@ -117,7 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Action" xml:space="preserve">
+    <value>操作 </value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>添加</value>
+  </data>
+  <data name="AddClientWindow" xml:space="preserve">
+    <value>添加客户窗口</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>地址 </value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>分类</value>
+  </data>
+  <data name="ClientFullname" xml:space="preserve">
+    <value>客户姓名</value>
+  </data>
   <data name="Customer" xml:space="preserve">
     <value>客户</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="Expense" xml:space="preserve">
+    <value>支出</value>
+  </data>
+  <data name="Income" xml:space="preserve">
+    <value>收入</value>
+  </data>
+  <data name="JSHSHIR" xml:space="preserve">
+    <value>个人识别码</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>电话 </value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>产品</value>
+  </data>
+  <data name="Report" xml:space="preserve">
+    <value>报告</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>搜索</value>
+  </data>
+  <data name="Telegram Phone Number" xml:space="preserve">
+    <value>电报号码</value>
+  </data>
+  <data name="ToExcell" xml:space="preserve">
+    <value>导出到 Excel</value>
+  </data>
+  <data name="Warehouse" xml:space="preserve">
+    <value>仓库</value>
   </data>
 </root>

@@ -19,7 +19,7 @@
 
         <Grid Grid.Column="0" Background="#334257">
             <StackPanel Margin="20">
-                <Button x:Name="bntMijoz" 
+                <Button x:Name="btnMijoz" 
                         Height="45"
                         Margin="0 0 0 5"
                         Content="Mijoz"
@@ -74,31 +74,36 @@
                         md:ButtonAssist.CornerRadius="17"/>
 
                 <Border 
-                     Height="45" 
-                     Background="#476072" 
-                     CornerRadius="15" 
-                     Margin="0,0,0,10"
-                     Effect="{StaticResource DefaultDropShadowEffect}">
+    Height="45" 
+    Background="#476072" 
+    CornerRadius="15" 
+    Margin="0,0,0,10"
+    Effect="{StaticResource DefaultDropShadowEffect}">
 
                     <StackPanel 
-                         Orientation="Horizontal" 
-                         VerticalAlignment="Center"
-                         HorizontalAlignment="Center"
-                                         >
+        Orientation="Horizontal" 
+        VerticalAlignment="Center"
+        HorizontalAlignment="Center">
 
-                        <Image Height="24"
-                                 Width="24"
-                                 Source="🌐"
-                                 VerticalAlignment="Center"
-                                 HorizontalAlignment="Left">
-                        </Image>
-                        <ComboBox x:Name="languageComboBox"
-                                  Width="150"
-                                  Foreground="#7AB2D3" 
-                                  Background="#476072"
-                                  FontFamily="JetBrains Mono" 
-                                  FontSize="18">
+                        <!-- Globe Image -->
+                        <Image 
+            Height="24"
+            Width="24"
+            Source="🌐"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left" />
 
+                        <!-- Language ComboBox -->
+                        <ComboBox 
+            x:Name="languageComboBox"
+            Width="150"
+            Foreground="#7AB2D3" 
+            Background="#476072"
+            FontFamily="JetBrains Mono" 
+            FontSize="18"
+            SelectionChanged="languageComboBox_SelectionChanged">
+
+                            <!-- ComboBox Item Styles -->
                             <ComboBox.Resources>
                                 <Style TargetType="{x:Type ComboBoxItem}">
                                     <Setter Property="Foreground" Value="#AB886D" />
@@ -109,18 +114,21 @@
                                 </Style>
                             </ComboBox.Resources>
 
-                            <ComboBoxItem Tag="en-US" Background="Black">
+                            <!-- Uzbek Language Item -->
+                            <ComboBoxItem Tag="uz-UZ">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Uzbek" Foreground="#ADD8E6" />
+                                    <TextBlock Text="O'zbek" Foreground="#ADD8E6" />
                                 </StackPanel>
                             </ComboBoxItem>
 
-                            <ComboBoxItem Tag="zh-CN" Background="Black">
+                            <!-- Chinese Language Item -->
+                            <ComboBoxItem Tag="zh-CN">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="国" Foreground="#ADD8E6" />
+                                    <TextBlock Text="中文" Foreground="#ADD8E6" />
                                 </StackPanel>
                             </ComboBoxItem>
                         </ComboBox>
+
                     </StackPanel>
                 </Border>
 
