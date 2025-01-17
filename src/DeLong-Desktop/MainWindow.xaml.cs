@@ -16,6 +16,7 @@ namespace DeLong_Desktop;
 public partial class MainWindow : Window
 {
     private CustomersPage _customerPage;
+    private CustomerAddWindow _customerAddWindow;
     private readonly IServiceProvider _services;
 
     // Tanlangan tilni saqlash uchun o'zgaruvchi
@@ -67,7 +68,10 @@ public partial class MainWindow : Window
         {
             _customerPage = new CustomersPage(_services);
         }
-      
+        if (_customerAddWindow == null)
+        {
+            _customerAddWindow = new CustomerAddWindow(_services);
+        }
         // Boshqa elementlarning matnlarini yangilash
         _customerPage.userDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Customer;
         _customerPage.userDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.ClientFullname;
@@ -80,7 +84,15 @@ public partial class MainWindow : Window
         _customerPage.btnAdd.Content = DeLong_Desktop.Resources.Resource.Add;
         _customerPage.btnExcel.Content = DeLong_Desktop.Resources.Resource.ToExcell;
         btnOmbor.Content = DeLong_Desktop.Resources.Resource.Warehouse;
-        
+
+        _customerAddWindow.txtFamiliya.Text = DeLong_Desktop.Resources.Resource.Address;
+        _customerAddWindow.txtIsmi.Text = DeLong_Desktop.Resources.Resource.Address;
+        _customerAddWindow.txtJisAdres.Text = DeLong_Desktop.Resources.Resource.Address;
+        _customerAddWindow.txtJisJSHSHIR.Text = DeLong_Desktop.Resources.Resource.Address;
+        _customerAddWindow.txtJisTelefon.Text = DeLong_Desktop.Resources.Resource.Address;
+        _customerAddWindow.txtJisTelegramRaqam.Text = DeLong_Desktop.Resources.Resource.Address;
+
+
         btnChiqim.Content = DeLong_Desktop.Resources.Resource.Expense;
         btnChiqish.Content = DeLong_Desktop.Resources.Resource.Exit;
         btnHisobot.Content = DeLong_Desktop.Resources.Resource.Report;
