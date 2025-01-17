@@ -14,7 +14,7 @@ class CategoryService : ICategoryService
     {
         _httpClient = new HttpClient
         {
-            BaseAddress = new Uri("http://localhost:5208/") // API URL manzilini o'rnating
+            BaseAddress = new Uri("https://localhost:7049/") // API URL manzilini o'rnating
         };
     }
     public async ValueTask<bool> AddAsync(CategoryCreationDto dto)

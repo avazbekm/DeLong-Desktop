@@ -19,7 +19,6 @@ public partial class CustomersPage : Page
     
     private readonly IServiceProvider services;
     public bool IsCreated { get; set; } = false;
-    
     public CustomersPage(IServiceProvider services)
     {
         InitializeComponent();
@@ -85,7 +84,7 @@ public partial class CustomersPage : Page
         userDataGrid.ItemsSource = items; ;
     }
 
-    private void btnAdd_Click(object sender, System.Windows.RoutedEventArgs e)
+    private void btnAdd_Click(object sender, RoutedEventArgs e)
     {
         CustomerAddWindow customerAddWindow = new CustomerAddWindow(services);
         customerAddWindow.ShowDialog();
