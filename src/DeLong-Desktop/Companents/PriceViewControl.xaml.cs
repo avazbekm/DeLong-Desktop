@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows.Input;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using DeLong_Desktop.Windows.Pirces;
 
-namespace DeLong_Desktop.Companents
+namespace DeLong_Desktop.Companents;
+
+/// <summary>
+/// Interaction logic for PriceViewControl.xaml
+/// </summary>
+public partial class PriceViewControl : UserControl
 {
-    /// <summary>
-    /// Interaction logic for PriceViewControl.xaml
-    /// </summary>
-    public partial class PriceViewControl : UserControl
+    private readonly IServiceProvider services;
+    public PriceViewControl(IServiceProvider services)
     {
-        public PriceViewControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        this.services = services;
+    }
+
+    private void OnAddClick(object sender, MouseButtonEventArgs e)
+    {
+        var addWindow = new PriceAddWindow(services);
+        addWindow.ShowDialog(); // Yangi oynani modal tarzda ochish
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using DeLong_Desktop.Companents;
+using DeLong_Desktop.Windows.Pirces;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,9 +13,9 @@ namespace DeLong_Desktop.Pages.Input;
 public partial class InputPage : Page
 {
     private readonly IServiceProvider services;
+    private readonly IPriceService priceService;
     private readonly IProductService productService;
     private readonly ICategoryService categoryService;
-    private readonly IPriceService priceService;
     public InputPage(IServiceProvider services)
     {
         InitializeComponent();
@@ -56,7 +58,6 @@ public partial class InputPage : Page
 
         // Mahsulotlar ro'yxati
         List<ItemProduct> items = new List<ItemProduct>();
-
 
         // Mahsulotlarni olish
         var products = await productService.RetrieveAllAsync();
@@ -227,7 +228,59 @@ public partial class InputPage : Page
         rbtnProductHeader.Header = "🔳";
         if (productDataGrid.SelectedItem is ItemProduct product)
         { 
-            tbProductName.Text = product.Product.ToUpper();
+            InputInfo.ProductId = product.Id;
+            if (product.Id > 0)
+            {
+                tbProductName.Text = product.Product.ToUpper();
+                btnAddPrice.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                btnAddPrice.Visibility= Visibility.Collapsed;
+                tbProductName.Text = "";
+
+            }
+            GetPriceByIdAsync(product.Id);
         }
+    }
+
+    private async void GetPriceByIdAsync(long productId)
+    {
+        try
+        {
+            // Clear previous content from wrpPrice
+            wrpPrice.Children.Clear();
+
+            // Retrieve existing prices for the product
+            var existPrices = await priceService.RetrieveAllAsync(productId);
+
+            if (existPrices is not null && existPrices.Any())
+            {
+                foreach (var price in existPrices)
+                {
+                    // Create a new instance of PriceViewControl
+                    PriceViewControl priceViewControl = new PriceViewControl(services)
+                    {
+                        tbIncomePrice = { Text = price.ArrivalPrice.ToString() },
+                        tbSellPrice = { Text = price.SellingPrice.ToString() },
+                        tbQuantity = { Text = price.Quantity.ToString() },
+                        tbUnitOfMesure = { Text = price.UnitOfMeasure },
+                    };
+
+                    // Add the control to the wrpPrice WrapPanel
+                    wrpPrice.Children.Add(priceViewControl);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error retrieving prices: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void btnAddPrice_Click(object sender, RoutedEventArgs e)
+    {
+        PirceWindow pirceWindow = new PirceWindow(services);
+        pirceWindow.ShowDialog();
     }
 }

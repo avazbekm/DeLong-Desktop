@@ -54,6 +54,5 @@ public partial class WarehouseWindow : Window
             // Kutilmagan xatoliklar uchun
             MessageBox.Show($"Kutilmagan xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-
     }
 }

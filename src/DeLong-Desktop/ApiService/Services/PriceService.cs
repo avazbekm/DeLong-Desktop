@@ -64,4 +64,14 @@ class PriceService : IPriceService
         var result = JsonConvert.DeserializeObject<Response<List<PriceResultDto>>>(jsonResponse);
         return result.Data;
     }
+
+    public async ValueTask<IEnumerable<PriceResultDto>> RetrieveAllAsync(long productId)
+    {
+        var response = await _httpClient.GetAsync($"api/Price/get-allProductId?productId={productId}");
+        response.EnsureSuccessStatusCode();
+
+        var jsonResponse = await response.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<Response<List<PriceResultDto>>>(jsonResponse);
+        return result.Data;
+    }
 }

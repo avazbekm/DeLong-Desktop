@@ -9,4 +9,6 @@ interface IPriceService
     ValueTask<bool> RemoveAsync(long id);
     ValueTask<PriceResultDto> RetrieveByIdAsync(long id);
     ValueTask<IEnumerable<PriceResultDto>> RetrieveAllAsync();
+    ValueTask<IEnumerable<PriceResultDto>> RetrieveAllAsync(long productId);
+
 }
