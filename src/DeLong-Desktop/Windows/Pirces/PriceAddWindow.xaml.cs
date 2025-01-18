@@ -1,8 +1,10 @@
-﻿using DeLong_Desktop.ApiService.DTOs.Prices;
-using DeLong_Desktop.ApiService.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using DeLong_Desktop.Companents;
+using DeLong_Desktop.Pages.Input;
+using DeLong_Desktop.ApiService.Interfaces;
+using DeLong_Desktop.ApiService.DTOs.Prices;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Windows.Pirces;
 
@@ -22,12 +24,38 @@ public partial class PriceAddWindow : Window
         priceService = services.GetRequiredService<IPriceService>();
     }
 
-    private void Save_Click(object sender, RoutedEventArgs e)
+    private async void Save_Click(object sender, RoutedEventArgs e)
     {
-        PriceUpdateDto priceUpdateDto = new PriceUpdateDto();
+        try
+        {
+            PriceUpdateDto priceUpdateDto = new PriceUpdateDto()
+            {
+                Id = PriceInfo.PriceId,
+                ArrivalPrice = PriceInfo.ArrivalPrice,
+                SellingPrice = PriceInfo.SellingPrice,
+                Quantity = PriceInfo.Quatitiy + decimal.Parse(tbQuantity.Text),
+                UnitOfMeasure = PriceInfo.UnitOfMesure,
+                ProductId = InputInfo.ProductId
+            };
 
-        // Yangi miqdorni saqlash logikasi
-        MessageBox.Show($"Miqdori: {tbQuantity.Text}", "Ma'lumot");
+            // Warehouseni qo'shish uchun xizmat chaqirilyapti
+            bool result = await priceService.ModifyAsync(priceUpdateDto);
+
+            if (result)
+            {
+                MessageBox.Show($"{tbQuantity.Text} {PriceInfo.UnitOfMesure} muvaffaqiyatli qo'shildi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Qo'shishda xatolik yuz berdi.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Kutilmagan xatoliklar uchun
+            MessageBox.Show($"Kutilmagan xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
         Close(); // Yopish
     }
 

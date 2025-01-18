@@ -1,4 +1,4 @@
-﻿<Window x:Class="DeLong_Desktop.Windows.Pirces.PirceWindow"
+﻿<Window x:Class="DeLong_Desktop.Windows.Pirces.PriceEditWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,11 +6,10 @@
         xmlns:local="clr-namespace:DeLong_Desktop.Windows.Pirces"
         mc:Ignorable="d"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Narx qo'shish oynasi" 
+        Title="PriceEditWindow" 
         Background="#334257" Height="240" Width="400"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
-   
     <StackPanel x:Name="spPrice" >
         <StackPanel Orientation="Vertical">
             <Grid Margin="20">
@@ -32,16 +31,12 @@
                 <!-- sotish narxi -->
                 <Label Content="Sotish narxi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
                 <TextBox x:Name="tbSellPrice" Foreground ="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbSellPrice_TextChanged"/>
-
-                <!-- Miqdori -->
-                <Label Content="Miqdori:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
-                <TextBox x:Name="tbQuantity" Foreground="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbQuantity_TextChanged"/>
-
+     
                 <!-- o'lchov birligi -->
                 <Label Content="O'lchov birligi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
                 <TextBox x:Name="tbUnitOfMesure" md:HintAssist.Hint="( kg, dona, metr, litr, ... )" Foreground="Snow" FontSize="16" Padding="5 0" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
             </Grid>
-            <Button x:Name="btnAddPrice" Content="Saqlash" Padding="0" FontSize="18" Style="{DynamicResource MaterialDesignPaperSecondaryLightButton}" Width="350" Foreground="Snow" Background="#548CA8" BorderThickness="0" Height="30" Click="btnAddPrice_Click"/>
+            <Button x:Name="btnEditPrice" Content="Yangilash" Padding="0" FontSize="18" Style="{DynamicResource MaterialDesignPaperSecondaryLightButton}" Width="350" Foreground="Snow" Background="#548CA8" BorderThickness="0" Height="30" Click="btnEditPrice_Click"/>
         </StackPanel>
     </StackPanel>
 
