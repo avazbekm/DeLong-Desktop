@@ -243,7 +243,6 @@ public partial class InputPage : Page
             GetPriceByIdAsync(product.Id);
         }
     }
-
     private async void GetPriceByIdAsync(long productId)
     {
         try
@@ -265,6 +264,7 @@ public partial class InputPage : Page
                         tbSellPrice = { Text = price.SellingPrice.ToString() },
                         tbQuantity = { Text = price.Quantity.ToString() },
                         tbUnitOfMesure = { Text = price.UnitOfMeasure },
+                        tbPriceId = { Text = price.Id.ToString() }
                     };
 
                     // Add the control to the wrpPrice WrapPanel
@@ -277,7 +277,6 @@ public partial class InputPage : Page
             MessageBox.Show($"Error retrieving prices: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
-
     private void btnAddPrice_Click(object sender, RoutedEventArgs e)
     {
         PirceWindow pirceWindow = new PirceWindow(services);

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DeLong_Desktop.Windows.Pirces"
         mc:Ignorable="d"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="PriceAddWindow" Height="180" Width="400"
         Background="#334257"
         WindowStartupLocation="CenterScreen"
@@ -12,6 +13,6 @@
     <StackPanel Margin="20">
         <Label Content="Miqdori:" FontSize="16" VerticalAlignment="Center" Foreground="Snow"/>
         <TextBox x:Name="tbQuantity" FontSize="16" CaretBrush="Snow" Padding="5 0" Foreground="Snow" VerticalAlignment="Center" Margin="0,10,0,0" TextChanged="tbQuantity_TextChanged"/>
-        <Button Content="Saqlash" FontSize="16" Background="#548CA8" Width="100" Height="30" HorizontalAlignment="Right" Click="Save_Click"/>
+        <Button Content="Saqlash" BorderThickness="0" FontSize="16" Background="#548CA8" Width="100" Height="30" HorizontalAlignment="Right" Click="Save_Click"/>
     </StackPanel>
 </Window>
