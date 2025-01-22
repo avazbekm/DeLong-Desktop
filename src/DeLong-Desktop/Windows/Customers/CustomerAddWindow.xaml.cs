@@ -6,6 +6,7 @@ using DeLong_Desktop.ApiService.DTOs.Users;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.Customers;
+using DeLong_Desktop.Pages.Customers;
 
 namespace DeLong_Desktop.Windows.Customers;
 
@@ -328,6 +329,13 @@ public partial class CustomerAddWindow : Window
             else
                 MessageBox.Show($"{"Saqlashda xatolik"}");
         }
+    }
+    private CustomersPage _customerPage;
+
+    private async Task UpdateCustomerDataGrid()
+    {
+        var customers = await this.customerService.RetrieveAllAsync();
+        _customerPage.userDataGrid.ItemsSource = customers;
     }
 
     // qo'shimcha funsiya
