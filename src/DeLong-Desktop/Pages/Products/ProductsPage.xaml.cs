@@ -31,7 +31,7 @@ public partial class ProductsPage : Page
     }
 
     // Kategoriyalarni yuklash
-    private async Task LoadCategoriesAsync()
+    private async void LoadCategoriesAsync()
     {
         try
         {

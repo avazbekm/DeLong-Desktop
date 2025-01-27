@@ -13,7 +13,6 @@ namespace DeLong_Desktop.Companents;
 public partial class PriceViewControl : UserControl
 {
     private readonly IServiceProvider services;
-
     public PriceViewControl(IServiceProvider services)
     {
         InitializeComponent();

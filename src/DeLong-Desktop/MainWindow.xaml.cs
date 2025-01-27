@@ -1,12 +1,11 @@
-﻿using System;
+﻿using System.Windows;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.Pages.Input;
 using DeLong_Desktop.Pages.Products;
 using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.Pages.Warehouses;
-using DeLong_Desktop.Windows.Customers;
+using DeLong_Desktop.Pages.SalesPractice;
 
 namespace DeLong_Desktop;
 
@@ -159,5 +158,11 @@ public partial class MainWindow : Window
                 UpdateLanguage();
             }
         }
+    }
+
+    private void btnChiqim_Click(object sender, RoutedEventArgs e)
+    {
+        SalePracticePage salePracticePage = new SalePracticePage(_services);
+        Navigator.Navigate(salePracticePage);
     }
 }
