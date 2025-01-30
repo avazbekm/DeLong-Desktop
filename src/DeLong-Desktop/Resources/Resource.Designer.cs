@@ -9,7 +9,6 @@
 //------------------------------------------------------------------------------
 
 namespace DeLong_Desktop.Resources {
-    using System;
     
     
     /// <summary>

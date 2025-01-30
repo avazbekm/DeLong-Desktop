@@ -19,6 +19,18 @@
 
         <Grid Grid.Column="0" Background="#334257">
             <StackPanel Margin="20">
+                
+                <Button x:Name="btnChiqim"
+                        Height="45"
+                        Margin="0 0 0 5"
+                        Content="Sotuv amallari"
+                        FontSize="18"
+                        BorderThickness="0"
+                        Foreground="Snow"                        
+                        Style="{DynamicResource MaterialDesignPaperLightButton}"
+                        Background="#476072"
+                        md:ButtonAssist.CornerRadius="17" Click="btnChiqim_Click"/>
+                
                 <Button x:Name="btnMijoz" 
                         Height="45"
                         Margin="0 0 0 5"
@@ -29,6 +41,7 @@
                         Foreground="Snow"
                         Style="{DynamicResource MaterialDesignPaperLightButton}"
                         md:ButtonAssist.CornerRadius="17" Click="bntMijoz_Click"/>
+         
                 <Button x:Name="btnMaxsulot"
                         Height="45"
                         Margin="0 0 0 5"
@@ -62,46 +75,35 @@
                         Background="#476072"
                         md:ButtonAssist.CornerRadius="17" Click="btnKirim_Click"/>
 
-                <Button x:Name="btnChiqim"
-                        Height="45"
-                        Margin="0 0 0 5"
-                        Content="Chiqim"
-                        FontSize="18"
-                        BorderThickness="0"
-                        Foreground="Snow"                        
-                        Style="{DynamicResource MaterialDesignPaperLightButton}"
-                        Background="#476072"
-                        md:ButtonAssist.CornerRadius="17"/>
-
                 <Border 
-    Height="45" 
-    Background="#476072" 
-    CornerRadius="15" 
-    Margin="0,0,0,10"
-    Effect="{StaticResource DefaultDropShadowEffect}">
+                    Height="45" 
+                    Background="#476072" 
+                    CornerRadius="15" 
+                    Margin="0,0,0,10"
+                    Effect="{StaticResource DefaultDropShadowEffect}">
 
                     <StackPanel 
-        Orientation="Horizontal" 
-        VerticalAlignment="Center"
-        HorizontalAlignment="Center">
+                        Orientation="Horizontal" 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
 
                         <!-- Globe Image -->
                         <Image 
-            Height="24"
-            Width="24"
-            Source="🌐"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Left" />
+                            Height="24"
+                            Width="24"
+                            Source="🌐"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left" />
 
                         <!-- Language ComboBox -->
                         <ComboBox 
-            x:Name="languageComboBox"
-            Width="150"
-            Foreground="#7AB2D3" 
-            Background="#476072"
-            FontFamily="JetBrains Mono" 
-            FontSize="18"
-            SelectionChanged="languageComboBox_SelectionChanged">
+                            x:Name="languageComboBox"
+                            Width="150"
+                            Foreground="#7AB2D3" 
+                            Background="#476072"
+                            FontFamily="JetBrains Mono" 
+                            FontSize="18"
+                            SelectionChanged="languageComboBox_SelectionChanged">   
 
                             <!-- ComboBox Item Styles -->
                             <ComboBox.Resources>

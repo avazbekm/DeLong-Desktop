@@ -1,11 +1,10 @@
-﻿using DeLong_Desktop.ApiService.DTOs.Prices;
-using DeLong_Desktop.ApiService.Interfaces;
-using DeLong_Desktop.ApiService.Services;
+﻿using System.Windows;
+using System.Windows.Controls;
 using DeLong_Desktop.Companents;
 using DeLong_Desktop.Pages.Input;
+using DeLong_Desktop.ApiService.Interfaces;
+using DeLong_Desktop.ApiService.DTOs.Prices;
 using Microsoft.Extensions.DependencyInjection;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace DeLong_Desktop.Windows.Pirces;
 

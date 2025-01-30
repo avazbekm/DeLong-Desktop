@@ -17,7 +17,7 @@
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Margin="10">
             <Border x:Name="brQidiruv" Background="#476072" CornerRadius="10" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="0 0 10 0" Width="220" Height="30">
-                <TextBox x:Name="txtSearch" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="Qidiruv" Style="{DynamicResource MaterialDesignFilledTextBox}" md:HintAssist.Foreground="Snow" md:HintAssist.IsFloating="True" Width="200" Height="32"  Background="#476072" Foreground="#EEEEEE" TextChanged="txtSearch_TextChanged"/>
+                <TextBox x:Name="txtSearch" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="Qidiruv" Style="{DynamicResource MaterialDesignFilledTextBox}" md:HintAssist.Foreground="Snow" Width="200" Height="32"  Background="#476072" Foreground="#EEEEEE" TextChanged="txtSearch_TextChanged"/>
             </Border>
             <Button x:Name="btnAdd" Content="Add" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Width="80" Height="30" VerticalAlignment="Center" Margin="0 0 10 0" Background="#476072" Foreground="#EEEEEE" Click="btnAdd_Click"/>
             <Button x:Name="btnExcel" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Content="Excelga o'tkazish" Width="140" Height="30" VerticalAlignment="Center" Background="#476072" Foreground="#EEEEEE" Click="btnExcel_Click"/>
