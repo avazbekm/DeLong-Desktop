@@ -6,6 +6,8 @@ using DeLong_Desktop.Pages.Products;
 using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.Pages.Warehouses;
 using DeLong_Desktop.Pages.SalesPractice;
+using Microsoft.Extensions.DependencyInjection;
+using DeLong_Desktop.ApiService.Interfaces;
 
 namespace DeLong_Desktop;
 

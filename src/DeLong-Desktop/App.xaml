@@ -14,7 +14,7 @@
                 <!--end::Material design-->
 
                 <!--begin::Styles-->
-                <ResourceDictionary Source="/Icons/IconsPath.xaml"/>
+                <ResourceDictionary Source="Icons/IconsPath.xaml"/>
 
                 <!--end::Styles-->
             </ResourceDictionary.MergedDictionaries>

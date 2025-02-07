@@ -1,183 +1,330 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Collections.ObjectModel;
+using DeLong_Desktop.Windows.DollarKurs;
 using DeLong_Desktop.ApiService.Interfaces;
-using DeLong_Desktop.ApiService.DTOs.Prices;
 using Microsoft.Extensions.DependencyInjection;
+using System.Windows.Media;
 
 namespace DeLong_Desktop.Pages.SalesPractice;
 
-/// <summary>
-/// Interaction logic for SalePracticePage.xaml
-/// </summary>
 public partial class SalePracticePage : Page
 {
-    private readonly IPriceService priceService;
-    private readonly IProductService productService;
-    private readonly IServiceProvider _services;
+    private readonly IPriceService _priceService;
+    private readonly IProductService _productService;
+    private readonly IKursDollarService kursDollarService;
+    private readonly IServiceProvider services;
+
+    private TextBox lastUpdatedTextBox;
+
+    public ObservableCollection<ProductItem> Items { get; set; } = new();
+
     public SalePracticePage(IServiceProvider services)
     {
         InitializeComponent();
-        _services = services;
-        productService = _services.GetRequiredService<IProductService>();
-        priceService = _services.GetRequiredService<IPriceService>();
+        this.services = services;
+        _productService = services.GetRequiredService<IProductService>();
+        _priceService = services.GetRequiredService<IPriceService>();
+        kursDollarService = services.GetRequiredService<IKursDollarService>();
+
+        ProductGrid.ItemsSource = Items; // Faqat 1 marta bog'lash
+
+        // ObservableCollection o'zgarishlarini kuzatish
+        Items.CollectionChanged += (s, e) => UpdateTotalSum();
 
         LoadingProductData();
-    }
 
+        LoadDollarRate(); // Dollar kursini yuklash
+    }
+    //kursni databazadan olib kelish
+    private async void LoadDollarRate()
+    {
+        try
+        {
+            var latestRate = await kursDollarService.RetrieveByIdAsync();
+            if (latestRate != null && latestRate.TodayDate.Equals(DateTime.Now.ToString("dd.MM.yyyy")))
+            {
+                tbDolarKurs.Text = latestRate.SellingDollar.ToString("F2"); // Formatlangan kurs qiymatini ko'rsatish
+            }
+            else
+                MessageBox.Show("Bugungi dollar kursni o'rnating.","Kurs ma'lumot");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Dollar kursini yuklashda xatolik: {ex.Message}");
+        }
+    }
+    private void UpdateTotalSum()
+    {
+        decimal totalSum = Items.Sum(item => item.TotalPrice);
+        tbTotalPrice.Text = totalSum.ToString("N2");
+    }
+    // comboboxni product bilan to'ldiramiz
     private async void LoadingProductData()
     {
         try
         {
-            // Ma'lumotlarni olish
-            var products = await productService.RetrieveAllAsync();
+            var products = await _productService.RetrieveAllAsync();
             if (products == null || !products.Any())
             {
-                MessageBox.Show("Mahsulotlar mavjud emas!");
                 return;
             }
 
-            cbxProduct.Items.Clear();
-
-            // ComboBox kolleksiyasi uchun yangi ro'yxat yaratish
-            var comboboxItems = new List<ComboboxItem>();
-       
-            // Mahsulotlarni qo'shish
-            comboboxItems.AddRange(products.Select(product => new ComboboxItem
+            var comboboxItems = products.Select(product => new ComboboxItem
             {
                 Id = product.Id,
-                ProductName = char.ToUpper(product.Name[0]) + product.Name.Substring(1),
-            }));
+                ProductName = char.ToUpper(product.Name[0]) + product.Name[1..]
+            }).ToList();
 
-            // ComboBox'ga yangi ro'yxatni bog'lash
             cbxProduct.ItemsSource = comboboxItems;
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Xatolik yuz berdi: {ex.Message}");
+            MessageBox.Show($"Xatolik: {ex.Message}");
         }
     }
 
-    private void tbQuantity_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        // Matn maydonini olish
-        var textBox = sender as TextBox;
-
-        if (textBox != null)
-        {
-            // Faqat musbat raqamlar va bir dona nuqta (.) qoldirish
-            string filteredText = new string(textBox.Text.Where(c => char.IsDigit(c) || c == '.').ToArray());
-
-            // Nuqta faqat bir marta bo'lishiga ruxsat
-            int dotCount = filteredText.Count(c => c == '.');
-            if (dotCount > 1)
-            {
-                int lastDotIndex = filteredText.LastIndexOf('.');
-                filteredText = filteredText.Remove(lastDotIndex, 1); // Oxirgi nuqtani olib tashlash
-            }
-
-            // Agar matn o'zgargan bo'lsa, uni qayta o'rnating
-            if (textBox.Text != filteredText)
-            {
-                int caretIndex = textBox.CaretIndex; // Joriy kursor pozitsiyasini saqlash
-                textBox.Text = filteredText; // Tozalangan matnni o'rnatish
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Kursorni to'g'ri joyda saqlash
-            }
-        }
-    }
-
-    private void cbxProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        var selectedProduct = cbxProduct.SelectedItem as ComboboxItem;
-        if (selectedProduct != null)
-        {
-            SalePracticeInfo.ProductId = selectedProduct.Id;
-            SalePracticeInfo.ProductName = selectedProduct.ProductName;
-        }
-    }
-
-    List<ProductItem> items = new List<ProductItem>();
     private async void btnProductSell_Click(object sender, RoutedEventArgs e)
     {
         try
         {
-            // belgilangan mahsulot narxlarini chaqirib olamiz
-            var prices = await priceService.RetrieveAllAsync(SalePracticeInfo.ProductId);
-
-            // sonini decimalga o'tkazib olamiz
-            decimal quantity = decimal.Parse(tbQuantity.Text);
-
-            int quantityIndex = 0;
-
-            foreach (var price in prices) 
+            if (cbxProduct.SelectedItem is not ComboboxItem selectedProduct ||
+                !decimal.TryParse(tbQuantity.Text, out decimal quantity))
             {
-                quantityIndex++;
+                MessageBox.Show("Mahsulotni tanlang yoki miqdorini kiriting!");
+                return;
+            }
+
+            var prices = await _priceService.RetrieveAllAsync(selectedProduct.Id);
+            if (prices == null) return;
+
+            foreach (var price in prices)
+            {
                 if (price.Quantity >= quantity)
                 {
-                    items.Add(new ProductItem()
+                    var newItem = new ProductItem
                     {
                         PriceId = price.Id,
-                        ProductName = SalePracticeInfo.ProductName,
-                        SerialNumber = quantityIndex,
+                        ProductName = selectedProduct.ProductName,
+                        SerialNumber = Items.Count + 1,
                         Price = price.SellingPrice,
                         Unit = price.UnitOfMeasure,
-                        Quantity = quantity
-                    });
-                    ProductGrid.ItemsSource = items;
-
-                    PriceUpdateDto priceUpdateDto = new PriceUpdateDto()
-                    {
-                        Id = price.Id,
-                        ArrivalPrice = price.ArrivalPrice,
-                        ProductId = price.ProductId,
-                        Quantity = price.Quantity - quantity,
-                        SellingPrice = price.SellingPrice,
-                        UnitOfMeasure = price.UnitOfMeasure
+                        Quantity = quantity,
+                        CostPrice = price.ArrivalPrice,
+                        ProductId = price.ProductId
                     };
 
-                    bool result = await priceService.ModifyAsync(priceUpdateDto);
-                    if (!result)
-                    {
-                        MessageBox.Show("Saqlashda xatolik yuz berdi.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    Items.Add(newItem); // Avtomatik UI yangilanadi
                     break;
+
+                    //var priceUpdateDto = new PriceUpdateDto
+                    //{
+                    //    Id = price.Id,
+                    //    Quantity = price.Quantity - quantity,
+                    //    ArrivalPrice = price.ArrivalPrice,
+                    //    SellingPrice = price.SellingPrice,
+                    //    UnitOfMeasure = price.UnitOfMeasure,
+                    //    ProductId = price.ProductId
+                    //};
+
+                    //await _priceService.ModifyAsync(priceUpdateDto);
                 }
-                else if (price.Quantity < quantity && prices.Count().Equals(1))
+                else if(price.Quantity < quantity)
                 {
-                    items.Add(new ProductItem()
+                    var newItem = new ProductItem
                     {
-                        ProductName = SalePracticeInfo.ProductName,
                         PriceId = price.Id,
-                        SerialNumber = quantityIndex,
+                        ProductName = selectedProduct.ProductName,
+                        SerialNumber = Items.Count + 1,
                         Price = price.SellingPrice,
                         Unit = price.UnitOfMeasure,
-                        Quantity = price.Quantity
-                    });
-                    ProductGrid.ItemsSource = items;
-                    PriceUpdateDto priceUpdateDto = new PriceUpdateDto()
-                    {
-                        Id = price.Id,
-                        ArrivalPrice = price.ArrivalPrice,
-                        ProductId = price.ProductId,
-                        Quantity = 0,
-                        SellingPrice = price.SellingPrice,
-                        UnitOfMeasure = price.UnitOfMeasure
+                        Quantity = price.Quantity,
+                        CostPrice = price.ArrivalPrice,
+                        ProductId = price.ProductId
                     };
 
-                    bool result = await priceService.ModifyAsync(priceUpdateDto);
-                    if (!result)
-                    {
-                        MessageBox.Show("Saqlashda xatolik yuz berdi.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-                else 
-                {
-                    
+                    Items.Add(newItem); // Avtomatik UI yangilanadi
+                    quantity -= price.Quantity;
+
+                    if (quantity == 0)
+                        break;
                 }
             }
         }
-        catch 
+        catch (Exception ex)
         {
-            
+            MessageBox.Show($"Xatolik: {ex.Message}");
         }
+
+    }
+
+    private void btnRemoveProduct_Click(object sender, RoutedEventArgs e)
+    {
+        var button = sender as Button;
+        var item = button.DataContext as ProductItem; //  DataGrid elementlari tipi
+
+        if (item != null && ProductGrid.ItemsSource is ObservableCollection<ProductItem> items)
+        {
+            items.Remove(item);
+        }
+    }
+
+    private void UpdateTotalSumm()
+    {
+        try
+        {
+            // Parse values from tbCrashSum and tbqarz
+            double crashSum = ParseDouble(tbCrashSum.Text);
+            double qarzSum = ParseDouble(tbqarz.Text);
+            double plastikSum = ParseDouble(tbPlastikSum.Text);
+            double dollar = ParseDouble(tbDollar.Text);
+            double kurs = ParseDouble(tbDolarKurs.Text);
+            double chegirma = ParseDouble(tbDiscount.Text);
+
+            // Calculate the total and display it in tbQoldiq
+            tbQoldiq.Text = (crashSum + qarzSum + plastikSum + dollar * kurs).ToString("N2");
+            double qoldi = ParseDouble(tbQoldiq.Text);
+
+            // Umumiy summa jamlaymiz
+            double gridTotalSum = Items.Sum(item => (double)item.TotalPrice);
+            if (gridTotalSum - chegirma < 0 ||
+                gridTotalSum - qoldi < 0 ||
+                gridTotalSum - qoldi - chegirma < 0)
+            {
+                string message = "Umumiy summa minus bo'lishi mumkin emas.";
+                if (lastUpdatedTextBox != null)
+                {
+                    lastUpdatedTextBox.Text = null;
+                }
+                MessageBox.Show(message);
+                return;
+            }
+            tbTotalPrice.Text = (gridTotalSum - qoldi - chegirma).ToString("N2");
+        }
+        catch
+        {
+            MessageBox.Show("Bugungi dollar kursini o'rnating.");
+        }
+    }
+
+    private double ParseDouble(string input)
+    {
+        // Helper method to safely parse numbers
+        double.TryParse(input, out double value);
+        return value;
+    }
+
+    private void tbCrashSum_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TrackTextBoxUpdate(sender);
+        ValidateAndCleanInput(sender);
+    }
+
+    private void tbPlastikSum_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TrackTextBoxUpdate(sender);
+        ValidateAndCleanInput(sender);
+    }
+
+    private void tbDollar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TrackTextBoxUpdate(sender);
+        ValidateAndCleanInput(sender);
+    }
+
+    private void tbqarz_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TrackTextBoxUpdate(sender);
+        ValidateAndCleanInput(sender);
+    }
+
+    private void tbDiscount_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        TrackTextBoxUpdate(sender);
+        ValidateAndCleanInput(sender);
+    }
+
+    private void TrackTextBoxUpdate(object sender)
+    {
+        if (sender is TextBox textBox)
+        {
+            lastUpdatedTextBox = textBox; // oxirgi yangilangan textbox ni saqlaymiz
+        }
+    }
+
+    private void ValidateAndCleanInput(object sender)
+    {
+        if (sender is TextBox textBox)
+        {
+            int caretIndex = textBox.CaretIndex;
+
+            // Kiritilgan matn
+            string input = textBox.Text;
+
+            // Tozalangan matn (faqat raqam va bitta nuqta)
+            string cleanInput = "";
+            bool hasDot = false;
+
+            foreach (char c in input)
+            {
+                if (char.IsDigit(c))
+                {
+                    cleanInput += c;
+                }
+                else if (c == '.' && !hasDot)
+                {
+                    cleanInput += c;
+                    hasDot = true;
+                }
+            }
+
+            // Agar matn o'zgarsa, yangilaymiz
+            if (textBox.Text != cleanInput)
+            {
+                textBox.Text = cleanInput;
+                textBox.CaretIndex = Math.Min(caretIndex, cleanInput.Length);
+            }
+        }
+        UpdateTotalSumm();
+    }
+
+    private void btnDollarKurs_Click(object sender, RoutedEventArgs e)
+    {
+        DollarKursWindow dollarKursWindow = new DollarKursWindow(services);
+        dollarKursWindow.ShowDialog();
+        LoadDollarRate(); // Dollar kursini yuklash
+    }
+
+    private void cbxProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
+
+    private void tbQuatity_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        ValidateAndCleanInput(sender);
+        if (sender is TextBox textBox)
+        {
+            var dataGridRow = FindParent<DataGridRow>(textBox);
+            if (dataGridRow != null)
+            {
+                var productItem = dataGridRow.Item as ProductItem;
+                if (productItem != null)
+                {
+                    decimal.TryParse(textBox.Text, out decimal newQuantity);
+                    productItem.Quantity = newQuantity;
+                    UpdateTotalSum();
+                }
+            }
+        }
+    }
+    private T FindParent<T>(DependencyObject child) where T : DependencyObject
+    {
+        var parent = VisualTreeHelper.GetParent(child);
+        if (parent == null) return null;
+
+        if (parent is T parentType) return parentType;
+
+        return FindParent<T>(parent);
     }
 }

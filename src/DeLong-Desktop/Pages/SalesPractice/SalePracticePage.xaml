@@ -6,20 +6,26 @@
       xmlns:local="clr-namespace:DeLong_Desktop.Pages.SalesPractice"
       mc:Ignorable="d" 
       xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="760" d:DesignWidth="1250"
       Title="SalePracticePage">
  
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="155"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="450"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <Border Margin="5 5 5 0" Background="#334257" Grid.Row="0" CornerRadius="5 5 0 0">
             <StackPanel>
                 <Border Margin="5 5 5 1" Background="#548CA8"  CornerRadius="5 5 0 0" Height="45">
                     <DockPanel>
                         <!-- Tugma o'ng tomonga joylashadi -->
-                        <Button x:Name="btnBack" Content="Qaytish" BorderThickness="0" Background="#334257" DockPanel.Dock="Right" Margin="5 2" md:ButtonAssist.CornerRadius="5"/>
+                        <Button x:Name="btnDollarKurs" Content="$ ni kirit" BorderThickness="0" Background="#334257" DockPanel.Dock="Right" Margin="5 2" md:ButtonAssist.CornerRadius="5" Click="btnDollarKurs_Click"/>
+                        <Border Width="100" Background="#F1F1F1" Margin="5 7 5 7" CornerRadius="5" DockPanel.Dock="Right">
+                            <TextBlock x:Name="tbDolarKurs" Padding="6 5 2 2" Width="95"  Background="Transparent" Foreground="Black" FontFamily="bold" FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Center" DockPanel.Dock="Right" Margin="3" />
+                        </Border>   
+                        <TextBlock Text="$ kursi:" Foreground="Snow" FontFamily="bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Right" Margin="5 5 15 5"/>
                         <!-- Matn avtomatik chap tomonda joylashadi -->
                         <Label Content="Sotuvni amalga oshirish" Foreground="Snow" FontSize="20" Margin="10 1"/>
                     </DockPanel>
@@ -31,17 +37,10 @@
                             <ComboBox x:Name="cbxProduct" Background="#62A3C4" SelectedValuePath="Id" SelectionChanged="cbxProduct_SelectionChanged" Width="235" Padding="4" Foreground="Black" BorderThickness="1" BorderBrush="Black" FontSize="20" HorizontalAlignment="Left" Margin="10 1" IsEditable="True" StaysOpenOnEdit="True" md:HintAssist.Hint="-- Mahsulot tanlang --" DisplayMemberPath="ProductName" TextSearch.TextPath="ProductName"/>
                         </StackPanel>
                         <StackPanel DockPanel.Dock="Left">
-                            <Label Content="Soni" Foreground="Snow" BorderBrush="Black" FontSize="20" Margin="0 2 10 3" Width="150" HorizontalAlignment="Left"/>
+                            <Label Content="Miqdori" Foreground="Snow" BorderBrush="Black" FontSize="20" Margin="0 2 10 3" Width="150" HorizontalAlignment="Left"/>
                             <Grid Width="150" Height="35" HorizontalAlignment="Left">
                                 <!--TextBox-->
-                                <TextBox x:Name="tbQuantity" FontSize="18" Foreground="Snow" BorderBrush="Black" Padding="5" BorderThickness="1" md:HintAssist.Hint="1" TextAlignment="Center" TextChanged="tbQuantity_TextChanged"/>
-                                <!--Arrows-->
-                                <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0">
-                                    <!--Up Arrow-->
-                                    <Button Content="▲" Background="#62A3C4" BorderThickness="0" Padding="0" Height="16" Width="20" />
-                                    <!--Down Arrow-->
-                                    <Button Content="▼" Background="#62A3C4" BorderThickness="0" Padding="0" Height="16" Width="20" />
-                                </StackPanel>
+                                <TextBox x:Name="tbQuantity" FontSize="20" Foreground="White" BorderBrush="Black" Padding="2 2 2 5" BorderThickness="1" md:HintAssist.Hint="1.0" TextAlignment="Center"  />
                             </Grid>
                         </StackPanel>
                         <StackPanel DockPanel.Dock="Left">
@@ -68,7 +67,7 @@
                 </Border>
             </StackPanel>
         </Border>
-        <Border x:Name="brProductsAdded" Visibility="Visible" Margin="5 0 5 5" Background="#334257" Grid.Row="1" CornerRadius="0 0 5 5">
+        <Border x:Name="brProductsAdded" Visibility="Visible" Margin="5 0 5 0" Background="#334257" Grid.Row="1">
             <StackPanel>
                 <Border Margin="5 5 5 1" Background="#548CA8" Grid.Row="0" CornerRadius="5 5 0 0" Height="45">
                     <DockPanel>
@@ -76,41 +75,136 @@
                         <Label Content="Mahsulotlar" Foreground="Snow" FontSize="20" Margin="10 1"/>
                     </DockPanel>
                 </Border>
-                <Border Margin="5 1 5 5" Background="#62A3C4" CornerRadius="0 0 5 5" Height="250">
-                    <StackPanel>
-                        <DataGrid x:Name="ProductGrid" AutoGenerateColumns="False" CanUserAddRows="False" Margin="10">
-                            <DataGrid.Columns>
-                                <!-- Tartib Nomer -->
-                                <DataGridTextColumn Header="T/r" Binding="{Binding SerialNumber}" Width="50" IsReadOnly="True"/>
+                <Border Margin="5 1 5 5" Background="#62A3C4" CornerRadius="0 0 5 5" Height="390">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <DataGrid x:Name="ProductGrid" AutoGenerateColumns="False" CanUserAddRows="False" Margin="10">
+                                <DataGrid.Columns>
+                                    <!-- Tartib Nomer -->
+                                    <DataGridTextColumn Header="T/r" Binding="{Binding SerialNumber}" Width="50" IsReadOnly="True"/>
 
-                                <!-- Mahsulot Nomi -->
-                                <DataGridTextColumn Header="Mahsulot nomi" Binding="{Binding ProductName}" Width="350" IsReadOnly="True"/>
+                                    <!-- Mahsulot Nomi -->
+                                    <DataGridTextColumn Header="Mahsulot nomi" Binding="{Binding ProductName}" Width="350" IsReadOnly="True"/>
 
-                                <!-- Narxi -->
-                                <DataGridTextColumn Header="Narxi" Binding="{Binding Price}" Width="200" IsReadOnly="True"/>
+                                    <!-- Narxi -->
+                                    <DataGridTextColumn Header="Narxi" Binding="{Binding Price}" Width="200" IsReadOnly="True"/>
 
-                                <!-- O'lchov birligi -->
-                                <DataGridTextColumn Header="O'lchov birligi" Binding="{Binding Unit}" Width="120" IsReadOnly="True"/>
+                                    <!-- Miqdori (tahrirlash mumkin) -->
+                                    <DataGridTemplateColumn Header="Miqdori"  Width="150">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <!-- Miqdor ko'rsatish -->
+                                                <TextBox x:Name="tbQuatity" Text="{Binding Quantity}" Width="100" TextAlignment="Center" VerticalAlignment="Center" TextChanged="tbQuatity_TextChanged"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                <!-- Miqdori (tahrirlash mumkin) -->
-                                <DataGridTextColumn Header="Miqdori" Binding="{Binding Quantity}" Width="120"/>
+                                    <!-- O'lchov birligi -->
+                                    <DataGridTextColumn Header="O'lchov birligi" Binding="{Binding Unit}" Width="120" IsReadOnly="True"/>
 
-                                <!-- Umumiy summasi -->
-                                <DataGridTextColumn Header="Umumiy summasi" Binding="{Binding TotalPrice}" Width="200" IsReadOnly="True"/>
+                                    <!-- Umumiy summasi -->
+                                    <DataGridTextColumn Header="Umumiy summasi" Binding="{Binding TotalPrice}" Width="200" IsReadOnly="True"/>
 
-                                <!-- O'chirish tugmasi -->
-                                <DataGridTemplateColumn Header="O'chirish" Width="120">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Content="O'chirish" Background="Red" Foreground="White"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </StackPanel>
+                                    <!-- O'chirish tugmasi -->
+                                    <DataGridTemplateColumn Header="O'chirish" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button x:Name="btnRemoveProduct" Content="🗑️" Padding="0" Background="Red" Foreground="White" Click="btnRemoveProduct_Click"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </ScrollViewer>
                 </Border>
             </StackPanel>
+        </Border>
+        <Border x:Name="brInProcessProducts" Grid.Row="2" Margin="5 0" Background="#334257" CornerRadius="0">
+            <Border Background="#62A3C4" Margin="5 0 5 0" CornerRadius="5 5 0 0">
+                <DockPanel >
+                    <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
+                        <Label Content="Mijozlar" Foreground="Snow" FontSize="20" Margin="10 2 10 2" Width="150" HorizontalAlignment="Left"/>
+                        <ComboBox x:Name="cbxPayment" Background="#62A3C4" SelectedValuePath="Id"  Width="235" Padding="4" Foreground="Black" BorderThickness="1" BorderBrush="Black" FontSize="20" HorizontalAlignment="Left" Margin="10 1" IsEditable="True" StaysOpenOnEdit="True" md:HintAssist.Hint="-- Mijozni tanlang --" DisplayMemberPath="ProductName" TextSearch.TextPath="ProductName"/>
+                    </StackPanel>
+                    <Border BorderThickness="2 0 0 0" BorderBrush="Black" Margin="0 3 10 5"/>
+                    <!--Jami summasi-->
+                    <StackPanel DockPanel.Dock="Left">
+                        <Label Content="Jami summa" Foreground="Snow" BorderBrush="Black" FontSize="20" Margin="0 2 10 3" Width="140" HorizontalAlignment="Left"/>
+                        <Grid Width="140" Height="35" HorizontalAlignment="Left">
+                            <!--TextBox-->
+                            <Border CornerRadius="7" Background="#62A3C4" BorderThickness="1" BorderBrush="Black">
+                                <TextBlock x:Name="tbTotalPrice" FontSize="18"  Text="0.00" Foreground="Snow" Background="Transparent" Padding="5" TextAlignment="Right" Height="33" VerticalAlignment="Bottom"/>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                    <!--naqd-->
+                    <StackPanel DockPanel.Dock="Left">
+                        <Label Content="Naqd" Foreground="Snow" BorderBrush="Black" FontSize="20" Margin="0 2 10 3" Width="140" HorizontalAlignment="Left"/>
+                        <Grid Width="140" Height="35" HorizontalAlignment="Left">
+                            <!--TextBox-->
+                            <Border CornerRadius="7" Background="#F1F1F1">
+                                <TextBox x:Name="tbCrashSum" md:HintAssist.Hint="0.00" FontSize="18" Foreground="Black" Background="Transparent" Padding="5" BorderThickness="0" TextAlignment="Left" TextChanged="tbCrashSum_TextChanged"/>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                   <!--plastik-->
+                    <StackPanel DockPanel.Dock="Left">
+                        <Label Content="Plastik" Foreground="Snow" BorderBrush="Black" FontSize="20" Margin="0 2 10 3" Width="140" HorizontalAlignment="Center"/>
+                        <Grid Width="140" Height="35" HorizontalAlignment="Left">
+                            <!--TextBox-->
+                            <Border CornerRadius="7" Background="#F1F1F1">
+                                <TextBox x:Name="tbPlastikSum" md:HintAssist.Hint="0.00" FontSize="18" Foreground="Black" Background="Transparent" Padding="5" BorderThickness="0" TextAlignment="Left" TextChanged="tbPlastikSum_TextChanged"/>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                    <!--dollar-->
+                    <StackPanel DockPanel.Dock="Left">
+                        <Label Content="Dollar $ " Foreground="Snow" BorderBrush="Black" FontSize="20" Margin="0 2 10 3" Width="100" HorizontalAlignment="Center"/>
+                        <Grid Width="100" Height="35" HorizontalAlignment="Left">
+                            <!--TextBox-->
+                            <Border CornerRadius="7" Background="#F1F1F1">
+                                <TextBox x:Name="tbDollar" md:HintAssist.Hint="0.00" FontSize="18" Foreground="Black" Background="Transparent" Padding="5" BorderThickness="0" TextAlignment="Left" TextChanged="tbDollar_TextChanged"/>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                    <!--qarz-->
+                    <StackPanel DockPanel.Dock="Left">
+                        <Label Content="Qarz " Foreground="Snow" BorderBrush="Black" FontSize="20" Margin="0 2 10 3" Width="120" HorizontalAlignment="Center"/>
+                        <Grid Width="120" Height="35" HorizontalAlignment="Left">
+                            <!--TextBox-->
+                            <Border CornerRadius="7" Background="#F1F1F1">
+                                <TextBox x:Name="tbqarz" md:HintAssist.Hint="0.00" FontSize="18" Foreground="Black" Background="Transparent" Padding="5" BorderThickness="0" TextAlignment="Left" TextChanged="tbqarz_TextChanged" Height="35" VerticalAlignment="Top"/>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                    <!--Chegirma-->
+                    <StackPanel DockPanel.Dock="Left">
+                        <Label Content="Chegirma" Foreground="Snow" BorderBrush="Black" FontSize="20" Margin="0 2 10 3" Width="100" HorizontalAlignment="Center"/>
+                        <Grid Width="100" Height="35" HorizontalAlignment="Left">
+                            <!--TextBox-->
+                            <Border CornerRadius="7" Background="#F1F1F1">
+                                <TextBox x:Name="tbDiscount" md:HintAssist.Hint="0.00" FontSize="18" Foreground="Black" Background="Transparent" Padding="5" BorderThickness="0" TextAlignment="Left" TextChanged="tbDiscount_TextChanged" Height="35" VerticalAlignment="Bottom"/>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                    <!--To'lov summasi-->
+                    <StackPanel DockPanel.Dock="Left">
+                        <Label Content="To'lov summa" Foreground="Snow" BorderBrush="Black" FontSize="20" Margin="0 2 10 3" Width="150" HorizontalAlignment="Left"/>
+                        <Grid Width="150" Height="35" HorizontalAlignment="Left">
+                            <!--TextBox-->
+                            <Border CornerRadius="7" Background="#62A3C4" BorderThickness="1" BorderBrush="Black">
+                                <TextBlock x:Name="tbQoldiq" Text="0.00" FontSize="18"  Foreground="Snow" Background="Transparent" Padding="5" TextAlignment="Right"/>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </Border>
+        <Border Grid.Row="3" Margin="5 0" Background="#334257" CornerRadius="0 0 5 5">
+            <Border Background="#62A3C4" Margin="5 0 5 5" BorderThickness="0 1 0 0" CornerRadius="0 0 5 5">
+                <Button x:Name="btnFinishSale" BorderThickness="0" Foreground="Snow" Style="{DynamicResource MaterialDesignPaperSecondaryButton}" Background="#476072" FontSize="20" Content="Yakunlash" md:ButtonAssist.CornerRadius="5" HorizontalAlignment="Right" Width="170" Height="40" Margin="5 5 70 5"/>
+            </Border>
         </Border>
     </Grid>
 </Page>
