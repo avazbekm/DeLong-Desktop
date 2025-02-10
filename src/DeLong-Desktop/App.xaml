@@ -15,8 +15,12 @@
 
                 <!--begin::Styles-->
                 <ResourceDictionary Source="Icons/IconsPath.xaml"/>
-
                 <!--end::Styles-->
+
+                <!--begin::Styles-->
+                <ResourceDictionary Source="Themes/LightTheme.xaml"/>
+                <!--end::Styles-->
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

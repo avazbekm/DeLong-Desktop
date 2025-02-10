@@ -164,7 +164,7 @@
                         <Grid Width="100" Height="35" HorizontalAlignment="Left">
                             <!--TextBox-->
                             <Border CornerRadius="7" Background="#F1F1F1">
-                                <TextBox x:Name="tbDollar" md:HintAssist.Hint="0.00" FontSize="18" Foreground="Black" Background="Transparent" Padding="5" BorderThickness="0" TextAlignment="Left" TextChanged="tbDollar_TextChanged"/>
+                                <TextBox x:Name="tbDollar" md:HintAssist.Hint="0.00" FontSize="18" Foreground="Black" Background="Transparent" Padding="5" BorderThickness="0" TextAlignment="Left" TextChanged="tbDollar_TextChanged" Height="35" VerticalAlignment="Bottom"/>
                             </Border>
                         </Grid>
                     </StackPanel>

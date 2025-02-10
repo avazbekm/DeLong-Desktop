@@ -1,11 +1,11 @@
-﻿using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.ApiService.DTOs.Enums;
 using DeLong_Desktop.ApiService.DTOs.Users;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.Customers;
+using DeLong_Desktop.ApiService.Helpers;
 
 namespace DeLong_Desktop.Windows.Customers;
 
@@ -38,6 +38,7 @@ public partial class CustomerAddWindow : Window
         spYattCutomer.Visibility = Visibility.Hidden;
         spYurYattJis.Visibility = Visibility.Visible;
         spQaytish.Visibility = Visibility.Hidden;
+        spEmployee.Visibility = Visibility.Hidden;
     }
     private void rbtnYaTT_Checked(object sender, RoutedEventArgs e)
     {
@@ -46,6 +47,7 @@ public partial class CustomerAddWindow : Window
         spYattCutomer.Visibility = Visibility.Visible;
         spYurYattJis.Visibility = Visibility.Visible;
         spQaytish.Visibility = Visibility.Hidden;
+        spEmployee.Visibility = Visibility.Hidden;
     }
     private void rbtnJismoniy_Checked(object sender, RoutedEventArgs e)
     {
@@ -54,7 +56,18 @@ public partial class CustomerAddWindow : Window
         spYattCutomer.Visibility = Visibility.Hidden;
         spYurYattJis.Visibility = Visibility.Visible;
         spQaytish.Visibility = Visibility.Hidden;
+        spEmployee.Visibility = Visibility.Hidden;
     }
+    private void rbtnEmployee_Checked(object sender, RoutedEventArgs e)
+    {
+        spYurCutomer.Visibility = Visibility.Hidden;
+        spJisCutomer.Visibility = Visibility.Hidden;
+        spYattCutomer.Visibility = Visibility.Hidden;
+        spYurYattJis.Visibility = Visibility.Visible;
+        spQaytish.Visibility = Visibility.Hidden;
+        spEmployee.Visibility = Visibility.Visible;
+    }
+
     private void btnJisAdd_Click(object sender, RoutedEventArgs e)
     {
         UserCreationDto userCreationDto = new UserCreationDto();
@@ -338,21 +351,8 @@ public partial class CustomerAddWindow : Window
         //TextBoxlar
     private async void txtJisJSHSHIR_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var textBox = sender as TextBox;
-
-        if (textBox != null)
-        {
-            // Faqat raqamlarni qoldirish
-            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-            // Eski noto'g'ri matnni to'g'rilash
-            if (textBox.Text != numericText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = numericText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
-            }
-        }
+        
+        ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
 
         if (txtJisJSHSHIR.Text.Length.Equals(14))
         {
@@ -375,96 +375,19 @@ public partial class CustomerAddWindow : Window
     }
     private void txtJisTelefon_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var textBox = sender as TextBox;
-        if (textBox != null)
-        {
-            // Faqat raqamlar va bo'sh joylarni qoldirish
-            string filteredText = new string(textBox.Text.Where(c => char.IsDigit(c) || c == ' ').ToArray());
-
-            // Agar noto'g'ri belgilar kirgan bo'lsa, matnni yangilash
-            if (textBox.Text != filteredText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = filteredText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni to'g'ri joylash
-            }
-        }
+        ValidationHelper.ValidatePhone(sender as TextBox);
     }
     private void txtJisTelegramRaqam_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var textBox = sender as TextBox;
-        if (textBox != null)
-        {
-            // Faqat raqamlar, bo'sh joy va "+" belgilarini qoldirish
-            string filteredText = new string(textBox.Text.Where(c => char.IsDigit(c) || c == ' ' || c == '+').ToArray());
-
-            // Agar noto'g'ri belgilar kirgan bo'lsa, matnni yangilash
-            if (textBox.Text != filteredText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = filteredText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni to'g'ri joylash
-            }
-        }
+        ValidationHelper.ValidatePhone(sender as TextBox);
     }
     private void txtPasportSeria_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var textBox = sender as TextBox;
-        if (textBox != null)
-        {
-            string inputText = textBox.Text.ToUpper(); // Matnni katta harflarga o‘zgartirish
-            string filteredText = string.Empty;
-
-            for (int i = 0; i < inputText.Length; i++)
-            {
-                if (i < 2) // Birinchi 2 ta belgi uchun faqat katta harflar
-                {
-                    if (char.IsLetter(inputText[i]) && char.IsUpper(inputText[i]))
-                    {
-                        filteredText += inputText[i];
-                    }
-                }
-                else if (i < 9) // Keyingi 7 ta belgi uchun faqat raqamlar
-                {
-                    if (char.IsDigit(inputText[i]))
-                    {
-                        filteredText += inputText[i];
-                    }
-                }
-            }
-
-            // Maksimal uzunlikni cheklash (2 harf + 7 raqam)
-            if (filteredText.Length > 9)
-            {
-                filteredText = filteredText.Substring(0, 9);
-            }
-
-            // Matnni yangilash, agar noto'g'ri kirishlar bo‘lsa
-            if (textBox.Text != filteredText)
-            {
-                int caretIndex = textBox.CaretIndex; // Ko'rsatkichni saqlash
-                textBox.Text = filteredText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni tiklash
-            }
-        }
+        ValidationHelper.ValidatePasportInformation(sender as TextBox);
     }
     private async void txtYurINN_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var textBox = sender as TextBox;
-
-        if (textBox != null)
-        {
-            // Faqat raqamlarni qoldirish
-            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-            // Eski noto'g'ri matnni to'g'rilash
-            if (textBox.Text != numericText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = numericText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
-            }
-        }
+        ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
 
         if (txtYurINN.Text.Length == 9)
         {
@@ -487,104 +410,19 @@ public partial class CustomerAddWindow : Window
     }
     private void txtYurMFO_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var textBox = sender as TextBox;
-
-        if (textBox != null)
-        {
-            // Faqat raqamlarni qoldirish
-            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-            // Eski noto'g'ri matnni to'g'rilash
-            if (textBox.Text != numericText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = numericText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
-            }
-        }
+        ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
     }
     private void txtYurOKONX_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var textBox = sender as TextBox;
-
-        if (textBox != null)
-        {
-            // Faqat raqamlarni qoldirish
-            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-            // Eski noto'g'ri matnni to'g'rilash
-            if (textBox.Text != numericText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = numericText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
-            }
-        }
+        ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
     }
     private void txtYurXisobRaqam_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var textBox = sender as TextBox;
-        if (textBox == null) return;
-
-        // Retrieve only digits from the current text
-        string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-        // Format: XXXXX-XXX-X-XXXXXXXX-XXX
-        StringBuilder formattedText = new StringBuilder();
-        int[] groupSizes = { 5, 3, 1, 8, 3 };
-        int currentIndex = 0;
-
-        foreach (int groupSize in groupSizes)
-        {
-            if (numericText.Length > currentIndex)
-            {
-                int charsToTake = Math.Min(groupSize, numericText.Length - currentIndex);
-                formattedText.Append(numericText.Substring(currentIndex, charsToTake));
-                currentIndex += charsToTake;
-
-                // Add a separator unless it's the last group
-                if (currentIndex < numericText.Length && formattedText.Length < 20)
-                    formattedText.Append('-');
-            }
-        }
-
-        // Save the original caret position
-        int oldCaretIndex = textBox.CaretIndex;
-
-        // Update the text only if it has changed
-        if (textBox.Text != formattedText.ToString())
-        {
-            textBox.Text = formattedText.ToString();
-
-            // Adjust caret position dynamically
-            int newCaretIndex = oldCaretIndex;
-
-            // Prevent cursor from being stuck after separators
-            if (oldCaretIndex > 0 && oldCaretIndex < formattedText.Length && formattedText[oldCaretIndex - 1] == '-')
-            {
-                newCaretIndex++;
-            }
-
-            textBox.CaretIndex = Math.Min(newCaretIndex, textBox.Text.Length);
-        }
+        ValidationHelper.ValidateAccountNumber(sender as TextBox);
     }
     private async void txtYattJSHSHIR_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var textBox = sender as TextBox;
-
-        if (textBox != null)
-        {
-            // Faqat raqamlarni qoldirish
-            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-            // Eski noto'g'ri matnni to'g'rilash
-            if (textBox.Text != numericText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = numericText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
-            }
-        }
+        ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
 
         if (txtYattJSHSHIR.Text.Length.Equals(14))
         {
@@ -605,101 +443,40 @@ public partial class CustomerAddWindow : Window
     }
     private void txtYurPhone_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var textBox = sender as TextBox;
-        if (textBox != null)
-        {
-            // Faqat raqamlar va bo'sh joylarni qoldirish
-            string filteredText = new string(textBox.Text.Where(c => char.IsDigit(c) || c == ' ').ToArray());
-
-            // Agar noto'g'ri belgilar kirgan bo'lsa, matnni yangilash
-            if (textBox.Text != filteredText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = filteredText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni to'g'ri joylash
-            }
-        }
+        ValidationHelper.ValidatePhone(sender as TextBox);
     }
     private void txtYattXisobRaqam_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var textBox = sender as TextBox;
-        if (textBox == null) return;
-
-        // Retrieve only digits from the current text
-        string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-        // Format: XXXXX-XXX-X-XXXXXXXX-XXX
-        StringBuilder formattedText = new StringBuilder();
-        int[] groupSizes = { 5, 3, 1, 8, 3 };
-        int currentIndex = 0;
-
-        foreach (int groupSize in groupSizes)
-        {
-            if (numericText.Length > currentIndex)
-            {
-                int charsToTake = Math.Min(groupSize, numericText.Length - currentIndex);
-                formattedText.Append(numericText.Substring(currentIndex, charsToTake));
-                currentIndex += charsToTake;
-
-                // Add a separator unless it's the last group
-                if (currentIndex < numericText.Length && formattedText.Length < 20)
-                    formattedText.Append('-');
-            }
-        }
-
-        // Save the original caret position
-        int oldCaretIndex = textBox.CaretIndex;
-
-        // Update the text only if it has changed
-        if (textBox.Text != formattedText.ToString())
-        {
-            textBox.Text = formattedText.ToString();
-
-            // Adjust caret position dynamically
-            int newCaretIndex = oldCaretIndex;
-
-            // Prevent cursor from being stuck after separators
-            if (oldCaretIndex > 0 && oldCaretIndex < formattedText.Length && formattedText[oldCaretIndex - 1] == '-')
-            {
-                newCaretIndex++;
-            }
-
-            textBox.CaretIndex = Math.Min(newCaretIndex, textBox.Text.Length);
-        }
+        ValidationHelper.ValidateAccountNumber(sender as TextBox);
     }
     private void txtYattMFO_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var textBox = sender as TextBox;
-
-        if (textBox != null)
-        {
-            // Faqat raqamlarni qoldirish
-            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-            // Eski noto'g'ri matnni to'g'rilash
-            if (textBox.Text != numericText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = numericText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
-            }
-        }
+        ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
     }
     private void txtYattTelefon_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var textBox = sender as TextBox;
-        if (textBox != null)
-        {
-            // Faqat raqamlar va bo'sh joylarni qoldirish
-            string filteredText = new string(textBox.Text.Where(c => char.IsDigit(c) || c == ' ').ToArray());
+        ValidationHelper.ValidatePhone(sender as TextBox);
+    }
+    private void txtEmpPasportSeria_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        ValidationHelper.ValidatePasportInformation(sender as TextBox);
+    }
+    private void txtEmployeeJSHSHIR_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
+    }
+    private void txtEmpPhone_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        ValidationHelper.ValidatePhone(sender as TextBox);
+    }
+    private void txtEmpTelegram_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        ValidationHelper.ValidatePhone(sender as TextBox);
+    }
 
-            // Agar noto'g'ri belgilar kirgan bo'lsa, matnni yangilash
-            if (textBox.Text != filteredText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = filteredText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni to'g'ri joylash
-            }
-        }
+    private void btnEmpAdd_Click(object sender, RoutedEventArgs e)
+    {
+
     }
 }
+

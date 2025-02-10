@@ -9,7 +9,7 @@ public class ProductItem : INotifyPropertyChanged
     public string Unit { get; set; } = string.Empty;
     public long ProductId { get; set; }
     public decimal CostPrice {  get; set; } 
-
+    public decimal BalanceAmount { get; set; }
 
     private decimal _quantity;
     public decimal Quantity

@@ -111,7 +111,8 @@ public partial class SalePracticePage : Page
                         Unit = price.UnitOfMeasure,
                         Quantity = quantity,
                         CostPrice = price.ArrivalPrice,
-                        ProductId = price.ProductId
+                        ProductId = price.ProductId,
+                        BalanceAmount = price.Quantity
                     };
 
                     Items.Add(newItem); // Avtomatik UI yangilanadi
@@ -140,7 +141,8 @@ public partial class SalePracticePage : Page
                         Unit = price.UnitOfMeasure,
                         Quantity = price.Quantity,
                         CostPrice = price.ArrivalPrice,
-                        ProductId = price.ProductId
+                        ProductId = price.ProductId,
+                        BalanceAmount = price.Quantity
                     };
 
                     Items.Add(newItem); // Avtomatik UI yangilanadi
@@ -228,6 +230,12 @@ public partial class SalePracticePage : Page
 
     private void tbDollar_TextChanged(object sender, TextChangedEventArgs e)
     {
+        if (tbDolarKurs.Text == "")
+        {
+            tbDollar.Text = null;
+            MessageBox.Show("Bugungi dollar kursini o'rnating.");
+            return;
+        }
         TrackTextBoxUpdate(sender);
         ValidateAndCleanInput(sender);
     }
@@ -303,17 +311,29 @@ public partial class SalePracticePage : Page
     private void tbQuatity_TextChanged(object sender, TextChangedEventArgs e)
     {
         ValidateAndCleanInput(sender);
-        if (sender is TextBox textBox)
+        if (ProductGrid.SelectedItem is ProductItem selectedItem)
         {
-            var dataGridRow = FindParent<DataGridRow>(textBox);
-            if (dataGridRow != null)
+
+            if (sender is TextBox textBox)
             {
-                var productItem = dataGridRow.Item as ProductItem;
-                if (productItem != null)
+                var dataGridRow = FindParent<DataGridRow>(textBox);
+                if (dataGridRow != null)
                 {
-                    decimal.TryParse(textBox.Text, out decimal newQuantity);
-                    productItem.Quantity = newQuantity;
-                    UpdateTotalSum();
+                    var productItem = dataGridRow.Item as ProductItem;
+                    if (productItem != null)
+                    {
+                        decimal.TryParse(textBox.Text, out decimal newQuantity);
+                        if (selectedItem.BalanceAmount < newQuantity)
+                        {
+                            MessageBox.Show($"{selectedItem.ProductName} " +
+                                $"mahsulotning bazadagi qoldiq miqdori: {selectedItem.BalanceAmount} {selectedItem.Unit}");
+                            productItem.Quantity = selectedItem.BalanceAmount;
+                        }
+                        else
+                            productItem.Quantity = newQuantity;
+
+                        UpdateTotalSum();
+                    }
                 }
             }
         }
