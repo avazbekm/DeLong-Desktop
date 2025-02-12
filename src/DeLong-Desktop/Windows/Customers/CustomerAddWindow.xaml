@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         x:Name="wdMijozOyna"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Mijozlar qo'shish oynasi" Height="700" Width="500"
+        Title="Mijozlar qo'shish oynasi" Height="720" Width="500"
         WindowStartupLocation="CenterScreen">
 
     <Grid  Background="{DynamicResource PrimaryBackground}">
@@ -28,7 +28,7 @@
             <!-- Jismoniy shaxs RadioButton -->
             <RadioButton x:Name="rbtnJismoniy" Margin="20 0 30 0" Background="Snow" Content="Jismoniy shaxs" Foreground="Snow" GroupName="PersonType" Checked="rbtnJismoniy_Checked" />
             <!--hodimlar-->
-            <RadioButton x:Name="rbtnEmployee" Background="Snow" Content="Xodim" Foreground="{DynamicResource SecondaryTextColor}" GroupName="PersonType" Checked="rbtnEmployee_Checked" />
+            <RadioButton x:Name="rbtnEmployee" Background="{DynamicResource OtherBackground}" Content="Xodim" Foreground="{DynamicResource SecondaryTextColor}" GroupName="PersonType" Checked="rbtnEmployee_Checked" />
         </StackPanel>
             <!--Yurdik shaxs-->
         <StackPanel x:Name="spYurCutomer" Visibility="Hidden"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
@@ -76,26 +76,16 @@
         </StackPanel>
 
         <!--Hodimlar-->
+        
         <StackPanel x:Name="spEmployee" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
             <TextBox x:Name="txtEmployeeJSHSHIR" MaxLength="14" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="JSHSHIR" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource PrimaryCursorColor}" TextChanged="txtEmployeeJSHSHIR_TextChanged"/>
-            <TextBox x:Name="txtEmpLastname" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Familiya" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource PrimaryCursorColor}"/>
-            <TextBox x:Name="txtEmpFirstname" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Ismi" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource PrimaryCursorColor}"/>
-            <TextBox x:Name="txtEmpSurname" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Otasining ismi" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource PrimaryCursorColor}"/>
-            <StackPanel Orientation="Horizontal" Margin="0 10">
-                <TextBox x:Name="txtEmpPasportSeria" MaxLength="9" FontSize="18" Height="32" Width="200" Margin="0 0 15 0" Padding="5 0 0 0" md:HintAssist.Hint="Pasport seria va raqami" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource PrimaryCursorColor}" TextChanged="txtEmpPasportSeria_TextChanged"/>
-                <ComboBox x:Name="cbxLavozim" Background="{DynamicResource SelectedBackground}" SelectedValuePath="Id" HorizontalAlignment="Center" Width="220" Padding="3" Foreground="{DynamicResource SecondaryTextColor}" BorderThickness="0" BorderBrush="{DynamicResource SelectedBackground}" FontSize="18" Margin="5 1" IsEditable="True" StaysOpenOnEdit="True" md:HintAssist.Hint="-- Lavozim --" DisplayMemberPath="ProductName" TextSearch.TextPath="ProductName"/>
-            </StackPanel>
-            <TextBox x:Name="txtEmpAdress" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Manzili" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource PrimaryCursorColor}"/>
-            <TextBox x:Name="txtEmpPhone" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telefon nomer" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource PrimaryCursorColor}" TextChanged="txtEmpPhone_TextChanged"/>
-            <TextBox x:Name="txtEmpTelegram" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telegram raqam" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource PrimaryCursorColor}" TextChanged="txtEmpTelegram_TextChanged"/>
-            <StackPanel Orientation="Horizontal" Height="30" Margin="0 10 0 5" Background="#476072">
-                <RadioButton x:Name="rbtnMale" Checked="RadioButton_Checked" Margin="30 0 70 0" Background="Snow" FontSize="18" Content="Erkak" Foreground="{DynamicResource SecondaryTextColor}" GroupName="Gender"/>
-                <RadioButton x:Name="rbtnFamale" Checked="RadioButton_Checked" Margin="20 0 30 0" Background="Snow" FontSize="18" Content="Ayol" Foreground="{DynamicResource SecondaryTextColor}" GroupName="Gender"/>
-            </StackPanel>
-            <DatePicker x:Name="dateOfBirthPickerEmp" md:HintAssist.Foreground="{DynamicResource SecondaryTextColor}" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Tug'ilgan sana" Margin="0 10 0 5" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}"  Height="30"/>
-            <DatePicker x:Name="dateOfIssuePickerEmp" md:HintAssist.Foreground="{DynamicResource SecondaryTextColor}" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Pasport berilgan sana" Margin="0 10 0 5" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}"  Height="30"/>
-            <DatePicker x:Name="dateOfExpiryPickerEmp" md:HintAssist.Foreground="{DynamicResource SecondaryTextColor}" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Amal qilish muddati" Margin="0 10 0 5" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}"  Height="30"/>
-            <Button x:Name="btnEmpAdd" Visibility="Visible" Content="Add Employee" BorderThickness="0" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Height="30" Margin="0,20,0,0" Click="btnEmpAdd_Click"/>
+            <RadioButton x:Name="rbtnAgent" Margin="0 15 0 10" Background="{DynamicResource SelectedBackground}" Content="Agent" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{DynamicResource SecondaryTextColor}" GroupName="PositionType" Checked="RadioButton1_Checked"/>
+            <RadioButton x:Name="rbtnOmborchi" Margin="0 0 0 10" Background="{DynamicResource SelectedBackground}" Content="Omborchi" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{DynamicResource SecondaryTextColor}" GroupName="PositionType" Checked="RadioButton1_Checked"/>
+            <RadioButton x:Name="rbtnSotuvchi" Margin="0 0 0 10" Background="{DynamicResource SelectedBackground}" Content="Sotuvchi" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{DynamicResource SecondaryTextColor}" GroupName="PositionType" Checked="RadioButton1_Checked"/>
+            <RadioButton x:Name="rbtnBoshqaruvchi" Margin="0 0 0 10" Background="{DynamicResource SelectedBackground}" Content="Boshqaruvchi" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="{DynamicResource SecondaryTextColor}" GroupName="PositionType" Checked="RadioButton1_Checked"/>
+            <TextBox x:Name="txtLogin" FontSize="18" Height="30"  Margin="0 5" Padding="5 0 0 0" md:HintAssist.Hint="Login" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource PrimaryCursorColor}"/>
+            <TextBox x:Name="txtParol" FontSize="18" Height="30" Margin="0 5" Padding="5 0 0 0" md:HintAssist.Hint="Parol" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource PrimaryCursorColor}"/>
+            <Button x:Name="btnSaveEmployee" Visibility="Visible" Content="Saqlash" BorderThickness="0" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Height="30" Margin="0 20 0 0" Click="btnSaveEmployee_Click"/>
         </StackPanel>
 
         <!--qo'shimcha buttonlar-->

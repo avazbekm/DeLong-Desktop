@@ -9,15 +9,15 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Mahsulotlar oynasi">
 
-    <Grid Background="#334257">
+    <Grid Background="{DynamicResource PrimaryBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!--qidiruv category add qismlari-->
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Margin="10">
-            <Border x:Name="brQidiruv" Background="#476072" CornerRadius="10" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="0 0 10 0" Width="220" Height="30">
-                <TextBox x:Name="txtSearch" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="Qidiruv" Style="{DynamicResource MaterialDesignFilledTextBox}" md:HintAssist.Foreground="Snow" md:HintAssist.IsFloating="True" Width="200" Height="32"  Background="#476072" Foreground="#EEEEEE" TextChanged="txtSearch_TextChanged" Margin="10,0,10,0" VerticalAlignment="Top"/>
+            <Border x:Name="brQidiruv" Background="{DynamicResource SelectedBackground}" CornerRadius="10" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="0 0 10 0" Width="220" Height="30">
+                <TextBox x:Name="txtSearch" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="Qidiruv" Style="{DynamicResource MaterialDesignFilledTextBox}" md:HintAssist.Foreground="{DynamicResource SecondaryTextColor}" md:HintAssist.IsFloating="True" Width="200" Height="32"  Background="Transparent" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource PrimaryCursorColor}" TextChanged="txtSearch_TextChanged" Margin="10,0,10,0" VerticalAlignment="Top"/>
             </Border>
             <ComboBox x:Name="cmbCategory" Width="150" Height="30" VerticalAlignment="Center" Margin="0 0 10 0" Padding="10 0" Background="#476072" Foreground="#EEEEEE" BorderBrush="Transparent" md:HintAssist.Hint="Category" md:HintAssist.Foreground="Snow" md:TextFieldAssist.TextFieldCornerRadius="10" DisplayMemberPath="Name" SelectedValuePath="Id"  SelectionChanged="cmbCategory_SelectionChanged">
                 <ComboBox.ItemContainerStyle>

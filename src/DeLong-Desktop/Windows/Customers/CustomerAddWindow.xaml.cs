@@ -1,11 +1,12 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using DeLong_Desktop.ApiService.Helpers;
 using DeLong_Desktop.ApiService.DTOs.Enums;
 using DeLong_Desktop.ApiService.DTOs.Users;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.Customers;
-using DeLong_Desktop.ApiService.Helpers;
+using System.Windows.Media;
 
 namespace DeLong_Desktop.Windows.Customers;
 
@@ -67,7 +68,23 @@ public partial class CustomerAddWindow : Window
         spQaytish.Visibility = Visibility.Hidden;
         spEmployee.Visibility = Visibility.Visible;
     }
+    private void RadioButton_Checked(object sender, RoutedEventArgs e)
+    {
+        RadioButton selectedRadioButton = sender as RadioButton;
+        if (selectedRadioButton != null)
+        {
+            gender = selectedRadioButton.Content.ToString(); // Tanlangan matn: "Erkak" yoki "Ayol"
+        }
+        else
+        {
+            MessageBox.Show("Jinsini tanglang iltimos.");
+            return;
+        }
 
+    }
+
+        
+        // buttonlar 
     private void btnJisAdd_Click(object sender, RoutedEventArgs e)
     {
         UserCreationDto userCreationDto = new UserCreationDto();
@@ -131,22 +148,6 @@ public partial class CustomerAddWindow : Window
                 MessageBox.Show($"{"Saqlashda xatolik"}");
         }
     }
-    private void RadioButton_Checked(object sender, RoutedEventArgs e)
-    {
-        RadioButton selectedRadioButton = sender as RadioButton;
-        if (selectedRadioButton != null)
-        {
-            gender = selectedRadioButton.Content.ToString(); // Tanlangan matn: "Erkak" yoki "Ayol"
-        }
-        else
-        {
-            MessageBox.Show("Jinsini tanglang iltimos.");
-            return;
-        }
-
-    }
-        
-        // buttonlar 
     private async void btnYurAdd_Click(object sender, RoutedEventArgs e)
     {
         CustomerCreationDto customerCreationDto = new CustomerCreationDto();
@@ -475,6 +476,49 @@ public partial class CustomerAddWindow : Window
     }
 
     private void btnEmpAdd_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void rbtnAgent_Checked(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void rbtnOmborchi_Checked(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void rbtnSotuvchi_Checked(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void rbtnBoshqaruvchi_Checked(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void RadioButton1_Checked(object sender, RoutedEventArgs e)
+    {
+        if (sender is RadioButton radioButton)
+        {
+            // Tanlangan radio tugmani yashil rangga bo'yash
+            radioButton.Background = (Brush)TryFindResource("SecondaryBackground");
+
+            // Boshqa radio tugmalar fonini asl holida qoldirish
+            foreach (var rb in new[] { rbtnAgent, rbtnOmborchi, rbtnSotuvchi, rbtnBoshqaruvchi })
+            {
+                if (rb != radioButton)
+                {
+                    rb.Background = (Brush)FindResource("SelectedBackground");
+                }
+            }
+        }
+    }
+
+    private void btnSaveEmployee_Click(object sender, RoutedEventArgs e)
     {
 
     }
