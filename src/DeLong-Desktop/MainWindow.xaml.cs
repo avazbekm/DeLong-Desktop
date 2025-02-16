@@ -8,6 +8,7 @@ using DeLong_Desktop.Pages.Warehouses;
 using DeLong_Desktop.Pages.SalesPractice;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.Interfaces;
+using DeLong_Desktop.Pages.Reports;
 
 namespace DeLong_Desktop;
 
@@ -166,5 +167,12 @@ public partial class MainWindow : Window
     {
         SalePracticePage salePracticePage = new SalePracticePage(_services);
         Navigator.Navigate(salePracticePage);
+    }
+
+    private void btnHisobot_Click(object sender, RoutedEventArgs e)
+    {
+        ReportPage reportPage = new ReportPage();
+        Navigator.Navigate(reportPage);
+
     }
 }

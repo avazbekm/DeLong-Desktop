@@ -2,7 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:DeLong_Desktop">
-   
+
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -22,6 +22,17 @@
                 <!--end::Styles-->
 
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- Custom Report Button Style -->
+            <Style x:Key="ReportButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="Purple"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Padding" Value="10,5"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

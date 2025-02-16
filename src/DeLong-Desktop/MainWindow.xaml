@@ -143,6 +143,7 @@
                        Foreground="Snow"                        
                        Style="{DynamicResource MaterialDesignPaperLightButton}"
                        Background="#476072"
+                       Click="btnHisobot_Click"
                        md:ButtonAssist.CornerRadius="17"/>
 
                 <Button x:Name="btnChiqish"
