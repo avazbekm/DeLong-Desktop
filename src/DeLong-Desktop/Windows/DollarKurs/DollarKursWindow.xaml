@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DeLong_Desktop.Windows.DollarKurs"
         mc:Ignorable="d"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Background="#334257" Height="190" Width="400"
+        Background="{DynamicResource SelectedBackground}" Height="190" Width="400"
         WindowStartupLocation="CenterScreen"
         Title="Kursni o'rnatish oynasi" 
         ResizeMode="NoResize">

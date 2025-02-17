@@ -1,5 +1,7 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using DeLong_Desktop.Pages.Customers;
+using DeLong_Desktop.ApiService.Helpers;
 using DeLong_Desktop.ApiService.Interfaces;
 using DeLong_Desktop.ApiService.DTOs.Category;
 using DeLong_Desktop.ApiService.DTOs.Products;
@@ -156,6 +158,11 @@ public partial class ProductAddWindow : Window
     {
         try
         {
+            if (txtbCategoryName.Text.Length == 0)
+            {
+                MessageBox.Show("Kategoriya nomini kiriting.");
+                return;
+            }
             // Kategoriyani yaratish uchun DTO obyekti
             CategoryCreationDto categoryCreationDto = new CategoryCreationDto
             {
@@ -279,11 +286,13 @@ public partial class ProductAddWindow : Window
         {
             ProductCreationDto productCreationDto = new ProductCreationDto();
 
-            if (txtbName.Text.Equals("") || txtbDescription.Text.Equals(""))
+            if (txtbName.Text.Equals(""))
                 MessageBox.Show("Ma'lumotni to'liq kiriting.");
 
             productCreationDto.Name = txtbName.Text.Trim();
             productCreationDto.Description = txtbDescription.Text.Trim();
+            if (txtbStock.Text.Length > 0)
+                productCreationDto.MinStockLevel = decimal.Parse(txtbStock.Text);
             productCreationDto.IsActive = true;
 
             productCreationDto.CategoryId = CustomerInfo.CategoryId;
@@ -309,5 +318,10 @@ public partial class ProductAddWindow : Window
             MessageBox.Show($"Kutilmagan xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
-    
+
+    private void txtbStock_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var textBox = sender as TextBox;
+        ValidationHelper.ValidateOnlyNumberInput(textBox);
+    }
 }

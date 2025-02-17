@@ -1,14 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Text.Json.Serialization;
 
 namespace DeLong_Desktop.ApiService.DTOs.Employees;
 
 public class EmployeeCreationDto
 {
-    [Required]
+    [JsonPropertyName("userId")]
     public long UserId { get; set; }
+
+    [JsonPropertyName("warehouseId")]
+    public long WarehouseId { get; set; }
+
+    [JsonPropertyName("username")]
     public string Username { get; set; } = string.Empty;  // Foydalanuvchi nomi (Login)
 
-    [Required(ErrorMessage = "Parol kiritilishi shart")]
-    [MinLength(8, ErrorMessage = "Parol kamida 8 ta belgidan iborat bo'lishi kerak")]
+    [JsonPropertyName("password")]
     public string Password { get; set; } = string.Empty; // Parol (hashlangan)
 }

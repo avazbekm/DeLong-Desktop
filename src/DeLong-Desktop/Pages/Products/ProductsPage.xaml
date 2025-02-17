@@ -41,7 +41,7 @@
         <DataGrid x:Name="dataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="#548CA8" Foreground="Black">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Product Name" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="StockLevel" Binding="{Binding Stock}" Width="*" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Kategoriya" Binding="{Binding Category}" Width="*" IsReadOnly="True"/>
                 <DataGridTextColumn Header="IsActive" Binding="{Binding IsActive}" Width="*"/>
                 <DataGridTemplateColumn Header="Actions" Width="150">

@@ -134,7 +134,7 @@ public partial class PriceEditWindow : Window
             PriceUpdateDto priceUpdateDto = new PriceUpdateDto()
             {
                 Id = PriceInfo.PriceId,
-                ArrivalPrice = decimal.Parse(tbIncomePrice.Text),
+                CostPrice = decimal.Parse(tbIncomePrice.Text),
                 SellingPrice = decimal.Parse(tbSellPrice.Text),
                 Quantity = PriceInfo.Quatitiy,
                 UnitOfMeasure = tbUnitOfMesure.Text,

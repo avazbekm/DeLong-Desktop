@@ -1,12 +1,13 @@
-﻿using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.Pages.Customers;
+using DeLong_Desktop.ApiService.Helpers;
 using DeLong_Desktop.ApiService.DTOs.Enums;
 using DeLong_Desktop.ApiService.DTOs.Users;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.Customers;
+using DeLong_Desktop.ApiService.DTOs.Employees;
 
 namespace DeLong_Desktop.Windows.Customers;
 
@@ -17,6 +18,7 @@ public partial class CustomerEditWindow : Window
 {
     private readonly IUserService userService;
     private readonly ICustomerService customerService;
+    private readonly IEmployeeService employeeService;
     private readonly IServiceProvider services;
     public bool IsCreated { get; set; } = false;
     string gender = "";
@@ -27,6 +29,7 @@ public partial class CustomerEditWindow : Window
         this.services = services;
         this.userService = services.GetRequiredService<IUserService>();
         this.customerService = services.GetRequiredService<ICustomerService>();
+        this.employeeService = services.GetRequiredService<IEmployeeService>();
     }
     // radio buttonlar
     private void RadioButton_Checked(object sender, RoutedEventArgs e)
@@ -53,20 +56,7 @@ public partial class CustomerEditWindow : Window
     private async void txtJisJSHSHIR_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-
-        if (textBox != null)
-        {
-            // Faqat raqamlarni qoldirish
-            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-            // Eski noto'g'ri matnni to'g'rilash
-            if (textBox.Text != numericText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = numericText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
-            }
-        }
+        ValidationHelper.ValidateOnlyNumberInput(textBox);
 
         if (txtJisJSHSHIR.Text.Length.Equals(14))
         {
@@ -86,96 +76,23 @@ public partial class CustomerEditWindow : Window
     private void txtJisTelefon_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-        if (textBox != null)
-        {
-            // Faqat raqamlar va bo'sh joylarni qoldirish
-            string filteredText = new string(textBox.Text.Where(c => char.IsDigit(c) || c == ' ').ToArray());
-
-            // Agar noto'g'ri belgilar kirgan bo'lsa, matnni yangilash
-            if (textBox.Text != filteredText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = filteredText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni to'g'ri joylash
-            }
-        }
+        ValidationHelper.ValidatePhone(textBox);
     }
     private void txtJisTelegramRaqam_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-        if (textBox != null)
-        {
-            // Faqat raqamlar, bo'sh joy va "+" belgilarini qoldirish
-            string filteredText = new string(textBox.Text.Where(c => char.IsDigit(c) || c == ' ' || c == '+').ToArray());
-
-            // Agar noto'g'ri belgilar kirgan bo'lsa, matnni yangilash
-            if (textBox.Text != filteredText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = filteredText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni to'g'ri joylash
-            }
-        }
+        ValidationHelper.ValidatePhone(textBox);
     }
     private void txtPasportSeria_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-        if (textBox != null)
-        {
-            string inputText = textBox.Text.ToUpper(); // Matnni katta harflarga o‘zgartirish
-            string filteredText = string.Empty;
-
-            for (int i = 0; i < inputText.Length; i++)
-            {
-                if (i < 2) // Birinchi 2 ta belgi uchun faqat katta harflar
-                {
-                    if (char.IsLetter(inputText[i]) && char.IsUpper(inputText[i]))
-                    {
-                        filteredText += inputText[i];
-                    }
-                }
-                else if (i < 9) // Keyingi 7 ta belgi uchun faqat raqamlar
-                {
-                    if (char.IsDigit(inputText[i]))
-                    {
-                        filteredText += inputText[i];
-                    }
-                }
-            }
-
-            // Maksimal uzunlikni cheklash (2 harf + 7 raqam)
-            if (filteredText.Length > 9)
-            {
-                filteredText = filteredText.Substring(0, 9);
-            }
-
-            // Matnni yangilash, agar noto'g'ri kirishlar bo‘lsa
-            if (textBox.Text != filteredText)
-            {
-                int caretIndex = textBox.CaretIndex; // Ko'rsatkichni saqlash
-                textBox.Text = filteredText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni tiklash
-            }
-        }
+        ValidationHelper.ValidatePasportInformation(textBox);
     }
     private async void txtYurINN_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-
-        if (textBox != null)
-        {
-            // Faqat raqamlarni qoldirish
-            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-            // Eski noto'g'ri matnni to'g'rilash
-            if (textBox.Text != numericText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = numericText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
-            }
-        }
-
+        ValidationHelper.ValidateOnlyNumberInput(textBox);
+  
         if (txtYurINN.Text.Length == 9)
         {
             var inn = int.Parse(txtYurINN.Text);
@@ -195,103 +112,22 @@ public partial class CustomerEditWindow : Window
     private void txtYurMFO_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-
-        if (textBox != null)
-        {
-            // Faqat raqamlarni qoldirish
-            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-            // Eski noto'g'ri matnni to'g'rilash
-            if (textBox.Text != numericText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = numericText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
-            }
-        }
+        ValidationHelper.ValidateOnlyNumberInput(textBox);
     }
     private void txtYurOKONX_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-
-        if (textBox != null)
-        {
-            // Faqat raqamlarni qoldirish
-            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-            // Eski noto'g'ri matnni to'g'rilash
-            if (textBox.Text != numericText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = numericText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
-            }
-        }
+        ValidationHelper.ValidateOnlyNumberInput(textBox);
     }
     private void txtYurXisobRaqam_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-        if (textBox == null) return;
-
-        // Retrieve only digits from the current text
-        string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-        // Format: XXXXX-XXX-X-XXXXXXXX-XXX
-        StringBuilder formattedText = new StringBuilder();
-        int[] groupSizes = { 5, 3, 1, 8, 3 };
-        int currentIndex = 0;
-
-        foreach (int groupSize in groupSizes)
-        {
-            if (numericText.Length > currentIndex)
-            {
-                int charsToTake = Math.Min(groupSize, numericText.Length - currentIndex);
-                formattedText.Append(numericText.Substring(currentIndex, charsToTake));
-                currentIndex += charsToTake;
-
-                // Add a separator unless it's the last group
-                if (currentIndex < numericText.Length && formattedText.Length < 20)
-                    formattedText.Append('-');
-            }
-        }
-
-        // Save the original caret position
-        int oldCaretIndex = textBox.CaretIndex;
-
-        // Update the text only if it has changed
-        if (textBox.Text != formattedText.ToString())
-        {
-            textBox.Text = formattedText.ToString();
-
-            // Adjust caret position dynamically
-            int newCaretIndex = oldCaretIndex;
-
-            // Prevent cursor from being stuck after separators
-            if (oldCaretIndex > 0 && oldCaretIndex < formattedText.Length && formattedText[oldCaretIndex - 1] == '-')
-            {
-                newCaretIndex++;
-            }
-
-            textBox.CaretIndex = Math.Min(newCaretIndex, textBox.Text.Length);
-        }
+        ValidationHelper.ValidateAccountNumber(textBox);
     }
     private async void txtYattJSHSHIR_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-
-        if (textBox != null)
-        {
-            // Faqat raqamlarni qoldirish
-            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-            // Eski noto'g'ri matnni to'g'rilash
-            if (textBox.Text != numericText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = numericText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
-            }
-        }
+        ValidationHelper.ValidateOnlyNumberInput(textBox);
 
         if (txtYattJSHSHIR.Text.Length.Equals(14))
         {
@@ -310,119 +146,27 @@ public partial class CustomerEditWindow : Window
     private void txtYurPhone_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-        if (textBox != null)
-        {
-            // Faqat raqamlar va bo'sh joylarni qoldirish
-            string filteredText = new string(textBox.Text.Where(c => char.IsDigit(c) || c == ' ').ToArray());
-
-            // Agar noto'g'ri belgilar kirgan bo'lsa, matnni yangilash
-            if (textBox.Text != filteredText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = filteredText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni to'g'ri joylash
-            }
-        }
+        ValidationHelper.ValidatePhone(textBox);
     }
     private void txtYattXisobRaqam_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-        if (textBox == null) return;
-
-        // Retrieve only digits from the current text
-        string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-        // Format: XXXXX-XXX-X-XXXXXXXX-XXX
-        StringBuilder formattedText = new StringBuilder();
-        int[] groupSizes = { 5, 3, 1, 8, 3 };
-        int currentIndex = 0;
-
-        foreach (int groupSize in groupSizes)
-        {
-            if (numericText.Length > currentIndex)
-            {
-                int charsToTake = Math.Min(groupSize, numericText.Length - currentIndex);
-                formattedText.Append(numericText.Substring(currentIndex, charsToTake));
-                currentIndex += charsToTake;
-
-                // Add a separator unless it's the last group
-                if (currentIndex < numericText.Length && formattedText.Length < 20)
-                    formattedText.Append('-');
-            }
-        }
-
-        // Save the original caret position
-        int oldCaretIndex = textBox.CaretIndex;
-
-        // Update the text only if it has changed
-        if (textBox.Text != formattedText.ToString())
-        {
-            textBox.Text = formattedText.ToString();
-
-            // Adjust caret position dynamically
-            int newCaretIndex = oldCaretIndex;
-
-            // Prevent cursor from being stuck after separators
-            if (oldCaretIndex > 0 && oldCaretIndex < formattedText.Length && formattedText[oldCaretIndex - 1] == '-')
-            {
-                newCaretIndex++;
-            }
-
-            textBox.CaretIndex = Math.Min(newCaretIndex, textBox.Text.Length);
-        }
+        ValidationHelper.ValidateAccountNumber(textBox);
     }
     private void txtYattMFO_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-
-        if (textBox != null)
-        {
-            // Faqat raqamlarni qoldirish
-            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-            // Eski noto'g'ri matnni to'g'rilash
-            if (textBox.Text != numericText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = numericText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
-            }
-        }
+        ValidationHelper.ValidateOnlyNumberInput(textBox);
     }
     private void txtYattTelefon_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-        if (textBox != null)
-        {
-            // Faqat raqamlar va bo'sh joylarni qoldirish
-            string filteredText = new string(textBox.Text.Where(c => char.IsDigit(c) || c == ' ').ToArray());
-
-            // Agar noto'g'ri belgilar kirgan bo'lsa, matnni yangilash
-            if (textBox.Text != filteredText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = filteredText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni to'g'ri joylash
-            }
-        }
+        ValidationHelper.ValidatePhone(textBox);
     }
     private void txtSearchJ_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
-
-        if (textBox != null)
-        {
-            // Faqat raqamlarni qoldirish
-            string numericText = new string(textBox.Text.Where(char.IsDigit).ToArray());
-
-            // Eski noto'g'ri matnni to'g'rilash
-            if (textBox.Text != numericText)
-            {
-                int caretIndex = textBox.CaretIndex; // Imlo ko'rsatkichni saqlash
-                textBox.Text = numericText;
-                textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length); // Ko'rsatkichni o'rnida qoldirish
-            }
-        }
+        ValidationHelper.ValidateOnlyNumberInput(textBox);
     }
 
     // buttonlar
@@ -461,124 +205,138 @@ public partial class CustomerEditWindow : Window
         }
     }
 
-    private async void btnJisAdd_Click(object sender, RoutedEventArgs e)
+    private void btnJisAdd_Click(object sender, RoutedEventArgs e)
     {
-        UserUpdateDto userUpdateDto = new UserUpdateDto();
-
-        userUpdateDto.Id = CustomerInfo.UserId;
-        userUpdateDto.LastName = txtFamiliya.Text.ToLower();
-        userUpdateDto.FirstName = txtIsmi.Text.ToLower();
-        userUpdateDto.Patronomyc = txtSharifi.Text.ToLower();
-        userUpdateDto.SeriaPasport = txtPasportSeria.Text.ToLower();
-        userUpdateDto.Address = txtJisAdres.Text.ToLower();
-        userUpdateDto.Phone = txtJisTelefon.Text;
-        userUpdateDto.TelegramPhone = txtJisTelegramRaqam.Text;
-        userUpdateDto.JSHSHIR = txtJisJSHSHIR.Text;
-        userJshshir = txtJisJSHSHIR.Text;
-
-
-        if (!dateOfBirthPicker.SelectedDate.HasValue)
+        try
         {
-            MessageBox.Show("Tug'ulgan sanani kiriting iltimos.");
-            return;
-        }
-        userUpdateDto.DateOfBirth = dateOfBirthPicker.SelectedDate.Value.ToUniversalTime();
+            UserUpdateDto userUpdateDto = new UserUpdateDto();
 
-        if (!dateOfIssuePicker.SelectedDate.HasValue)
-        {
-            MessageBox.Show("Pasport berilgan sanani kiriting iltimos.");
-            return;
-        }
-
-        userUpdateDto.DateOfIssue = dateOfIssuePicker.SelectedDate.Value.ToUniversalTime();
-        if (!dateOfExpiryPicker.SelectedDate.HasValue)
-        {
-            MessageBox.Show("Pasportni amal qilish sanani kiriting iltimos.");
-            return;
-        }
-        userUpdateDto.DateOfExpiry = dateOfExpiryPicker.SelectedDate.Value.ToUniversalTime();
-        if (gender.Equals("Erkak"))
-            userUpdateDto.Gender = (Gender)0;
-        else if (gender.Equals("Ayol"))
-            userUpdateDto.Gender = (Gender)1;
+            userUpdateDto.Id = CustomerInfo.UserId;
+            userUpdateDto.LastName = txtFamiliya.Text.ToLower();
+            userUpdateDto.FirstName = txtIsmi.Text.ToLower();
+            userUpdateDto.Patronomyc = txtSharifi.Text.ToLower();
+            userUpdateDto.SeriaPasport = txtPasportSeria.Text.ToLower();
+            userUpdateDto.Address = txtJisAdres.Text.ToLower();
+            userUpdateDto.Phone = txtJisTelefon.Text;
+            userUpdateDto.TelegramPhone = txtJisTelegramRaqam.Text;
+            userUpdateDto.JSHSHIR = txtJisJSHSHIR.Text;
+            userJshshir = txtJisJSHSHIR.Text;
 
 
-        if (userUpdateDto.FirstName.Equals("") ||
-            userUpdateDto.LastName.Equals("") ||
-            userUpdateDto.SeriaPasport.Equals("") ||
-            userUpdateDto.Address.Equals("") ||
-            userUpdateDto.JSHSHIR.Equals("") ||
-            userUpdateDto.TelegramPhone.Equals("") ||
-            userUpdateDto.Phone.Equals(""))
-
-            MessageBox.Show("Malumotni to'liq kiriting!");
-        else
-        {
-            var result = this.userService.ModifyAsync(userUpdateDto);
-
-            if (!result.IsCompletedSuccessfully)
+            if (!dateOfBirthPicker.SelectedDate.HasValue)
             {
-                MessageBox.Show($" Saqlandi.");
-                IsCreated = true;
+                MessageBox.Show("Tug'ulgan sanani kiriting iltimos.");
+                return;
             }
+            userUpdateDto.DateOfBirth = dateOfBirthPicker.SelectedDate.Value.ToUniversalTime();
+
+            if (!dateOfIssuePicker.SelectedDate.HasValue)
+            {
+                MessageBox.Show("Pasport berilgan sanani kiriting iltimos.");
+                return;
+            }
+
+            userUpdateDto.DateOfIssue = dateOfIssuePicker.SelectedDate.Value.ToUniversalTime();
+            if (!dateOfExpiryPicker.SelectedDate.HasValue)
+            {
+                MessageBox.Show("Pasportni amal qilish sanani kiriting iltimos.");
+                return;
+            }
+            userUpdateDto.DateOfExpiry = dateOfExpiryPicker.SelectedDate.Value.ToUniversalTime();
+            if (gender.Equals("Erkak"))
+                userUpdateDto.Gender = (Gender)0;
+            else if (gender.Equals("Ayol"))
+                userUpdateDto.Gender = (Gender)1;
+
+
+            if (userUpdateDto.FirstName.Equals("") ||
+                userUpdateDto.LastName.Equals("") ||
+                userUpdateDto.SeriaPasport.Equals("") ||
+                userUpdateDto.Address.Equals("") ||
+                userUpdateDto.JSHSHIR.Equals("") ||
+                userUpdateDto.TelegramPhone.Equals("") ||
+                userUpdateDto.Phone.Equals(""))
+
+                MessageBox.Show("Malumotni to'liq kiriting!");
             else
-                MessageBox.Show($"{"Saqlashda xatolik"}");
+            {
+                var result = this.userService.ModifyAsync(userUpdateDto);
+
+                if (!result.IsCompletedSuccessfully)
+                {
+                    MessageBox.Show($" Saqlandi.");
+                    IsCreated = true;
+                }
+                else
+                    MessageBox.Show($"{"Saqlashda xatolik"}");
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
         }
     }
 
     private async void btnYattAdd_Click(object sender, RoutedEventArgs e)
     {
-        CustomerUpdateDto customerUpdateDto = new CustomerUpdateDto();
-
-        customerUpdateDto.Id = CustomerInfo.CustomerId;
-        customerUpdateDto.Name = txtYattNomi.Text.ToLower();
-
-        if (txtYattJSHSHIR.Text.Length != 14)
+        try
         {
-            MessageBox.Show("JSHSHIR ni to'liq kiriting iltimos.");
-            return;
-        }
-        customerUpdateDto.JSHSHIR = txtYattJSHSHIR.Text;
-        customerUpdateDto.MFO = txtYattMFO.Text;
+            CustomerUpdateDto customerUpdateDto = new CustomerUpdateDto();
 
-        if (txtYattXisobRaqam.Text.Length != 23)
-        {
-            MessageBox.Show("Xisob raqamni to'liq kiriting iltimos.");
-            return;
-        }
-        customerUpdateDto.BankAccount = RemoveDashes(txtYattXisobRaqam.Text);
+            customerUpdateDto.Id = CustomerInfo.CustomerId;
+            customerUpdateDto.Name = txtYattNomi.Text.ToLower();
 
-        customerUpdateDto.BankName = txtYattBank.Text.ToLower();
-        customerUpdateDto.YurAddress = txtYattFirmaAdres.Text.ToLower();
-        customerUpdateDto.Phone = txtYattTelefon.Text;
-
-        if (!userJshshir.Equals(""))
-        {
-            var existUser = await this.userService.RetrieveByJSHSHIRAsync(userJshshir);
-            customerUpdateDto.UserId = existUser.Id;
-        }
-        else
-        {
-            customerUpdateDto.UserId = CustomerInfo.UserId;
-        }
-
-        if (customerUpdateDto.Name.Equals("") ||
-            customerUpdateDto.Phone.Equals("") ||
-            customerUpdateDto.MFO.Equals("") ||
-            customerUpdateDto.BankName.Equals("") ||
-            customerUpdateDto.YurAddress.Equals(""))
-            MessageBox.Show("Ma'lumotni to'liq kiriting!");
-        else
-        {
-            var result = customerService.ModifyAsync(customerUpdateDto);
-             
-            if (!result.IsCompletedSuccessfully)
+            if (txtYattJSHSHIR.Text.Length != 14)
             {
-                MessageBox.Show($" Saqlandi.");
-                IsCreated = true;
+                MessageBox.Show("JSHSHIR ni to'liq kiriting iltimos.");
+                return;
+            }
+            customerUpdateDto.JSHSHIR = txtYattJSHSHIR.Text;
+            customerUpdateDto.MFO = txtYattMFO.Text;
+
+            if (txtYattXisobRaqam.Text.Length != 23)
+            {
+                MessageBox.Show("Xisob raqamni to'liq kiriting iltimos.");
+                return;
+            }
+            customerUpdateDto.BankAccount = RemoveDashes(txtYattXisobRaqam.Text);
+
+            customerUpdateDto.BankName = txtYattBank.Text.ToLower();
+            customerUpdateDto.YurAddress = txtYattFirmaAdres.Text.ToLower();
+            customerUpdateDto.Phone = txtYattTelefon.Text;
+
+            if (!userJshshir.Equals(""))
+            {
+                var existUser = await this.userService.RetrieveByJSHSHIRAsync(userJshshir);
+                customerUpdateDto.UserId = existUser.Id;
             }
             else
-                MessageBox.Show($"{"Saqlashda xatolik"}");
+            {
+                customerUpdateDto.UserId = CustomerInfo.UserId;
+            }
+
+            if (customerUpdateDto.Name.Equals("") ||
+                customerUpdateDto.Phone.Equals("") ||
+                customerUpdateDto.MFO.Equals("") ||
+                customerUpdateDto.BankName.Equals("") ||
+                customerUpdateDto.YurAddress.Equals(""))
+                MessageBox.Show("Ma'lumotni to'liq kiriting!");
+            else
+            {
+                var result = customerService.ModifyAsync(customerUpdateDto);
+
+                if (!result.IsCompletedSuccessfully)
+                {
+                    MessageBox.Show($" Saqlandi.");
+                    IsCreated = true;
+                }
+                else
+                    MessageBox.Show($"{"Saqlashda xatolik"}");
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message );
         }
     }
 
@@ -679,5 +437,161 @@ public partial class CustomerEditWindow : Window
             else
                 MessageBox.Show($"{"Saqlashda xatolik"}");
         }
+    }
+
+    private async void txtEmployeeJSHSHIR_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        try
+        {
+            var textBox = sender as TextBox;
+            ValidationHelper.ValidateOnlyNumberInput(textBox);
+
+            if (txtEmployeeJSHSHIR.Text.Length.Equals(14))
+            {
+                var existUser = await this.userService.RetrieveByJSHSHIRAsync(txtEmployeeJSHSHIR.Text);
+                if (existUser is not null)
+                {
+                    txtEmployeLastname.Text = existUser.LastName.ToUpper();
+                    txtEmployeFirstname.Text = existUser.FirstName.ToUpper();
+                    txtEmployeePatro.Text = existUser.Patronomyc.ToUpper();
+                    txtEmployeePasportSeria.Text = existUser.SeriaPasport;
+                    txtEmployeeAddress.Text = existUser.Address.ToUpper();
+                    txtEmployeeTelefon.Text = existUser.Phone;
+                    txtEmployeeTelegramRaqam.Text = existUser.TelegramPhone;
+                    cmbRoles.SelectedItem = existUser.Role; // Avtomatik role tanlash
+
+
+                    var positions = await this.employeeService.RetrieveAllAsync();
+                    var position = positions.FirstOrDefault(u => u.UserId.Equals(existUser.Id));
+                    if (position is not null)
+                    {
+                        CustomerInfo.EmployeeId = position.Id;
+                        txtLogin.Text = position.Username;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Login va parol topilmadi.");
+                    }
+                }
+            }
+        }
+        catch (Exception ex) 
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
+
+    private void txtEmployeePasportSeria_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var textBox = sender as TextBox;
+        ValidationHelper.ValidatePasportInformation(textBox);
+    }
+
+    private void txtEmployeeTelefon_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var textBox = sender as TextBox;
+        ValidationHelper.ValidatePhone(textBox);
+    }
+
+    private void txtEmployeeTelegramRaqam_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var textBox = sender as TextBox;
+        ValidationHelper.ValidatePhone(textBox);
+    }
+
+    private async void btnEmployeeUpdate_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            UserUpdateDto userUpdateDto = new UserUpdateDto();
+
+            userUpdateDto.Id = CustomerInfo.UserId;
+            userUpdateDto.LastName = txtEmployeLastname.Text.ToLower();
+            userUpdateDto.FirstName = txtEmployeFirstname.Text.ToLower();
+            userUpdateDto.Patronomyc = txtEmployeePatro.Text.ToLower();
+            userUpdateDto.SeriaPasport = txtEmployeePasportSeria.Text.ToLower();
+            userUpdateDto.Address = txtEmployeeAddress.Text.ToLower();
+            userUpdateDto.Phone = txtEmployeeTelefon.Text;
+            userUpdateDto.TelegramPhone = txtEmployeeTelegramRaqam.Text;
+            userUpdateDto.JSHSHIR = txtEmployeeJSHSHIR.Text;
+            userUpdateDto.Role = (Role)cmbRoles.SelectedItem;
+
+            userJshshir = txtEmployeeJSHSHIR.Text;
+
+
+            if (!dateOfBirthPickerEmployee.SelectedDate.HasValue)
+            {
+                MessageBox.Show("Tug'ulgan sanani kiriting iltimos.");
+                return;
+            }
+            userUpdateDto.DateOfBirth = dateOfBirthPickerEmployee.SelectedDate.Value.ToUniversalTime();
+
+            if (!dateOfIssuePickerEmployee.SelectedDate.HasValue)
+            {
+                MessageBox.Show("Pasport berilgan sanani kiriting iltimos.");
+                return;
+            }
+
+            userUpdateDto.DateOfIssue = dateOfIssuePickerEmployee.SelectedDate.Value.ToUniversalTime();
+            if (!dateOfExpiryPickerEmployee.SelectedDate.HasValue)
+            {
+                MessageBox.Show("Pasportni amal qilish sanani kiriting iltimos.");
+                return;
+            }
+            userUpdateDto.DateOfExpiry = dateOfExpiryPickerEmployee.SelectedDate.Value.ToUniversalTime();
+            if (gender.Equals("Erkak"))
+                userUpdateDto.Gender = (Gender)0;
+            else if (gender.Equals("Ayol"))
+                userUpdateDto.Gender = (Gender)1;
+
+
+            if (userUpdateDto.FirstName.Equals("") ||
+                userUpdateDto.LastName.Equals("") ||
+                userUpdateDto.SeriaPasport.Equals("") ||
+                userUpdateDto.Address.Equals("") ||
+                userUpdateDto.JSHSHIR.Equals("") ||
+                userUpdateDto.TelegramPhone.Equals("") ||
+                userUpdateDto.Phone.Equals(""))
+
+                MessageBox.Show("Malumotni to'liq kiriting!");
+            else
+            {
+                var result = this.userService.ModifyAsync(userUpdateDto);
+
+                if (!result.IsCompletedSuccessfully)
+                {
+                    EmployeeUpdateDto employeeUpdateDto = new EmployeeUpdateDto();
+                    employeeUpdateDto.Id = CustomerInfo.EmployeeId;
+                    employeeUpdateDto.UserId = CustomerInfo.UserId;
+                    employeeUpdateDto.Username = txtLogin.Text;
+                    employeeUpdateDto.Password = txtParol.Text;
+
+                    if (txtLogin.Text.Length == 0 || txtParol.Text.Length == 0)
+                    {
+                        MessageBox.Show("Login yoki Parolni kiriting");
+                        return;
+                    }
+
+                    var empoloyeeUpdate = await this.employeeService.ModifyAsync(employeeUpdateDto);
+                    if (empoloyeeUpdate is null)
+                    {
+                        MessageBox.Show("Login yoki Parolni saqlashda xatolik");
+                        return;
+                    }
+
+                    MessageBox.Show($" Muvaffaqiyatli o'zgardi.");
+                    IsCreated = true;
+                }
+                else
+                    MessageBox.Show($"{"Saqlashda xatolik"}");
+            }
+
+
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+
     }
 }

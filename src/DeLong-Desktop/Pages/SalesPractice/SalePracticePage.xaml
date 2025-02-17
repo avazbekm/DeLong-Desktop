@@ -34,7 +34,7 @@
                     <DockPanel>
                         <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
                             <Label Content="Mahsulot" Foreground="Snow" FontSize="20" Margin="10 2 10 2" Width="150" HorizontalAlignment="Left"/>
-                            <ComboBox x:Name="cbxProduct" Background="#62A3C4" SelectedValuePath="Id" SelectionChanged="cbxProduct_SelectionChanged" Width="235" Padding="4" Foreground="Black" BorderThickness="1" BorderBrush="Black" FontSize="20" HorizontalAlignment="Left" Margin="10 1" IsEditable="True" StaysOpenOnEdit="True" md:HintAssist.Hint="-- Mahsulot tanlang --" DisplayMemberPath="ProductName" TextSearch.TextPath="ProductName"/>
+                            <ComboBox x:Name="cbxProduct" Background="#62A3C4" SelectedValuePath="Id"  Width="235" Padding="4" Foreground="Black" BorderThickness="1" BorderBrush="Black" FontSize="20" HorizontalAlignment="Left" Margin="10 1" IsEditable="True" StaysOpenOnEdit="True" md:HintAssist.Hint="-- Mahsulot tanlang --" DisplayMemberPath="ProductName" TextSearch.TextPath="ProductName"/>
                         </StackPanel>
                         <StackPanel DockPanel.Dock="Left">
                             <Label Content="Miqdori" Foreground="Snow" BorderBrush="Black" FontSize="20" Margin="0 2 10 3" Width="150" HorizontalAlignment="Left"/>
@@ -45,6 +45,13 @@
                         </StackPanel>
                         <StackPanel DockPanel.Dock="Left">
                             <Button x:Name="btnProductSell" Content="Qo'shish" BorderThickness="0" Width="100" Height="35" md:ButtonAssist.CornerRadius="5" Background="#476072" FontSize="18" HorizontalAlignment="Left" Margin="2 40 5 5" Click="btnProductSell_Click"/>
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Right">
+                            <Label Content="Valyuta ayirboshlash" Foreground="Snow" BorderBrush="Black" FontSize="20" Margin="0 2 10 3" Width="200" HorizontalAlignment="Right"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button x:Name="btnBuyDollar" Content="Sotib olish" BorderThickness="0" Width="120" Height="35" md:ButtonAssist.CornerRadius="5" Background="{DynamicResource SelectedBackground}" FontSize="18" HorizontalAlignment="Right" Margin="2 5 5 5" Click="btnBuyDollar_Click"/>
+                                <Button x:Name="btnSellDollar" Content="Sotish" BorderThickness="0" Width="100" Height="35" md:ButtonAssist.CornerRadius="5" Background="{DynamicResource SelectedBackground}" FontSize="18" HorizontalAlignment="Right" Margin="2 5 5 5" Click="btnSellDollar_Click"/>
+                            </StackPanel>
                         </StackPanel>
                     </DockPanel>
 

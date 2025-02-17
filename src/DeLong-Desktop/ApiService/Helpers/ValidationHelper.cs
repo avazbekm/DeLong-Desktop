@@ -1,10 +1,11 @@
 ﻿using System.Text;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 
 namespace DeLong_Desktop.ApiService.Helpers;
 
-public static class ValidationHelper
+public static class ValidationHelper 
 {
     public static void ValidateOnlyNumberInput(TextBox textBox)
     {
@@ -97,5 +98,6 @@ public static class ValidationHelper
             textBox.CaretIndex = Math.Min(newCaretIndex, textBox.Text.Length);
         }
     }
+
 }
 

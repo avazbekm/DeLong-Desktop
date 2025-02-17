@@ -18,6 +18,7 @@ public partial class DollarKursWindow : Window
         InitializeComponent();
         this.services = services;
         this.kursDollarService = services.GetRequiredService<IKursDollarService>();
+        tbDollarKurs.Focus();
     }
 
     private void tbDollarKurs_TextChanged(object sender, TextChangedEventArgs e)

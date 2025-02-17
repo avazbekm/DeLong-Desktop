@@ -260,7 +260,7 @@ public partial class InputPage : Page
                     // Create a new instance of PriceViewControl
                     PriceViewControl priceViewControl = new PriceViewControl(services)
                     {
-                        tbIncomePrice = { Text = price.ArrivalPrice.ToString() },
+                        tbIncomePrice = { Text = price.CostPrice.ToString() },
                         tbSellPrice = { Text = price.SellingPrice.ToString() },
                         tbQuantity = { Text = price.Quantity.ToString() },
                         tbUnitOfMesure = { Text = price.UnitOfMeasure },

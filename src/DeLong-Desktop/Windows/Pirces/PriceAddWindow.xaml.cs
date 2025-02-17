@@ -31,7 +31,7 @@ public partial class PriceAddWindow : Window
             PriceUpdateDto priceUpdateDto = new PriceUpdateDto()
             {
                 Id = PriceInfo.PriceId,
-                ArrivalPrice = PriceInfo.ArrivalPrice,
+                CostPrice = PriceInfo.ArrivalPrice,
                 SellingPrice = PriceInfo.SellingPrice,
                 Quantity = PriceInfo.Quatitiy + decimal.Parse(tbQuantity.Text),
                 UnitOfMeasure = PriceInfo.UnitOfMesure,

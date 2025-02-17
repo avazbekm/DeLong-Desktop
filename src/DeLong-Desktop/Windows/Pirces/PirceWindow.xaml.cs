@@ -1,10 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using DeLong_Desktop.ApiService.DTOs.Prices;
-using DeLong_Desktop.ApiService.DTOs.Warehouses;
-using DeLong_Desktop.ApiService.Interfaces;
-using DeLong_Desktop.ApiService.Services;
 using DeLong_Desktop.Pages.Input;
+using DeLong_Desktop.ApiService.Interfaces;
+using DeLong_Desktop.ApiService.DTOs.Prices;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Windows.Pirces;
@@ -139,19 +137,19 @@ public partial class PirceWindow : Window
             if (tbIncomePrice.Text.Equals("") ||
             tbSellPrice.Text.Equals("") ||
             tbQuantity.Text.Equals("") ||
-            tbUnitOfMesure.Text.Equals("")) 
+            tbUnitOfMesure.Text.Equals(""))
             {
                 MessageBox.Show("Ma'lumotlarni to'liq kiriting.");
-                return; 
+                return;
             }
 
             PriceCreationDto priceCreationDto = new PriceCreationDto()
             {
-                ArrivalPrice = decimal.Parse(tbIncomePrice.Text),
+                CostPrice = decimal.Parse(tbIncomePrice.Text),
                 SellingPrice = decimal.Parse(tbSellPrice.Text),
                 Quantity = decimal.Parse(tbQuantity.Text),
                 UnitOfMeasure = tbUnitOfMesure.Text,
-                ProductId = InputInfo.ProductId 
+                ProductId = InputInfo.ProductId
             };
 
 
@@ -166,6 +164,7 @@ public partial class PirceWindow : Window
             {
                 MessageBox.Show("Saqlashda xatolik yuz berdi.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            this.Close();
         }
         catch (Exception ex)
         {

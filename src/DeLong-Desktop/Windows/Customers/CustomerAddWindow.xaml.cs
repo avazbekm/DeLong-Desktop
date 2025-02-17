@@ -1,12 +1,14 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 using System.Windows.Controls;
+using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.ApiService.Helpers;
 using DeLong_Desktop.ApiService.DTOs.Enums;
 using DeLong_Desktop.ApiService.DTOs.Users;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.Customers;
-using System.Windows.Media;
+using DeLong_Desktop.ApiService.DTOs.Employees;
 
 namespace DeLong_Desktop.Windows.Customers;
 
@@ -17,6 +19,7 @@ public partial class CustomerAddWindow : Window
 {
     private readonly IUserService userService;
     private readonly ICustomerService customerService;
+    private readonly IEmployeeService employeeService;
     private readonly IServiceProvider services;
     public bool IsCreated { get; set; } = false;
 
@@ -29,6 +32,7 @@ public partial class CustomerAddWindow : Window
         this.services = services;
         this.userService = services.GetRequiredService<IUserService>();
         this.customerService = services.GetRequiredService<ICustomerService>();
+        this.employeeService = services.GetRequiredService<IEmployeeService>();
     }
       
         // radio buttonlar
@@ -59,7 +63,7 @@ public partial class CustomerAddWindow : Window
         spQaytish.Visibility = Visibility.Hidden;
         spEmployee.Visibility = Visibility.Hidden;
     }
-    private void rbtnEmployee_Checked(object sender, RoutedEventArgs e)
+    private async void rbtnEmployee_Checked(object sender, RoutedEventArgs e)
     {
         spYurCutomer.Visibility = Visibility.Hidden;
         spJisCutomer.Visibility = Visibility.Hidden;
@@ -67,7 +71,12 @@ public partial class CustomerAddWindow : Window
         spYurYattJis.Visibility = Visibility.Visible;
         spQaytish.Visibility = Visibility.Hidden;
         spEmployee.Visibility = Visibility.Visible;
+
+        cmbRoles.ItemsSource = Enum.GetValues(typeof(Role));
+
     }
+
+
     private void RadioButton_Checked(object sender, RoutedEventArgs e)
     {
         RadioButton selectedRadioButton = sender as RadioButton;
@@ -80,11 +89,8 @@ public partial class CustomerAddWindow : Window
             MessageBox.Show("Jinsini tanglang iltimos.");
             return;
         }
-
     }
 
-        
-        // buttonlar 
     private void btnJisAdd_Click(object sender, RoutedEventArgs e)
     {
         UserCreationDto userCreationDto = new UserCreationDto();
@@ -161,7 +167,7 @@ public partial class CustomerAddWindow : Window
         customerCreationDto.INN = int.Parse(txtYurINN.Text);
         customerCreationDto.MFO = txtYurMFO.Text;
 
-        if (txtYurXisobRaqam.Text.Length != 23)
+        if (txtYurXisobRaqam.Text.Length != 24)
         {
             MessageBox.Show("Xisob raqamni to'liq kiriting iltimos.");
             return;
@@ -462,9 +468,30 @@ public partial class CustomerAddWindow : Window
     {
         ValidationHelper.ValidatePasportInformation(sender as TextBox);
     }
-    private void txtEmployeeJSHSHIR_TextChanged(object sender, TextChangedEventArgs e)
+    private async void txtEmployeeJSHSHIR_TextChanged(object sender, TextChangedEventArgs e)
     {
-        ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
+        try
+        {
+            ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
+
+            if (txtEmployeeJSHSHIR.Text.Length == 14)
+            {
+                var existUser = await this.userService.RetrieveByJSHSHIRAsync(txtEmployeeJSHSHIR.Text);
+                if (existUser is null)
+                {
+                    MessageBox.Show($"Xodim topilmadi: {txtEmployeeJSHSHIR.Text}");
+                    return;
+                }
+
+                CustomerInfo.User = existUser;
+                txtFIO.Text = $"{existUser.LastName.ToUpper()} {existUser.FirstName.ToUpper()}";
+                cmbRoles.SelectedItem = existUser.Role; // Avtomatik role tanlash
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
     }
     private void txtEmpPhone_TextChanged(object sender, TextChangedEventArgs e)
     {
@@ -475,52 +502,103 @@ public partial class CustomerAddWindow : Window
         ValidationHelper.ValidatePhone(sender as TextBox);
     }
 
-    private void btnEmpAdd_Click(object sender, RoutedEventArgs e)
+    private async void btnSaveEmployee_Click(object sender, RoutedEventArgs e)
     {
-
-    }
-
-    private void rbtnAgent_Checked(object sender, RoutedEventArgs e)
-    {
-
-    }
-
-    private void rbtnOmborchi_Checked(object sender, RoutedEventArgs e)
-    {
-
-    }
-
-    private void rbtnSotuvchi_Checked(object sender, RoutedEventArgs e)
-    {
-
-    }
-
-    private void rbtnBoshqaruvchi_Checked(object sender, RoutedEventArgs e)
-    {
-
-    }
-
-    private void RadioButton1_Checked(object sender, RoutedEventArgs e)
-    {
-        if (sender is RadioButton radioButton)
+        try
         {
-            // Tanlangan radio tugmani yashil rangga bo'yash
-            radioButton.Background = (Brush)TryFindResource("SecondaryBackground");
-
-            // Boshqa radio tugmalar fonini asl holida qoldirish
-            foreach (var rb in new[] { rbtnAgent, rbtnOmborchi, rbtnSotuvchi, rbtnBoshqaruvchi })
+            // 1️⃣ Inputlar validatsiyasi
+            if (string.IsNullOrWhiteSpace(txtFIO.Text))
             {
-                if (rb != radioButton)
+                MessageBox.Show("FIO ni kiriting.");
+                txtEmployeeJSHSHIR.Focus();
+                return;
+            }
+            else if (string.IsNullOrWhiteSpace(txtLogin.Text) || txtLogin.Text.Length < 5)
+            {
+                MessageBox.Show("Login kamida 5 ta belgi bo‘lishi kerak.");
+                txtLogin.Focus();
+                return;
+            }
+            else if (string.IsNullOrWhiteSpace(txtParol.Text) || txtParol.Text.Length < 6)
+            {
+                MessageBox.Show("Parol kamida 6 ta belgi bo‘lishi kerak.");
+                txtParol.Focus();
+                return;
+            }
+
+            // 3️⃣ Tanlangan rolni olish
+            if (cmbRoles.SelectedItem is not Role selectedRole)
+            {
+                MessageBox.Show("Iltimos, lavozimni tanlang!");
+                return;
+            }
+
+            // talangan userni chaqirib olamiz
+            var existUser = CustomerInfo.User;
+
+            EmployeeCreationDto employeeCreationDto = new EmployeeCreationDto()
+            {
+                UserId = existUser.Id,
+                Username = txtLogin.Text.ToLower(),
+                Password = txtParol.Text
+            };
+
+            var employee = await employeeService.AddAsync(employeeCreationDto);
+            if (employee != null)
+            {
+                // 4️⃣ User rolini yangilash
+                existUser.Role = selectedRole;
+
+                // 5️⃣ API orqali o‘zgarishlarni saqlash
+                UserUpdateDto userUpdateDto = new UserUpdateDto()
                 {
-                    rb.Background = (Brush)FindResource("SelectedBackground");
+                    Id = existUser.Id,
+                    LastName = existUser.LastName,
+                    FirstName = existUser.FirstName,
+                    Patronomyc = existUser.Patronomyc,
+                    Address = existUser.Address,
+                    DateOfBirth = existUser.DateOfBirth,
+                    DateOfExpiry = existUser.DateOfExpiry,
+                    DateOfIssue = existUser.DateOfIssue,
+                    Gender = existUser.Gender,
+                    JSHSHIR = existUser.JSHSHIR,
+                    Phone = existUser.Phone,
+                    SeriaPasport = existUser.SeriaPasport,
+                    TelegramPhone = existUser.TelegramPhone,
+                    Role = existUser.Role
+                };
+
+                bool updatedUser = await this.userService.ModifyAsync(userUpdateDto);
+
+                if (updatedUser)
+                {
+                    MessageBox.Show($"Xodim {existUser.Role} lavozimiga muvaffaqiyatli o'tkazildi!");
+                }
+                else
+                {
+                    MessageBox.Show("Lavozimni o'zgartirishda xatolik yuz berdi!");
                 }
             }
+            else
+            {
+                MessageBox.Show("Login va parol berishda xatolik");
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Xatolik: {ex.Message}");
         }
     }
 
-    private void btnSaveEmployee_Click(object sender, RoutedEventArgs e)
-    {
 
+    private void txtParol_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (sender is TextBox textBox)
+        {
+            bool isValid = textBox.Text.Length >= 6;
+            textBox.Foreground = isValid ? Brushes.LightGreen : Brushes.LightCoral;
+        }
     }
+
 }
 

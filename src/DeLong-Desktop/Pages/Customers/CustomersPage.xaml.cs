@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using DeLong_Desktop.Windows.Customers;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using DeLong_Desktop.ApiService.DTOs.Enums;
 
 namespace DeLong_Desktop.Pages.Customers;
 
@@ -110,7 +111,8 @@ public partial class CustomersPage : Page
         {
             foreach (var custom in existCustomers)
             {
-                if (custom.Name.Contains(txtSearch.Text))
+                if (custom.Name.Contains(txtSearch.Text.ToLower())||
+                    custom.Phone.Contains(txtSearch.Text))
                 {
                     var existUser = existUsers.FirstOrDefault(x => x.Id.Equals(custom.UserId));
                     items.Add(new Item()
@@ -132,10 +134,10 @@ public partial class CustomersPage : Page
         {
             foreach (var user in existUsers)
             {
-                if (!ids.Contains(user.Id))
-                {
-                    if (user.LastName.Contains(txtSearch.Text) ||
-                        user.FirstName.Contains(txtSearch.Text) ||
+                //if (!ids.Contains(user.Id))
+                //{
+                    if (user.LastName.Contains(txtSearch.Text.ToLower()) ||
+                        user.FirstName.Contains(txtSearch.Text.ToLower()) ||
                         user.JSHSHIR.Contains(txtSearch.Text) ||
                         user.Phone.Contains(txtSearch.Text) ||
                         user.TelegramPhone.Contains(txtSearch.Text))
@@ -150,7 +152,7 @@ public partial class CustomersPage : Page
                             Adress = user.Address.ToUpper(),
                             UserId = user.Id
                         });
-                }
+                //}
             }
         }
         userDataGrid.ItemsSource = items; ;
@@ -260,7 +262,7 @@ public partial class CustomersPage : Page
             CustomerInfo.UserJshshir = selectedUser.JSHSHIR;
             CustomerInfo.YurJshshir = selectedUser.YurJshshir;
         }
-        
+
         if (CustomerInfo.CustomerId > 0 && CustomerInfo.YurJshshir.Equals(""))
         {
             customerEditWindow.spYurCutomer.Visibility = Visibility.Visible;
@@ -268,6 +270,8 @@ public partial class CustomersPage : Page
             customerEditWindow.spJisCutomer.Visibility = Visibility.Hidden;
             customerEditWindow.spJisNew.Visibility = Visibility.Hidden;
             customerEditWindow.spQaytish.Visibility = Visibility.Hidden;
+            customerEditWindow.spEmployee.Visibility = Visibility.Hidden;
+
 
             var existCustomer = await this.customerService.RetrieveByIdAsync(CustomerInfo.CustomerId);
             CustomerInfo.UserId = existCustomer.UserId;
@@ -280,6 +284,8 @@ public partial class CustomersPage : Page
             customerEditWindow.spJisCutomer.Visibility = Visibility.Hidden;
             customerEditWindow.spJisNew.Visibility = Visibility.Hidden;
             customerEditWindow.spQaytish.Visibility = Visibility.Hidden;
+            customerEditWindow.spEmployee.Visibility = Visibility.Hidden;
+
 
             var existYaTT = await this.customerService.RetrieveByJshshirAsync(CustomerInfo.YurJshshir);
             customerEditWindow.txtYattJSHSHIR.Text = existYaTT.JSHSHIR;
@@ -287,15 +293,34 @@ public partial class CustomersPage : Page
         }
         else if (CustomerInfo.CustomerId == 0)
         {
-            customerEditWindow.spYurCutomer.Visibility = Visibility.Hidden;
-            customerEditWindow.spYattCutomer.Visibility = Visibility.Hidden;
-            customerEditWindow.spJisCutomer.Visibility = Visibility.Visible;
-            customerEditWindow.spJisNew.Visibility = Visibility.Hidden;
-            customerEditWindow.spQaytish.Visibility = Visibility.Hidden;
-
             var existUser = await this.userService.RetrieveByJSHSHIRAsync(CustomerInfo.UserJshshir);
-            CustomerInfo.UserId = existUser.Id;
-            customerEditWindow.txtJisJSHSHIR.Text = existUser.JSHSHIR;
+            if (existUser.Role.Equals(Role.Mijoz))
+            {
+                customerEditWindow.spYurCutomer.Visibility = Visibility.Hidden;
+                customerEditWindow.spYattCutomer.Visibility = Visibility.Hidden;
+                customerEditWindow.spJisCutomer.Visibility = Visibility.Visible;
+                customerEditWindow.spJisNew.Visibility = Visibility.Hidden;
+                customerEditWindow.spQaytish.Visibility = Visibility.Hidden;
+                customerEditWindow.spEmployee.Visibility = Visibility.Hidden;
+
+
+                CustomerInfo.UserId = existUser.Id;
+                customerEditWindow.txtJisJSHSHIR.Text = existUser.JSHSHIR;
+            }
+            else
+            {
+                customerEditWindow.spYurCutomer.Visibility = Visibility.Hidden;
+                customerEditWindow.spYattCutomer.Visibility = Visibility.Hidden;
+                customerEditWindow.spJisCutomer.Visibility = Visibility.Hidden;
+                customerEditWindow.spJisNew.Visibility = Visibility.Hidden;
+                customerEditWindow.spQaytish.Visibility = Visibility.Hidden;
+                customerEditWindow.spEmployee.Visibility = Visibility.Visible;
+
+                CustomerInfo.UserId = existUser.Id;
+                customerEditWindow.txtEmployeeJSHSHIR.Text = existUser.JSHSHIR;
+                // lavozimlarni to'ldirib olamiz
+                customerEditWindow.cmbRoles.ItemsSource = Enum.GetValues(typeof(Role));
+            }
         }
 
         customerEditWindow.ShowDialog();

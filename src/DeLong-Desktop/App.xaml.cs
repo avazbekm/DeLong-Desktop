@@ -24,6 +24,7 @@ public partial class App : Application
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IWarehouseService, WarehouseService>();
         services.AddScoped<IKursDollarService, KursDollarService>();
+        services.AddScoped<IEmployeeService, EmployeeService>();
 
 
 

@@ -1,4 +1,6 @@
-﻿namespace DeLong_Desktop.Pages.Customers;
+﻿using DeLong_Desktop.ApiService.DTOs.Users;
+
+namespace DeLong_Desktop.Pages.Customers;
 
 class Item
 {
@@ -11,4 +13,5 @@ class Item
     public string Adress {  get; set; } = string.Empty;
     public string YurJshshir {  get; set; } = string.Empty;
     public long UserId { get; set; }
+    public static UserResultDto User { get; set; }
 }

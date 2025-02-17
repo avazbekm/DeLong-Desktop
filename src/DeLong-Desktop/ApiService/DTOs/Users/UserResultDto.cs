@@ -43,5 +43,8 @@ public class UserResultDto
 
     [JsonPropertyName("jshshir")]
     public string JSHSHIR { get; set; } = string.Empty;
-}
 
+    [JsonPropertyName("role")]
+    public Role Role { get; set; }
+
+}

@@ -5,6 +5,7 @@ using DeLong_Desktop.Windows.DollarKurs;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Media;
+using MaterialDesignThemes.Wpf;
 
 namespace DeLong_Desktop.Pages.SalesPractice;
 
@@ -110,7 +111,7 @@ public partial class SalePracticePage : Page
                         Price = price.SellingPrice,
                         Unit = price.UnitOfMeasure,
                         Quantity = quantity,
-                        CostPrice = price.ArrivalPrice,
+                        CostPrice = price.CostPrice,
                         ProductId = price.ProductId,
                         BalanceAmount = price.Quantity
                     };
@@ -140,7 +141,7 @@ public partial class SalePracticePage : Page
                         Price = price.SellingPrice,
                         Unit = price.UnitOfMeasure,
                         Quantity = price.Quantity,
-                        CostPrice = price.ArrivalPrice,
+                        CostPrice = price.CostPrice,
                         ProductId = price.ProductId,
                         BalanceAmount = price.Quantity
                     };
@@ -303,11 +304,6 @@ public partial class SalePracticePage : Page
         LoadDollarRate(); // Dollar kursini yuklash
     }
 
-    private void cbxProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-
-    }
-
     private void tbQuatity_TextChanged(object sender, TextChangedEventArgs e)
     {
         ValidateAndCleanInput(sender);
@@ -346,5 +342,17 @@ public partial class SalePracticePage : Page
         if (parent is T parentType) return parentType;
 
         return FindParent<T>(parent);
+    }
+
+    private void btnSellDollar_Click(object sender, RoutedEventArgs e)
+    {
+        DollarSellWindow dollarSellWindow = new DollarSellWindow(services);
+        dollarSellWindow.ShowDialog();
+    }
+
+    private void btnBuyDollar_Click(object sender, RoutedEventArgs e)
+    {
+        DollarBuyWindow dollarBuyWindow = new DollarBuyWindow(services);
+        dollarBuyWindow.ShowDialog();
     }
 }

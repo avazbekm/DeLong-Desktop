@@ -12,7 +12,7 @@
     <Grid  Background="#334257">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="210"/>
+            <RowDefinition Height="220"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!--radio buttonlar-->
@@ -29,11 +29,12 @@
                 <Button x:Name="btnQaytish" Content="Qaytish" md:ButtonAssist.CornerRadius="15" BorderThickness="0" Background="#548CA8" Margin="2 0" Foreground="#EEEEEE" Height="30" Width="100" Click="btnQaytish_Click"/>
             </StackPanel>
             <!--Mahsulotlar-->
-            <StackPanel x:Name="spProduct" Visibility="Hidden"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
-                <Button x:Name="btnCategory" Content="Kategoriyani tanlang" BorderThickness="0" FontSize="17" Height="30" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Click="btnCategory_Click"/>
-                <TextBox x:Name="txtbName" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Mahsulot nomi" Background="#476072" Foreground="#EEEEEE" TextChanged="txtbName_TextChanged"/>
-                <TextBox x:Name="txtbDescription" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Batafsil ma'lumot" Background="#476072" Foreground="#EEEEEE"/>
-                <Button x:Name="btnProductAdd" Visibility="Visible" Content="Add Product" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0 20 0 0" Click="btnProductAdd_Click"/>
+            <StackPanel x:Name="spProduct" Visibility="Hidden"  Grid.Row="1" Margin="20 0 20 5" VerticalAlignment="Top">
+                <Button x:Name="btnCategory" Content="Kategoriyani tanlang" BorderThickness="0" FontSize="17" Height="30" Margin="0 5 0 5" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Click="btnCategory_Click"/>
+                <TextBox x:Name="txtbName" MaxLength="50" FontSize="18" Height="30" Margin="0 0 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Mahsulot nomi" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" TextChanged="txtbName_TextChanged"/>
+                <TextBox x:Name="txtbDescription" MaxLength="50" FontSize="18" Height="30" Margin="0 0 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Batafsil ma'lumot" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}"/>
+                <TextBox x:Name="txtbStock" MaxLength="50" FontSize="18" Height="30" Margin="0 0 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Minimal qoldini belgilash" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" TextChanged="txtbStock_TextChanged"/>
+                <Button x:Name="btnProductAdd" Visibility="Visible" Content="Add Product" BorderThickness="0" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Height="30" Margin="0 5 0 0" Click="btnProductAdd_Click"/>
             </StackPanel>
             <!--Kategoriyalar-->
             <StackPanel x:Name="spCategoryPanel" Visibility="Hidden" Margin="20 0 20 20" VerticalAlignment="Top">
