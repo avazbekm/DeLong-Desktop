@@ -31,31 +31,31 @@
             <!--Mahsulotlar-->
             <StackPanel x:Name="spProduct" Visibility="Hidden"  Grid.Row="1" Margin="20 0 20 5" VerticalAlignment="Top">
                 <Button x:Name="btnCategory" Content="Kategoriyani tanlang" BorderThickness="0" FontSize="17" Height="30" Margin="0 5 0 5" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Click="btnCategory_Click"/>
-                <TextBox x:Name="txtbName" MaxLength="50" FontSize="18" Height="30" Margin="0 0 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Mahsulot nomi" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" TextChanged="txtbName_TextChanged"/>
-                <TextBox x:Name="txtbDescription" MaxLength="50" FontSize="18" Height="30" Margin="0 0 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Batafsil ma'lumot" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}"/>
-                <TextBox x:Name="txtbStock" MaxLength="50" FontSize="18" Height="30" Margin="0 0 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Minimal qoldini belgilash" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" TextChanged="txtbStock_TextChanged"/>
+                <TextBox x:Name="txtbName" MaxLength="50" FontSize="18" Height="30" Margin="0 0 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Mahsulot nomi" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" TextChanged="txtbName_TextChanged"/>
+                <TextBox x:Name="txtbDescription" MaxLength="50" FontSize="18" Height="30" Margin="0 0 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Batafsil ma'lumot" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}"/>
+                <TextBox x:Name="txtbStock" MaxLength="50" FontSize="18" Height="30" Margin="0 0 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Minimal qoldini belgilash" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" TextChanged="txtbStock_TextChanged"/>
                 <Button x:Name="btnProductAdd" Visibility="Visible" Content="Add Product" BorderThickness="0" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Height="30" Margin="0 5 0 0" Click="btnProductAdd_Click"/>
             </StackPanel>
             <!--Kategoriyalar-->
             <StackPanel x:Name="spCategoryPanel" Visibility="Hidden" Margin="20 0 20 20" VerticalAlignment="Top">
-                <TextBox x:Name="txtbCategoryName" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Kategoriya nomi" Background="#476072" Foreground="#EEEEEE" TextChanged="txtbCategoryName_TextChanged"/>
-                <TextBox x:Name="txtbDescriptionCategory" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Batafsil ma'lumot" Background="#476072" Foreground="#EEEEEE"/>
+                <TextBox x:Name="txtbCategoryName" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Kategoriya nomi" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" TextChanged="txtbCategoryName_TextChanged"/>
+                <TextBox x:Name="txtbDescriptionCategory" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Batafsil ma'lumot" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}"/>
                 <Button x:Name="btnAddCategory" Visibility="Visible" Content="Add Category" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0 20 0 0" Click="btnAddCategory_Click"/>
             </StackPanel>
             <!--qo'shimcha buttonlar-->
             <StackPanel x:Name="spJisNew" Visibility="Hidden" Margin="20 0 20 20" VerticalAlignment="Top">
-                <Border x:Name="brQidiruvJ" Background="#476072" CornerRadius="15" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="0 0 10 0" Height="30">
-                    <TextBox x:Name="txtSearchJ" MaxLength="14" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="JSHSHIR"  md:HintAssist.Foreground="Snow"  Height="32" Width="310" VerticalAlignment="Center" Background="#476072" Foreground="#EEEEEE"/>
+                <Border x:Name="brQidiruvJ" Background="{DynamicResource SelectedBackground}" CornerRadius="15" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="0 0 10 0" Height="30">
+                    <TextBox x:Name="txtSearchJ" MaxLength="14" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="JSHSHIR"  Height="32" Width="310" VerticalAlignment="Center" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}"/>
                 </Border>
-                <Button x:Name="btnSearch" md:ButtonAssist.CornerRadius="15" Content="Qidiruv" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0,20,0,0"/>
-                <Button x:Name="btnNewAdd" md:ButtonAssist.CornerRadius="15" Visibility="Hidden" Content="Qo'shish" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0,20,0,0"/>
-                <Button x:Name="btnExistClient" md:ButtonAssist.CornerRadius="15" Visibility="Hidden" Content="Davom etish" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0,20,0,0"/>
+                <Button x:Name="btnSearch" md:ButtonAssist.CornerRadius="15" Content="Qidiruv" BorderThickness="0" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Width="180" Height="30" Margin="0,20,0,0"/>
+                <Button x:Name="btnNewAdd" md:ButtonAssist.CornerRadius="15" Visibility="Hidden" Content="Qo'shish" BorderThickness="0" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Width="180" Height="30" Margin="0,20,0,0"/>
+                <Button x:Name="btnExistClient" md:ButtonAssist.CornerRadius="15" Visibility="Hidden" Content="Davom etish" BorderThickness="0" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Width="180" Height="30" Margin="0,20,0,0"/>
             </StackPanel>
         </StackPanel>
         <!--kategoriya datagrid-->
-        <Grid x:Name="grCategoryShow" Visibility="Hidden" Grid.Row="2" Background="#334257" Margin="10 5">
+        <Grid x:Name="grCategoryShow" Visibility="Hidden" Grid.Row="2" Background="{DynamicResource SelectedBackground}" Margin="10 5">
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <DataGrid x:Name="categoryDataGrid" Width="360" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" Background="#548CA8" Foreground="Black">
+                <DataGrid x:Name="categoryDataGrid" Width="360" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource PrimaryTextColor}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="T/r" Binding="{Binding TartibRaqam}" Width="50"/>
                         <DataGridTextColumn Header="Kategoriya nomi" Binding="{Binding Name}" Width="190"/>
@@ -73,9 +73,9 @@
             </ScrollViewer>
         </Grid>
         <!--mahsulot datagrid-->
-        <Grid x:Name="grProductShow" Visibility="Hidden" Grid.Row="2" Background="#334257" Margin="10 5">
+        <Grid x:Name="grProductShow" Visibility="Hidden" Grid.Row="2" Background="{DynamicResource SelectedBackground}" Margin="10 5">
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <DataGrid x:Name="productDataGrid" Width="360" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" Background="#548CA8" Foreground="Black">
+                <DataGrid x:Name="productDataGrid" Width="360" Margin="5" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource PrimaryTextColor}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="T/r" Binding="{Binding TartibRaqam}" Width="50"/>
                         <DataGridTextColumn Header="Mahsulot nomi" Binding="{Binding Name}" Width="190"/>
@@ -83,7 +83,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <Button x:Name="Edit_Button" Content="➡️" ToolTip="Edit" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="Black" Padding="0" Width="28" Height="28" Background="LightBlue"/>
+                                        <Button x:Name="Edit_Button" Content="➡️" ToolTip="Edit" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="{DynamicResource PrimaryTextColor}" Padding="0" Width="28" Height="28" Background="LightBlue"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

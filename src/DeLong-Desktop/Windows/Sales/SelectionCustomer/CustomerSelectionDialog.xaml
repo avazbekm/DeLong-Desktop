@@ -1,0 +1,24 @@
+﻿<Window x:Class="DeLong_Desktop.Windows.Sales.SelectionCustomer.CustomerSelectionDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DeLong_Desktop.Windows.Sales.SelectionCustomer"
+        mc:Ignorable="d"
+   Title="Mijoz tanlash" Height="150" Width="300" WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" Background="{DynamicResource OtherBackground}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Mijoz tanlanmagan. Tanlashni xohlaysizmi?" FontSize="14" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Content="Tanlash" Width="100" Margin="0,0,10,0" Background="{DynamicResource SelectedBackground}" BorderBrush="{DynamicResource SelectedBorderColor}" Click="SelectButton_Click" IsDefault="True"/>
+            <Button Content="Shart emas" Width="110" Background="{DynamicResource SelectedBackground}" BorderBrush="{DynamicResource SelectedBorderColor}" Click="SkipButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

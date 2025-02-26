@@ -2,7 +2,7 @@
 
 namespace DeLong_Desktop.ApiService.DTOs.Customers;
 
-class CustomerCreationDto
+public class CustomerCreationDto
 {
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;

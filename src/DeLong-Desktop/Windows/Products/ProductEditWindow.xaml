@@ -8,7 +8,7 @@
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Mahsulot va kategoriyani yangilash oynasi" Height="600" Width="400"
         WindowStartupLocation="CenterScreen">
-    <Grid  Background="#334257">
+    <Grid  Background="{DynamicResource SelectedBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="210"/>
@@ -17,9 +17,9 @@
         <!--radio buttonlar-->
         <StackPanel x:Name="spCategory" Margin="20 5 20 5" Visibility="Visible"  Orientation="Horizontal" Grid.Row="0">
             <!-- Mahsulot -->
-            <RadioButton x:Name="rbtnProduct" Margin="30 0 30 0" Background="Snow" Content="Mahsulot" Foreground="Snow" GroupName="ProductType" Click="rbtnProduct_Click"/>
+            <RadioButton x:Name="rbtnProduct" Margin="30 0 30 0" Background="{DynamicResource OtherBackground}" Content="Mahsulot" Foreground="{DynamicResource  SecondaryTextColor}" GroupName="ProductType" Click="rbtnProduct_Click"/>
             <!-- Kategoriya -->
-            <RadioButton x:Name="rbtnCategory" Content="Kategoriya" Margin="70 0 30 0" Background="Snow" Foreground="Snow" GroupName="ProductType" Click="rbtnCategory_Click"/>
+            <RadioButton x:Name="rbtnCategory" Content="Kategoriya" Margin="70 0 30 0" Background="{DynamicResource OtherBackground}" Foreground="{DynamicResource SecondaryTextColor}" GroupName="ProductType" Click="rbtnCategory_Click"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1">
@@ -31,7 +31,7 @@
             <StackPanel x:Name="spProduct" Visibility="Hidden"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
                 <Button x:Name="btnCategory" Content="Kategoriyani tanlang" BorderThickness="0" FontSize="17" Height="30" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Click="btnCategory_Click"/>
                 <TextBox x:Name="txtbName" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Mahsulot nomi" Background="#476072" Foreground="#EEEEEE"/>
-                <TextBox x:Name="txtbDescription" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Batafsil ma'lumot" Background="#476072" Foreground="#EEEEEE"/>
+                <TextBox x:Name="txtbStock" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Eng kam zahira qiymati" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}"/>
                 <Button x:Name="btnProductEdit" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0 20 0 0" Click="btnProductEdit_Click"/>
             </StackPanel>
             <!--Kategoriyalar-->

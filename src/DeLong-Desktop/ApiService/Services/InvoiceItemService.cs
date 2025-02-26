@@ -10,12 +10,9 @@ namespace DeLong_Desktop.ApiService.Services;
 class InvoiceItemService : IInvoiceItemService
 {
     private readonly HttpClient _httpClient;
-    public InvoiceItemService()
+    public InvoiceItemService(HttpClient httpClient)
     {
-        _httpClient = new HttpClient
-        {
-            BaseAddress = new Uri("http://localhost:5208/") // API URL manzilini o'rnating
-        };
+        _httpClient = httpClient;
     }
 
     public async ValueTask<bool> AddAsync(InvoiceItemCreationDto dto)

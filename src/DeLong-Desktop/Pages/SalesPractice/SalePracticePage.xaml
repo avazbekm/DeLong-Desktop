@@ -34,7 +34,7 @@
                     <DockPanel>
                         <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
                             <Label Content="Mahsulot" Foreground="Snow" FontSize="20" Margin="10 2 10 2" Width="150" HorizontalAlignment="Left"/>
-                            <ComboBox x:Name="cbxProduct" Background="#62A3C4" SelectedValuePath="Id"  Width="235" Padding="4" Foreground="Black" BorderThickness="1" BorderBrush="Black" FontSize="20" HorizontalAlignment="Left" Margin="10 1" IsEditable="True" StaysOpenOnEdit="True" md:HintAssist.Hint="-- Mahsulot tanlang --" DisplayMemberPath="ProductName" TextSearch.TextPath="ProductName"/>
+                            <ComboBox x:Name="cbxProduct" Background="{DynamicResource SecondaryBackground}" SelectedValuePath="Id"  Width="235" Padding="4" Foreground="{DynamicResource PrimaryTextColor}" BorderThickness="1" BorderBrush="{DynamicResource SecondaryBorderColor}" FontSize="20" HorizontalAlignment="Left" Margin="10 1" IsEditable="True" StaysOpenOnEdit="True" md:HintAssist.Hint="-- Mahsulot tanlang --" DisplayMemberPath="ProductName" TextSearch.TextPath="ProductName"/>
                         </StackPanel>
                         <StackPanel DockPanel.Dock="Left">
                             <Label Content="Miqdori" Foreground="Snow" BorderBrush="Black" FontSize="20" Margin="0 2 10 3" Width="150" HorizontalAlignment="Left"/>
@@ -82,7 +82,7 @@
                         <Label Content="Mahsulotlar" Foreground="Snow" FontSize="20" Margin="10 1"/>
                     </DockPanel>
                 </Border>
-                <Border Margin="5 1 5 5" Background="#62A3C4" CornerRadius="0 0 5 5" Height="390">
+                <Border Margin="5 1 5 5" Background="{DynamicResource SecondaryBackground}" CornerRadius="0 0 5 5" Height="390">
                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                         <StackPanel>
                             <DataGrid x:Name="ProductGrid" AutoGenerateColumns="False" CanUserAddRows="False" Margin="10">
@@ -132,7 +132,7 @@
                 <DockPanel >
                     <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
                         <Label Content="Mijozlar" Foreground="Snow" FontSize="20" Margin="10 2 10 2" Width="150" HorizontalAlignment="Left"/>
-                        <ComboBox x:Name="cbxPayment" Background="#62A3C4" SelectedValuePath="Id"  Width="235" Padding="4" Foreground="Black" BorderThickness="1" BorderBrush="Black" FontSize="20" HorizontalAlignment="Left" Margin="10 1" IsEditable="True" StaysOpenOnEdit="True" md:HintAssist.Hint="-- Mijozni tanlang --" DisplayMemberPath="ProductName" TextSearch.TextPath="ProductName"/>
+                        <ComboBox x:Name="cbxPayment" Background="{DynamicResource SecondaryBackground}" SelectedValuePath="Id" DisplayMemberPath="Name" Width="235" Padding="4" Foreground="{DynamicResource PrimaryTextColor}" BorderThickness="1" BorderBrush="{DynamicResource SecondaryBorderColor}" FontSize="20" HorizontalAlignment="Left" Margin="10 1" IsEditable="True" StaysOpenOnEdit="True" md:HintAssist.Hint="-- Mijozni tanlang --"  PreviewKeyUp="cbxPayment_PreviewKeyUp" LostFocus="cbxPayment_LostFocus" SelectionChanged="cbxPayment_SelectionChanged" />
                     </StackPanel>
                     <Border BorderThickness="2 0 0 0" BorderBrush="Black" Margin="0 3 10 5"/>
                     <!--Jami summasi-->
@@ -140,8 +140,8 @@
                         <Label Content="Jami summa" Foreground="Snow" BorderBrush="Black" FontSize="20" Margin="0 2 10 3" Width="140" HorizontalAlignment="Left"/>
                         <Grid Width="140" Height="35" HorizontalAlignment="Left">
                             <!--TextBox-->
-                            <Border CornerRadius="7" Background="#62A3C4" BorderThickness="1" BorderBrush="Black">
-                                <TextBlock x:Name="tbTotalPrice" FontSize="18"  Text="0.00" Foreground="Snow" Background="Transparent" Padding="5" TextAlignment="Right" Height="33" VerticalAlignment="Bottom"/>
+                            <Border CornerRadius="7" Background="Transparent" BorderThickness="1" BorderBrush="Black">
+                                <TextBlock x:Name="tbTotalPrice" FontSize="18"  Text="0.00" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" Padding="5" TextAlignment="Right" Height="33" VerticalAlignment="Bottom"/>
                             </Border>
                         </Grid>
                     </StackPanel>
@@ -179,11 +179,16 @@
                     <StackPanel DockPanel.Dock="Left">
                         <Label Content="Qarz " Foreground="Snow" BorderBrush="Black" FontSize="20" Margin="0 2 10 3" Width="120" HorizontalAlignment="Center"/>
                         <Grid Width="120" Height="35" HorizontalAlignment="Left">
-                            <!--TextBox-->
+                            <!-- TextBox -->
                             <Border CornerRadius="7" Background="#F1F1F1">
-                                <TextBox x:Name="tbqarz" md:HintAssist.Hint="0.00" FontSize="18" Foreground="Black" Background="Transparent" Padding="5" BorderThickness="0" TextAlignment="Left" TextChanged="tbqarz_TextChanged" Height="35" VerticalAlignment="Top"/>
+                                <TextBox x:Name="tbqarz" md:HintAssist.Hint="0.00" FontSize="18" Foreground="Black" Background="Transparent" Padding="5" BorderThickness="0" TextAlignment="Left" TextChanged="tbqarz_TextChanged"/>
                             </Border>
                         </Grid>
+
+                        <!-- DatePicker (Boshida yashirib qo‘yilgan) -->
+                        <DatePicker x:Name="dpDueDate" Visibility="Collapsed" 
+                FontSize="16" Width="120" 
+                Margin="0 5 0 0"/>
                     </StackPanel>
                     <!--Chegirma-->
                     <StackPanel DockPanel.Dock="Left">
@@ -210,7 +215,7 @@
         </Border>
         <Border Grid.Row="3" Margin="5 0" Background="#334257" CornerRadius="0 0 5 5">
             <Border Background="#62A3C4" Margin="5 0 5 5" BorderThickness="0 1 0 0" CornerRadius="0 0 5 5">
-                <Button x:Name="btnFinishSale" BorderThickness="0" Foreground="Snow" Style="{DynamicResource MaterialDesignPaperSecondaryButton}" Background="#476072" FontSize="20" Content="Yakunlash" md:ButtonAssist.CornerRadius="5" HorizontalAlignment="Right" Width="170" Height="40" Margin="5 5 70 5"/>
+                <Button x:Name="btnFinishSale" BorderThickness="0" Foreground="Snow" Style="{DynamicResource MaterialDesignPaperSecondaryButton}" Background="#476072" FontSize="20" Content="Yakunlash" md:ButtonAssist.CornerRadius="5" HorizontalAlignment="Right" Width="170" Height="40" Margin="5 5 70 5" Click="btnFinishSale_Click"/>
             </Border>
         </Border>
     </Grid>

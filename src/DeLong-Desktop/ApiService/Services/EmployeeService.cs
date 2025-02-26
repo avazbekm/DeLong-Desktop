@@ -10,12 +10,9 @@ namespace DeLong_Desktop.ApiService.Services;
 public class EmployeeService : IEmployeeService
 {
     private readonly HttpClient _httpClient;
-    public EmployeeService()
+    public EmployeeService(HttpClient httpClient)
     {
-        _httpClient = new HttpClient
-        {
-            BaseAddress = new Uri("http://localhost:5208/") // API URL manzilini o'rnating
-        };
+        _httpClient = httpClient;
     }
 
     public async ValueTask<EmployeeResultDto> AddAsync(EmployeeCreationDto dto)

@@ -38,7 +38,6 @@ public partial class ProductEditWindow : Window
         var product = await productService.RetrieveByIdAsync(ProductInfo.ProductId);
 
         txtbName.Text = product.Name.ToUpper();
-        txtbDescription.Text = product.Description.ToUpper();
     }
 
     private async void rbtnCategory_Click(object sender, RoutedEventArgs e)
@@ -149,20 +148,21 @@ public partial class ProductEditWindow : Window
     {
         try
         {
-            if (txtbName.Text.Equals("") || txtbDescription.Text.Equals(""))
+            if (txtbName.Text.Equals("") || txtbStock.Text.Equals(""))
             {
                 MessageBox.Show("Malumotni to'liq kiriting!");
                 return;
             }
 
-            ProductUpdateDto productUpdateDto = new ProductUpdateDto
-            {
-                Id = ProductInfo.ProductId,
-                Name = txtbName.Text.ToLower(),
-                Description = txtbDescription.Text.ToLower(),
-                CategoryId = ProductInfo.CategoryId,
-                IsActive = true
-            };
+            ProductUpdateDto productUpdateDto = new ProductUpdateDto();
+            productUpdateDto.Id = ProductInfo.ProductId;
+            productUpdateDto.Name = txtbName.Text.ToLower();
+            productUpdateDto.MinStockLevel = string.IsNullOrWhiteSpace(txtbStock.Text)
+             ? 0
+             : decimal.Parse(txtbStock.Text);
+
+            productUpdateDto.CategoryId = ProductInfo.CategoryId;
+            productUpdateDto.IsActive = true;
 
             // Productni yangilash uchun xizmat chaqirilyapti
             bool result = await this.productService.ModifyAsync(productUpdateDto);

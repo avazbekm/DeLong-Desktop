@@ -97,7 +97,7 @@ public partial class ProductsPage : Page
                     {
                         Id = product.Id,
                         Name = product.Name.ToUpper(),
-                        Stock = product.MinStockLevel.Value,
+                        Stock = product.MinStockLevel ?? 0,
                         Category = category.Name.ToUpper(),
                         IsActive = product.IsActive,
                         CategoryId = category.Id
@@ -189,7 +189,7 @@ public partial class ProductsPage : Page
                             {
                                 Id = product.Id,
                                 Name = product.Name.ToUpper(),
-                                Stock = product.MinStockLevel.Value,
+                                Stock = product.MinStockLevel ?? 0,
                                 Category = category.Name.ToUpper(),
                                 IsActive = product.IsActive,
                                 CategoryId = category.Id
@@ -207,7 +207,7 @@ public partial class ProductsPage : Page
                         {
                             Id = product.Id,
                             Name = product.Name.ToUpper(),
-                            Stock = product.MinStockLevel.Value,
+                            Stock = product.MinStockLevel ?? 0,
                             Category = category.Name.ToUpper(),
                             IsActive = product.IsActive,
                             CategoryId = category.Id

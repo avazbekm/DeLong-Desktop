@@ -11,12 +11,9 @@ namespace DeLong_Desktop.ApiService.Services;
 public class UserService : IUserService
 {
     private readonly HttpClient _httpClient;
-    public UserService()
+    public UserService(HttpClient httpClient)
     {
-        _httpClient = new HttpClient
-        {
-            BaseAddress = new Uri("http://localhost:5208/") // API URL manzilini o'rnating
-        };
+        _httpClient = httpClient;
     }
 
     public async ValueTask<bool> AddAsync(UserCreationDto user)

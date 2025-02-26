@@ -38,7 +38,7 @@
             <Button x:Name="btnExcel" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Content="Excelga o'tkazish" Width="140" Height="30" VerticalAlignment="Center" Background="#476072" Foreground="#EEEEEE" Click="btnExcel_Click"/>
         </StackPanel>
 
-        <DataGrid x:Name="dataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="#548CA8" Foreground="Black">
+        <DataGrid x:Name="dataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Product Name" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
                 <DataGridTextColumn Header="StockLevel" Binding="{Binding Stock}" Width="*" IsReadOnly="True"/>

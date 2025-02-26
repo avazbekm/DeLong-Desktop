@@ -23,7 +23,7 @@
             <Button x:Name="btnExcel" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Content="Excelga o'tkazish" Width="140" Height="30" VerticalAlignment="Center" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" Click="btnExcel_Click"/>
         </StackPanel>
 
-        <DataGrid x:Name="userDataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource PrimaryTextColor}">
+        <DataGrid x:Name="userDataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Firma nomi" Binding="{Binding FirmaName}" Width="*"/>
                 <DataGridTextColumn Header="Mijoz F.I.O" Binding="{Binding Name}" Width="*"/>

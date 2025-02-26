@@ -27,11 +27,11 @@
               
                 <!-- sotish narxi -->
                 <Label Content="Dollar sotish kursi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
-                <TextBox x:Name="tbDollarKurs" Foreground ="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbDollarKurs_TextChanged"/>
+                <TextBox x:Name="tbDollarKurs" CaretBrush="{DynamicResource SecondaryTextColor}" Foreground ="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbDollarKurs_TextChanged"/>
                 
                 <!-- olish narxi -->
                 <Label Content="Dollar olish kursi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
-                <TextBox x:Name="tbDollarOlishKurs" Foreground ="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbDollarOlishKurs_TextChanged"/>
+                <TextBox x:Name="tbDollarOlishKurs" CaretBrush="{DynamicResource SecondaryTextColor}" Foreground ="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbDollarOlishKurs_TextChanged"/>
 
 
             </Grid>

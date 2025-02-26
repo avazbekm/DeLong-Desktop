@@ -5,9 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop;
 
-/// <summary>
-/// Interaction logic for App.xaml
-/// </summary>
 public partial class App : Application
 {
     protected override async void OnStartup(StartupEventArgs e)
@@ -16,33 +13,55 @@ public partial class App : Application
 
         IServiceCollection services = new ServiceCollection();
 
-        // Services
-        services.AddScoped<IUserService, UserService>();
-        services.AddScoped<ICustomerService, CustomerService>();
-        services.AddScoped<ICategoryService, CategoryService>();
-        services.AddScoped<IPriceService, PriceService>();
-        services.AddScoped<IProductService, ProductService>();
-        services.AddScoped<IWarehouseService, WarehouseService>();
-        services.AddScoped<IKursDollarService, KursDollarService>();
-        services.AddScoped<IEmployeeService, EmployeeService>();
+        // **Barcha servislar uchun umumiy API manzili**
+        var apiBaseUrl = new Uri("http://localhost:5208/");
+
+        // **Servislarni qo‘shish (Clean Code)**
+        services.AddHttpClient<IUserService, UserService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
+        services.AddHttpClient<ICustomerService, CustomerService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
 
 
+        services.AddHttpClient<ICategoryService, CategoryService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
 
-        //// Repositories
-        //services.AddScoped<IRepository<User>, Repository<User>>();
-        //services.AddScoped<IRepository<Company>, Repository<Company>>();
-        //services.AddScoped<IRepository<Card>, Repository<Card>>();
-        //services.AddScoped<IRepository<BlockDate>, Repository<BlockDate>>();
-        ////services.AddScoped<IRepository<Asset>, Repository<Asset>>();
+        services.AddHttpClient<IPriceService, PriceService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
 
+        services.AddHttpClient<IProductService, ProductService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
 
-        // Add AppDbContext to the service collection
-        // services.AddDbContext<AppDbContext>();
+        services.AddHttpClient<IWarehouseService, WarehouseService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
+        services.AddHttpClient<IKursDollarService, KursDollarService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
+        services.AddHttpClient<IEmployeeService, EmployeeService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
+        services.AddHttpClient<ISaleService, SaleService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
+        services.AddHttpClient<ISaleItemService, SaleItemService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
+        services.AddHttpClient<IDebtService, DebtService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
+        services.AddHttpClient<IDebtPaymentService, DebtPaymentService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
+        services.AddHttpClient<IDiscountService, DiscountService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
+        services.AddHttpClient<IPaymentService, PaymentService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
 
         var serviceProvider = services.BuildServiceProvider();
-
-
-
         new MainWindow(serviceProvider).Show();
     }
 }

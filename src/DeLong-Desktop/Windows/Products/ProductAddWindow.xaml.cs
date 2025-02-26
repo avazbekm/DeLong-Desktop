@@ -26,6 +26,8 @@ public partial class ProductAddWindow : Window
         categoryService = services.GetRequiredService<ICategoryService>();
         productService = services.GetRequiredService<IProductService>();
         priceService = services.GetRequiredService<IPriceService>();
+        txtbCategoryName.Focus();
+        btnCategory.Focus();
     }
 
     private async void rbtnProduct_Checked(object sender, RoutedEventArgs e)

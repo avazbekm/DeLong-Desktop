@@ -15,7 +15,4 @@ public class EmployeeResultDto
 
     [JsonPropertyName("username")]
     public string Username { get; set; } = string.Empty;  // Foydalanuvchi nomi (Login)
-
-    [JsonPropertyName("userId")]
-    public string Password { get; set; } = string.Empty; // Parol (hashlangan)
 }

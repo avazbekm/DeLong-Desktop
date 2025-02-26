@@ -11,12 +11,9 @@ class WarehouseService : IWarehouseService
 {
     private readonly HttpClient _httpClient;
 
-    public WarehouseService()
+    public WarehouseService(HttpClient httpClient)
     {
-        _httpClient = new HttpClient
-        {
-            BaseAddress = new Uri("http://localhost:5208/") // API URL manzilini o'rnating
-        };
+        _httpClient = httpClient;
     }
 
     public async ValueTask<bool> AddAsync(WarehouseCreationDto dto)

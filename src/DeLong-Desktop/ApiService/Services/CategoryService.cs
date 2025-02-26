@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Windows;
 using System.Net.Http;
 using Newtonsoft.Json;
 using DeLong_Desktop.ApiService.Interfaces;
@@ -7,60 +8,94 @@ using DeLong_Desktop.ApiService.Models.Commons;
 
 namespace DeLong_Desktop.ApiService.Services;
 
-class CategoryService : ICategoryService
+public class CategoryService : ICategoryService
 {
     private readonly HttpClient _httpClient;
-    public CategoryService()
+
+    public CategoryService(HttpClient httpClient) // Dependency Injection orqali HttpClient olindi
     {
-        _httpClient = new HttpClient
-        {
-            BaseAddress = new Uri("http://localhost:5208/") // API URL manzilini o'rnating
-        };
+        _httpClient = httpClient;
     }
+
     public async ValueTask<bool> AddAsync(CategoryCreationDto dto)
     {
-        var jsonContent = JsonConvert.SerializeObject(dto);
-        var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-        var response = await _httpClient.PostAsync("api/Category/create", content);
-        response.EnsureSuccessStatusCode();
-        return response.IsSuccessStatusCode;
+        try
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("api/Category/create", content);
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Xatolik: {ex.Message}");
+            return false;
+        }
     }
 
     public async ValueTask<bool> ModifyAsync(CategoryUpdateDto dto)
     {
-        var jsonContent = JsonConvert.SerializeObject(dto);
-        var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-        var response = await _httpClient.PutAsync("api/Category/update", content);
-        response.EnsureSuccessStatusCode();
-        return response.IsSuccessStatusCode;
+        try
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsync("api/Category/update", content);
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Xatolik: {ex.Message}");
+            return false;
+        }
     }
 
     public async ValueTask<bool> RemoveAsync(long id)
     {
-        var response = await _httpClient.DeleteAsync($"api/Category/delete/{id}");
-        response.EnsureSuccessStatusCode();
-        return response.IsSuccessStatusCode;
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"api/Category/delete/{id}");
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Xatolik: {ex.Message}");
+            return false;
+        }
     }
+
     public async ValueTask<CategoryResultDto> RetrieveByIdAsync(long id)
     {
-        var response = await _httpClient.GetAsync($"api/Category/get/{id}");
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            var response = await _httpClient.GetAsync($"api/Category/get/{id}");
+            if (!response.IsSuccessStatusCode)
+                return null;
 
-        var jsonResponse = await response.Content.ReadAsStringAsync();
-        var result = JsonConvert.DeserializeObject<Response<CategoryResultDto>>(jsonResponse);
-        return result.Data;
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<Response<CategoryResultDto>>(jsonResponse);
+            return result?.Data;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Xatolik: {ex.Message}");
+            return null;
+        }
     }
 
     public async ValueTask<IEnumerable<CategoryResultDto>> RetrieveAllAsync()
     {
-        var response = await _httpClient.GetAsync("api/Category/get-all");
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            var response = await _httpClient.GetAsync("api/Category/get-all");
+            if (!response.IsSuccessStatusCode)
+                return Enumerable.Empty<CategoryResultDto>();
 
-        var jsonResponse = await response.Content.ReadAsStringAsync();
-        var result = JsonConvert.DeserializeObject<Response<List<CategoryResultDto>>>(jsonResponse);
-        return result.Data;
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<Response<List<CategoryResultDto>>>(jsonResponse);
+            return result?.Data ?? Enumerable.Empty<CategoryResultDto>();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Xatolik: {ex.Message}");
+            return Enumerable.Empty<CategoryResultDto>();
+        }
     }
-
 }

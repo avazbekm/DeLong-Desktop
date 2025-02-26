@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace DeLong_Desktop.ApiService.DTOs.Customers;
 
-class CustomerResultDto
+public class CustomerResultDto
 {
     [JsonPropertyName("id")]
     public long Id { get; set; }
