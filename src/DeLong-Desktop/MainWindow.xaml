@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DeLong_Desktop"
         mc:Ignorable="d"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Bosh sahifa" Height="500" Width="800"
+        Title="Bosh sahifa" Height="580" Width="800"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <DropShadowEffect x:Key="DefaultDropShadowEffect" ShadowDepth="5" Opacity="0.5" BlurRadius="10"/>
@@ -19,7 +19,7 @@
 
         <Grid Grid.Column="0" Background="#334257">
             <StackPanel Margin="20">
-                
+
                 <Button x:Name="btnChiqim"
                         Height="45"
                         Margin="0 0 0 5"
@@ -30,7 +30,7 @@
                         Style="{DynamicResource MaterialDesignPaperLightButton}"
                         Background="#476072"
                         md:ButtonAssist.CornerRadius="17" Click="btnChiqim_Click"/>
-                
+
                 <Button x:Name="btnMijoz" 
                         Height="45"
                         Margin="0 0 0 5"
@@ -41,7 +41,7 @@
                         Foreground="Snow"
                         Style="{DynamicResource MaterialDesignPaperLightButton}"
                         md:ButtonAssist.CornerRadius="17" Click="bntMijoz_Click"/>
-         
+
                 <Button x:Name="btnMaxsulot"
                         Height="45"
                         Margin="0 0 0 5"
@@ -75,6 +75,40 @@
                         Background="#476072"
                         md:ButtonAssist.CornerRadius="17" Click="btnKirim_Click"/>
 
+                <!-- Qo‘shimcha Amallar tugmasi -->
+                <Button x:Name="btnAdditionalOperations"
+                        Height="45"
+                        Margin="0 0 0 5"
+                        Content="Qo‘shimcha amallar"
+                        FontSize="18"
+                        BorderThickness="0"
+                        Foreground="Snow"                        
+                        Style="{DynamicResource MaterialDesignPaperLightButton}"
+                        Background="#476072"
+                        md:ButtonAssist.CornerRadius="17" Click="OnAdditionalOperationsClick"/>
+
+                <Button x:Name="btnSaleHistory"
+                        Height="45"
+                        Margin="0 0 0 5"
+                        Content="Sotuv tarixi"
+                        FontSize="18"
+                        BorderThickness="0"
+                        Foreground="Snow"                        
+                        Style="{DynamicResource MaterialDesignPaperLightButton}"
+                        Background="#476072"
+                        md:ButtonAssist.CornerRadius="17" Click="btnSaleHistory_Click"/>
+
+                <Button x:Name="btnHisobot"
+                        Height="45"
+                        Margin="0 0 0 5"
+                        Content="Hisobot"
+                        FontSize="18"
+                        BorderThickness="0"
+                        Foreground="Snow"                        
+                        Style="{DynamicResource MaterialDesignPaperLightButton}"
+                        Background="#476072"
+                        md:ButtonAssist.CornerRadius="17"/>
+
                 <Border 
                     Height="45" 
                     Background="#476072" 
@@ -103,7 +137,7 @@
                             Background="#476072"
                             FontFamily="JetBrains Mono" 
                             FontSize="18"
-                            SelectionChanged="languageComboBox_SelectionChanged">   
+                            SelectionChanged="languageComboBox_SelectionChanged">
 
                             <!-- ComboBox Item Styles -->
                             <ComboBox.Resources>
@@ -134,27 +168,16 @@
                     </StackPanel>
                 </Border>
 
-                <Button x:Name="btnHisobot"
-                       Height="45"
-                       Margin="0 0 0 5"
-                       Content="Hisobot"
-                       FontSize="18"
-                       BorderThickness="0"
-                       Foreground="Snow"                        
-                       Style="{DynamicResource MaterialDesignPaperLightButton}"
-                       Background="#476072"
-                       md:ButtonAssist.CornerRadius="17"/>
-
                 <Button x:Name="btnChiqish"
-                       Height="45"
-                       Margin="0 0 0 5"
-                       Content="Chiqish"
-                       FontSize="18"
-                       BorderThickness="0"
-                       Foreground="Snow"                        
-                       Style="{DynamicResource MaterialDesignPaperLightButton}"
-                       Background="#476072"
-                       md:ButtonAssist.CornerRadius="17" Click="btnChiqish_Click"/>
+                        Height="45"
+                        Margin="0 0 0 5"
+                        Content="Chiqish"
+                        FontSize="18"
+                        BorderThickness="0"
+                        Foreground="Snow"                        
+                        Style="{DynamicResource MaterialDesignPaperLightButton}"
+                        Background="#476072"
+                        md:ButtonAssist.CornerRadius="17" Click="btnChiqish_Click"/>
 
             </StackPanel>
         </Grid>

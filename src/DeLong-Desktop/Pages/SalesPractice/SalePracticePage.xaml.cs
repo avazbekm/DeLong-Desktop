@@ -479,7 +479,6 @@ public partial class SalePracticePage : Page
                 return;
             }
 
-            // Mijoz tekshiruvi
             if (SelectedCustomerId == null || SelectedCustomerId <= 0)
             {
                 var dialog = new CustomerSelectionDialog();
@@ -487,15 +486,13 @@ public partial class SalePracticePage : Page
                 {
                     if (dialog.SelectCustomer)
                     {
-                        // Mijoz tanlash jarayoni
-                        cbxPayment.Focus(); // ComboBox’ga fokus qo‘yamiz
-                        return; // Foydalanuvchi tanlaguncha kutamiz
+                        cbxPayment.Focus();
+                        return;
                     }
-                    // "Shart emas" tanlansa, davom etamiz
                 }
                 else
                 {
-                    return; // Dialog yopilsa, jarayon to‘xtaydi
+                    return;
                 }
             }
 
@@ -506,7 +503,6 @@ public partial class SalePracticePage : Page
                 return;
             }
 
-            // Sale yaratamiz
             var saleDto = new SaleCreationDto
             {
                 CustomerId = selectedItem?.CustomerId > 0 ? selectedItem.CustomerId : null,
@@ -692,13 +688,14 @@ public partial class SalePracticePage : Page
             }
 
             MessageBox.Show("Sotuv muvaffaqiyatli amalga oshirildi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+            // SaleHistoryPage ga o‘tish olib tashlandi
         }
         finally
         {
             btnFinishSale.IsEnabled = true;
         }
-    }
-
+    }    
+    
     // Excelga o‘tkazish funktsiyasi
     private void ExportToExcel(List<SaleItemPrintModel> saleItems, SaleResultDto sale, ComboboxCustomerItem customer)
     {
@@ -837,7 +834,7 @@ public partial class SalePracticePage : Page
             TableColumn nameColumn = new TableColumn { Width = new GridLength(150) };
             TableColumn priceColumn = new TableColumn { Width = new GridLength(150) };
             TableColumn qtyColumn = new TableColumn { Width = new GridLength(100) };
-            TableColumn unitColumn = new TableColumn { Width = new GridLength(100) };
+            TableColumn unitColumn = new TableColumn { Width = new GridLength(80) };
             TableColumn totalColumn = new TableColumn { Width = new GridLength(150) };
             table.Columns.Add(nameColumn);
             table.Columns.Add(priceColumn);
@@ -877,7 +874,7 @@ public partial class SalePracticePage : Page
             {
                 FontSize = 16,
                 FontWeight = FontWeights.Bold,
-                Margin = new Thickness(0, 0, 43, 0),
+                Margin = new Thickness(0, 0, 50, 0),
                 TextAlignment = TextAlignment.Right // O‘ngga tekislangan
             };
             doc.Blocks.Add(totalAmount);
@@ -888,7 +885,8 @@ public partial class SalePracticePage : Page
                 Paragraph cashPayment = new Paragraph(new Run($"Naqd to‘lov: {cashAmount:N2}"))
                 {
                     FontSize = 14,
-                    Margin = new Thickness(0, 5, 0, 0)
+                    Margin = new Thickness(0, 5, 50, 0),
+                    TextAlignment = TextAlignment.Right // O‘ngga tekislangan
                 };
                 doc.Blocks.Add(cashPayment);
             }
@@ -899,7 +897,8 @@ public partial class SalePracticePage : Page
                 Paragraph cardPayment = new Paragraph(new Run($"Plastik to‘lov: {cardAmount:N2}"))
                 {
                     FontSize = 14,
-                    Margin = new Thickness(0, 5, 0, 0)
+                    Margin = new Thickness(0, 5, 50, 0),
+                    TextAlignment = TextAlignment.Right
                 };
                 doc.Blocks.Add(cardPayment);
             }
@@ -910,7 +909,8 @@ public partial class SalePracticePage : Page
                 Paragraph dollarPayment = new Paragraph(new Run($"Dollar to‘lov: ${dollarAmount:N2}"))
                 {
                     FontSize = 14,
-                    Margin = new Thickness(0, 5, 0, 0)
+                    Margin = new Thickness(0, 5, 50, 0),
+                    TextAlignment = TextAlignment.Right
                 };
                 doc.Blocks.Add(dollarPayment);
             }
@@ -921,7 +921,8 @@ public partial class SalePracticePage : Page
                 Paragraph discount = new Paragraph(new Run($"Chegirma: {discountAmount:N2}"))
                 {
                     FontSize = 14,
-                    Margin = new Thickness(0, 5, 0, 0)
+                    Margin = new Thickness(0, 5, 50, 0),
+                    TextAlignment = TextAlignment.Right
                 };
                 doc.Blocks.Add(discount);
             }
@@ -933,7 +934,8 @@ public partial class SalePracticePage : Page
                 {
                     FontSize = 14,
                     FontWeight = FontWeights.Bold,
-                    Margin = new Thickness(0, 5, 0, 0)
+                    Margin = new Thickness(0, 5, 50, 0),
+                    TextAlignment = TextAlignment.Right
                 };
                 doc.Blocks.Add(paymentTotal);
             }
@@ -945,7 +947,8 @@ public partial class SalePracticePage : Page
                 {
                     FontSize = 14,
                     FontWeight = FontWeights.Bold,
-                    Margin = new Thickness(0, 5, 0, 0)
+                    Margin = new Thickness(0, 5, 50, 0),
+                    TextAlignment = TextAlignment.Right
                 };
                 doc.Blocks.Add(debt);
             }

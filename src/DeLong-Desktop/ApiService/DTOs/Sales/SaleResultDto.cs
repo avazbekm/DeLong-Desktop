@@ -13,6 +13,7 @@ public class SaleResultDto
     public decimal PaidAmount { get; set; }
     public decimal RemainingAmount { get; set; }
     public string Status { get; set; } = string.Empty;  // Enum string sifatida
+    public DateTimeOffset CreatedAt { get; set; }
 
     public List<PaymentResultDto> Payments { get; set; } = new();
     public List<DebtResultDto> Debts { get; set; } = new();

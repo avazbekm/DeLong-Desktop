@@ -1,13 +1,14 @@
 ﻿using System.Windows;
 using System.Globalization;
 using System.Windows.Controls;
+using MaterialDesignThemes.Wpf;
 using DeLong_Desktop.Pages.Input;
 using DeLong_Desktop.Pages.Products;
 using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.Pages.Warehouses;
+using DeLong_Desktop.Pages.SaleHistory;
 using DeLong_Desktop.Pages.SalesPractice;
-using Microsoft.Extensions.DependencyInjection;
-using DeLong_Desktop.ApiService.Interfaces;
+using DeLong_Desktop.Pages.AdditionalOperations;
 
 namespace DeLong_Desktop;
 
@@ -63,13 +64,11 @@ public partial class MainWindow : Window
     /// </summary>
     private void UpdateLanguage()
     {
-        // Sahifalar uchun yangilash
         if (_customerPage == null)
         {
             _customerPage = new CustomersPage(_services);
         }
-      
-        // Boshqa elementlarning matnlarini yangilash
+
         _customerPage.userDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Customer;
         _customerPage.userDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.ClientFullname;
         _customerPage.userDataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.Phone;
@@ -77,17 +76,19 @@ public partial class MainWindow : Window
         _customerPage.userDataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.JSHSHIR;
         _customerPage.userDataGrid.Columns[5].Header = DeLong_Desktop.Resources.Resource.Address;
         _customerPage.userDataGrid.Columns[6].Header = DeLong_Desktop.Resources.Resource.Action;
-        _customerPage.txtSearch.Text = DeLong_Desktop.Resources.Resource.Search;
+    md: HintAssist.SetHint(_customerPage.txtSearch, DeLong_Desktop.Resources.Resource.Search); // Hint ni yangilash
         _customerPage.btnAdd.Content = DeLong_Desktop.Resources.Resource.Add;
         _customerPage.btnExcel.Content = DeLong_Desktop.Resources.Resource.ToExcell;
+
         btnOmbor.Content = DeLong_Desktop.Resources.Resource.Warehouse;
-        
         btnChiqim.Content = DeLong_Desktop.Resources.Resource.Expense;
         btnChiqish.Content = DeLong_Desktop.Resources.Resource.Exit;
         btnHisobot.Content = DeLong_Desktop.Resources.Resource.Report;
         btnMaxsulot.Content = DeLong_Desktop.Resources.Resource.Product;
         btnMijoz.Content = DeLong_Desktop.Resources.Resource.Customer;
         btnKirim.Content = DeLong_Desktop.Resources.Resource.Income;
+        btnSaleHistory.Content = DeLong_Desktop.Resources.Resource.SaleHistory;
+        btnAdditionalOperations.Content = DeLong_Desktop.Resources.Resource.AdditionalOperations;
     }
 
     /// <summary>
@@ -166,5 +167,17 @@ public partial class MainWindow : Window
     {
         SalePracticePage salePracticePage = new SalePracticePage(_services);
         Navigator.Navigate(salePracticePage);
+    }
+
+    private void btnSaleHistory_Click(object sender, RoutedEventArgs e)
+    {
+        var saleHistoryPage = new SaleHistoryPage(_services);
+        Navigator.Navigate(saleHistoryPage);
+    }
+
+    private void OnAdditionalOperationsClick(object sender, RoutedEventArgs e)
+    {
+        var additionalOperationsPage = new AdditionalOperationsPage(_services);
+        Navigator.Navigate(additionalOperationsPage);
     }
 }

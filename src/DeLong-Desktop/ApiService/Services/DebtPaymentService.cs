@@ -11,7 +11,7 @@ public class DebtPaymentService : IDebtPaymentService
 {
     private readonly HttpClient _httpClient;
 
-    public DebtPaymentService(HttpClient httpClient) // Dependency Injection orqali HttpClient olindi
+    public DebtPaymentService(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }

@@ -2,6 +2,7 @@
 using DeLong_Desktop.ApiService.Services;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using DeLong_Desktop.Windows.Login;
 
 namespace DeLong_Desktop;
 
@@ -62,6 +63,6 @@ public partial class App : Application
 
 
         var serviceProvider = services.BuildServiceProvider();
-        new MainWindow(serviceProvider).Show();
+        new LoginWindow(serviceProvider).Show();
     }
 }

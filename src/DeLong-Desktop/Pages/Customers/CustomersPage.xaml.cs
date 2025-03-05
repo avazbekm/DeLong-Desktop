@@ -5,8 +5,8 @@ using System.Windows.Data;
 using System.Windows.Controls;
 using DeLong_Desktop.Windows.Customers;
 using DeLong_Desktop.ApiService.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.Enums;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Pages.Customers;
 
@@ -35,9 +35,6 @@ public partial class CustomersPage : Page
         //datagridga malumotlar to'plash ushun
         List<Item> items = new List<Item>();
         
-        // firmalarning rahbarlarini id yig'ib olinyapti jismoniy shaxslarni datagridga qo'shayotganda 2 martadan chiqarmaslik uchun
-        List<long> ids = new List<long>();
-
         // mijozlarni databasadan chaqirvodik
         var existCustomers = await customerService.RetrieveAllAsync();
         
@@ -60,26 +57,22 @@ public partial class CustomersPage : Page
                     Adress = custom.YurAddress.ToUpper(),
                     YurJshshir = custom.JSHSHIR.ToUpper(),
                 });
-                ids.Add(custom.UserId);
             }
         }
         if (existUsers is not null)
         {
             foreach (var user in existUsers)
             {
-                if (!ids.Contains(user.Id))
+                items.Add(new Item()
                 {
-                    items.Add(new Item()
-                    {
-                        FirmaName = "-",
-                        Name = $"{user.LastName.ToUpper()} {user.FirstName.ToUpper()}",
-                        Phone = user.Phone,
-                        TelegramPhone = user.TelegramPhone,
-                        JSHSHIR = user.JSHSHIR,
-                        Adress = user.Address.ToUpper(),
-                        UserId = user.Id
-                    });
-                }
+                    FirmaName = "-",
+                    Name = $"{user.LastName.ToUpper()} {user.FirstName.ToUpper()}",
+                    Phone = user.Phone,
+                    TelegramPhone = user.TelegramPhone,
+                    JSHSHIR = user.JSHSHIR,
+                    Adress = user.Address.ToUpper(),
+                    UserId = user.Id
+                });
             }
         }
         userDataGrid.ItemsSource = items; ;

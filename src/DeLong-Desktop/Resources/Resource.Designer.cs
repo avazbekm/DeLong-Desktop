@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 namespace DeLong_Desktop.Resources {
+    using System;
     
     
     /// <summary>
@@ -87,6 +88,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Qo&apos;shimcha amallar.
+        /// </summary>
+        internal static string AdditionalOperations {
+            get {
+                return ResourceManager.GetString("AdditionalOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manzil.
         /// </summary>
         internal static string Address {
@@ -132,7 +142,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chiqim.
+        ///   Looks up a localized string similar to Sotuv amallari.
         /// </summary>
         internal static string Expense {
             get {
@@ -182,6 +192,15 @@ namespace DeLong_Desktop.Resources {
         internal static string Report {
             get {
                 return ResourceManager.GetString("Report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sotuv tarixi.
+        /// </summary>
+        internal static string SaleHistory {
+            get {
+                return ResourceManager.GetString("SaleHistory", resourceCulture);
             }
         }
         

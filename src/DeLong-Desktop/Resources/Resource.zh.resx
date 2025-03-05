@@ -126,6 +126,9 @@
   <data name="AddClientWindow" xml:space="preserve">
     <value>添加客户窗口</value>
   </data>
+  <data name="AdditionalOperations" xml:space="preserve">
+    <value>其他操作</value>
+  </data>
   <data name="Address" xml:space="preserve">
     <value>地址 </value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="Report" xml:space="preserve">
     <value>报告</value>
+  </data>
+  <data name="SaleHistory" xml:space="preserve">
+    <value>銷售歷史</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>搜索</value>

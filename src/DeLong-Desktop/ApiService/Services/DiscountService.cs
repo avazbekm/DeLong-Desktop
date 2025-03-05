@@ -112,4 +112,24 @@ public class DiscountService : IDiscountService
             return Enumerable.Empty<DiscountResultDto>();
         }
     }
+
+    public async ValueTask<IEnumerable<DiscountResultDto>> RetrieveBySaleIdAsync(long saleId)
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($"api/Discount/get-by-sale/{saleId}");
+
+            if (!response.IsSuccessStatusCode)
+                return Enumerable.Empty<DiscountResultDto>();
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<Response<List<DiscountResultDto>>>(jsonResponse);
+            return result?.Data ?? Enumerable.Empty<DiscountResultDto>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Xatolik: {ex.Message}");
+            return Enumerable.Empty<DiscountResultDto>();
+        }
+    }
 }

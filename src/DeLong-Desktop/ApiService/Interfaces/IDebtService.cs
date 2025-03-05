@@ -9,4 +9,6 @@ public interface IDebtService
     ValueTask<bool> RemoveAsync(long id);
     ValueTask<DebtResultDto> RetrieveByIdAsync(long id);
     ValueTask<IEnumerable<DebtResultDto>> RetrieveAllAsync();
+    ValueTask<IEnumerable<DebtResultDto>> RetrieveBySaleIdAsync(long saleId);
+    ValueTask<Dictionary<string, List<DebtResultDto>>> RetrieveAllGroupedByCustomerAsync(); // Yangi metod
 }

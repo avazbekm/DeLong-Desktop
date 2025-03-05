@@ -9,4 +9,5 @@ public interface IDiscountService
     ValueTask<bool> RemoveAsync(long id);
     ValueTask<DiscountResultDto> RetrieveByIdAsync(long id);
     ValueTask<IEnumerable<DiscountResultDto>> RetrieveAllAsync();
+    ValueTask<IEnumerable<DiscountResultDto>> RetrieveBySaleIdAsync(long saleId); // Yangi metod qo‘shildi
 }

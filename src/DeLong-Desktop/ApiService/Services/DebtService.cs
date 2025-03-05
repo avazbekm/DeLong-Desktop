@@ -11,7 +11,7 @@ public class DebtService : IDebtService
 {
     private readonly HttpClient _httpClient;
 
-    public DebtService(HttpClient httpClient) // Dependency Injection orqali HttpClient olindi
+    public DebtService(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
@@ -109,6 +109,46 @@ public class DebtService : IDebtService
         {
             Console.WriteLine($"Xatolik: {ex.Message}");
             return Enumerable.Empty<DebtResultDto>();
+        }
+    }
+
+    public async ValueTask<IEnumerable<DebtResultDto>> RetrieveBySaleIdAsync(long saleId)
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($"api/Debt/get-by-sale/{saleId}");
+
+            if (!response.IsSuccessStatusCode)
+                return Enumerable.Empty<DebtResultDto>();
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<Response<List<DebtResultDto>>>(jsonResponse);
+            return result?.Data ?? Enumerable.Empty<DebtResultDto>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Xatolik: {ex.Message}");
+            return Enumerable.Empty<DebtResultDto>();
+        }
+    }
+
+    public async ValueTask<Dictionary<string, List<DebtResultDto>>> RetrieveAllGroupedByCustomerAsync()
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync("api/Debt/get-all-grouped-by-customer");
+
+            if (!response.IsSuccessStatusCode)
+                return new Dictionary<string, List<DebtResultDto>>();
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<Response<Dictionary<string, List<DebtResultDto>>>>(jsonResponse);
+            return result?.Data ?? new Dictionary<string, List<DebtResultDto>>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Xatolik: {ex.Message}");
+            return new Dictionary<string, List<DebtResultDto>>();
         }
     }
 }

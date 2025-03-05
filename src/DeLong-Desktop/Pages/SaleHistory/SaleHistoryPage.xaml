@@ -1,0 +1,56 @@
+﻿<Page x:Class="DeLong_Desktop.Pages.SaleHistory.SaleHistoryPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:DeLong_Desktop.Pages.SaleHistory"
+      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Sotuvlar Tarixi"
+      Background="{DynamicResource PrimaryBackground}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Sarlavha va Search qatori -->
+        <Border Grid.Row="0" Background="{DynamicResource SecondaryBackground}" CornerRadius="5" Margin="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Search -->
+                <Border Grid.Column="0" CornerRadius="5" Margin="15,2" Background="{DynamicResource OtherBackground}">
+                    <TextBox x:Name="txtSearch" md:HintAssist.Hint="Qidiruv" Padding="5 0"
+                             BorderThickness="0" Background="Transparent" TextChanged="SearchTextChanged"/>
+                </Border>
+
+                <!-- Sarlavha -->
+                <TextBlock Grid.Column="1" Text="Sotuvlar Tarixi" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource SecondaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- DataGrid -->
+        <DataGrid x:Name="saleDataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" 
+                  Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Sotuv ID" IsReadOnly="True" Binding="{Binding Id}" Width="100"/>
+                <DataGridTextColumn Header="Mijoz" IsReadOnly="True" Binding="{Binding CustomerName}" Width="*"/>
+                <DataGridTextColumn Header="Umumiy Summa" IsReadOnly="True" Binding="{Binding TotalAmount, StringFormat=N2}" Width="150"/>
+                <DataGridTextColumn Header="Sana" IsReadOnly="True" Binding="{Binding CreatedAt, StringFormat=yyyy-MM-dd HH:mm}" Width="150"/>
+                <DataGridTemplateColumn Header="Pechat" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="🖨️" Padding="0" ToolTip="Pechat qilish" Click="PrintButton_Click" Style="{DynamicResource MaterialDesignFlatButton}" Width="30" Height="30"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

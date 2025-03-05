@@ -1,0 +1,11 @@
+﻿<Window x:Class="DeLong_Desktop.Windows.Login.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DeLong_Desktop.Windows.Login"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Kirish oynasi" Height="450" Width="800">
+    <Frame x:Name="LoginFrame" NavigationUIVisibility="Hidden"/>
+</Window>

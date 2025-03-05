@@ -126,6 +126,9 @@
   <data name="AddClientWindow" xml:space="preserve">
     <value>Mijozlarni qo'shish oynasi</value>
   </data>
+  <data name="AdditionalOperations" xml:space="preserve">
+    <value>Qo'shimcha amallar</value>
+  </data>
   <data name="Address" xml:space="preserve">
     <value>Manzil</value>
   </data>
@@ -142,7 +145,7 @@
     <value>Chiqish</value>
   </data>
   <data name="Expense" xml:space="preserve">
-    <value>Chiqim</value>
+    <value>Sotuv amallari</value>
   </data>
   <data name="Income" xml:space="preserve">
     <value>Kirim</value>
@@ -158,6 +161,9 @@
   </data>
   <data name="Report" xml:space="preserve">
     <value>Hisobot</value>
+  </data>
+  <data name="SaleHistory" xml:space="preserve">
+    <value>Sotuv tarixi</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Qidiruv</value>
