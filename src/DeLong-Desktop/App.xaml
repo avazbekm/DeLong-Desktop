@@ -21,6 +21,10 @@
                 <ResourceDictionary Source="Themes/LightTheme.xaml"/>
                 <!--end::Styles-->
 
+                <!--begin::Styles-->
+                <ResourceDictionary Source="Resources/Styles/TextBoxStyle.xaml"/>
+                <!--end::Styles--> 
+                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -22,12 +22,6 @@
             <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
         </Style>
 
-        <!-- TextBox Style -->
-        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
-            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
-            <Setter Property="CaretBrush" Value="{DynamicResource PrimaryCursorColor}"/>
-        </Style>
-
         <!-- ComboBox Style -->
         <Style TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignComboBox}">
             <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
@@ -110,7 +104,8 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="73*"/>
                         <ColumnDefinition Width="22*"/>
-                        <ColumnDefinition Width="55*"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="51*"/>
                         <ColumnDefinition Width="8*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -122,12 +117,12 @@
 
                     <!-- Qidiruv qatori -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,5,0,5" Grid.ColumnSpan="2">
-                        <TextBox x:Name="tbSearchDebt" Padding="5 3" md:HintAssist.Hint="Qidiruv" Width="400" Margin="3 5" FontSize="16" Background="{DynamicResource SecondaryBackground}" md:TextFieldAssist.TextFieldCornerRadius="7" TextChanged="SearchDebt_TextChanged"/> 
+                        <TextBox x:Name="tbSearchDebt" Padding="5 3" md:HintAssist.Hint="Qidiruv" Width="400" Margin="3 5" FontSize="16" Background="{DynamicResource SecondaryBackground}" md:TextFieldAssist.TextFieldCornerRadius="7" TextChanged="SearchDebt_TextChanged"/>
                         <md:PackIcon Kind="Magnify" Height="24" Width="24" Foreground="{DynamicResource SecondaryTextColor}" VerticalAlignment="Center"/>
                     </StackPanel>
 
                     <!-- Qarzlar ro‘yxati -->
-                    <DataGrid x:Name="debtDataGrid" Grid.Row="1" Margin="5,5,5,5" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Grid.ColumnSpan="4" SelectionChanged="DebtDataGrid_SelectionChanged">
+                    <DataGrid x:Name="debtDataGrid" Grid.Row="1" Margin="5,5,5,5" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Grid.ColumnSpan="5" SelectionChanged="DebtDataGrid_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Mijoz Nomi" IsReadOnly="True" Binding="{Binding CustomerName}" Width="250"/>
                             <DataGridTextColumn Header="Qarz Summasi" IsReadOnly="True" Binding="{Binding RemainingAmount, StringFormat=N2}" Width="150"/>
@@ -135,7 +130,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <!-- Yangi Row: Jami qarz va to‘lov summalari -->
-                    <Border Grid.Row="2" Grid.ColumnSpan="4" Background="{DynamicResource SecondaryBackground}"  Margin="5" CornerRadius="5">
+                    <Border Grid.Row="2" Grid.ColumnSpan="5" Background="{DynamicResource SecondaryBackground}"  Margin="5,5,5,5" CornerRadius="5">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -159,76 +154,113 @@
             <!-- Tab 2: Qaytgan Mahsulotlarni Qabul Qilish -->
             <TabItem Margin="0,0,0,-2">
                 <TabItem.Header>
-                    <TextBlock Text="Qaytgan mahsulotlar" FontSize="16" />
+                        <TextBlock Text="Qaytgan mahsulotlar" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" FontWeight="SemiBold"/>
                 </TabItem.Header>
-                <Grid>
+                <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="58*"/>
-                        <ColumnDefinition Width="37*"/>
-                        <ColumnDefinition Width="215*"/>
-                        <ColumnDefinition Width="85*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Qaytgan mahsulotlar ro‘yxati -->
-                    <DataGrid x:Name="returnedProductsDataGrid" Margin="5" AutoGenerateColumns="False" 
-                              CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" 
-                              Foreground="{DynamicResource SecondaryTextColor}" Grid.ColumnSpan="4">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding SaleId}" Width="100">
-                                <DataGridTextColumn.Header>
-                                    <TextBlock Text="Sotuv ID" Foreground="{DynamicResource SecondaryTextColor}"/>
-                                </DataGridTextColumn.Header>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Binding="{Binding ProductName}" Width="150">
-                                <DataGridTextColumn.Header>
-                                    <TextBlock Text="Mahsuot nomi" Foreground="{DynamicResource SecondaryTextColor}"/>
-                                </DataGridTextColumn.Header>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Binding="{Binding Quantity}" Width="100">
-                                <DataGridTextColumn.Header>
-                                    <TextBlock Text="Miqdori" Foreground="{DynamicResource SecondaryTextColor}"/>
-                                </DataGridTextColumn.Header>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Binding="{Binding Price, StringFormat=N2}" Width="100">
-                                <DataGridTextColumn.Header>
-                                    <TextBlock Text="Narx" Foreground="{DynamicResource SecondaryTextColor}"/>
-                                </DataGridTextColumn.Header>
-                            </DataGridTextColumn>
-                            <DataGridTemplateColumn Width="100">
-                                <DataGridTemplateColumn.HeaderStyle>
-                                    <Style TargetType="DataGridColumnHeader">
-                                        <Setter Property="ContentTemplate">
-                                            <Setter.Value>
-                                                <DataTemplate>
-                                                    <TextBlock Text="Qabul qilish" Foreground="Snow"/>
-                                                </DataTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </DataGridTemplateColumn.HeaderStyle>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="Qabul Qilish" Click="AcceptReturnedProductButton_Click" Width="80"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <!-- Qaytgan mahsulot qo‘shish uchun Grid -->
+                    <Border CornerRadius="10" Background="{DynamicResource SelectedBackground}" Opacity="0.95" Margin="5 10" Padding="20">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                    <!-- Qaytgan mahsulot qo‘shish -->
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="62,5,0,5" Grid.Column="1" Grid.ColumnSpan="2">
-                        <TextBox x:Name="tbReturnSaleId" md:HintAssist.Hint="Sotuv ID" Width="100" Margin="5"/>
-                        <TextBox x:Name="tbReturnProductId" md:HintAssist.Hint="Mahsulot ID" Width="100" Margin="5"/>
-                        <TextBox x:Name="tbReturnQuantity" md:HintAssist.Hint="Miqdor" Width="100" Margin="5"/>
-                        <Button Content="Qo‘shish" Click="AddReturnedProductButton_Click" Margin="5"/>
-                    </StackPanel>
+                            <!-- SaleId -->
+                            <md:Card Grid.Row="0" Grid.Column="0" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp16">
+                                <TextBox x:Name="tbSaleId" md:HintAssist.Hint="Chek ID" Width="220" Height="40" FontSize="16" 
+             Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" 
+             VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8" 
+             TextChanged="tbSaleId_TextChanged" LostFocus="tbSaleId_LostFocus"/>
+                            </md:Card>
+                            
+                            <!-- Kimdan qaytyapti -->
+                            <md:Card Grid.Row="0" Grid.Column="1" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp16">
+                                <TextBox x:Name="tbReturnedFrom" md:HintAssist.Hint="Kimdan qaytyapti" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8"/>
+                            </md:Card>
+
+                            <!-- ProductName (ComboBox) -->
+                            <md:Card Grid.Row="1" Grid.Column="0" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp16">
+                                <ComboBox x:Name="cbSalePriceProducts" md:HintAssist.Hint="Mahsulot tanlang" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8">
+                                    <!-- ComboBox elementlarining uslubi -->
+                                    <ComboBox.ItemContainerStyle>
+                                        <Style TargetType="ComboBoxItem">
+                                            <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
+                                            <!-- Kulrang fon -->
+                                            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
+                                            <!-- Matn rangi saqlanadi -->
+                                            <Setter Property="Padding" Value="5"/>
+                                            <!-- Ichki bo‘shliq -->
+                                            <Setter Property="BorderThickness" Value="0"/>
+                                            <!-- Chegara yo‘q -->
+                                            <!-- Hover va tanlanganda rang o‘zgarishi uchun Trigger -->
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="{DynamicResource SelectedBackground}"/>
+                                                    <!-- Hoverda biroz och kulrang -->
+                                                </Trigger>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
+                                                    <!-- Tanlanganda qoramtir kulrang -->
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ComboBox.ItemContainerStyle>
+                                </ComboBox>
+                            </md:Card>
+                            
+                            <!-- Quantity -->
+                            <md:Card Grid.Row="1" Grid.Column="1" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp16">
+                                <TextBox x:Name="tbReturnQuantity" md:HintAssist.Hint="Miqdor" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8" TextChanged="tbReturnQuantity_TextChanged"/>
+                            </md:Card>
+
+                            <!-- UnitOfMeasure -->
+                            <md:Card Grid.Row="2" Grid.Column="0" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp12">
+                                <TextBox x:Name="tbUnitOfMeasure" md:HintAssist.Hint="O‘lchov birligi ( dona, kg, litr ... )" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8"/>
+                            </md:Card>
+
+                            <!-- Summa -->
+                            <md:Card Grid.Row="2" Grid.Column="1" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp12">
+                                <TextBox x:Name="tbReturnAmount" md:HintAssist.Hint="Summa" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8" TextChanged="tbReturnAmount_TextChanged"/>
+                            </md:Card>
+
+                            <!-- Izoh -->
+                            <md:Card Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp12">
+                                <TextBox x:Name="tbComment" md:HintAssist.Hint="Izoh" Width="460" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8"/>
+                            </md:Card>
+
+                            <!-- Tasdiqlash tugmasi -->
+                            <Button x:Name="btnConfirmReturn" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Content="Tasdiqlash" Click="ConfirmReturnButton_Click" Width="220" Height="50" Margin="10" FontSize="16" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" BorderBrush="{DynamicResource SelectedBorderColor}" BorderThickness="1" VerticalAlignment="Center" Padding="15" md:ButtonAssist.CornerRadius="10">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                        <Setter Property="Cursor" Value="Hand"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource SelectedBackground}"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </Grid>
+                    </Border>
                 </Grid>
             </TabItem>
-
+            
             <!-- Tab 3: Omborlar O‘rtasida Provodka -->
             <TabItem Margin="0,0,2,0">
                 <TabItem.Header>
@@ -267,6 +299,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+            
         </TabControl>
     </Grid>
 </Page>

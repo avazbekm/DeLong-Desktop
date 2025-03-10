@@ -61,6 +61,9 @@ public partial class App : Application
         services.AddHttpClient<IPaymentService, PaymentService>()
                 .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
 
+        services.AddHttpClient<IReturnProductService, ReturnProductService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
 
         var serviceProvider = services.BuildServiceProvider();
         new LoginWindow(serviceProvider).Show();

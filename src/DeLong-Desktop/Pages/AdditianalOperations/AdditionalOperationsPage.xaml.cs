@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using DeLong_Desktop.ApiService.DTOs;
 using DeLong_Desktop.ApiService.Helpers;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,9 +14,13 @@ public partial class AdditionalOperationsPage : Page
     private readonly IDebtService _debtService;
     private readonly IUserService _userService;
     private readonly ISaleService _saleService;
+    private readonly ISaleItemService _saleItemService;
     private readonly ICustomerService _customerService;
     private readonly IKursDollarService _kursDollarService;
     private readonly IDebtPaymentService _debtPaymentService;
+    private readonly IProductService _productService;
+    private readonly IReturnProductService _returnProductService;
+
     private List<DebtItem> allDebts;
     private List<DebtItem> selectedCustomerDebts;
 
@@ -28,7 +33,13 @@ public partial class AdditionalOperationsPage : Page
         _customerService = services.GetRequiredService<ICustomerService>();
         _kursDollarService = services.GetRequiredService<IKursDollarService>();
         _debtPaymentService = services.GetRequiredService<IDebtPaymentService>();
+        _saleItemService = services.GetRequiredService<ISaleItemService>();
+        _productService = services.GetRequiredService<IProductService>();
+        _returnProductService = services.GetRequiredService<IReturnProductService>();
+
         LoadDebts();
+        LoadSalePriceProducts();
+
     }
 
     private async void LoadDebts()
@@ -335,4 +346,195 @@ public partial class AdditionalOperationsPage : Page
     {
         ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
     }
+
+    private async void LoadSalePriceProducts()
+    {
+        //try
+        //{
+        //    // SalePrice dan mahsulotlar ro‘yxatini olish (taxminiy xizmat)
+        //    var salePrices = await _salePriceService.RetrieveAllAsync(); // Bu metod sizning loyihangizda bo‘lishi kerak
+        //    if (salePrices != null && salePrices.Any())
+        //    {
+        //        cbSalePriceProducts.ItemsSource = salePrices.Select(sp => new
+        //        {
+        //            ProductId = sp.ProductId,
+        //            ProductName = sp.ProductName // Mahsulot nomi
+        //        }).ToList();
+        //        cbSalePriceProducts.DisplayMemberPath = "ProductName";
+        //        cbSalePriceProducts.SelectedValuePath = "ProductId";
+        //    }
+        //}
+        //catch (Exception ex)
+        //{
+        //    MessageBox.Show($"Mahsulotlarni yuklashda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+        //}
+    }
+
+    private async void ConfirmReturnButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            if (!long.TryParse(tbSaleId.Text, out long saleId) || string.IsNullOrEmpty(tbSaleId.Text))
+            {
+                MessageBox.Show("Iltimos, Chek ID kiriting!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var returnedFrom = tbReturnedFrom.Text;
+            var selectedProduct = cbSalePriceProducts.SelectedItem as dynamic;
+            if (selectedProduct == null)
+            {
+                MessageBox.Show("Iltimos, mahsulot tanlang!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!decimal.TryParse(tbReturnQuantity.Text, out decimal quantity) || quantity <= 0)
+            {
+                MessageBox.Show("Iltimos, to‘g‘ri miqdor kiriting!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var unitOfMeasure = tbUnitOfMeasure.Text;
+            if (string.IsNullOrEmpty(unitOfMeasure))
+            {
+                MessageBox.Show("Iltimos, o‘lchov birligini kiriting!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!decimal.TryParse(tbReturnAmount.Text, out decimal amount) || amount <= 0)
+            {
+                MessageBox.Show("Iltimos, to‘g‘ri summa kiriting!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var comment = tbComment.Text.ToLower();
+            var returnDto = new ReturnProductCreationDto
+            {
+                SaleId = saleId,
+                ProductId = selectedProduct.ProductId,
+                ProductName = selectedProduct.ProductName.ToLower(),
+                Quatity = quantity,
+                UnitOfMeasure = unitOfMeasure.ToLower(),
+                ReturnSumma = amount,
+                Reason = comment
+            };
+
+            var existCustomerId = await _saleService.RetrieveByIdAsync(saleId);
+            if (existCustomerId != null)
+            {
+                if (existCustomerId.CustomerId.HasValue && existCustomerId.CustomerId > 0)
+                {
+                    returnDto.CustomerId = existCustomerId.CustomerId.Value;
+                }
+                else if (existCustomerId.UserId.HasValue && existCustomerId.UserId > 0)
+                {
+                    returnDto.UserId = existCustomerId.UserId.Value;
+                }
+            }
+
+            var result = await _returnProductService.AddAsync(returnDto);
+
+            if (result != null)
+            {
+                MessageBox.Show("Qaytgan mahsulot muvaffaqiyatli tasdiqlandi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+                tbSaleId.Text = "";
+                tbReturnedFrom.Text = "";
+                cbSalePriceProducts.SelectedIndex = -1;
+                tbReturnQuantity.Text = "";
+                tbUnitOfMeasure.Text = "";
+                tbReturnAmount.Text = "";
+                tbComment.Text = "";
+            }
+            else
+            {
+                MessageBox.Show("Qaytgan mahsulotni tasdiqlashda xatolik yuz berdi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+
+    private void tbSaleId_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
+    }
+
+    private async void tbSaleId_LostFocus(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(tbSaleId.Text) || !long.TryParse(tbSaleId.Text, out long saleId))
+            {
+                cbSalePriceProducts.ItemsSource = null;
+                tbReturnedFrom.Text = string.Empty;
+                return;
+            }
+
+            // SaleItemService dan saleId orqali sale itemlarni olamiz
+            var saleItems = await _saleItemService.RetrieveAllBySaleIdAsync(saleId);
+
+            if (saleItems != null && saleItems.Any())
+            {
+                // Mahsulot nomini ProductService dan olish
+                var productNames = await Task.WhenAll(saleItems.Select(async item =>
+                {
+                    var product = await _productService.RetrieveByIdAsync(item.ProductId);
+                    return new
+                    {
+                        ProductId = item.ProductId,
+                        ProductName = product?.Name.ToUpper() ?? "Noma'lum mahsulot"
+                    };
+                }));
+
+                cbSalePriceProducts.ItemsSource = productNames;
+                cbSalePriceProducts.DisplayMemberPath = "ProductName";
+                cbSalePriceProducts.SelectedValuePath = "ProductId";
+                cbSalePriceProducts.SelectedIndex = -1;
+            }
+            else
+            {
+                cbSalePriceProducts.ItemsSource = null;
+                MessageBox.Show("Bu ID bilan hech qanday mahsulot topilmadi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            // SaleService dan mijoz nomini olamiz
+            var saleDetails = await _saleService.RetrieveByIdAsync(saleId);
+            if (saleDetails != null && saleDetails.CustomerId.HasValue && saleDetails.CustomerId > 0)
+            {
+                var customer = await _customerService.RetrieveByIdAsync(saleDetails.CustomerId.Value);
+                tbReturnedFrom.Text = customer?.Name.ToUpper() ?? string.Empty;
+            }
+            else if (saleDetails != null && saleDetails.UserId.HasValue && saleDetails.UserId > 0)
+            {
+                var user = await _userService.RetrieveByIdAsync(saleDetails.UserId.Value);
+                tbReturnedFrom.Text = $"{user?.FirstName.ToUpper() ?? ""} {user?.LastName.ToUpper() ?? ""}".Trim();
+            }
+            else
+            {
+                tbReturnedFrom.Text = "Noma'lum mijoz";
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+            cbSalePriceProducts.ItemsSource = null;
+            tbReturnedFrom.Text = string.Empty;
+        }
+    }
+
+    // Mahsulot nomini olish uchun taxminiy funksiya (real loyihada ProductService ishlatilishi mumkin)
+    private void tbReturnQuantity_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
+    }
+
+    private void tbReturnAmount_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
+    }
+
+    // Page konstruktorida LoadSalePriceProducts ni chaqirish
 }

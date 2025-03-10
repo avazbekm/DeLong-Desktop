@@ -184,10 +184,19 @@ public partial class SaleHistoryPage : Page
             };
             doc.Blocks.Add(header);
 
+            // chekId qo'shamiz
+            Paragraph chekId = new Paragraph(new Run($"ChekId: {sale.Id}"))
+            {
+                FontSize = 14,
+                Margin = new Thickness(0, 10, 0, 2),
+                TextAlignment = TextAlignment.Left
+            };
+            doc.Blocks.Add(chekId);
+
             // Mijoz va sana bir qatorda
             Paragraph customerInfo = new Paragraph();
             customerInfo.FontSize = 14;
-            customerInfo.Margin = new Thickness(0, 10, 0, 0);
+            customerInfo.Margin = new Thickness(0, 0, 0, 0);
             customerInfo.TextAlignment = TextAlignment.Left; // Umumiy qatorni chapga joylashtiramiz
 
             // Mijoz nomi (chapda)
@@ -195,7 +204,7 @@ public partial class SaleHistoryPage : Page
             customerInfo.Inlines.Add(customerNameRun);
 
             // Bo‘sh joy qo‘shish (o‘rtada bo‘sh joy uchun)
-            customerInfo.Inlines.Add(new Run(new string(' ', 40)));
+            customerInfo.Inlines.Add(new Run(new string(' ', 100)));
 
             // Sana (o‘ngda)
             Run dateRun = new Run($"Sana: {createdAt:dd-MM-yyyy}");
