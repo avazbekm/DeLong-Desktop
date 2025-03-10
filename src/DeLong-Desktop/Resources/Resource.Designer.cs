@@ -133,6 +133,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delong.
+        /// </summary>
+        internal static string Delong {
+            get {
+                return ResourceManager.GetString("Delong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chiqish.
         /// </summary>
         internal static string Exit {
@@ -165,6 +174,15 @@ namespace DeLong_Desktop.Resources {
         internal static string JSHSHIR {
             get {
                 return ResourceManager.GetString("JSHSHIR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        internal static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
             }
         }
         
@@ -210,6 +228,15 @@ namespace DeLong_Desktop.Resources {
         internal static string Search {
             get {
                 return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sotuvni amalga oshirish.
+        /// </summary>
+        internal static string Sotuv {
+            get {
+                return ResourceManager.GetString("Sotuv", resourceCulture);
             }
         }
         

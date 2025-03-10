@@ -18,7 +18,7 @@
 
         <!-- Sarlavha -->
         <Border Background="{StaticResource SelectedBackground}" CornerRadius="5" Margin="10">
-            <TextBlock Text="DeLond" FontSize="37" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock x:Name="btnName" Text="DeLond" FontSize="37" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
 
         <!-- Kirish formasi -->

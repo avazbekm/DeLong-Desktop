@@ -28,7 +28,7 @@
                         </Border>
                         <TextBlock Text="$ kursi:" Foreground="Snow" FontFamily="bold" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Right" Margin="5 5 15 5"/>
                         <!-- Matn avtomatik chap tomonda joylashadi -->
-                        <Label Content="Sotuvni amalga oshirish" Foreground="Snow" FontSize="20" Margin="10 1"/>
+                        <Label x:Name="btnsotuvniamalgaoshirish" Content="Sotuvni amalga oshirish" Foreground="Snow" FontSize="20" Margin="10 1"/>
                     </DockPanel>
                 </Border>
                 <Border Margin="5 1 5 5" Background="#62A3C4" CornerRadius="0 0 5 5" Height="90">

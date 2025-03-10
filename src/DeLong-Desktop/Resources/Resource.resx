@@ -141,6 +141,9 @@
   <data name="Customer" xml:space="preserve">
     <value>Mijoz</value>
   </data>
+  <data name="Delong" xml:space="preserve">
+    <value>Delong</value>
+  </data>
   <data name="Exit" xml:space="preserve">
     <value>Chiqish</value>
   </data>
@@ -152,6 +155,9 @@
   </data>
   <data name="JSHSHIR" xml:space="preserve">
     <value>JSHSHIR</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
   </data>
   <data name="Phone" xml:space="preserve">
     <value>Telefon</value>
@@ -167,6 +173,9 @@
   </data>
   <data name="Search" xml:space="preserve">
     <value>Qidiruv</value>
+  </data>
+  <data name="Sotuv" xml:space="preserve">
+    <value>Sotuvni amalga oshirish</value>
   </data>
   <data name="Telegram Phone Number" xml:space="preserve">
     <value>Telegram raqami</value>

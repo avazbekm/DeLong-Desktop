@@ -18,6 +18,7 @@ namespace DeLong_Desktop;
 public partial class MainWindow : Window
 {
     private CustomersPage _customerPage;
+    private SalePracticePage _salePracticePage;
     private readonly IServiceProvider _services;
 
     // Tanlangan tilni saqlash uchun o'zgaruvchi
@@ -68,6 +69,10 @@ public partial class MainWindow : Window
         {
             _customerPage = new CustomersPage(_services);
         }
+        if(_salePracticePage== null)
+        {
+            _salePracticePage = new SalePracticePage(_services);
+        }
 
         _customerPage.userDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Customer;
         _customerPage.userDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.ClientFullname;
@@ -79,6 +84,7 @@ public partial class MainWindow : Window
     md: HintAssist.SetHint(_customerPage.txtSearch, DeLong_Desktop.Resources.Resource.Search); // Hint ni yangilash
         _customerPage.btnAdd.Content = DeLong_Desktop.Resources.Resource.Add;
         _customerPage.btnExcel.Content = DeLong_Desktop.Resources.Resource.ToExcell;
+        _salePracticePage.btnsotuvniamalgaoshirish.Content = DeLong_Desktop.Resources.Resource.Sotuv;
 
         btnOmbor.Content = DeLong_Desktop.Resources.Resource.Warehouse;
         btnChiqim.Content = DeLong_Desktop.Resources.Resource.Expense;
@@ -165,8 +171,13 @@ public partial class MainWindow : Window
 
     private void btnChiqim_Click(object sender, RoutedEventArgs e)
     {
-        SalePracticePage salePracticePage = new SalePracticePage(_services);
-        Navigator.Navigate(salePracticePage);
+        if (_salePracticePage == null)
+        {
+            _salePracticePage = new SalePracticePage(_services);
+        }
+
+        Navigator.Navigate(_salePracticePage);
+        UpdateLanguage(); // Matnlarni sahifaga moslashtirish
     }
 
     private void btnSaleHistory_Click(object sender, RoutedEventArgs e)
