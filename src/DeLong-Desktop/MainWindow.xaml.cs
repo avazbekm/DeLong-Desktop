@@ -84,7 +84,40 @@ public partial class MainWindow : Window
     md: HintAssist.SetHint(_customerPage.txtSearch, DeLong_Desktop.Resources.Resource.Search); // Hint ni yangilash
         _customerPage.btnAdd.Content = DeLong_Desktop.Resources.Resource.Add;
         _customerPage.btnExcel.Content = DeLong_Desktop.Resources.Resource.ToExcell;
+
         _salePracticePage.btnsotuvniamalgaoshirish.Content = DeLong_Desktop.Resources.Resource.Sotuv;
+        _salePracticePage.btnMahsulot.Content = DeLong_Desktop.Resources.Resource.Product;
+        _salePracticePage.tbdollorkursi.Text = DeLong_Desktop.Resources.Resource.dollorkursi;
+        _salePracticePage.btnDollarKurs.Content = DeLong_Desktop.Resources.Resource.dollorkursini_kiriting;
+        _salePracticePage.btnMiqdori.Content = DeLong_Desktop.Resources.Resource.Miqdori;
+        _salePracticePage.btnvalyutaayirboshlash.Content = DeLong_Desktop.Resources.Resource.Valyutani_ayirboshlash_;
+        _salePracticePage.cbxProduct.Text = DeLong_Desktop.Resources.Resource.Mahsulotni_tanlang_;
+        _salePracticePage.btnProductSell.Content = DeLong_Desktop.Resources.Resource.Add;
+        _salePracticePage.btnBuyDollar.Content = DeLong_Desktop.Resources.Resource.Sotib_olish_;
+        _salePracticePage.btnSellDollar.Content = DeLong_Desktop.Resources.Resource.Sotish;
+        _salePracticePage.lblmahsulot.Content = DeLong_Desktop.Resources.Resource.Product;
+        _salePracticePage.ProductGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.t_r;
+        _salePracticePage.ProductGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.Mahsulot_nomi_;
+        _salePracticePage.ProductGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.Narxi;
+        _salePracticePage.ProductGrid.Columns[3].Header = DeLong_Desktop.Resources.Resource.Miqdori;
+        _salePracticePage.ProductGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.O_lchov_birligi_;
+        _salePracticePage.ProductGrid.Columns[5].Header = DeLong_Desktop.Resources.Resource.Umumiy_summasi_;
+        _salePracticePage.ProductGrid.Columns[6].Header = DeLong_Desktop.Resources.Resource.O_chirish;
+        _salePracticePage.lblmijoz.Content = DeLong_Desktop.Resources.Resource.Mijozlar_;
+        _salePracticePage.cbxPayment.Text = DeLong_Desktop.Resources.Resource.Mijozni_tanlang_;
+        _salePracticePage.lbljami.Content = DeLong_Desktop.Resources.Resource.Jami_summa_;
+        _salePracticePage.lblnaqd.Content = DeLong_Desktop.Resources.Resource.Naqd;
+        _salePracticePage.lblplastik.Content = DeLong_Desktop.Resources.Resource.Plastik;
+        _salePracticePage.lbldollor.Content = DeLong_Desktop.Resources.Resource.Dollar;
+        _salePracticePage.lblqarz.Content = DeLong_Desktop.Resources.Resource.Qarz;
+        _salePracticePage.lblchegirma.Content = DeLong_Desktop.Resources.Resource.Chegirma;
+        _salePracticePage.dpDueDate.Text = DeLong_Desktop.Resources.Resource.DueData;
+        _salePracticePage.lbltolov.Content = DeLong_Desktop.Resources.Resource.To_lov_summasi_;
+        _salePracticePage.btnFinishSale.Content = DeLong_Desktop.Resources.Resource.Yakunlash;
+
+
+
+
 
         btnOmbor.Content = DeLong_Desktop.Resources.Resource.Warehouse;
         btnChiqim.Content = DeLong_Desktop.Resources.Resource.Expense;
