@@ -142,7 +142,6 @@ public partial class MainWindow : Window
 
     private void languageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        // ComboBoxda tanlangan elementni olish
         if (languageComboBox.SelectedItem is ComboBoxItem selectedItem)
         {
             // Tanlangan til kodini ComboBox elementining Tag qiymatidan olish
