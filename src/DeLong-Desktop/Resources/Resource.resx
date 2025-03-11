@@ -276,4 +276,10 @@
   <data name="Amallar" xml:space="preserve">
     <value>Amallar</value>
   </data>
+  <data name="Foydalanuvchi nomi" xml:space="preserve">
+    <value>Foydalanuvchi nomi</value>
+  </data>
+  <data name="Parol" xml:space="preserve">
+    <value>Password</value>
+  </data>
 </root>

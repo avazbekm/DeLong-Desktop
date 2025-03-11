@@ -279,4 +279,11 @@
   <data name="Amallar" xml:space="preserve">
     <value>操作</value>
   </data>
+  <data name="Foydalanuvchi nomi" xml:space="preserve">
+    <value>用户名
+</value>
+  </data>
+  <data name="Parol" xml:space="preserve">
+    <value>密码</value>
+  </data>
 </root>

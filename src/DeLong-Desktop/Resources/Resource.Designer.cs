@@ -223,6 +223,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Foydalanuvchi nomi.
+        /// </summary>
+        internal static string Foydalanuvchi_nomi {
+            get {
+                return ResourceManager.GetString("Foydalanuvchi nomi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kirim.
         /// </summary>
         internal static string Income {
@@ -363,6 +372,15 @@ namespace DeLong_Desktop.Resources {
         internal static string Ombordagi_miqdor_ {
             get {
                 return ResourceManager.GetString("Ombordagi miqdor ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        internal static string Parol {
+            get {
+                return ResourceManager.GetString("Parol", resourceCulture);
             }
         }
         
