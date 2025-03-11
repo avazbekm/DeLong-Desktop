@@ -20,6 +20,7 @@ public partial class MainWindow : Window
     private CustomersPage _customerPage;
     private SalePracticePage _salePracticePage;
     private readonly IServiceProvider _services;
+    private ProductsPage _productpage;
 
     // Tanlangan tilni saqlash uchun o'zgaruvchi
     private string _currentLanguage = "en";
@@ -73,6 +74,10 @@ public partial class MainWindow : Window
         {
             _salePracticePage = new SalePracticePage(_services);
         }
+        if (_productpage == null)
+        {
+            _productpage = new ProductsPage(_services);
+        }
 
         _customerPage.userDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Customer;
         _customerPage.userDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.ClientFullname;
@@ -81,7 +86,7 @@ public partial class MainWindow : Window
         _customerPage.userDataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.JSHSHIR;
         _customerPage.userDataGrid.Columns[5].Header = DeLong_Desktop.Resources.Resource.Address;
         _customerPage.userDataGrid.Columns[6].Header = DeLong_Desktop.Resources.Resource.Action;
-    md: HintAssist.SetHint(_customerPage.txtSearch, DeLong_Desktop.Resources.Resource.Search); // Hint ni yangilash
+        HintAssist.SetHint(_customerPage.txtSearch, DeLong_Desktop.Resources.Resource.Search); // Hint ni yangilash
         _customerPage.btnAdd.Content = DeLong_Desktop.Resources.Resource.Add;
         _customerPage.btnExcel.Content = DeLong_Desktop.Resources.Resource.ToExcell;
 
@@ -114,8 +119,9 @@ public partial class MainWindow : Window
         _salePracticePage.dpDueDate.Text = DeLong_Desktop.Resources.Resource.DueData;
         _salePracticePage.lbltolov.Content = DeLong_Desktop.Resources.Resource.To_lov_summasi_;
         _salePracticePage.btnFinishSale.Content = DeLong_Desktop.Resources.Resource.Yakunlash;
+        _salePracticePage.lblMahsulot.Content = DeLong_Desktop.Resources.Resource.Product;
 
-
+        HintAssist.SetHint(_productpage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
 
 
 
@@ -142,6 +148,11 @@ public partial class MainWindow : Window
 
         Navigator.Navigate(_customerPage);
         UpdateLanguage(); // Matnlarni sahifaga moslashtirish
+
+        if (_customerPage.txtSearch != null)
+        {
+            HintAssist.SetHint(_customerPage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
+        }
     }
 
     /// <summary>
@@ -157,8 +168,16 @@ public partial class MainWindow : Window
     /// </summary>
     private void btnMaxsulot_Click(object sender, RoutedEventArgs e)
     {
-        var productsPage = new ProductsPage(_services);
-        Navigator.Navigate(productsPage);
+        if (_productpage == null)
+        {
+            _productpage = new ProductsPage(_services);
+        }
+        Navigator.Navigate(_productpage);
+        UpdateLanguage();
+        if (_productpage.txtSearch != null)
+        {
+            HintAssist.SetHint(_productpage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
+        }
     }
 
     /// <summary>
