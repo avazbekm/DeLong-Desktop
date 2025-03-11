@@ -261,4 +261,19 @@
   <data name="Yakunlash" xml:space="preserve">
     <value>Yakunlash</value>
   </data>
+  <data name="Mahsulot nomi" xml:space="preserve">
+    <value>Mahsulot nomi</value>
+  </data>
+  <data name="Ombordagi miqdor " xml:space="preserve">
+    <value>Ombordagi miqdor </value>
+  </data>
+  <data name="Kategoriya " xml:space="preserve">
+    <value>Kategoriya </value>
+  </data>
+  <data name="Faolligi" xml:space="preserve">
+    <value>Faolligi</value>
+  </data>
+  <data name="Amallar" xml:space="preserve">
+    <value>Amallar</value>
+  </data>
 </root>

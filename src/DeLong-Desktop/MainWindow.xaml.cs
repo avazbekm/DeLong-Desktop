@@ -9,6 +9,7 @@ using DeLong_Desktop.Pages.Warehouses;
 using DeLong_Desktop.Pages.SaleHistory;
 using DeLong_Desktop.Pages.SalesPractice;
 using DeLong_Desktop.Pages.AdditionalOperations;
+using DocumentFormat.OpenXml.Office2016.Excel;
 
 namespace DeLong_Desktop;
 
@@ -122,7 +123,14 @@ public partial class MainWindow : Window
         _salePracticePage.lblMahsulot.Content = DeLong_Desktop.Resources.Resource.Product;
 
         HintAssist.SetHint(_productpage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
-
+        HintAssist.SetHint(_productpage.cmbCategory,DeLong_Desktop.Resources.Resource.Category);
+        _productpage.btnAdd.Content = DeLong_Desktop.Resources.Resource.Add;
+        _productpage.btnExcel.Content = DeLong_Desktop.Resources.Resource.ToExcell;
+        _productpage.dataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Mahsulot_nomi;
+        _productpage.dataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.Ombordagi_miqdor_;
+        _productpage.dataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.Kategoriya_;
+        _productpage.dataGrid.Columns[3].Header = DeLong_Desktop.Resources.Resource.Faolligi;
+        _productpage.dataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.Amallar;
 
 
         btnOmbor.Content = DeLong_Desktop.Resources.Resource.Warehouse;
@@ -177,6 +185,7 @@ public partial class MainWindow : Window
         if (_productpage.txtSearch != null)
         {
             HintAssist.SetHint(_productpage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
+            HintAssist.SetHint(_productpage.cmbCategory, DeLong_Desktop.Resources.Resource.Category);
         }
     }
 

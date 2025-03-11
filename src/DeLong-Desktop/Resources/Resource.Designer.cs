@@ -106,6 +106,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Amallar.
+        /// </summary>
+        internal static string Amallar {
+            get {
+                return ResourceManager.GetString("Amallar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Toifa.
         /// </summary>
         internal static string Category {
@@ -205,6 +214,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Faolligi.
+        /// </summary>
+        internal static string Faolligi {
+            get {
+                return ResourceManager.GetString("Faolligi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kirim.
         /// </summary>
         internal static string Income {
@@ -232,11 +250,29 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kategoriya .
+        /// </summary>
+        internal static string Kategoriya_ {
+            get {
+                return ResourceManager.GetString("Kategoriya ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         internal static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mahsulot nomi.
+        /// </summary>
+        internal static string Mahsulot_nomi {
+            get {
+                return ResourceManager.GetString("Mahsulot nomi", resourceCulture);
             }
         }
         
@@ -318,6 +354,15 @@ namespace DeLong_Desktop.Resources {
         internal static string O_lchov_birligi_ {
             get {
                 return ResourceManager.GetString("O\'lchov birligi ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ombordagi miqdor .
+        /// </summary>
+        internal static string Ombordagi_miqdor_ {
+            get {
+                return ResourceManager.GetString("Ombordagi miqdor ", resourceCulture);
             }
         }
         

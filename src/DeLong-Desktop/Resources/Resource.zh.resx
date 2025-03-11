@@ -261,4 +261,22 @@
   <data name="Yakunlash" xml:space="preserve">
     <value>完成 </value>
   </data>
+  <data name="Mahsulot nomi" xml:space="preserve">
+    <value>产品名称
+</value>
+  </data>
+  <data name="Ombordagi miqdor " xml:space="preserve">
+    <value>库存水平
+</value>
+  </data>
+  <data name="Kategoriya " xml:space="preserve">
+    <value>类别</value>
+  </data>
+  <data name="Faolligi" xml:space="preserve">
+    <value>是否激活
+</value>
+  </data>
+  <data name="Amallar" xml:space="preserve">
+    <value>操作</value>
+  </data>
 </root>
