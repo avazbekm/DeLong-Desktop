@@ -9,7 +9,6 @@ using DeLong_Desktop.Pages.Warehouses;
 using DeLong_Desktop.Pages.SaleHistory;
 using DeLong_Desktop.Pages.SalesPractice;
 using DeLong_Desktop.Pages.AdditionalOperations;
-using DocumentFormat.OpenXml.Office2016.Excel;
 
 namespace DeLong_Desktop;
 
