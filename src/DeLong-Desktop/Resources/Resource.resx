@@ -171,9 +171,6 @@
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
-  <data name="Mahsulot nomi " xml:space="preserve">
-    <value>Mahsulot nomi </value>
-  </data>
   <data name="Mahsulotni tanlang " xml:space="preserve">
     <value>Mahsulotni tanlang </value>
   </data>
@@ -258,9 +255,6 @@
   <data name="DueData" xml:space="preserve">
     <value>Duedata</value>
   </data>
-  <data name="Yakunlash" xml:space="preserve">
-    <value>Yakunlash</value>
-  </data>
   <data name="Mahsulot nomi" xml:space="preserve">
     <value>Mahsulot nomi</value>
   </data>
@@ -281,5 +275,17 @@
   </data>
   <data name="Parol" xml:space="preserve">
     <value>Password</value>
+  </data>
+  <data name="Ombor nomi" xml:space="preserve">
+    <value>Ombor nomi</value>
+  </data>
+  <data name="Ombor mudiri" xml:space="preserve">
+    <value>Ombor mudiri</value>
+  </data>
+  <data name="Kategoriya bo'yicha qidiruv" xml:space="preserve">
+    <value>Kategoriya bo'yicha qidiruv</value>
+  </data>
+  <data name="Mahsulotni qidirish" xml:space="preserve">
+    <value>Mahsulotni qidirish</value>
   </data>
 </root>

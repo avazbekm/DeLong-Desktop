@@ -268,6 +268,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kategoriya bo&apos;yicha qidiruv.
+        /// </summary>
+        internal static string Kategoriya_bo_yicha_qidiruv {
+            get {
+                return ResourceManager.GetString("Kategoriya bo\'yicha qidiruv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         internal static string Login {
@@ -286,11 +295,11 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mahsulot nomi .
+        ///   Looks up a localized string similar to Mahsulotni qidirish.
         /// </summary>
-        internal static string Mahsulot_nomi_ {
+        internal static string Mahsulotni_qidirish {
             get {
-                return ResourceManager.GetString("Mahsulot nomi ", resourceCulture);
+                return ResourceManager.GetString("Mahsulotni qidirish", resourceCulture);
             }
         }
         
@@ -363,6 +372,24 @@ namespace DeLong_Desktop.Resources {
         internal static string O_lchov_birligi_ {
             get {
                 return ResourceManager.GetString("O\'lchov birligi ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ombor mudiri.
+        /// </summary>
+        internal static string Ombor_mudiri {
+            get {
+                return ResourceManager.GetString("Ombor mudiri", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ombor nomi.
+        /// </summary>
+        internal static string Ombor_nomi {
+            get {
+                return ResourceManager.GetString("Ombor nomi", resourceCulture);
             }
         }
         
@@ -534,15 +561,6 @@ namespace DeLong_Desktop.Resources {
         internal static string Warehouse {
             get {
                 return ResourceManager.GetString("Warehouse", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Yakunlash.
-        /// </summary>
-        internal static string Yakunlash {
-            get {
-                return ResourceManager.GetString("Yakunlash", resourceCulture);
             }
         }
         

@@ -171,9 +171,6 @@
   <data name="Login" xml:space="preserve">
     <value>登录 </value>
   </data>
-  <data name="Mahsulot nomi " xml:space="preserve">
-    <value>产品名称 </value>
-  </data>
   <data name="Mahsulotni tanlang " xml:space="preserve">
     <value>选择产品 </value>
   </data>
@@ -258,9 +255,6 @@
   <data name="DueData" xml:space="preserve">
     <value>到期日期</value>
   </data>
-  <data name="Yakunlash" xml:space="preserve">
-    <value>完成 </value>
-  </data>
   <data name="Mahsulot nomi" xml:space="preserve">
     <value>产品名称
 </value>
@@ -285,5 +279,17 @@
   </data>
   <data name="Parol" xml:space="preserve">
     <value>密码</value>
+  </data>
+  <data name="Ombor nomi" xml:space="preserve">
+    <value>仓库名称</value>
+  </data>
+  <data name="Ombor mudiri" xml:space="preserve">
+    <value>仓库经理</value>
+  </data>
+  <data name="Kategoriya bo'yicha qidiruv" xml:space="preserve">
+    <value>按类别搜索 </value>
+  </data>
+  <data name="Mahsulotni qidirish" xml:space="preserve">
+    <value>按产品搜索 </value>
   </data>
 </root>
