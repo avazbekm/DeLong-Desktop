@@ -743,10 +743,11 @@ public partial class AdditionalOperationsPage : Page
             {
                 var transactionItemDto = new TransactionItemCreationDto
                 {
-                        = createdTransaction.Id,
+                    TransactionId  = createdTransaction.Id,
                     ProductId = item.ProductId,
                     Quantity = item.Quantity,
-                    PriceProduct = item.UnitPrice
+                    PriceProduct = item.UnitPrice,
+                    UnitOfMeasure = item.Unit
                 };
 
                 await _transactionItemService.AddAsync(transactionItemDto);

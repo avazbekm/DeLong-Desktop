@@ -8,5 +8,4 @@ public class TransactionItemUpdateDto
     public decimal? Quantity { get; set; }     // Yangilanishi mumkin bo‘lgan miqdor
     public string UnitOfMeasure { get; set; } = string.Empty; // Yangilanishi mumkin
     public decimal? PriceProduct { get; set; } // Yangilanishi mumkin bo‘lgan narx
-    public string Comment { get; set; } = string.Empty;   // Yangilanishi mumkin
 }
