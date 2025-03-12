@@ -23,7 +23,7 @@ public partial class MainWindow : Window
     private readonly IServiceProvider _services;
     private ProductsPage _productpage;
     private InputPage _inputPage;
-
+    private AdditionalOperationsPage _additionaloperationpage;
     // Tanlangan tilni saqlash uchun o'zgaruvchi
     private string _currentLanguage = "en";
 
@@ -76,6 +76,11 @@ public partial class MainWindow : Window
         if(_salePracticePage== null)
         {
             _salePracticePage = new SalePracticePage(_services);
+        }
+
+        if(_additionaloperationpage == null)
+        {
+            _additionaloperationpage = new AdditionalOperationsPage(_services);
         }
 
         if (_productpage == null)
@@ -178,6 +183,13 @@ public partial class MainWindow : Window
         btnKirim.Content = DeLong_Desktop.Resources.Resource.Income;
         btnSaleHistory.Content = DeLong_Desktop.Resources.Resource.SaleHistory;
         btnAdditionalOperations.Content = DeLong_Desktop.Resources.Resource.AdditionalOperations;
+        #endregion
+
+        #region AdditionalOperationPage
+        _additionaloperationpage.tbtQoshimchaamallar.Text = DeLong_Desktop.Resources.Resource.Qoshimcha_amallar;
+        _additionaloperationpage.tbtqarznitolash.Text = DeLong_Desktop.Resources.Resource.qarzni_qaytarish;
+        _additionaloperationpage.tbtqaytganmahsulot.Text = DeLong_Desktop.Resources.Resource.qaytarilgan_mahsulotlar;
+        _additionaloperationpage.tbtomborlarprovodka.Text = DeLong_Desktop.Resources.Resource.Omborlar_ortasida_provodka;
         #endregion
 
     }
@@ -310,7 +322,11 @@ public partial class MainWindow : Window
 
     private void OnAdditionalOperationsClick(object sender, RoutedEventArgs e)
     {
-        var additionalOperationsPage = new AdditionalOperationsPage(_services);
-        Navigator.Navigate(additionalOperationsPage);
+        if (_additionaloperationpage == null)
+        {
+            _additionaloperationpage = new AdditionalOperationsPage(_services);
+        }
+        Navigator.Navigate(_additionaloperationpage);
+        UpdateLanguage();
     }
 }

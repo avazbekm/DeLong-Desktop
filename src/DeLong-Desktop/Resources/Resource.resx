@@ -288,4 +288,16 @@
   <data name="Mahsulotni qidirish" xml:space="preserve">
     <value>Mahsulotni qidirish</value>
   </data>
+  <data name="Qoshimcha amallar" xml:space="preserve">
+    <value>Qoshimcha amallar</value>
+  </data>
+  <data name="qarzni qaytarish" xml:space="preserve">
+    <value>qarzni qaytarish</value>
+  </data>
+  <data name="qaytarilgan mahsulotlar" xml:space="preserve">
+    <value>qaytarilgan mahsulotlar</value>
+  </data>
+  <data name="Omborlar ortasida provodka" xml:space="preserve">
+    <value>Omborlar ortasida provodka</value>
+  </data>
 </root>

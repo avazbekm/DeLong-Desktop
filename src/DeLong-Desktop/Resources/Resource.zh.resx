@@ -292,4 +292,16 @@
   <data name="Mahsulotni qidirish" xml:space="preserve">
     <value>按产品搜索 </value>
   </data>
+  <data name="Qoshimcha amallar" xml:space="preserve">
+    <value>额外操作</value>
+  </data>
+  <data name="qarzni qaytarish" xml:space="preserve">
+    <value>还款</value>
+  </data>
+  <data name="qaytarilgan mahsulotlar" xml:space="preserve">
+    <value>退回的商品</value>
+  </data>
+  <data name="Omborlar ortasida provodka" xml:space="preserve">
+    <value>货物转移</value>
+  </data>
 </root>

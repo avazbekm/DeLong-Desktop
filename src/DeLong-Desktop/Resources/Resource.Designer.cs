@@ -403,6 +403,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Omborlar ortasida provodka.
+        /// </summary>
+        internal static string Omborlar_ortasida_provodka {
+            get {
+                return ResourceManager.GetString("Omborlar ortasida provodka", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         internal static string Parol {
@@ -444,6 +453,33 @@ namespace DeLong_Desktop.Resources {
         internal static string Qarz {
             get {
                 return ResourceManager.GetString("Qarz", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to qarzni qaytarish.
+        /// </summary>
+        internal static string qarzni_qaytarish {
+            get {
+                return ResourceManager.GetString("qarzni qaytarish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to qaytarilgan mahsulotlar.
+        /// </summary>
+        internal static string qaytarilgan_mahsulotlar {
+            get {
+                return ResourceManager.GetString("qaytarilgan mahsulotlar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Qoshimcha amallar.
+        /// </summary>
+        internal static string Qoshimcha_amallar {
+            get {
+                return ResourceManager.GetString("Qoshimcha amallar", resourceCulture);
             }
         }
         

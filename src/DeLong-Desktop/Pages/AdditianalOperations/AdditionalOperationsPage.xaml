@@ -82,7 +82,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid>
+    <Grid Margin="0,0,0,-29">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
@@ -90,7 +90,7 @@
 
         <!-- Sarlavha -->
         <Border Background="{DynamicResource SecondaryBackground}" CornerRadius="5" Margin="10">
-            <TextBlock Text="Qo‘shimcha amallar" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource SecondaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock x:Name="tbtQoshimchaamallar" Text="Qo‘shimcha amallar" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource SecondaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
 
         <!-- Tab’lar -->
@@ -98,7 +98,7 @@
             <!-- Tab 1: Qarzni To‘lash -->
             <TabItem Margin="4,0,0,0">
                 <TabItem.Header>
-                    <TextBlock Text="Qarzni to‘lash" Padding="10 0" FontSize="16" />
+                    <TextBlock x:Name="tbtqarznitolash" Text="Qarzni to‘lash" Padding="10 0" FontSize="16" />
                 </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -110,13 +110,13 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="60"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="66.72"/>
                         <!-- Yangi Row qo‘shildi -->
                     </Grid.RowDefinitions>
 
                     <!-- Qidiruv qatori -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,5,0,5" Grid.ColumnSpan="2">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,5,0,5" Grid.ColumnSpan="2" Width="430">
                         <TextBox x:Name="tbSearchDebt" Padding="5 3" md:HintAssist.Hint="Qidiruv" Width="400" Margin="3 5" FontSize="16" Background="{DynamicResource SecondaryBackground}" md:TextFieldAssist.TextFieldCornerRadius="7" TextChanged="SearchDebt_TextChanged"/>
                         <md:PackIcon Kind="Magnify" Height="24" Width="24" Foreground="{DynamicResource SecondaryTextColor}" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -154,18 +154,19 @@
             <!-- Tab 2: Qaytgan Mahsulotlarni Qabul Qilish -->
             <TabItem Margin="0,0,0,-2">
                 <TabItem.Header>
-                        <TextBlock Text="Qaytgan mahsulotlar" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="tbtqaytganmahsulot" Text="Qaytgan mahsulotlar" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" FontWeight="SemiBold"/>
                 </TabItem.Header>
-                <Grid Background="Transparent">
+                <Grid Background="Transparent" Margin="0,0,0,-98">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="681*"/>
+                        <ColumnDefinition Width="109*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <!-- Qaytgan mahsulot qo‘shish uchun Grid -->
-                    <Border CornerRadius="10" Background="{DynamicResource SelectedBackground}" Opacity="0.95" Margin="5 10" Padding="20">
+                    <Border CornerRadius="10" Background="{DynamicResource SelectedBackground}" Opacity="0.95" Margin="5,10,5,10" Padding="20" Grid.ColumnSpan="2">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -186,7 +187,7 @@
              VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8" 
              TextChanged="tbSaleId_TextChanged" LostFocus="tbSaleId_LostFocus"/>
                             </md:Card>
-                            
+
                             <!-- Kimdan qaytyapti -->
                             <md:Card Grid.Row="0" Grid.Column="1" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp16">
                                 <TextBox x:Name="tbReturnedFrom" md:HintAssist.Hint="Kimdan qaytyapti" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8"/>
@@ -221,7 +222,7 @@
                                     </ComboBox.ItemContainerStyle>
                                 </ComboBox>
                             </md:Card>
-                            
+
                             <!-- Quantity -->
                             <md:Card Grid.Row="1" Grid.Column="1" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp16">
                                 <TextBox x:Name="tbReturnQuantity" md:HintAssist.Hint="Miqdor" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8" TextChanged="tbReturnQuantity_TextChanged"/>
@@ -260,11 +261,11 @@
                     </Border>
                 </Grid>
             </TabItem>
-            
+
             <!-- Tab 3: Omborlar O‘rtasida Provodka -->
             <TabItem Margin="0,0,2,0">
                 <TabItem.Header>
-                    <TextBlock Text="Omborlar o‘rtasida provodka" Margin="10 0" FontSize="16"/>
+                    <TextBlock x:Name="tbtomborlarprovodka" Text="Omborlar o‘rtasida provodka" Margin="10 0" FontSize="16"/>
                 </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -272,8 +273,8 @@
                         <ColumnDefinition Width="119*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="Auto" MinHeight="158"/>
                     </Grid.RowDefinitions>
 
                     <!-- Provodka ro‘yxati -->
@@ -290,7 +291,7 @@
                     </DataGrid>
 
                     <!-- Provodka qo‘shish -->
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="76,5,0,5" Grid.ColumnSpan="2">
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="76,5,0,5" Grid.ColumnSpan="2" Width="637">
                         <TextBox x:Name="tbTransferProductId" md:HintAssist.Hint="Mahsulot ID" Width="100" Margin="5"/>
                         <TextBox x:Name="tbTransferQuantity" md:HintAssist.Hint="Miqdor" Width="100" Margin="5"/>
                         <ComboBox x:Name="cbFromWarehouse" md:HintAssist.Hint="Qaysi Ombardan" Width="150" Margin="5"/>
@@ -299,7 +300,7 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            
+
         </TabControl>
     </Grid>
 </Page>
