@@ -18,7 +18,7 @@
 
         <!-- Sarlavha -->
         <Border Background="{StaticResource SelectedBackground}" CornerRadius="5" Margin="10">
-            <TextBlock x:Name="btnName" Text="DeLond" FontSize="37" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Text="DeLond" FontSize="37" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
 
         <!-- Kirish formasi -->
@@ -32,29 +32,6 @@
             <Border CornerRadius="10" Background="{StaticResource OtherBackground}" Margin="0,0,0,30">
                 <PasswordBox x:Name="txtPassword" FontSize="16" Padding="10" BorderThickness="0" Background="Transparent" Foreground="{StaticResource PrimaryTextColor}" md:HintAssist.Hint="Parol" md:HintAssist.HintOpacity="0.5"/>
             </Border>
-
-            <!-- Til tanlash (Bayroqli ComboBox) -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
-                <!-- Globus ikonkasi -->
-                <Image Source="C:\Users\mansu\Source\Repos\DeLong-Desktop\src\DeLong-Desktop\Images\Language.jfif" Width="35" Height="35" Margin="5"/>
-
-                <!-- Til tanlash uchun ComboBox -->
-                <ComboBox x:Name="cmbLanguage" SelectionChanged="cmbLanguage_SelectionChanged" Width="200">
-                    <ComboBoxItem Tag="uz">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="C:\Users\mansu\Source\Repos\DeLong-Desktop\src\DeLong-Desktop\Images\Uzbekistan.png" Width="25" Height="15" Margin="5"/>
-                            <TextBlock Text="O'zbek" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </ComboBoxItem>
-                    <ComboBoxItem Tag="zh">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="C:\Users\mansu\Source\Repos\DeLong-Desktop\src\DeLong-Desktop\Images\China.png" Width="25" Height="15" Margin="5"/>
-                            <TextBlock Text="中文" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </ComboBoxItem>
-                </ComboBox>
-            </StackPanel>
-
 
             <!-- Kirish tugmasi -->
             <Button x:Name="btnLogin" Content="Kirish" FontSize="16" Width="120" Height="40" Background="{StaticResource SelectedBackground}" Foreground="{StaticResource SecondaryTextColor}" BorderBrush="{StaticResource SelectedBorderColor}" md:ButtonAssist.CornerRadius="10" Padding="10" Click="btnLogin_Click"/>
