@@ -107,8 +107,7 @@
                         Foreground="Snow"                        
                         Style="{DynamicResource MaterialDesignPaperLightButton}"
                         Background="#476072"
-                        md:ButtonAssist.CornerRadius="17"
-                        Click="btnHisbot_Click"/>
+                        md:ButtonAssist.CornerRadius="17"/>
 
                 <Border 
                     Height="45" 
