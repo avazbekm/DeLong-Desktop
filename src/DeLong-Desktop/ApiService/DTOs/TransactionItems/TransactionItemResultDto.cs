@@ -2,6 +2,8 @@
 
 public class TransactionItemResultDto
 {
+    public long Id { get; set; }
+    public long TransactionId { get; set; }
     public long ProductId { get; set; }
     public string ProductName { get; set; } = string.Empty; // Mahsulot nomi (qo‘shimcha ma’lumot)
     public decimal Quantity { get; set; }

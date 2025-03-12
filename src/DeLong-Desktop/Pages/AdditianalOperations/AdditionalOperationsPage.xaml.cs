@@ -6,6 +6,12 @@ using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.Pages.AdditianalOperations;
 using DeLong_Desktop.ApiService.DTOs.DebtPayments;
+using System.Collections.ObjectModel;
+using DeLong_Desktop.ApiService.DTOs.Enums;
+using System.Windows.Input;
+using DeLong_Desktop.ApiService.DTOs.Transactions;
+using DeLong_Desktop.ApiService.DTOs.TransactionItems;
+using DeLong.Service.Services;
 
 namespace DeLong_Desktop.Pages.AdditionalOperations;
 
@@ -19,10 +25,18 @@ public partial class AdditionalOperationsPage : Page
     private readonly IKursDollarService _kursDollarService;
     private readonly IDebtPaymentService _debtPaymentService;
     private readonly IProductService _productService;
+    private readonly IPriceService _priceService;
+    private readonly ITransactionService _transactionService;
+    private readonly ITransactionItemService _transactionItemService;
+    private readonly IWarehouseService _warehouseService; // Omborlar uchun servis
     private readonly IReturnProductService _returnProductService;
 
     private List<DebtItem> allDebts;
     private List<DebtItem> selectedCustomerDebts;
+
+    // DataGrid uchun ObservableCollection
+    public ObservableCollection<TransferItem> TransferItems { get; set; } = new();
+    private List<ComboboxItem> allProducts = new(); // Barcha mahsulotlar ro‘yxati saqlanadi
 
     public AdditionalOperationsPage(IServiceProvider services)
     {
@@ -35,13 +49,167 @@ public partial class AdditionalOperationsPage : Page
         _debtPaymentService = services.GetRequiredService<IDebtPaymentService>();
         _saleItemService = services.GetRequiredService<ISaleItemService>();
         _productService = services.GetRequiredService<IProductService>();
+        _priceService = services.GetRequiredService<IPriceService>();
+        _warehouseService = services.GetRequiredService<IWarehouseService>();
         _returnProductService = services.GetRequiredService<IReturnProductService>();
+        _transactionService = services.GetRequiredService<ITransactionService>();
+        _transactionItemService = services.GetRequiredService<ITransactionItemService>();
 
         LoadDebts();
         LoadSalePriceProducts();
+        // DataGrid ga bog‘lash
+        transferDataGrid.ItemsSource = TransferItems;
 
+        // Mahsulotlar ro‘yxatini yuklash
+        LoadProductData();
+        LoadWarehouses(); // Omborlarni yuklash
+        cbTransactionType.ItemsSource = Enum.GetNames(typeof(TransactionType));
     }
 
+    private async void LoadWarehouses()
+    {
+        try
+        {
+            // Omborlar ro‘yxatini olish
+            var warehouses = await _warehouseService.RetrieveAllAsync();
+            if (warehouses == null || !warehouses.Any())
+            {
+                MessageBox.Show("Omborlar topilmadi! API yoki ma’lumot bazasini tekshiring.");
+                return;
+            }
+
+            // ComboBox’ga omborlarni yuklash
+            cbToWarehouse.ItemsSource = warehouses;
+            cbToWarehouse.DisplayMemberPath = "Name"; // Ombor nomini ko‘rsatish
+            cbToWarehouse.SelectedValuePath = "Id";   // Ombor ID’sini saqlash
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Omborlarni yuklashda xatolik: {ex.Message}");
+        }
+    }
+
+    // Mahsulotlar ro‘yxatini ComboBox ga yuklash
+    private async void LoadProductData()
+    {
+        try
+        {
+            var products = await _productService.RetrieveAllAsync();
+            if (products == null || !products.Any())
+            {
+                MessageBox.Show("Mahsulotlar topilmadi! API yoki ma’lumot bazasini tekshiring.");
+                return;
+            }
+
+            allProducts = products.Select(product => new ComboboxItem
+            {
+                Id = product.Id,
+                ProductName = char.ToUpper(product.Name[0]) + product.Name.Substring(1)
+            }).ToList();
+
+            cbProductList.ItemsSource = allProducts;
+            cbProductList.DisplayMemberPath = "ProductName";
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Mahsulotlarni yuklashda xatolik: {ex.Message}");
+        }
+    }
+    // "Qo‘shish" tugmasi uchun metod
+    private async void AddProductButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            if (cbProductList.SelectedItem is not ComboboxItem selectedProduct ||
+                !decimal.TryParse(tbQuantity.Text, out decimal quantity) || quantity <= 0)
+            {
+                MessageBox.Show("Mahsulotni tanlang yoki to‘g‘ri miqdor kiriting!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var prices = await _priceService.RetrieveAllAsync(selectedProduct.Id);
+            if (prices == null || !prices.Any())
+            {
+                MessageBox.Show("Mahsulot uchun narx topilmadi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            foreach (var price in prices)
+            {
+                if (price.Quantity >= quantity)
+                {
+                    var newItem = new TransferItem
+                    {
+                        ProductId = price.ProductId,
+                        ProductName = selectedProduct.ProductName,
+                        Quantity = quantity,
+                        Unit = price.UnitOfMeasure,
+                        UnitPrice = price.SellingPrice
+                    };
+
+                    TransferItems.Add(newItem);
+                    break;
+                }
+                else 
+                {
+                    var newItem = new TransferItem
+                    {
+                        ProductId = price.ProductId,
+                        ProductName = selectedProduct.ProductName,
+                        Quantity = price.Quantity,
+                        Unit = price.UnitOfMeasure,
+                        UnitPrice = price.SellingPrice
+                    };
+
+                    TransferItems.Add(newItem);
+                    quantity-= price.Quantity;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Mahsulot qo‘shishda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    // cbProductList uchun qidiruv logikasi
+    private void cbProductList_PreviewKeyUp(object sender, KeyEventArgs e)
+    {
+        var comboBox = sender as ComboBox;
+        if (comboBox == null) return;
+
+        string searchText = comboBox.Text.Trim().ToLower();
+
+        if (!string.IsNullOrEmpty(searchText))
+        {
+            var filteredProducts = allProducts
+                .Where(p => p.ProductName.ToLower().Contains(searchText))
+                .ToList();
+
+            cbProductList.ItemsSource = filteredProducts;
+        }
+        else
+        {
+            cbProductList.ItemsSource = allProducts; // Agar qidiruv bo‘sh bo‘lsa, barcha mahsulotlarni qaytarish
+        }
+
+        cbProductList.IsDropDownOpen = true; // Har doim ochiq qoladi
+    }
+
+    private void DeleteProductButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            if (sender is Button button && button.DataContext is TransferItem item)
+            {
+                TransferItems.Remove(item);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"O‘chirishda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
     private async void LoadDebts()
     {
         try
@@ -536,5 +704,61 @@ public partial class AdditionalOperationsPage : Page
         ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
     }
 
-    // Page konstruktorida LoadSalePriceProducts ni chaqirish
+    private async void SaveTransferButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            // Validatsiya: DataGridda mahsulot borligini tekshirish
+            if (TransferItems.Count == 0)
+            {
+                MessageBox.Show("Hech qanday mahsulot qo‘shilmagan!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Validatsiya: Ombor va tranzaksiya turi tanlanganligini tekshirish
+            if (cbToWarehouse.SelectedItem == null || cbTransactionType.SelectedItem == null)
+            {
+                MessageBox.Show("Ombor yoki tranzaksiya turini tanlang!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Tranzaksiya DTO yaratish
+            var transactionDto = new TransactionCreationDto
+            {
+                WarehouseIdTo = (long)cbToWarehouse.SelectedValue,
+                TransactionType = (TransactionType)Enum.Parse(typeof(TransactionType), cbTransactionType.SelectedItem.ToString()),
+                Comment = tbCommentProvodka.Text
+            };
+
+            // Tranzaksiyani yaratish
+            var createdTransaction = await _transactionService.AddAsync(transactionDto);
+            if (createdTransaction == null)
+            {
+                MessageBox.Show("Tranzaksiya yaratishda xatolik yuz berdi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // DataGriddagi har bir qator uchun tranzaksiya itemlarini qo‘shish
+            foreach (var item in TransferItems)
+            {
+                var transactionItemDto = new TransactionItemCreationDto
+                {
+                        = createdTransaction.Id,
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    PriceProduct = item.UnitPrice
+                };
+
+                await _transactionItemService.AddAsync(transactionItemDto);
+            }
+
+            // Muvaffaqiyatli saqlangandan so‘ng ro‘yxatni tozalash
+            MessageBox.Show("Tranzaksiya muvaffaqiyatli saqlandi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+            TransferItems.Clear();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Tranzaksiya saqlashda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
 }

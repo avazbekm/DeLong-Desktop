@@ -22,17 +22,17 @@ namespace DeLong_Desktop.Pages.SalesPractice;
 
 public partial class SalePracticePage : Page
 {
-    private readonly IPriceService _priceService;
-    private readonly IProductService _productService;
     private readonly IUserService _userService;
-    private readonly ICustomerService _customerService;
-    private readonly IKursDollarService kursDollarService;
     private readonly IServiceProvider services;
     private readonly ISaleService _saleService;
-    private readonly ISaleItemService _saleItemService;
-    private readonly IPaymentService _paymentService;
     private readonly IDebtService _debtService;
+    private readonly IPriceService _priceService;
+    private readonly IProductService _productService;
+    private readonly IPaymentService _paymentService;
+    private readonly ICustomerService _customerService;
     private readonly IDiscountService _discountService;
+    private readonly ISaleItemService _saleItemService;
+    private readonly IKursDollarService _kursDollarService;
 
     private TextBox lastUpdatedTextBox;
 
@@ -45,15 +45,15 @@ public partial class SalePracticePage : Page
         InitializeComponent();
         this.services = services;
         _saleService = services.GetRequiredService<ISaleService>(); // Yangi qo‘shildi
+        _debtService = services.GetRequiredService<IDebtService>(); // Yangi qo‘shildi
         _userService = services.GetRequiredService<IUserService>();
         _priceService = services.GetRequiredService<IPriceService>();
+        _paymentService = services.GetRequiredService<IPaymentService>(); // Yangi qo‘shildi
         _productService = services.GetRequiredService<IProductService>();
         _customerService = services.GetRequiredService<ICustomerService>();
         _saleItemService = services.GetRequiredService<ISaleItemService>(); // Yangi qo‘shildi
-        _paymentService = services.GetRequiredService<IPaymentService>(); // Yangi qo‘shildi
-        _debtService = services.GetRequiredService<IDebtService>(); // Yangi qo‘shildi
         _discountService = services.GetRequiredService<IDiscountService>(); // Yangi qo‘shildi
-        kursDollarService = services.GetRequiredService<IKursDollarService>();
+        _kursDollarService = services.GetRequiredService<IKursDollarService>();
 
 
         ProductGrid.ItemsSource = Items; // Faqat 1 marta bog'lash
@@ -71,7 +71,7 @@ public partial class SalePracticePage : Page
     {
         try
         {
-            var latestRate = await kursDollarService.RetrieveByIdAsync();
+            var latestRate = await _kursDollarService.RetrieveByIdAsync();
             if (latestRate != null && latestRate.TodayDate.Equals(DateTime.Now.ToString("dd.MM.yyyy")))
             {
                 tbDolarKurs.Text = latestRate.SellingDollar.ToString("F2"); // Formatlangan kurs qiymatini ko'rsatish

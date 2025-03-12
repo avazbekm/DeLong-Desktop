@@ -9,4 +9,4 @@ public class TransactionCreationDto
     public List<TransactionItemCreationDto> Items { get; set; } = new List<TransactionItemCreationDto>(); // Mahsulotlar ro‘yxati
     public TransactionType TransactionType { get; set; }
     public string Comment { get; set; } = string.Empty;
-}
+}   

@@ -154,7 +154,7 @@
             <!-- Tab 2: Qaytgan Mahsulotlarni Qabul Qilish -->
             <TabItem Margin="0,0,0,-2">
                 <TabItem.Header>
-                        <TextBlock Text="Qaytgan mahsulotlar" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" FontWeight="SemiBold"/>
+                    <TextBlock Text="Qaytgan mahsulotlar" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" FontWeight="SemiBold"/>
                 </TabItem.Header>
                 <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>
@@ -186,7 +186,7 @@
              VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8" 
              TextChanged="tbSaleId_TextChanged" LostFocus="tbSaleId_LostFocus"/>
                             </md:Card>
-                            
+
                             <!-- Kimdan qaytyapti -->
                             <md:Card Grid.Row="0" Grid.Column="1" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp16">
                                 <TextBox x:Name="tbReturnedFrom" md:HintAssist.Hint="Kimdan qaytyapti" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8"/>
@@ -221,7 +221,7 @@
                                     </ComboBox.ItemContainerStyle>
                                 </ComboBox>
                             </md:Card>
-                            
+
                             <!-- Quantity -->
                             <md:Card Grid.Row="1" Grid.Column="1" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp16">
                                 <TextBox x:Name="tbReturnQuantity" md:HintAssist.Hint="Miqdor" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8" TextChanged="tbReturnQuantity_TextChanged"/>
@@ -260,7 +260,7 @@
                     </Border>
                 </Grid>
             </TabItem>
-            
+
             <!-- Tab 3: Omborlar O‘rtasida Provodka -->
             <TabItem Margin="0,0,2,0">
                 <TabItem.Header>
@@ -269,33 +269,54 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="39*"/>
-                        <ColumnDefinition Width="119*"/>
+                        <ColumnDefinition Width="94*"/>
+                        <ColumnDefinition Width="25*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
+                    <!-- Yangi StackPanel: Mahsulot qo‘shish -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,5,0,5" Grid.ColumnSpan="3">
+                        <ComboBox x:Name="cbProductList" FontSize="16" md:HintAssist.Hint="Mahsulotlar ro‘yxati" Width="180" Margin="5" IsEditable="True" PreviewKeyUp="cbProductList_PreviewKeyUp"/>
+                        <TextBox x:Name="tbQuantity" CaretBrush="{DynamicResource  PrimaryCursorColor}" FontSize="16" TextAlignment="Center" md:HintAssist.Hint="Miqdor" Width="100" Margin="5"/>
+                        <Button Content="Qo‘shish" Click="AddProductButton_Click" Margin="5"/>
+                    </StackPanel>
+
                     <!-- Provodka ro‘yxati -->
-                    <DataGrid x:Name="transferDataGrid" Margin="5,5,5,5" AutoGenerateColumns="False" CanUserAddRows="False"
-                              Background="{DynamicResource SecondaryBackground}" 
-                              Foreground="{DynamicResource SecondaryTextColor}" Grid.ColumnSpan="2">
+                    <DataGrid x:Name="transferDataGrid" Grid.Row="1" Margin="5,5,5,5" AutoGenerateColumns="False" CanUserAddRows="False"
+                  Background="{DynamicResource SecondaryBackground}" 
+                  Foreground="{DynamicResource SecondaryTextColor}" Grid.ColumnSpan="3">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Mahsulot Nomi" Binding="{Binding ProductName}" Width="150"/>
-                            <DataGridTextColumn Header="Miqdor" Binding="{Binding Quantity}" Width="100"/>
-                            <DataGridTextColumn Header="Qaysi Ombardan" Binding="{Binding FromWarehouse}" Width="150"/>
-                            <DataGridTextColumn Header="Qaysi Omborga" Binding="{Binding ToWarehouse}" Width="150"/>
-                            <DataGridTextColumn Header="Sana" Binding="{Binding TransferDate, StringFormat=yyyy-MM-dd}" Width="100"/>
+                            <DataGridTextColumn Header="Mahsulot Nomi" Binding="{Binding ProductName}" Width="150" IsReadOnly="True"/>
+                            <DataGridTemplateColumn Header="Miqdor" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBox TextAlignment="Center" Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="O‘lchov birligi" Binding="{Binding Unit}" Width="100" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Mahsulot tannarxi" Binding="{Binding UnitPrice}" Width="150" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Umumiy summa" Binding="{Binding TotalAmount, StringFormat=N2}" Width="150" IsReadOnly="True"/>
+                            <DataGridTemplateColumn Header="O‘chirish" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="🗑️" Padding="0" Click="DeleteProductButton_Click" Margin="5 0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
 
                     <!-- Provodka qo‘shish -->
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="76,5,0,5" Grid.ColumnSpan="2">
-                        <TextBox x:Name="tbTransferProductId" md:HintAssist.Hint="Mahsulot ID" Width="100" Margin="5"/>
-                        <TextBox x:Name="tbTransferQuantity" md:HintAssist.Hint="Miqdor" Width="100" Margin="5"/>
-                        <ComboBox x:Name="cbFromWarehouse" md:HintAssist.Hint="Qaysi Ombardan" Width="150" Margin="5"/>
-                        <ComboBox x:Name="cbToWarehouse" md:HintAssist.Hint="Qaysi Omborga" Width="150" Margin="5"/>
-                        <Button Content="Jo‘natish" Click="TransferProductButton_Click" Margin="5"/>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,5,0,5" Grid.ColumnSpan="3">
+                        <ComboBox x:Name="cbToWarehouse" FontSize="18" md:HintAssist.Hint="Qaysi omborga" Width="150" Margin="5"/>
+                        <ComboBox x:Name="cbTransactionType" FontSize="18" md:HintAssist.Hint="Tranzaksiya turi" Width="150" Margin="5"/>
+                        <TextBox x:Name="tbCommentProvodka" FontSize="18" CaretBrush="{DynamicResource PrimaryCursorColor}" md:HintAssist.Hint="Izoh" Padding="5" Width="300" Margin="5"/>
+                        <Button Content="Jo‘natish" Click="SaveTransferButton_Click" Margin="5"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
