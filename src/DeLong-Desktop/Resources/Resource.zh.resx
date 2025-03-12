@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="dollorkursi" xml:space="preserve">
+    <value>汇率</value>
+  </data>
+  <data name="dollorkursini kiriting" xml:space="preserve">
+    <value> 输入汇率</value>
+  </data>
   <data name="Action" xml:space="preserve">
     <value>操作 </value>
   </data>
@@ -141,6 +147,12 @@
   <data name="Customer" xml:space="preserve">
     <value>客户</value>
   </data>
+  <data name="Delong" xml:space="preserve">
+    <value>德龙</value>
+  </data>
+  <data name="Dollar" xml:space="preserve">
+    <value>美元 </value>
+  </data>
   <data name="Exit" xml:space="preserve">
     <value>退出</value>
   </data>
@@ -150,11 +162,41 @@
   <data name="Income" xml:space="preserve">
     <value>收入</value>
   </data>
+  <data name="Jami summa " xml:space="preserve">
+    <value>总计 </value>
+  </data>
   <data name="JSHSHIR" xml:space="preserve">
     <value>个人识别码</value>
   </data>
+  <data name="Login" xml:space="preserve">
+    <value>登录 </value>
+  </data>
+  <data name="Mahsulotni tanlang " xml:space="preserve">
+    <value>选择产品 </value>
+  </data>
+  <data name="Mijozlar " xml:space="preserve">
+    <value>客户</value>
+  </data>
+  <data name="Mijozni tanlang " xml:space="preserve">
+    <value>选择客户 </value>
+  </data>
+  <data name="Miqdori" xml:space="preserve">
+    <value>数量</value>
+  </data>
+  <data name="Naqd" xml:space="preserve">
+    <value>现金 </value>
+  </data>
+  <data name="Narxi" xml:space="preserve">
+    <value>价格</value>
+  </data>
+  <data name="O'lchov birligi " xml:space="preserve">
+    <value>计量单位 </value>
+  </data>
   <data name="Phone" xml:space="preserve">
     <value>电话 </value>
+  </data>
+  <data name="Plastik" xml:space="preserve">
+    <value>刷卡 </value>
   </data>
   <data name="Product" xml:space="preserve">
     <value>产品</value>
@@ -168,13 +210,104 @@
   <data name="Search" xml:space="preserve">
     <value>搜索</value>
   </data>
+  <data name="Sotib olish " xml:space="preserve">
+    <value>购买 </value>
+  </data>
+  <data name="Sotish" xml:space="preserve">
+    <value>销售</value>
+  </data>
+  <data name="Sotuv" xml:space="preserve">
+    <value>进行销售</value>
+  </data>
   <data name="Telegram Phone Number" xml:space="preserve">
     <value>电报号码</value>
+  </data>
+  <data name="To'lov summasi " xml:space="preserve">
+    <value>付款金额 </value>
   </data>
   <data name="ToExcell" xml:space="preserve">
     <value>导出到 Excel</value>
   </data>
+  <data name="Umumiy summasi " xml:space="preserve">
+    <value>总金额 </value>
+  </data>
+  <data name="Valyutani ayirboshlash " xml:space="preserve">
+    <value>货币兑换 </value>
+  </data>
   <data name="Warehouse" xml:space="preserve">
     <value>仓库</value>
+  </data>
+  <data name="Yakunlash " xml:space="preserve">
+    <value>完成 </value>
+  </data>
+  <data name="t/r" xml:space="preserve">
+    <value>序号</value>
+  </data>
+  <data name="O'chirish" xml:space="preserve">
+    <value>删除 </value>
+  </data>
+  <data name="Qarz" xml:space="preserve">
+    <value>赊账</value>
+  </data>
+  <data name="Chegirma" xml:space="preserve">
+    <value>折扣</value>
+  </data>
+  <data name="DueData" xml:space="preserve">
+    <value>到期日期</value>
+  </data>
+  <data name="Mahsulot nomi" xml:space="preserve">
+    <value>产品名称
+</value>
+  </data>
+  <data name="Ombordagi miqdor " xml:space="preserve">
+    <value>库存水平
+</value>
+  </data>
+  <data name="Kategoriya " xml:space="preserve">
+    <value>类别</value>
+  </data>
+  <data name="Faolligi" xml:space="preserve">
+    <value>是否激活
+</value>
+  </data>
+  <data name="Amallar" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="Foydalanuvchi nomi" xml:space="preserve">
+    <value>用户名
+</value>
+  </data>
+  <data name="Parol" xml:space="preserve">
+    <value>密码</value>
+  </data>
+  <data name="Ombor nomi" xml:space="preserve">
+    <value>仓库名称</value>
+  </data>
+  <data name="Ombor mudiri" xml:space="preserve">
+    <value>仓库经理</value>
+  </data>
+  <data name="Kategoriya bo'yicha qidiruv" xml:space="preserve">
+    <value>按类别搜索 </value>
+  </data>
+  <data name="Mahsulotni qidirish" xml:space="preserve">
+    <value>按产品搜索 </value>
+  </data>
+  <data name="Qoshimcha amallar" xml:space="preserve">
+    <value>额外操作</value>
+  </data>
+  <data name="qarzni qaytarish" xml:space="preserve">
+    <value>还款</value>
+  </data>
+  <data name="qaytarilgan mahsulotlar" xml:space="preserve">
+    <value>退回的商品</value>
+  </data>
+  <data name="Omborlar ortasida provodka" xml:space="preserve">
+    <value>货物转移</value>
+  </data>
+  <data name="qarz summasi" xml:space="preserve">
+    <value>债务总额</value>
+  </data>
+  <data name="tolov muddati" xml:space="preserve">
+    <value>到期日期</value>
   </data>
 </root>

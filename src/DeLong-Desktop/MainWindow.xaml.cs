@@ -9,6 +9,7 @@ using DeLong_Desktop.Pages.Warehouses;
 using DeLong_Desktop.Pages.SaleHistory;
 using DeLong_Desktop.Pages.SalesPractice;
 using DeLong_Desktop.Pages.AdditionalOperations;
+using DeLong_Desktop.Pages.Reports;
 
 namespace DeLong_Desktop;
 
@@ -18,8 +19,12 @@ namespace DeLong_Desktop;
 public partial class MainWindow : Window
 {
     private CustomersPage _customerPage;
+    private WarehousePage _warehousePage;
+    private SalePracticePage _salePracticePage;
     private readonly IServiceProvider _services;
-
+    private ProductsPage _productpage;
+    private InputPage _inputPage;
+    private AdditionalOperationsPage _additionaloperationpage;
     // Tanlangan tilni saqlash uchun o'zgaruvchi
     private string _currentLanguage = "en";
 
@@ -69,6 +74,32 @@ public partial class MainWindow : Window
             _customerPage = new CustomersPage(_services);
         }
 
+        if(_salePracticePage== null)
+        {
+            _salePracticePage = new SalePracticePage(_services);
+        }
+
+        if(_additionaloperationpage == null)
+        {
+            _additionaloperationpage = new AdditionalOperationsPage(_services);
+        }
+
+        if (_productpage == null)
+        {
+            _productpage = new ProductsPage(_services);
+        }
+
+        if (_warehousePage == null)
+        {
+            _warehousePage = new WarehousePage(_services);
+        }
+
+        if (_inputPage == null)
+        {
+            _inputPage = new InputPage(_services);
+        }
+
+        #region CustomerPage
         _customerPage.userDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Customer;
         _customerPage.userDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.ClientFullname;
         _customerPage.userDataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.Phone;
@@ -76,10 +107,74 @@ public partial class MainWindow : Window
         _customerPage.userDataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.JSHSHIR;
         _customerPage.userDataGrid.Columns[5].Header = DeLong_Desktop.Resources.Resource.Address;
         _customerPage.userDataGrid.Columns[6].Header = DeLong_Desktop.Resources.Resource.Action;
-    md: HintAssist.SetHint(_customerPage.txtSearch, DeLong_Desktop.Resources.Resource.Search); // Hint ni yangilash
+        HintAssist.SetHint(_customerPage.txtSearch, DeLong_Desktop.Resources.Resource.Search); // Hint ni yangilash
         _customerPage.btnAdd.Content = DeLong_Desktop.Resources.Resource.Add;
         _customerPage.btnExcel.Content = DeLong_Desktop.Resources.Resource.ToExcell;
+        #endregion
 
+        #region KirimPage
+        HintAssist.SetHint(_inputPage.txtSearch, DeLong_Desktop.Resources.Resource.Kategoriya_bo_yicha_qidiruv);
+        HintAssist.SetHint(_inputPage.txtProductSearch, DeLong_Desktop.Resources.Resource.Mahsulotni_qidirish);
+        _inputPage.dtkategoriya.Header = DeLong_Desktop.Resources.Resource.Kategoriya_;
+        _inputPage.dtmahsulot.Header = DeLong_Desktop.Resources.Resource.Product;
+        #endregion
+
+        #region SalePracticePage
+        _salePracticePage.btnsotuvniamalgaoshirish.Content = DeLong_Desktop.Resources.Resource.Sotuv;
+        _salePracticePage.btnMahsulot.Content = DeLong_Desktop.Resources.Resource.Product;
+        _salePracticePage.tbdollorkursi.Text = DeLong_Desktop.Resources.Resource.dollorkursi;
+        _salePracticePage.btnDollarKurs.Content = DeLong_Desktop.Resources.Resource.dollorkursini_kiriting;
+        _salePracticePage.btnMiqdori.Content = DeLong_Desktop.Resources.Resource.Miqdori;
+        _salePracticePage.btnvalyutaayirboshlash.Content = DeLong_Desktop.Resources.Resource.Valyutani_ayirboshlash_;
+        _salePracticePage.cbxProduct.Text = DeLong_Desktop.Resources.Resource.Mahsulotni_tanlang_;
+        _salePracticePage.btnProductSell.Content = DeLong_Desktop.Resources.Resource.Add;
+        _salePracticePage.btnBuyDollar.Content = DeLong_Desktop.Resources.Resource.Sotib_olish_;
+        _salePracticePage.btnSellDollar.Content = DeLong_Desktop.Resources.Resource.Sotish;
+        _salePracticePage.lblmahsulot.Content = DeLong_Desktop.Resources.Resource.Product;
+        _salePracticePage.ProductGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.t_r;
+        _salePracticePage.ProductGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.Mahsulot_nomi;
+        _salePracticePage.ProductGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.Narxi;
+        _salePracticePage.ProductGrid.Columns[3].Header = DeLong_Desktop.Resources.Resource.Miqdori;
+        _salePracticePage.ProductGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.O_lchov_birligi_;
+        _salePracticePage.ProductGrid.Columns[5].Header = DeLong_Desktop.Resources.Resource.Umumiy_summasi_;
+        _salePracticePage.ProductGrid.Columns[6].Header = DeLong_Desktop.Resources.Resource.O_chirish;
+        _salePracticePage.lblmijoz.Content = DeLong_Desktop.Resources.Resource.Mijozlar_;
+        _salePracticePage.cbxPayment.Text = DeLong_Desktop.Resources.Resource.Mijozni_tanlang_;
+        _salePracticePage.lbljami.Content = DeLong_Desktop.Resources.Resource.Jami_summa_;
+        _salePracticePage.lblnaqd.Content = DeLong_Desktop.Resources.Resource.Naqd;
+        _salePracticePage.lblplastik.Content = DeLong_Desktop.Resources.Resource.Plastik;
+        _salePracticePage.lbldollor.Content = DeLong_Desktop.Resources.Resource.Dollar;
+        _salePracticePage.lblqarz.Content = DeLong_Desktop.Resources.Resource.Qarz;
+        _salePracticePage.lblchegirma.Content = DeLong_Desktop.Resources.Resource.Chegirma;
+        _salePracticePage.dpDueDate.Text = DeLong_Desktop.Resources.Resource.DueData;
+        _salePracticePage.lbltolov.Content = DeLong_Desktop.Resources.Resource.To_lov_summasi_;
+        _salePracticePage.btnFinishSale.Content = DeLong_Desktop.Resources.Resource.Yakunlash_;
+        _salePracticePage.lblMahsulot.Content = DeLong_Desktop.Resources.Resource.Product;
+        #endregion
+
+        #region ProductPage
+        HintAssist.SetHint(_productpage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
+        HintAssist.SetHint(_productpage.cmbCategory,DeLong_Desktop.Resources.Resource.Category);
+        _productpage.btnAdd.Content = DeLong_Desktop.Resources.Resource.Add;
+        _productpage.btnExcel.Content = DeLong_Desktop.Resources.Resource.ToExcell;
+        _productpage.dataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Mahsulot_nomi;
+        _productpage.dataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.Ombordagi_miqdor_;
+        _productpage.dataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.Kategoriya_;
+        _productpage.dataGrid.Columns[3].Header = DeLong_Desktop.Resources.Resource.Faolligi;
+        _productpage.dataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.Amallar;
+        #endregion
+
+        #region WarehousePage
+        HintAssist.SetHint(_warehousePage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
+        _warehousePage.btnAdd.Content = DeLong_Desktop.Resources.Resource.Add;
+        _warehousePage.btnExcel.Content = DeLong_Desktop.Resources.Resource.ToExcell;
+        _warehousePage.warehouseDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Ombor_nomi;
+        _warehousePage.warehouseDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.Ombor_mudiri;
+        _warehousePage.warehouseDataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.Address;
+        _warehousePage.warehouseDataGrid.Columns[3].Header = DeLong_Desktop.Resources.Resource.Action;
+        #endregion
+
+        #region MainWindow
         btnOmbor.Content = DeLong_Desktop.Resources.Resource.Warehouse;
         btnChiqim.Content = DeLong_Desktop.Resources.Resource.Expense;
         btnChiqish.Content = DeLong_Desktop.Resources.Resource.Exit;
@@ -89,6 +184,20 @@ public partial class MainWindow : Window
         btnKirim.Content = DeLong_Desktop.Resources.Resource.Income;
         btnSaleHistory.Content = DeLong_Desktop.Resources.Resource.SaleHistory;
         btnAdditionalOperations.Content = DeLong_Desktop.Resources.Resource.AdditionalOperations;
+        #endregion
+
+        #region AdditionalOperationPage
+        HintAssist.SetHint(_additionaloperationpage.tbSearchDebt, DeLong_Desktop.Resources.Resource.Search);
+        _additionaloperationpage.tbtQoshimchaamallar.Text = DeLong_Desktop.Resources.Resource.Qoshimcha_amallar;
+        _additionaloperationpage.tbtqarznitolash.Text = DeLong_Desktop.Resources.Resource.qarzni_qaytarish;
+        _additionaloperationpage.tbtqaytganmahsulot.Text = DeLong_Desktop.Resources.Resource.qaytarilgan_mahsulotlar;
+        _additionaloperationpage.tbtomborlarprovodka.Text = DeLong_Desktop.Resources.Resource.Omborlar_ortasida_provodka;
+        _additionaloperationpage.debtDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.ClientFullname;
+        _additionaloperationpage.debtDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.qarz_summasi;
+        _additionaloperationpage.debtDataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.tolov_muddati;
+
+        #endregion
+
     }
 
     /// <summary>
@@ -103,6 +212,11 @@ public partial class MainWindow : Window
 
         Navigator.Navigate(_customerPage);
         UpdateLanguage(); // Matnlarni sahifaga moslashtirish
+
+        if (_customerPage.txtSearch != null)
+        {
+            HintAssist.SetHint(_customerPage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
+        }
     }
 
     /// <summary>
@@ -118,8 +232,17 @@ public partial class MainWindow : Window
     /// </summary>
     private void btnMaxsulot_Click(object sender, RoutedEventArgs e)
     {
-        var productsPage = new ProductsPage(_services);
-        Navigator.Navigate(productsPage);
+        if (_productpage == null)
+        {
+            _productpage = new ProductsPage(_services);
+        }
+        Navigator.Navigate(_productpage);
+        UpdateLanguage();
+        if (_productpage.txtSearch != null)
+        {
+            HintAssist.SetHint(_productpage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
+            HintAssist.SetHint(_productpage.cmbCategory, DeLong_Desktop.Resources.Resource.Category);
+        }
     }
 
     /// <summary>
@@ -127,8 +250,18 @@ public partial class MainWindow : Window
     /// </summary>
     private void btnOmbor_Click(object sender, RoutedEventArgs e)
     {
-        var warehousePage = new WarehousePage(_services);
-        Navigator.Navigate(warehousePage);
+        if (_warehousePage == null)
+        {
+            _warehousePage = new WarehousePage(_services);
+        }
+
+        Navigator.Navigate(_warehousePage);
+        UpdateLanguage(); // Matnlarni sahifaga moslashtirish
+
+        if (_warehousePage.txtSearch != null)
+        {
+            HintAssist.SetHint(_warehousePage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
+        }
     }
 
     /// <summary>
@@ -136,8 +269,21 @@ public partial class MainWindow : Window
     /// </summary>
     private void btnKirim_Click(object sender, RoutedEventArgs e)
     {
-        var inputPage = new InputPage(_services);
-        Navigator.Navigate(inputPage);
+        if (_inputPage == null)
+        {
+            _inputPage = new InputPage(_services);
+        }
+        Navigator.Navigate(_inputPage);
+        UpdateLanguage();
+        if (_inputPage.txtSearch != null)
+        {
+            HintAssist.SetHint(_inputPage.txtSearch, DeLong_Desktop.Resources.Resource.Kategoriya_bo_yicha_qidiruv);
+        }
+        if (_inputPage.txtProductSearch != null)
+        {
+            HintAssist.SetHint(_inputPage.txtProductSearch, DeLong_Desktop.Resources.Resource.Mahsulotni_qidirish);
+        }
+
     }
 
     private void languageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -165,8 +311,13 @@ public partial class MainWindow : Window
 
     private void btnChiqim_Click(object sender, RoutedEventArgs e)
     {
-        SalePracticePage salePracticePage = new SalePracticePage(_services);
-        Navigator.Navigate(salePracticePage);
+        if (_salePracticePage == null)
+        {
+            _salePracticePage = new SalePracticePage(_services);
+        }
+
+        Navigator.Navigate(_salePracticePage);
+        UpdateLanguage(); // Matnlarni sahifaga moslashtirish
     }
 
     private void btnSaleHistory_Click(object sender, RoutedEventArgs e)
@@ -177,7 +328,21 @@ public partial class MainWindow : Window
 
     private void OnAdditionalOperationsClick(object sender, RoutedEventArgs e)
     {
-        var additionalOperationsPage = new AdditionalOperationsPage(_services);
-        Navigator.Navigate(additionalOperationsPage);
+        if (_additionaloperationpage == null)
+        {
+            _additionaloperationpage = new AdditionalOperationsPage(_services);
+        }
+        Navigator.Navigate(_additionaloperationpage);
+        UpdateLanguage();
+        if (_additionaloperationpage.tbSearchDebt!= null)
+        {
+            HintAssist.SetHint(_additionaloperationpage.tbSearchDebt, DeLong_Desktop.Resources.Resource.Search);
+        }
+    }
+
+    private void btnHisbot_Click(object sender, RoutedEventArgs e)
+    {
+        var hisobotPage = new ReportPage(_services);
+        Navigator.Navigate(hisobotPage);
     }
 }

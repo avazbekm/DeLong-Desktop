@@ -59,7 +59,7 @@
                     </DataGridTemplateColumn>
 
                     <!-- Kategoriya ustuni -->
-                    <DataGridTextColumn Header="Kategoriya" Binding="{Binding Category}" Width="*">
+                    <DataGridTextColumn x:Name="dtkategoriya" Header="Kategoriya" Binding="{Binding Category}" Width="*">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="FontSize" Value="20" />
@@ -93,7 +93,7 @@
                     </DataGridTemplateColumn>
 
                     <!-- Mahsulot ustuni -->
-                    <DataGridTextColumn Header="Mahsulotlar" Binding="{Binding Product}" Width="*">
+                    <DataGridTextColumn x:Name="dtmahsulot" Header="Mahsulotlar" Binding="{Binding Product}" Width="*">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="FontSize" Value="20" />
