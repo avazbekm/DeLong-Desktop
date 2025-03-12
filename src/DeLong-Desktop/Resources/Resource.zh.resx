@@ -304,4 +304,10 @@
   <data name="Omborlar ortasida provodka" xml:space="preserve">
     <value>货物转移</value>
   </data>
+  <data name="qarz summasi" xml:space="preserve">
+    <value>债务总额</value>
+  </data>
+  <data name="tolov muddati" xml:space="preserve">
+    <value>到期日期</value>
+  </data>
 </root>

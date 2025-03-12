@@ -300,4 +300,10 @@
   <data name="Omborlar ortasida provodka" xml:space="preserve">
     <value>Omborlar ortasida provodka</value>
   </data>
+  <data name="qarz summasi" xml:space="preserve">
+    <value>qarz summasi</value>
+  </data>
+  <data name="tolov muddati" xml:space="preserve">
+    <value>tolov muddati</value>
+  </data>
 </root>

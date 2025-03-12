@@ -9,6 +9,7 @@ using DeLong_Desktop.Pages.Warehouses;
 using DeLong_Desktop.Pages.SaleHistory;
 using DeLong_Desktop.Pages.SalesPractice;
 using DeLong_Desktop.Pages.AdditionalOperations;
+using DeLong_Desktop.Pages.Reports;
 
 namespace DeLong_Desktop;
 
@@ -186,10 +187,15 @@ public partial class MainWindow : Window
         #endregion
 
         #region AdditionalOperationPage
+        HintAssist.SetHint(_additionaloperationpage.tbSearchDebt, DeLong_Desktop.Resources.Resource.Search);
         _additionaloperationpage.tbtQoshimchaamallar.Text = DeLong_Desktop.Resources.Resource.Qoshimcha_amallar;
         _additionaloperationpage.tbtqarznitolash.Text = DeLong_Desktop.Resources.Resource.qarzni_qaytarish;
         _additionaloperationpage.tbtqaytganmahsulot.Text = DeLong_Desktop.Resources.Resource.qaytarilgan_mahsulotlar;
         _additionaloperationpage.tbtomborlarprovodka.Text = DeLong_Desktop.Resources.Resource.Omborlar_ortasida_provodka;
+        _additionaloperationpage.debtDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.ClientFullname;
+        _additionaloperationpage.debtDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.qarz_summasi;
+        _additionaloperationpage.debtDataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.tolov_muddati;
+
         #endregion
 
     }
@@ -328,5 +334,15 @@ public partial class MainWindow : Window
         }
         Navigator.Navigate(_additionaloperationpage);
         UpdateLanguage();
+        if (_additionaloperationpage.tbSearchDebt!= null)
+        {
+            HintAssist.SetHint(_additionaloperationpage.tbSearchDebt, DeLong_Desktop.Resources.Resource.Search);
+        }
+    }
+
+    private void btnHisbot_Click(object sender, RoutedEventArgs e)
+    {
+        var hisobotPage = new ReportPage(_services);
+        Navigator.Navigate(hisobotPage);
     }
 }
