@@ -181,20 +181,17 @@
 
                             <!-- SaleId -->
                             <md:Card Grid.Row="0" Grid.Column="0" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp16">
-                                <TextBox x:Name="tbSaleId" md:HintAssist.Hint="Chek ID" Width="220" Height="40" FontSize="16" 
-             Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" 
-             VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8" 
-             TextChanged="tbSaleId_TextChanged" LostFocus="tbSaleId_LostFocus"/>
+                                <TextBox x:Name="tbSaleId" md:HintAssist.Hint="Chek ID" Width="220" Height="40" FontSize="16" CaretBrush="{DynamicResource PrimaryCursorColor}" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8" TextChanged="tbSaleId_TextChanged" LostFocus="tbSaleId_LostFocus"/>
                             </md:Card>
 
                             <!-- Kimdan qaytyapti -->
                             <md:Card Grid.Row="0" Grid.Column="1" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp16">
-                                <TextBox x:Name="tbReturnedFrom" md:HintAssist.Hint="Kimdan qaytyapti" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8"/>
+                                <TextBox x:Name="tbReturnedFrom" md:HintAssist.Hint="Kimdan qaytyapti" Width="220" Height="40" FontSize="16" CaretBrush="{DynamicResource PrimaryCursorColor}" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8"/>
                             </md:Card>
 
                             <!-- ProductName (ComboBox) -->
                             <md:Card Grid.Row="1" Grid.Column="0" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp16">
-                                <ComboBox x:Name="cbSalePriceProducts" md:HintAssist.Hint="Mahsulot tanlang" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8">
+                                <ComboBox x:Name="cbSalePriceProducts" md:HintAssist.Hint="Mahsulot tanlang" Width="220" Height="40" FontSize="16"  Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8">
                                     <!-- ComboBox elementlarining uslubi -->
                                     <ComboBox.ItemContainerStyle>
                                         <Style TargetType="ComboBoxItem">
@@ -224,22 +221,22 @@
 
                             <!-- Quantity -->
                             <md:Card Grid.Row="1" Grid.Column="1" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp16">
-                                <TextBox x:Name="tbReturnQuantity" md:HintAssist.Hint="Miqdor" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8" TextChanged="tbReturnQuantity_TextChanged"/>
+                                <TextBox x:Name="tbReturnQuantity" md:HintAssist.Hint="Miqdor" Width="220" Height="40" FontSize="16" CaretBrush="{DynamicResource PrimaryCursorColor}" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8" TextChanged="tbReturnQuantity_TextChanged"/>
                             </md:Card>
 
                             <!-- UnitOfMeasure -->
                             <md:Card Grid.Row="2" Grid.Column="0" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp12">
-                                <TextBox x:Name="tbUnitOfMeasure" md:HintAssist.Hint="O‘lchov birligi ( dona, kg, litr ... )" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8"/>
+                                <TextBox x:Name="tbUnitOfMeasure" md:HintAssist.Hint="O‘lchov birligi ( dona, kg, litr ... )" Width="220" Height="40" FontSize="16" CaretBrush="{DynamicResource PrimaryCursorColor}" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8"/>
                             </md:Card>
 
                             <!-- Summa -->
                             <md:Card Grid.Row="2" Grid.Column="1" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp12">
-                                <TextBox x:Name="tbReturnAmount" md:HintAssist.Hint="Summa" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8" TextChanged="tbReturnAmount_TextChanged"/>
+                                <TextBox x:Name="tbReturnAmount" md:HintAssist.Hint="Summa" Width="220" Height="40" FontSize="16" CaretBrush="{DynamicResource PrimaryCursorColor}" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8" TextChanged="tbReturnAmount_TextChanged"/>
                             </md:Card>
 
                             <!-- Izoh -->
                             <md:Card Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp12">
-                                <TextBox x:Name="tbComment" md:HintAssist.Hint="Izoh" Width="460" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8"/>
+                                <TextBox x:Name="tbComment" md:HintAssist.Hint="Izoh" Width="460" Height="40" FontSize="16" CaretBrush="{DynamicResource PrimaryCursorColor}" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8"/>
                             </md:Card>
 
                             <!-- Tasdiqlash tugmasi -->

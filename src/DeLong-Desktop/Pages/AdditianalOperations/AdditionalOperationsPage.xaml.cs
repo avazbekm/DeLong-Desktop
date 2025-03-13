@@ -12,6 +12,7 @@ using System.Windows.Input;
 using DeLong_Desktop.ApiService.DTOs.Transactions;
 using DeLong_Desktop.ApiService.DTOs.TransactionItems;
 using DeLong.Service.Services;
+using DeLong_Desktop.ApiService.DTOs.Products;
 
 namespace DeLong_Desktop.Pages.AdditionalOperations;
 
@@ -751,6 +752,17 @@ public partial class AdditionalOperationsPage : Page
                 };
 
                 await _transactionItemService.AddAsync(transactionItemDto);
+
+                var product = await _productService.RetrieveByIdAsync(item.ProductId);
+                ProductUpdateDto productUpdateDto = new ProductUpdateDto
+                {
+                    CategoryId = product.CategoryId,
+                    Description = product.Description,
+                    Id = product.Id,
+                    IsActive = product.IsActive,
+                    MinStockLevel = product.MinStockLevel,
+                    Name = product.Name,
+                };
             }
 
             // Muvaffaqiyatli saqlangandan so‘ng ro‘yxatni tozalash

@@ -3,6 +3,7 @@ using DeLong_Desktop.ApiService.Services;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.Windows.Login;
+using DeLong.Service.Services;
 
 namespace DeLong_Desktop;
 
@@ -62,6 +63,12 @@ public partial class App : Application
                 .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
 
         services.AddHttpClient<IReturnProductService, ReturnProductService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
+        services.AddHttpClient<ITransactionService, TransactionService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
+        services.AddHttpClient<ITransactionItemService, TransactionItemService>()
                 .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
 
 
