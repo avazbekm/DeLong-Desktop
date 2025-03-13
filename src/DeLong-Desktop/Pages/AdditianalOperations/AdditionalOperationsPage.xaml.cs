@@ -1,18 +1,18 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using System.Windows.Controls;
 using DeLong_Desktop.ApiService.DTOs;
+using System.Collections.ObjectModel;
 using DeLong_Desktop.ApiService.Helpers;
+using DeLong_Desktop.ApiService.DTOs.Enums;
 using DeLong_Desktop.ApiService.Interfaces;
+using DeLong_Desktop.ApiService.DTOs.Products;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.Pages.AdditianalOperations;
 using DeLong_Desktop.ApiService.DTOs.DebtPayments;
-using System.Collections.ObjectModel;
-using DeLong_Desktop.ApiService.DTOs.Enums;
-using System.Windows.Input;
 using DeLong_Desktop.ApiService.DTOs.Transactions;
 using DeLong_Desktop.ApiService.DTOs.TransactionItems;
-using DeLong.Service.Services;
-using DeLong_Desktop.ApiService.DTOs.Products;
+using DeLong_Desktop.ApiService.DTOs.Prices;
 
 namespace DeLong_Desktop.Pages.AdditionalOperations;
 
@@ -21,16 +21,16 @@ public partial class AdditionalOperationsPage : Page
     private readonly IDebtService _debtService;
     private readonly IUserService _userService;
     private readonly ISaleService _saleService;
+    private readonly IPriceService _priceService;
+    private readonly IProductService _productService;
     private readonly ISaleItemService _saleItemService;
     private readonly ICustomerService _customerService;
+    private readonly IWarehouseService _warehouseService; // Omborlar uchun servis
     private readonly IKursDollarService _kursDollarService;
     private readonly IDebtPaymentService _debtPaymentService;
-    private readonly IProductService _productService;
-    private readonly IPriceService _priceService;
     private readonly ITransactionService _transactionService;
-    private readonly ITransactionItemService _transactionItemService;
-    private readonly IWarehouseService _warehouseService; // Omborlar uchun servis
     private readonly IReturnProductService _returnProductService;
+    private readonly ITransactionItemService _transactionItemService;
 
     private List<DebtItem> allDebts;
     private List<DebtItem> selectedCustomerDebts;
@@ -45,15 +45,15 @@ public partial class AdditionalOperationsPage : Page
         _debtService = services.GetRequiredService<IDebtService>();
         _userService = services.GetRequiredService<IUserService>();
         _saleService = services.GetRequiredService<ISaleService>();
-        _customerService = services.GetRequiredService<ICustomerService>();
-        _kursDollarService = services.GetRequiredService<IKursDollarService>();
-        _debtPaymentService = services.GetRequiredService<IDebtPaymentService>();
-        _saleItemService = services.GetRequiredService<ISaleItemService>();
-        _productService = services.GetRequiredService<IProductService>();
         _priceService = services.GetRequiredService<IPriceService>();
+        _productService = services.GetRequiredService<IProductService>();
+        _customerService = services.GetRequiredService<ICustomerService>();
+        _saleItemService = services.GetRequiredService<ISaleItemService>();
         _warehouseService = services.GetRequiredService<IWarehouseService>();
-        _returnProductService = services.GetRequiredService<IReturnProductService>();
+        _kursDollarService = services.GetRequiredService<IKursDollarService>();
         _transactionService = services.GetRequiredService<ITransactionService>();
+        _debtPaymentService = services.GetRequiredService<IDebtPaymentService>();
+        _returnProductService = services.GetRequiredService<IReturnProductService>();
         _transactionItemService = services.GetRequiredService<ITransactionItemService>();
 
         LoadDebts();
@@ -141,6 +141,7 @@ public partial class AdditionalOperationsPage : Page
                 {
                     var newItem = new TransferItem
                     {
+                        Id = price.Id,
                         ProductId = price.ProductId,
                         ProductName = selectedProduct.ProductName,
                         Quantity = quantity,
@@ -155,6 +156,7 @@ public partial class AdditionalOperationsPage : Page
                 {
                     var newItem = new TransferItem
                     {
+                        Id = price.Id,
                         ProductId = price.ProductId,
                         ProductName = selectedProduct.ProductName,
                         Quantity = price.Quantity,
@@ -625,7 +627,6 @@ public partial class AdditionalOperationsPage : Page
         }
     }
 
-
     private void tbSaleId_TextChanged(object sender, TextChangedEventArgs e)
     {
         ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
@@ -753,16 +754,17 @@ public partial class AdditionalOperationsPage : Page
 
                 await _transactionItemService.AddAsync(transactionItemDto);
 
-                var product = await _productService.RetrieveByIdAsync(item.ProductId);
-                ProductUpdateDto productUpdateDto = new ProductUpdateDto
+                var price = await _priceService.RetrieveByIdAsync(item.Id);
+                PriceUpdateDto priceUpdateDto = new PriceUpdateDto
                 {
-                    CategoryId = product.CategoryId,
-                    Description = product.Description,
-                    Id = product.Id,
-                    IsActive = product.IsActive,
-                    MinStockLevel = product.MinStockLevel,
-                    Name = product.Name,
+                    Id = item.Id,
+                    CostPrice = price.CostPrice,
+                    ProductId = price.ProductId,
+                    SellingPrice = price.SellingPrice,
+                    UnitOfMeasure = price.UnitOfMeasure,
+                    Quantity = price.Quantity - item.Quantity
                 };
+                await _priceService.ModifyAsync(priceUpdateDto);
             }
 
             // Muvaffaqiyatli saqlangandan so‘ng ro‘yxatni tozalash

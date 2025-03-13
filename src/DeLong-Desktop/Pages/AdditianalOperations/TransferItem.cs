@@ -10,6 +10,7 @@ public class TransferItem : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    public long Id { get; set; }
     public long ProductId { get; set; }
     public string ProductName { get; set; } = string.Empty;
     private decimal _quantity;
