@@ -18,6 +18,7 @@ namespace DeLong_Desktop;
 public partial class MainWindow : Window
 {
     private CustomersPage _customerPage;
+    private AdditionalOperationsPage _additionalOperationsPage; // Yangi o‘zgaruvchi qo‘shildi
     private readonly IServiceProvider _services;
 
     // Tanlangan tilni saqlash uchun o'zgaruvchi
@@ -80,6 +81,13 @@ public partial class MainWindow : Window
         _customerPage.btnAdd.Content = DeLong_Desktop.Resources.Resource.Add;
         _customerPage.btnExcel.Content = DeLong_Desktop.Resources.Resource.ToExcell;
 
+        // AdditionalOperationsPage uchun yangilash
+        if (_additionalOperationsPage == null)
+        {
+            _additionalOperationsPage = new AdditionalOperationsPage(_services);
+        }
+        UpdateAdditionalOperationsPageLanguage();
+
         btnOmbor.Content = DeLong_Desktop.Resources.Resource.Warehouse;
         btnChiqim.Content = DeLong_Desktop.Resources.Resource.Expense;
         btnChiqish.Content = DeLong_Desktop.Resources.Resource.Exit;
@@ -91,6 +99,65 @@ public partial class MainWindow : Window
         btnAdditionalOperations.Content = DeLong_Desktop.Resources.Resource.AdditionalOperations;
     }
 
+    private void UpdateAdditionalOperationsPageLanguage()
+    {
+        // Sarlavha matnini yangilash
+        var additionalActions = _additionalOperationsPage.FindName("additionalActions") as TextBlock;
+        if (additionalActions != null) additionalActions.Text = DeLong_Desktop.Resources.Resource.AdditionalOperations;
+
+        // Tab sarlavhalari
+        (_additionalOperationsPage.FindName("debtTabItem") as TabItem).Header = new TextBlock { Text = DeLong_Desktop.Resources.Resource.PayDebt, FontSize = 16 };
+        (_additionalOperationsPage.FindName("returnTabItem") as TabItem).Header = new TextBlock { Text = DeLong_Desktop.Resources.Resource.ReturnedProducts, FontSize = 16 };
+        (_additionalOperationsPage.FindName("transferTabItem") as TabItem).Header = new TextBlock { Text = DeLong_Desktop.Resources.Resource.WarehouseTransfer, FontSize = 16 };
+
+        // Qarzni to‘lash tab
+        var debtDataGrid = _additionalOperationsPage.FindName("debtDataGrid") as DataGrid;
+        debtDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.CustomerName;
+        debtDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.DebtAmount;
+        debtDataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.DueDate;
+        HintAssist.SetHint(_additionalOperationsPage.FindName("tbSearchDebt") as TextBox, DeLong_Desktop.Resources.Resource.Search);
+        (_additionalOperationsPage.FindName("tbTotalDebtLabel") as TextBlock).Text = DeLong_Desktop.Resources.Resource.TotalDebt + ": ";
+        HintAssist.SetHint(_additionalOperationsPage.FindName("tbCashPayment") as TextBox, DeLong_Desktop.Resources.Resource.Cash);
+        HintAssist.SetHint(_additionalOperationsPage.FindName("tbCardPayment") as TextBox, DeLong_Desktop.Resources.Resource.Card);
+        HintAssist.SetHint(_additionalOperationsPage.FindName("tbDollarPayment") as TextBox, DeLong_Desktop.Resources.Resource.Dollar);
+        (_additionalOperationsPage.FindName("btnPayAllDebts") as Button).Content = DeLong_Desktop.Resources.Resource.Pay;
+
+        // Qaytgan mahsulotlar tab
+        HintAssist.SetHint(_additionalOperationsPage.FindName("tbSaleId") as TextBox, DeLong_Desktop.Resources.Resource.ReceiptId);
+        HintAssist.SetHint(_additionalOperationsPage.FindName("tbReturnedFrom") as TextBox, DeLong_Desktop.Resources.Resource.ReturnedFrom);
+        HintAssist.SetHint(_additionalOperationsPage.FindName("cbSalePriceProducts") as ComboBox, DeLong_Desktop.Resources.Resource.SelectProduct);
+        HintAssist.SetHint(_additionalOperationsPage.FindName("tbReturnQuantity") as TextBox, DeLong_Desktop.Resources.Resource.Quantity);
+        HintAssist.SetHint(_additionalOperationsPage.FindName("tbUnitOfMeasure") as TextBox, DeLong_Desktop.Resources.Resource.UnitOfMeasure);
+        HintAssist.SetHint(_additionalOperationsPage.FindName("tbReturnAmount") as TextBox, DeLong_Desktop.Resources.Resource.Amount);
+        HintAssist.SetHint(_additionalOperationsPage.FindName("tbComment") as TextBox, DeLong_Desktop.Resources.Resource.Comment);
+        (_additionalOperationsPage.FindName("btnConfirmReturn") as Button).Content = DeLong_Desktop.Resources.Resource.Confirm;
+
+        // Omborlar o‘rtasida provodka tab
+        var transferDataGrid = _additionalOperationsPage.FindName("transferDataGrid") as DataGrid;
+        transferDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.ProductName;
+        transferDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.Quantity;
+        transferDataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.UnitOfMeasure;
+        transferDataGrid.Columns[3].Header = DeLong_Desktop.Resources.Resource.CostPrice;
+        transferDataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.TotalAmount;
+        transferDataGrid.Columns[5].Header = DeLong_Desktop.Resources.Resource.Delete;
+        HintAssist.SetHint(_additionalOperationsPage.FindName("cbProductList") as ComboBox, DeLong_Desktop.Resources.Resource.ProductList);
+        HintAssist.SetHint(_additionalOperationsPage.FindName("tbQuantity") as TextBox, DeLong_Desktop.Resources.Resource.Quantity);
+        (_additionalOperationsPage.FindName("btnAddProduct") as Button).Content = DeLong_Desktop.Resources.Resource.Add;
+        HintAssist.SetHint(_additionalOperationsPage.FindName("cbToWarehouse") as ComboBox, DeLong_Desktop.Resources.Resource.ToWarehouse);
+        HintAssist.SetHint(_additionalOperationsPage.FindName("cbTransactionType") as ComboBox, DeLong_Desktop.Resources.Resource.TransactionType);
+        HintAssist.SetHint(_additionalOperationsPage.FindName("tbCommentProvodka") as TextBox, DeLong_Desktop.Resources.Resource.Comment);
+        (_additionalOperationsPage.FindName("btnSaveTransfer") as Button).Content = DeLong_Desktop.Resources.Resource.Send;
+    }
+
+    private void OnAdditionalOperationsClick(object sender, RoutedEventArgs e)
+    {
+        if (_additionalOperationsPage == null)
+        {
+            _additionalOperationsPage = new AdditionalOperationsPage(_services);
+        }
+        Navigator.Navigate(_additionalOperationsPage);
+        UpdateLanguage();
+    }
     /// <summary>
     /// Mijozlar sahifasiga o'tish.
     /// </summary>
@@ -175,9 +242,4 @@ public partial class MainWindow : Window
         Navigator.Navigate(saleHistoryPage);
     }
 
-    private void OnAdditionalOperationsClick(object sender, RoutedEventArgs e)
-    {
-        var additionalOperationsPage = new AdditionalOperationsPage(_services);
-        Navigator.Navigate(additionalOperationsPage);
-    }
 }

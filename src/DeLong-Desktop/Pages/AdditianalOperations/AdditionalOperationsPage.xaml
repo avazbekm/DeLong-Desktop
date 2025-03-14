@@ -90,15 +90,15 @@
 
         <!-- Sarlavha -->
         <Border Background="{DynamicResource SecondaryBackground}" CornerRadius="5" Margin="10">
-            <TextBlock Text="Qo‘shimcha amallar" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource SecondaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock x:Name="additionalActions" Text="Qo‘shimcha amallar" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource SecondaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Border>
 
         <!-- Tab’lar -->
         <TabControl Grid.Row="1" Margin="5">
             <!-- Tab 1: Qarzni To‘lash -->
-            <TabItem Margin="4,0,0,0">
+            <TabItem x:Name="debtTabItem"  Margin="4,0,0,0">
                 <TabItem.Header>
-                    <TextBlock Text="Qarzni to‘lash" Padding="10 0" FontSize="16" />
+                    <TextBlock  Text="Qarzni to‘lash" Padding="10 0" FontSize="16" />
                 </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -124,8 +124,8 @@
                     <!-- Qarzlar ro‘yxati -->
                     <DataGrid x:Name="debtDataGrid" Grid.Row="1" Margin="5,5,5,5" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Grid.ColumnSpan="5" SelectionChanged="DebtDataGrid_SelectionChanged">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Mijoz Nomi" IsReadOnly="True" Binding="{Binding CustomerName}" Width="250"/>
-                            <DataGridTextColumn Header="Qarz Summasi" IsReadOnly="True" Binding="{Binding RemainingAmount, StringFormat=N2}" Width="150"/>
+                            <DataGridTextColumn Header="Mijoz nomi" IsReadOnly="True" Binding="{Binding CustomerName}" Width="250"/>
+                            <DataGridTextColumn Header="Qarz summasi" IsReadOnly="True" Binding="{Binding RemainingAmount, StringFormat=N2}" Width="150"/>
                             <DataGridTextColumn Header="To'lash muddat" IsReadOnly="True" Binding="{Binding DueDate, StringFormat=dd.MM.yyyy}" Width="150"/>
                         </DataGrid.Columns>
                     </DataGrid>
@@ -140,19 +140,19 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Jami qarz: " FontSize="16" FontWeight="Bold" Foreground="{DynamicResource SecondaryTextColor}" VerticalAlignment="Center" Margin="10,0,5,0"/>
+                            <TextBlock x:Name="tbTotalDebtLabel" Grid.Column="0" Text="Jami qarz: " FontSize="16" FontWeight="Bold" Foreground="{DynamicResource SecondaryTextColor}" VerticalAlignment="Center" Margin="10,0,5,0"/>
                             <TextBlock Grid.Column="1" x:Name="tbTotalDebt" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource SecondaryTextColor}" VerticalAlignment="Center" Margin="0,0,10,0"/>
                             <TextBox Grid.Column="2" x:Name="tbCashPayment" md:HintAssist.Hint="Naqd" FontWeight="Bold" Width="100" Margin="5" FontSize="16" Background="{DynamicResource SecondaryBackground}" TextChanged="tbCashPayment_TextChanged"/>
                             <TextBox Grid.Column="3" x:Name="tbCardPayment" md:HintAssist.Hint="Plastik" FontWeight="Bold" Width="100" Margin="5" FontSize="16" Background="{DynamicResource SecondaryBackground}" TextChanged="tbCardPayment_TextChanged"/>
                             <TextBox Grid.Column="4" x:Name="tbDollarPayment" md:HintAssist.Hint="Dollar" FontWeight="Bold" Width="100" Margin="5" FontSize="16" Background="{DynamicResource SecondaryBackground}" TextChanged="tbDollarPayment_TextChanged"/>
-                            <Button Grid.Column="5" Content="To‘lash" FontSize="16" Click="PayAllDebtsButton_Click" Width="80" Margin="5" Background="{DynamicResource SelectedBackground}"/>
+                            <Button x:Name="btnPayAllDebts" Grid.Column="5" Content="To‘lash" FontSize="16" Click="PayAllDebtsButton_Click" Width="80" Margin="5" Background="{DynamicResource SelectedBackground}"/>
                         </Grid>
                     </Border>
                 </Grid>
             </TabItem>
 
             <!-- Tab 2: Qaytgan Mahsulotlarni Qabul Qilish -->
-            <TabItem Margin="0,0,0,-2">
+            <TabItem x:Name="returnTabItem" Margin="0,0,0,-2">
                 <TabItem.Header>
                     <TextBlock Text="Qaytgan mahsulotlar" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" FontWeight="SemiBold"/>
                 </TabItem.Header>
@@ -186,7 +186,7 @@
 
                             <!-- Kimdan qaytyapti -->
                             <md:Card Grid.Row="0" Grid.Column="1" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp16">
-                                <TextBox x:Name="tbReturnedFrom" md:HintAssist.Hint="Kimdan qaytyapti" Width="220" Height="40" FontSize="16" CaretBrush="{DynamicResource PrimaryCursorColor}" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8"/>
+                                <TextBox x:Name="tbReturnedFrom" md:HintAssist.Hint="Kimdan qaytmoqda" Width="220" Height="40" FontSize="16" CaretBrush="{DynamicResource PrimaryCursorColor}" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8"/>
                             </md:Card>
 
                             <!-- ProductName (ComboBox) -->
@@ -259,9 +259,9 @@
             </TabItem>
 
             <!-- Tab 3: Omborlar O‘rtasida Provodka -->
-            <TabItem Margin="0,0,2,0">
+            <TabItem x:Name="transferTabItem" Margin="0,0,2,0">
                 <TabItem.Header>
-                    <TextBlock Text="Omborlar o‘rtasida provodka" Margin="10 0" FontSize="16"/>
+                    <TextBlock Text="Omborlar o‘rtasida o'tkazmalar" Margin="10 0" FontSize="16"/>
                 </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -279,7 +279,7 @@
                     <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,5,0,5" Grid.ColumnSpan="3">
                         <ComboBox x:Name="cbProductList" FontSize="16" md:HintAssist.Hint="Mahsulotlar ro‘yxati" Width="180" Margin="5" IsEditable="True" PreviewKeyUp="cbProductList_PreviewKeyUp"/>
                         <TextBox x:Name="tbQuantity" CaretBrush="{DynamicResource  PrimaryCursorColor}" FontSize="16" TextAlignment="Center" md:HintAssist.Hint="Miqdor" Width="100" Margin="5"/>
-                        <Button Content="Qo‘shish" Click="AddProductButton_Click" Margin="5"/>
+                        <Button x:Name="btnAddProduct" Content="Qo‘shish" Click="AddProductButton_Click" Margin="5"/>
                     </StackPanel>
 
                     <!-- Provodka ro‘yxati -->
@@ -287,7 +287,7 @@
                   Background="{DynamicResource SecondaryBackground}" 
                   Foreground="{DynamicResource SecondaryTextColor}" Grid.ColumnSpan="3">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Mahsulot Nomi" Binding="{Binding ProductName}" Width="150" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Mahsulot nomi" Binding="{Binding ProductName}" Width="150" IsReadOnly="True"/>
                             <DataGridTemplateColumn Header="Miqdor" Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -313,7 +313,7 @@
                         <ComboBox x:Name="cbToWarehouse" FontSize="18" md:HintAssist.Hint="Qaysi omborga" Width="150" Margin="5"/>
                         <ComboBox x:Name="cbTransactionType" FontSize="18" md:HintAssist.Hint="Tranzaksiya turi" Width="150" Margin="5"/>
                         <TextBox x:Name="tbCommentProvodka" FontSize="18" CaretBrush="{DynamicResource PrimaryCursorColor}" md:HintAssist.Hint="Izoh" Padding="5" Width="300" Margin="5"/>
-                        <Button Content="Jo‘natish" Click="SaveTransferButton_Click" Margin="5"/>
+                        <Button x:Name="btnSaveTransfer" Content="Jo‘natish" Click="SaveTransferButton_Click" Margin="5"/>
                     </StackPanel>
                 </Grid>
             </TabItem>

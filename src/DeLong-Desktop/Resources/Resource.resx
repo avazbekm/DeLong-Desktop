@@ -126,11 +126,23 @@
   <data name="AddClientWindow" xml:space="preserve">
     <value>Mijozlarni qo'shish oynasi</value>
   </data>
+  <data name="additionalActions" xml:space="preserve">
+    <value>Qo'shimcha amallar</value>
+  </data>
   <data name="AdditionalOperations" xml:space="preserve">
     <value>Qo'shimcha amallar</value>
   </data>
   <data name="Address" xml:space="preserve">
     <value>Manzil</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Summasi</value>
+  </data>
+  <data name="Card" xml:space="preserve">
+    <value>Plastik</value>
+  </data>
+  <data name="Cash" xml:space="preserve">
+    <value>Naqd</value>
   </data>
   <data name="Category" xml:space="preserve">
     <value>Toifa</value>
@@ -138,8 +150,32 @@
   <data name="ClientFullname" xml:space="preserve">
     <value>Mijoz FIO</value>
   </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Izoh</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Tasdiqlash</value>
+  </data>
+  <data name="CostPrice" xml:space="preserve">
+    <value>Mahsulot tannarxi</value>
+  </data>
   <data name="Customer" xml:space="preserve">
     <value>Mijoz</value>
+  </data>
+  <data name="CustomerName" xml:space="preserve">
+    <value>Mijoz nomi</value>
+  </data>
+  <data name="DebtAmount" xml:space="preserve">
+    <value>Qarz summasi</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>O'chirish</value>
+  </data>
+  <data name="Dollar" xml:space="preserve">
+    <value>Dollar</value>
+  </data>
+  <data name="DueDate" xml:space="preserve">
+    <value>To'lash muddati</value>
   </data>
   <data name="Exit" xml:space="preserve">
     <value>Chiqish</value>
@@ -153,14 +189,38 @@
   <data name="JSHSHIR" xml:space="preserve">
     <value>JSHSHIR</value>
   </data>
+  <data name="Pay" xml:space="preserve">
+    <value>To'lash</value>
+  </data>
+  <data name="PayDebt" xml:space="preserve">
+    <value>Qarzni to‘lash</value>
+  </data>
   <data name="Phone" xml:space="preserve">
     <value>Telefon</value>
   </data>
   <data name="Product" xml:space="preserve">
     <value>Mahsulot</value>
   </data>
+  <data name="ProductList" xml:space="preserve">
+    <value>Mahsulotlar ro'yxati</value>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Mahsulot nomi</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Miqdori</value>
+  </data>
+  <data name="ReceiptId" xml:space="preserve">
+    <value>Chek Id</value>
+  </data>
   <data name="Report" xml:space="preserve">
     <value>Hisobot</value>
+  </data>
+  <data name="ReturnedFrom" xml:space="preserve">
+    <value>Kimda qatmoqda</value>
+  </data>
+  <data name="ReturnedProducts" xml:space="preserve">
+    <value>Qaytgan mahsulotlar</value>
   </data>
   <data name="SaleHistory" xml:space="preserve">
     <value>Sotuv tarixi</value>
@@ -168,13 +228,37 @@
   <data name="Search" xml:space="preserve">
     <value>Qidiruv</value>
   </data>
+  <data name="SelectProduct" xml:space="preserve">
+    <value>Mahsulot tanlang</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Jo'natish</value>
+  </data>
   <data name="Telegram Phone Number" xml:space="preserve">
     <value>Telegram raqami</value>
   </data>
   <data name="ToExcell" xml:space="preserve">
     <value>Excellga o'tkazish</value>
   </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Umumiy summa</value>
+  </data>
+  <data name="TotalDebt" xml:space="preserve">
+    <value>Jami qarz</value>
+  </data>
+  <data name="ToWarehouse" xml:space="preserve">
+    <value>Qaysi omborga</value>
+  </data>
+  <data name="TransactionType" xml:space="preserve">
+    <value>Transaksiya turi</value>
+  </data>
+  <data name="UnitOfMeasure" xml:space="preserve">
+    <value>O'lchov birligi</value>
+  </data>
   <data name="Warehouse" xml:space="preserve">
     <value>Ombor</value>
+  </data>
+  <data name="WarehouseTransfer" xml:space="preserve">
+    <value>Omborlar o‘rtasida o'tkazmalar</value>
   </data>
 </root>

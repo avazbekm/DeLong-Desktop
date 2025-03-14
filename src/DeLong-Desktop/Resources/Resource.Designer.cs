@@ -90,6 +90,15 @@ namespace DeLong_Desktop.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Qo&apos;shimcha amallar.
         /// </summary>
+        internal static string additionalActions {
+            get {
+                return ResourceManager.GetString("additionalActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Qo&apos;shimcha amallar.
+        /// </summary>
         internal static string AdditionalOperations {
             get {
                 return ResourceManager.GetString("AdditionalOperations", resourceCulture);
@@ -102,6 +111,33 @@ namespace DeLong_Desktop.Resources {
         internal static string Address {
             get {
                 return ResourceManager.GetString("Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Summasi.
+        /// </summary>
+        internal static string Amount {
+            get {
+                return ResourceManager.GetString("Amount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plastik.
+        /// </summary>
+        internal static string Card {
+            get {
+                return ResourceManager.GetString("Card", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Naqd.
+        /// </summary>
+        internal static string Cash {
+            get {
+                return ResourceManager.GetString("Cash", resourceCulture);
             }
         }
         
@@ -124,11 +160,83 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Izoh.
+        /// </summary>
+        internal static string Comment {
+            get {
+                return ResourceManager.GetString("Comment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tasdiqlash.
+        /// </summary>
+        internal static string Confirm {
+            get {
+                return ResourceManager.GetString("Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mahsulot tannarxi.
+        /// </summary>
+        internal static string CostPrice {
+            get {
+                return ResourceManager.GetString("CostPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mijoz.
         /// </summary>
         internal static string Customer {
             get {
                 return ResourceManager.GetString("Customer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mijoz nomi.
+        /// </summary>
+        internal static string CustomerName {
+            get {
+                return ResourceManager.GetString("CustomerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Qarz summasi.
+        /// </summary>
+        internal static string DebtAmount {
+            get {
+                return ResourceManager.GetString("DebtAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O&apos;chirish.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dollar.
+        /// </summary>
+        internal static string Dollar {
+            get {
+                return ResourceManager.GetString("Dollar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To&apos;lash muddati.
+        /// </summary>
+        internal static string DueDate {
+            get {
+                return ResourceManager.GetString("DueDate", resourceCulture);
             }
         }
         
@@ -169,6 +277,24 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To&apos;lash.
+        /// </summary>
+        internal static string Pay {
+            get {
+                return ResourceManager.GetString("Pay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Qarzni to‘lash.
+        /// </summary>
+        internal static string PayDebt {
+            get {
+                return ResourceManager.GetString("PayDebt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Telefon.
         /// </summary>
         internal static string Phone {
@@ -187,11 +313,65 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mahsulotlar ro&apos;yxati.
+        /// </summary>
+        internal static string ProductList {
+            get {
+                return ResourceManager.GetString("ProductList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mahsulot nomi.
+        /// </summary>
+        internal static string ProductName {
+            get {
+                return ResourceManager.GetString("ProductName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Miqdori.
+        /// </summary>
+        internal static string Quantity {
+            get {
+                return ResourceManager.GetString("Quantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chek Id.
+        /// </summary>
+        internal static string ReceiptId {
+            get {
+                return ResourceManager.GetString("ReceiptId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hisobot.
         /// </summary>
         internal static string Report {
             get {
                 return ResourceManager.GetString("Report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kimda qatmoqda.
+        /// </summary>
+        internal static string ReturnedFrom {
+            get {
+                return ResourceManager.GetString("ReturnedFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Qaytgan mahsulotlar.
+        /// </summary>
+        internal static string ReturnedProducts {
+            get {
+                return ResourceManager.GetString("ReturnedProducts", resourceCulture);
             }
         }
         
@@ -214,6 +394,24 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mahsulot tanlang.
+        /// </summary>
+        internal static string SelectProduct {
+            get {
+                return ResourceManager.GetString("SelectProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jo&apos;natish.
+        /// </summary>
+        internal static string Send {
+            get {
+                return ResourceManager.GetString("Send", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Telegram raqami.
         /// </summary>
         internal static string Telegram_Phone_Number {
@@ -232,11 +430,65 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Umumiy summa.
+        /// </summary>
+        internal static string TotalAmount {
+            get {
+                return ResourceManager.GetString("TotalAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jami qarz.
+        /// </summary>
+        internal static string TotalDebt {
+            get {
+                return ResourceManager.GetString("TotalDebt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Qaysi omborga.
+        /// </summary>
+        internal static string ToWarehouse {
+            get {
+                return ResourceManager.GetString("ToWarehouse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transaksiya turi.
+        /// </summary>
+        internal static string TransactionType {
+            get {
+                return ResourceManager.GetString("TransactionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O&apos;lchov birligi.
+        /// </summary>
+        internal static string UnitOfMeasure {
+            get {
+                return ResourceManager.GetString("UnitOfMeasure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ombor.
         /// </summary>
         internal static string Warehouse {
             get {
                 return ResourceManager.GetString("Warehouse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Omborlar o‘rtasida o&apos;tkazmalar.
+        /// </summary>
+        internal static string WarehouseTransfer {
+            get {
+                return ResourceManager.GetString("WarehouseTransfer", resourceCulture);
             }
         }
     }
