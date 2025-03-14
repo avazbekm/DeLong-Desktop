@@ -6,13 +6,12 @@ using System.Collections.ObjectModel;
 using DeLong_Desktop.ApiService.Helpers;
 using DeLong_Desktop.ApiService.DTOs.Enums;
 using DeLong_Desktop.ApiService.Interfaces;
-using DeLong_Desktop.ApiService.DTOs.Products;
+using DeLong_Desktop.ApiService.DTOs.Prices;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.Pages.AdditianalOperations;
 using DeLong_Desktop.ApiService.DTOs.DebtPayments;
 using DeLong_Desktop.ApiService.DTOs.Transactions;
 using DeLong_Desktop.ApiService.DTOs.TransactionItems;
-using DeLong_Desktop.ApiService.DTOs.Prices;
 
 namespace DeLong_Desktop.Pages.AdditionalOperations;
 
@@ -217,7 +216,7 @@ public partial class AdditionalOperationsPage : Page
     {
         try
         {
-            allDebts = new List<DebtItem>(); // Dastlab ro‘yxatni yaratamiz
+            allDebts = new List<DebtItem>();
 
             var groupedDebts = await _debtService.RetrieveAllGroupedByCustomerAsync();
             if (groupedDebts != null && groupedDebts.Any())
