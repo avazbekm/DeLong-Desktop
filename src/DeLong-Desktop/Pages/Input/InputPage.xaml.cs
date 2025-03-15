@@ -282,4 +282,14 @@ public partial class InputPage : Page
         PirceWindow pirceWindow = new PirceWindow(services);
         pirceWindow.ShowDialog();
     }
+
+    private void categoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
+
+    //private void categoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    //{
+
+    //}
 }

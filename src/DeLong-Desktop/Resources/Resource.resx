@@ -135,6 +135,9 @@
   <data name="Address" xml:space="preserve">
     <value>Manzil</value>
   </data>
+  <data name="Amallar " xml:space="preserve">
+    <value>Amallar </value>
+  </data>
   <data name="Amount" xml:space="preserve">
     <value>Summasi</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="Category" xml:space="preserve">
     <value>Toifa</value>
+  </data>
+  <data name="Chegirma " xml:space="preserve">
+    <value>Chegirma </value>
   </data>
   <data name="ClientFullname" xml:space="preserve">
     <value>Mijoz FIO</value>
@@ -174,6 +180,15 @@
   <data name="Dollar" xml:space="preserve">
     <value>Dollar</value>
   </data>
+  <data name="Dollar kursi " xml:space="preserve">
+    <value>Dollar kursi </value>
+  </data>
+  <data name="Dollar kursini kiriting " xml:space="preserve">
+    <value>Dollar kursini kiriting </value>
+  </data>
+  <data name="DueData " xml:space="preserve">
+    <value>DueData </value>
+  </data>
   <data name="DueDate" xml:space="preserve">
     <value>To'lash muddati</value>
   </data>
@@ -183,11 +198,71 @@
   <data name="Expense" xml:space="preserve">
     <value>Sotuv amallari</value>
   </data>
+  <data name="Faolligi " xml:space="preserve">
+    <value>Faolligi </value>
+  </data>
   <data name="Income" xml:space="preserve">
     <value>Kirim</value>
   </data>
+  <data name="Jami summa " xml:space="preserve">
+    <value>Jami summa </value>
+  </data>
   <data name="JSHSHIR" xml:space="preserve">
     <value>JSHSHIR</value>
+  </data>
+  <data name="Kategoriya" xml:space="preserve">
+    <value>Kategoriya</value>
+  </data>
+  <data name="kategoriya boyicha qidiruv" xml:space="preserve">
+    <value>kategoriya boyicha qidiruv</value>
+  </data>
+  <data name="Kategoriya bo‘yicha qidiruv " xml:space="preserve">
+    <value>Kategoriya bo‘yicha qidiruv </value>
+  </data>
+  <data name="Mahsulot nomi " xml:space="preserve">
+    <value>Mahsulot nomi </value>
+  </data>
+  <data name="Mahsulotni qidirish " xml:space="preserve">
+    <value>Mahsulotni qidirish </value>
+  </data>
+  <data name="Mahsulotni tanlang " xml:space="preserve">
+    <value>Mahsulotni tanlang </value>
+  </data>
+  <data name="Mijozlar" xml:space="preserve">
+    <value>Mijozlar</value>
+  </data>
+  <data name="Mijozni tanlang " xml:space="preserve">
+    <value>Mijozni tanlang </value>
+  </data>
+  <data name="Miqdori " xml:space="preserve">
+    <value>Miqdori </value>
+  </data>
+  <data name="Naqd " xml:space="preserve">
+    <value>Naqd </value>
+  </data>
+  <data name="Narxi " xml:space="preserve">
+    <value>Narxi </value>
+  </data>
+  <data name="Ochirish" xml:space="preserve">
+    <value>Ochirish</value>
+  </data>
+  <data name="Olchov birligi" xml:space="preserve">
+    <value>Olchov birligi</value>
+  </data>
+  <data name="Ombor mudiri " xml:space="preserve">
+    <value>Ombor mudiri </value>
+  </data>
+  <data name="Ombor nomi " xml:space="preserve">
+    <value>Ombor nomi </value>
+  </data>
+  <data name="Ombordagi miqdor " xml:space="preserve">
+    <value>Ombordagi miqdor </value>
+  </data>
+  <data name="O‘chirish" xml:space="preserve">
+    <value>O‘chirish</value>
+  </data>
+  <data name="O‘lchov birligi " xml:space="preserve">
+    <value>O‘lchov birligi </value>
   </data>
   <data name="Pay" xml:space="preserve">
     <value>To'lash</value>
@@ -198,6 +273,9 @@
   <data name="Phone" xml:space="preserve">
     <value>Telefon</value>
   </data>
+  <data name="Plastik " xml:space="preserve">
+    <value>Plastik </value>
+  </data>
   <data name="Product" xml:space="preserve">
     <value>Mahsulot</value>
   </data>
@@ -206,6 +284,9 @@
   </data>
   <data name="ProductName" xml:space="preserve">
     <value>Mahsulot nomi</value>
+  </data>
+  <data name="Qarz" xml:space="preserve">
+    <value>Qarz</value>
   </data>
   <data name="Quantity" xml:space="preserve">
     <value>Miqdori</value>
@@ -234,11 +315,26 @@
   <data name="Send" xml:space="preserve">
     <value>Jo'natish</value>
   </data>
+  <data name="Sotib olish " xml:space="preserve">
+    <value>Sotib olish </value>
+  </data>
+  <data name="Sotish " xml:space="preserve">
+    <value>Sotish </value>
+  </data>
+  <data name="Sotuvni amalga oshirish " xml:space="preserve">
+    <value>Sotuvni amalga oshirish </value>
+  </data>
+  <data name="T/r " xml:space="preserve">
+    <value>T/r </value>
+  </data>
   <data name="Telegram Phone Number" xml:space="preserve">
     <value>Telegram raqami</value>
   </data>
   <data name="ToExcell" xml:space="preserve">
     <value>Excellga o'tkazish</value>
+  </data>
+  <data name="Tolovsummasi" xml:space="preserve">
+    <value>to'lovsummasi</value>
   </data>
   <data name="TotalAmount" xml:space="preserve">
     <value>Umumiy summa</value>
@@ -249,16 +345,28 @@
   <data name="ToWarehouse" xml:space="preserve">
     <value>Qaysi omborga</value>
   </data>
+  <data name="To‘lov summasi " xml:space="preserve">
+    <value>To‘lov summasi </value>
+  </data>
   <data name="TransactionType" xml:space="preserve">
     <value>Transaksiya turi</value>
   </data>
+  <data name="Umumiy summasi " xml:space="preserve">
+    <value>Umumiy summasi </value>
+  </data>
   <data name="UnitOfMeasure" xml:space="preserve">
     <value>O'lchov birligi</value>
+  </data>
+  <data name="Valyutani ayirboshlash " xml:space="preserve">
+    <value>Valyutani ayirboshlash </value>
   </data>
   <data name="Warehouse" xml:space="preserve">
     <value>Ombor</value>
   </data>
   <data name="WarehouseTransfer" xml:space="preserve">
     <value>Omborlar o‘rtasida o'tkazmalar</value>
+  </data>
+  <data name="Yakunlash " xml:space="preserve">
+    <value>Yakunlash </value>
   </data>
 </root>
