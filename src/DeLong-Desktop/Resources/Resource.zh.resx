@@ -135,6 +135,9 @@
   <data name="Address" xml:space="preserve">
     <value>地址 </value>
   </data>
+  <data name="Amallar " xml:space="preserve">
+    <value>操作</value>
+  </data>
   <data name="Amount" xml:space="preserve">
     <value>數量</value>
   </data>
@@ -146,6 +149,10 @@
   </data>
   <data name="Category" xml:space="preserve">
     <value>分类</value>
+  </data>
+  <data name="Chegirma " xml:space="preserve">
+    <value>折扣
+</value>
   </data>
   <data name="ClientFullname" xml:space="preserve">
     <value>客户姓名</value>
@@ -174,6 +181,18 @@
   <data name="Dollar" xml:space="preserve">
     <value>美元</value>
   </data>
+  <data name="Dollar kursi " xml:space="preserve">
+    <value>美元汇率
+</value>
+  </data>
+  <data name="Dollar kursini kiriting " xml:space="preserve">
+    <value>输入美元汇率
+</value>
+  </data>
+  <data name="DueData " xml:space="preserve">
+    <value>到期日期
+</value>
+  </data>
   <data name="DueDate" xml:space="preserve">
     <value>付款期限</value>
   </data>
@@ -183,11 +202,87 @@
   <data name="Expense" xml:space="preserve">
     <value>支出</value>
   </data>
+  <data name="Faolligi " xml:space="preserve">
+    <value>活跃度
+</value>
+  </data>
   <data name="Income" xml:space="preserve">
     <value>收入</value>
   </data>
+  <data name="Jami summa " xml:space="preserve">
+    <value>总金额
+</value>
+  </data>
   <data name="JSHSHIR" xml:space="preserve">
     <value>个人识别码</value>
+  </data>
+  <data name="Kategoriya" xml:space="preserve">
+    <value>类别</value>
+  </data>
+  <data name="kategoriya boyicha qidiruv" xml:space="preserve">
+    <value>按类别搜索
+</value>
+  </data>
+  <data name="Kategoriya bo‘yicha qidiruv " xml:space="preserve">
+    <value>按类别搜索
+</value>
+  </data>
+  <data name="Mahsulot nomi " xml:space="preserve">
+    <value>产品名称
+</value>
+  </data>
+  <data name="Mahsulotni qidirish " xml:space="preserve">
+    <value>搜索产品
+</value>
+  </data>
+  <data name="Mahsulotni tanlang " xml:space="preserve">
+    <value>选择产品
+</value>
+  </data>
+  <data name="Mijozlar" xml:space="preserve">
+    <value>客户</value>
+  </data>
+  <data name="Mijozni tanlang " xml:space="preserve">
+    <value>选择客户
+</value>
+  </data>
+  <data name="Miqdori " xml:space="preserve">
+    <value>数量
+</value>
+  </data>
+  <data name="Naqd " xml:space="preserve">
+    <value>现金
+</value>
+  </data>
+  <data name="Narxi " xml:space="preserve">
+    <value>价格
+</value>
+  </data>
+  <data name="Ochirish" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Olchov birligi" xml:space="preserve">
+    <value>计量单位
+</value>
+  </data>
+  <data name="Ombor mudiri " xml:space="preserve">
+    <value>仓库管理员
+</value>
+  </data>
+  <data name="Ombor nomi " xml:space="preserve">
+    <value>仓库名称
+</value>
+  </data>
+  <data name="Ombordagi miqdor " xml:space="preserve">
+    <value>仓库数量
+</value>
+  </data>
+  <data name="O‘chirish" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="O‘lchov birligi " xml:space="preserve">
+    <value>计量单位
+</value>
   </data>
   <data name="Pay" xml:space="preserve">
     <value>支付</value>
@@ -198,6 +293,10 @@
   <data name="Phone" xml:space="preserve">
     <value>电话 </value>
   </data>
+  <data name="Plastik " xml:space="preserve">
+    <value>刷卡支付
+</value>
+  </data>
   <data name="Product" xml:space="preserve">
     <value>产品</value>
   </data>
@@ -206,6 +305,10 @@
   </data>
   <data name="ProductName" xml:space="preserve">
     <value>產品名稱</value>
+  </data>
+  <data name="Qarz" xml:space="preserve">
+    <value>债务
+</value>
   </data>
   <data name="Quantity" xml:space="preserve">
     <value>數量</value>
@@ -234,11 +337,31 @@
   <data name="Send" xml:space="preserve">
     <value>船運</value>
   </data>
+  <data name="Sotib olish " xml:space="preserve">
+    <value>购买
+</value>
+  </data>
+  <data name="Sotish " xml:space="preserve">
+    <value>销售
+</value>
+  </data>
+  <data name="Sotuvni amalga oshirish " xml:space="preserve">
+    <value>进行销售
+</value>
+  </data>
+  <data name="T/r " xml:space="preserve">
+    <value>序号
+</value>
+  </data>
   <data name="Telegram Phone Number" xml:space="preserve">
     <value>电报号码</value>
   </data>
   <data name="ToExcell" xml:space="preserve">
     <value>导出到 Excel</value>
+  </data>
+  <data name="Tolovsummasi" xml:space="preserve">
+    <value>付款金额
+</value>
   </data>
   <data name="TotalAmount" xml:space="preserve">
     <value>總金額</value>
@@ -249,16 +372,31 @@
   <data name="ToWarehouse" xml:space="preserve">
     <value>去哪個倉庫？</value>
   </data>
+  <data name="To‘lov summasi " xml:space="preserve">
+    <value>付款金额
+</value>
+  </data>
   <data name="TransactionType" xml:space="preserve">
     <value>交易類型</value>
   </data>
+  <data name="Umumiy summasi " xml:space="preserve">
+    <value>总金额
+</value>
+  </data>
   <data name="UnitOfMeasure" xml:space="preserve">
     <value>計量單位</value>
+  </data>
+  <data name="Valyutani ayirboshlash " xml:space="preserve">
+    <value>货币兑换
+</value>
   </data>
   <data name="Warehouse" xml:space="preserve">
     <value>仓库</value>
   </data>
   <data name="WarehouseTransfer" xml:space="preserve">
     <value>倉庫間轉移</value>
+  </data>
+  <data name="Yakunlash " xml:space="preserve">
+    <value>完成</value>
   </data>
 </root>
