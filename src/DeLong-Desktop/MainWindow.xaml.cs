@@ -139,7 +139,6 @@ public partial class MainWindow : Window
         _salePracticePage.ProductGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.Olchov_birligi;
         _salePracticePage.ProductGrid.Columns[5].Header = DeLong_Desktop.Resources.Resource.Umumiy_summasi_;
         _salePracticePage.ProductGrid.Columns[6].Header = DeLong_Desktop.Resources.Resource.Ochirish;
-        _salePracticePage.lblmijoz.Content = DeLong_Desktop.Resources.Resource.Mijozlar;
         _salePracticePage.cbxPayment.Text = DeLong_Desktop.Resources.Resource.Mijozni_tanlang_;
         _salePracticePage.lbljami.Content = DeLong_Desktop.Resources.Resource.Jami_summa_;
         _salePracticePage.lblnaqd.Content = DeLong_Desktop.Resources.Resource.Naqd_;

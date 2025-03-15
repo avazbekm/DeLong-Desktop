@@ -47,7 +47,8 @@ public partial class SaleHistoryPage : Page
 
             if (sales != null && sales.Any())
             {
-                foreach (var sale in sales)
+                // Oxirgi sotuv birinchi qatorda turishi uchun CreatedAt bo‘yicha teskari tartiblash
+                foreach (var sale in sales.OrderByDescending(s => s.CreatedAt))
                 {
                     string customerName = "Noma'lum";
                     if (sale.CustomerId.HasValue)

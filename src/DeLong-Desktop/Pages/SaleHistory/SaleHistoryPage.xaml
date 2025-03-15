@@ -42,7 +42,7 @@
                 <DataGridTextColumn Header="Sotuv ID" IsReadOnly="True" Binding="{Binding Id}" Width="100"/>
                 <DataGridTextColumn Header="Mijoz" IsReadOnly="True" Binding="{Binding CustomerName}" Width="*"/>
                 <DataGridTextColumn Header="Umumiy Summa" IsReadOnly="True" Binding="{Binding TotalAmount, StringFormat=N2}" Width="150"/>
-                <DataGridTextColumn Header="Sana" IsReadOnly="True" Binding="{Binding CreatedAt, StringFormat=yyyy-MM-dd HH:mm}" Width="150"/>
+                <DataGridTextColumn Header="Sana" IsReadOnly="True" Binding="{Binding CreatedAt, StringFormat=dd.MM.yyyy HH:mm}" Width="150"/>
                 <DataGridTemplateColumn Header="Pechat" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
