@@ -214,10 +214,7 @@
     <value>Kategoriya</value>
   </data>
   <data name="kategoriya boyicha qidiruv" xml:space="preserve">
-    <value>kategoriya boyicha qidiruv</value>
-  </data>
-  <data name="Kategoriya bo‘yicha qidiruv " xml:space="preserve">
-    <value>Kategoriya bo‘yicha qidiruv </value>
+    <value>Kategoriya bo'yicha qidiruv</value>
   </data>
   <data name="Mahsulot nomi " xml:space="preserve">
     <value>Mahsulot nomi </value>
@@ -231,11 +228,11 @@
   <data name="Mijozlar" xml:space="preserve">
     <value>Mijozlar</value>
   </data>
-  <data name="Mijozni tanlang " xml:space="preserve">
-    <value>Mijozni tanlang </value>
+  <data name="Mijozni_tanlang_" xml:space="preserve">
+    <value>Mijozni tanlang</value>
   </data>
-  <data name="Miqdori " xml:space="preserve">
-    <value>Miqdori </value>
+  <data name="Miqdori_" xml:space="preserve">
+    <value>Miqdori</value>
   </data>
   <data name="Naqd " xml:space="preserve">
     <value>Naqd </value>
@@ -258,12 +255,6 @@
   <data name="Ombordagi miqdor " xml:space="preserve">
     <value>Ombordagi miqdor </value>
   </data>
-  <data name="O‘chirish" xml:space="preserve">
-    <value>O‘chirish</value>
-  </data>
-  <data name="O‘lchov birligi " xml:space="preserve">
-    <value>O‘lchov birligi </value>
-  </data>
   <data name="Pay" xml:space="preserve">
     <value>To'lash</value>
   </data>
@@ -277,7 +268,7 @@
     <value>Plastik </value>
   </data>
   <data name="Product" xml:space="preserve">
-    <value>Mahsulot</value>
+    <value>Mahsulotlar</value>
   </data>
   <data name="ProductList" xml:space="preserve">
     <value>Mahsulotlar ro'yxati</value>
@@ -334,7 +325,7 @@
     <value>Excellga o'tkazish</value>
   </data>
   <data name="Tolovsummasi" xml:space="preserve">
-    <value>to'lovsummasi</value>
+    <value>To'lov summasi</value>
   </data>
   <data name="TotalAmount" xml:space="preserve">
     <value>Umumiy summa</value>
@@ -344,9 +335,6 @@
   </data>
   <data name="ToWarehouse" xml:space="preserve">
     <value>Qaysi omborga</value>
-  </data>
-  <data name="To‘lov summasi " xml:space="preserve">
-    <value>To‘lov summasi </value>
   </data>
   <data name="TransactionType" xml:space="preserve">
     <value>Transaksiya turi</value>

@@ -349,7 +349,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to kategoriya boyicha qidiruv.
+        ///   Looks up a localized string similar to Kategoriya bo&apos;yicha qidiruv.
         /// </summary>
         internal static string kategoriya_boyicha_qidiruv {
             get {
@@ -394,20 +394,20 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mijozni tanlang .
+        ///   Looks up a localized string similar to Mijozni tanlang.
         /// </summary>
         internal static string Mijozni_tanlang_ {
             get {
-                return ResourceManager.GetString("Mijozni tanlang ", resourceCulture);
+                return ResourceManager.GetString("Mijozni_tanlang_", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Miqdori .
+        ///   Looks up a localized string similar to Miqdori.
         /// </summary>
         internal static string Miqdori_ {
             get {
-                return ResourceManager.GetString("Miqdori ", resourceCulture);
+                return ResourceManager.GetString("Miqdori_", resourceCulture);
             }
         }
         
@@ -511,7 +511,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mahsulot.
+        ///   Looks up a localized string similar to Mahsulotlar.
         /// </summary>
         internal static string Product {
             get {
@@ -682,7 +682,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to to&apos;lovsummasi.
+        ///   Looks up a localized string similar to To&apos;lov summasi.
         /// </summary>
         internal static string Tolovsummasi {
             get {

@@ -30,11 +30,11 @@
             <StackPanel>
                 <Border Margin="5 5 5 1" Background="{StaticResource SecondaryBackground}" CornerRadius="5 5 0 0" MinHeight="45">
                     <DockPanel>
-                        <Button x:Name="btnDollarKurs" Content="$ ni kirit" BorderThickness="0" Background="{StaticResource ButtonBackground}" Foreground="{StaticResource TextForeground}" DockPanel.Dock="Right" Margin="5 2" md:ButtonAssist.CornerRadius="5" Click="btnDollarKurs_Click"/>
+                        <Button x:Name="btnDollarKurs" Content="" BorderThickness="0" Background="{StaticResource ButtonBackground}" Foreground="{StaticResource TextForeground}" DockPanel.Dock="Right" Margin="5 2" md:ButtonAssist.CornerRadius="5" Click="btnDollarKurs_Click"/>
                         <Border MinWidth="100" Background="#F1F1F1" Margin="5 7 5 7" CornerRadius="5" DockPanel.Dock="Right">
                             <TextBlock x:Name="tbDolarKurs" Padding="6 5 2 2" MinWidth="95" Background="Transparent" Foreground="Black" FontFamily="Bold" FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="3"/>
                         </Border>
-                        <TextBlock x:Name="tbdollorkursi" Text="$ kursi:" Foreground="{StaticResource TextForeground}" FontFamily="Bold" FontSize="20" VerticalAlignment="Center" DockPanel.Dock="Right" Margin="5 5 15 5"/>
+                        <TextBlock x:Name="tbdollorkursi" Text="" Foreground="{StaticResource TextForeground}" FontFamily="Bold" FontSize="20" VerticalAlignment="Center" DockPanel.Dock="Right" Margin="5 5 15 5"/>
                         <Label x:Name="lbSotuvPage" Content="Sotuvni amalga oshirish" HorizontalAlignment="Center" Foreground="{StaticResource TextForeground}" FontSize="20" Margin="10 1"/>
                     </DockPanel>
                 </Border>

@@ -7,9 +7,9 @@ using DeLong_Desktop.Pages.Products;
 using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.Pages.Warehouses;
 using DeLong_Desktop.Pages.SaleHistory;
+using DeLong_Desktop.Windows.DollarKurs;
 using DeLong_Desktop.Pages.SalesPractice;
 using DeLong_Desktop.Pages.AdditionalOperations;
-using DeLong_Desktop.Windows.DollarKurs;
 
 namespace DeLong_Desktop;
 
@@ -127,7 +127,7 @@ public partial class MainWindow : Window
         _salePracticePage.btnDollarKurs.Content = DeLong_Desktop.Resources.Resource.Dollar_kursini_kiriting_;
         _salePracticePage.btnMiqdori.Content = DeLong_Desktop.Resources.Resource.Miqdori_;
         _salePracticePage.lbChangeValyuta.Content = DeLong_Desktop.Resources.Resource.Valyutani_ayirboshlash_;
-        _salePracticePage.cbxProduct.Text = DeLong_Desktop.Resources.Resource.Mahsulotni_tanlang_;
+        HintAssist.SetHint(_salePracticePage.cbxProduct, DeLong_Desktop.Resources.Resource.Mahsulotni_tanlang_);
         _salePracticePage.btnProductSell.Content = DeLong_Desktop.Resources.Resource.Add;
         _salePracticePage.btnBuyDollar.Content = DeLong_Desktop.Resources.Resource.Sotib_olish_;
         _salePracticePage.btnSellDollar.Content = DeLong_Desktop.Resources.Resource.Sotish_;
@@ -139,7 +139,8 @@ public partial class MainWindow : Window
         _salePracticePage.ProductGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.Olchov_birligi;
         _salePracticePage.ProductGrid.Columns[5].Header = DeLong_Desktop.Resources.Resource.Umumiy_summasi_;
         _salePracticePage.ProductGrid.Columns[6].Header = DeLong_Desktop.Resources.Resource.Ochirish;
-        _salePracticePage.cbxPayment.Text = DeLong_Desktop.Resources.Resource.Mijozni_tanlang_;
+
+        HintAssist.SetHint(_salePracticePage.cbxPayment,DeLong_Desktop.Resources.Resource.Mijozni_tanlang_);
         _salePracticePage.lbljami.Content = DeLong_Desktop.Resources.Resource.Jami_summa_;
         _salePracticePage.lblnaqd.Content = DeLong_Desktop.Resources.Resource.Naqd_;
         _salePracticePage.lblplastik.Content = DeLong_Desktop.Resources.Resource.Plastik_;

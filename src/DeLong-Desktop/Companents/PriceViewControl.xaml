@@ -28,15 +28,15 @@
 
                 <!-- Kelish narxi -->
                 <Label Content="Kelish narxi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                <TextBox x:Name="tbIncomePrice" Text="20.00" Foreground="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                <TextBox x:Name="tbIncomePrice" Text="0.00" Foreground="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
                 <!-- sotish narxi -->
                 <Label Content="Sotish narxi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
-                <TextBox x:Name="tbSellPrice" Text="100.00" Foreground ="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                <TextBox x:Name="tbSellPrice" Text="0.00" Foreground ="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
                 <!-- Miqdori -->
                 <Label Content="Miqdori:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
-                <TextBox x:Name="tbQuantity" Text="20.00" Foreground="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                <TextBox x:Name="tbQuantity" Text="0.00" Foreground="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
                 <!-- o'lchov birligi -->
                 <Label Content="O'lchov birligi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
