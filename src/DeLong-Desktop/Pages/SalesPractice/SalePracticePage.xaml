@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:DeLong_Desktop.Pages.SalesPractice"
       mc:Ignorable="d" 
       xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-      Title="SalePracticePage">
+      Title="Sotuv bo'limi">
 
     <!-- Resurslar -->
     <Page.Resources>

@@ -430,7 +430,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ochirish.
+        ///   Looks up a localized string similar to O&apos;chirish.
         /// </summary>
         internal static string Ochirish {
             get {
