@@ -335,9 +335,6 @@
   <data name="ToWarehouse" xml:space="preserve">
     <value>去哪個倉庫？</value>
   </data>
-  <data name="To‘lov summasi " xml:space="preserve">
-    <value>付款金额</value>
-  </data>
   <data name="TransactionType" xml:space="preserve">
     <value>交易類型</value>
   </data>
@@ -358,5 +355,29 @@
   </data>
   <data name="Yakunlash " xml:space="preserve">
     <value>完成</value>
+  </data>
+  <data name="To‘lov summasi " xml:space="preserve">
+    <value>付款金额</value>
+  </data>
+  <data name="Qoshimcha amallar" xml:space="preserve">
+    <value>额外操作</value>
+  </data>
+  <data name="Qarzni tolash" xml:space="preserve">
+    <value>还清债务</value>
+  </data>
+  <data name="Mijoz nomi" xml:space="preserve">
+    <value>客户姓名</value>
+  </data>
+  <data name="Qarz summasi" xml:space="preserve">
+    <value>债务金额</value>
+  </data>
+  <data name="Tolash muddati" xml:space="preserve">
+    <value>还款期限</value>
+  </data>
+  <data name="Jami qarz" xml:space="preserve">
+    <value>总债务</value>
+  </data>
+  <data name="Tolash" xml:space="preserve">
+    <value>支付</value>
   </data>
 </root>
