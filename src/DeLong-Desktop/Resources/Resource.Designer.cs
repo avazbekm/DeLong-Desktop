@@ -322,6 +322,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Jami qarz.
+        /// </summary>
+        internal static string Jami_qarz {
+            get {
+                return ResourceManager.GetString("Jami qarz", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Jami summa .
         /// </summary>
         internal static string Jami_summa_ {
@@ -381,6 +390,15 @@ namespace DeLong_Desktop.Resources {
         internal static string Mahsulotni_tanlang_ {
             get {
                 return ResourceManager.GetString("Mahsulotni tanlang ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mijoz nomi.
+        /// </summary>
+        internal static string Mijoz_nomi {
+            get {
+                return ResourceManager.GetString("Mijoz nomi", resourceCulture);
             }
         }
         
@@ -547,6 +565,33 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Qarz summasi.
+        /// </summary>
+        internal static string Qarz_summasi {
+            get {
+                return ResourceManager.GetString("Qarz summasi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Qarzni tolash.
+        /// </summary>
+        internal static string Qarzni_tolash {
+            get {
+                return ResourceManager.GetString("Qarzni tolash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Qoshimcha amallar.
+        /// </summary>
+        internal static string Qoshimcha_amallar {
+            get {
+                return ResourceManager.GetString("Qoshimcha amallar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Miqdori.
         /// </summary>
         internal static string Quantity {
@@ -678,6 +723,24 @@ namespace DeLong_Desktop.Resources {
         internal static string ToExcell {
             get {
                 return ResourceManager.GetString("ToExcell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tolash.
+        /// </summary>
+        internal static string Tolash {
+            get {
+                return ResourceManager.GetString("Tolash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tolash muddati.
+        /// </summary>
+        internal static string Tolash_muddati {
+            get {
+                return ResourceManager.GetString("Tolash muddati", resourceCulture);
             }
         }
         

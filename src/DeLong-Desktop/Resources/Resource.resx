@@ -357,4 +357,28 @@
   <data name="Yakunlash " xml:space="preserve">
     <value>Yakunlash </value>
   </data>
+  <data name="To‘lov summasi " xml:space="preserve">
+    <value>To'lov summasi</value>
+  </data>
+  <data name="Qoshimcha amallar" xml:space="preserve">
+    <value>Qoshimcha amallar</value>
+  </data>
+  <data name="Qarzni tolash" xml:space="preserve">
+    <value>Qarzni tolash</value>
+  </data>
+  <data name="Mijoz nomi" xml:space="preserve">
+    <value>Mijoz nomi</value>
+  </data>
+  <data name="Qarz summasi" xml:space="preserve">
+    <value>Qarz summasi</value>
+  </data>
+  <data name="Tolash muddati" xml:space="preserve">
+    <value>Tolash muddati</value>
+  </data>
+  <data name="Jami qarz" xml:space="preserve">
+    <value>Jami qarz</value>
+  </data>
+  <data name="Tolash" xml:space="preserve">
+    <value>Tolash</value>
+  </data>
 </root>

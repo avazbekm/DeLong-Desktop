@@ -19,6 +19,7 @@ namespace DeLong_Desktop;
 public partial class MainWindow : Window
 {
     private DollarKursWindow _dollorkurswindow;
+    private AdditionalOperationsPage _additionalOperationsPage;
     private CustomersPage _customerPage;
     private WarehousePage _warehousePage;
     private SalePracticePage _salePracticePage;
@@ -95,9 +96,9 @@ public partial class MainWindow : Window
             _inputPage = new InputPage(_services);
         }
 
-        if (_dollorkurswindow == null)
+        if (_additionalOperationsPage == null)
         {
-            _dollorkurswindow = new DollarKursWindow(_services);
+            _additionalOperationsPage = new AdditionalOperationsPage(_services);
         }
 
         #region CustomerPage
@@ -186,10 +187,18 @@ public partial class MainWindow : Window
         btnAdditionalOperations.Content = DeLong_Desktop.Resources.Resource.AdditionalOperations;
         #endregion
 
-        #region DollorKursWindow
-        _dollorkurswindow.tbDollarKurs.Text = DeLong_Desktop.Resources.Resource.Category;
-        _dollorkurswindow.tbDollarOlishKurs.Text = DeLong_Desktop.Resources.Resource.Category;
-        _dollorkurswindow.btnAddDollarKurs.Content = DeLong_Desktop.Resources.Resource.Category;
+        #region AdditionalOperationPage
+        _additionalOperationsPage.additionalActions.Text = DeLong_Desktop.Resources.Resource.Qoshimcha_amallar;
+        HintAssist.SetHint(_additionalOperationsPage.tbSearchDebt, DeLong_Desktop.Resources.Resource.Search);
+        _additionalOperationsPage.tbqarznitolash.Text = DeLong_Desktop.Resources.Resource.Qarzni_tolash;
+        _additionalOperationsPage.dtmijoznomi.Header = DeLong_Desktop.Resources.Resource.Mijoz_nomi;
+        _additionalOperationsPage.dtqarzsummasi.Header = DeLong_Desktop.Resources.Resource.Qarz_summasi;
+        _additionalOperationsPage.dttolashmuddati.Header = DeLong_Desktop.Resources.Resource.Tolash_muddati;
+        _additionalOperationsPage.tbTotalDebtLabel.Text = DeLong_Desktop.Resources.Resource.Jami_qarz;
+        _additionalOperationsPage.btnPayAllDebts.Content = DeLong_Desktop.Resources.Resource.Tolash;
+        HintAssist.SetHint(_additionalOperationsPage.tbDollarPayment,DeLong_Desktop.Resources.Resource.Dollar);
+        HintAssist.SetHint(_additionalOperationsPage.tbCardPayment,DeLong_Desktop.Resources.Resource.Plastik_);
+        HintAssist.SetHint(_additionalOperationsPage.tbCashPayment,DeLong_Desktop.Resources.Resource.Naqd_);
         #endregion
 
     }
@@ -322,8 +331,19 @@ public partial class MainWindow : Window
 
     private void OnAdditionalOperationsClick(object sender, RoutedEventArgs e)
     {
-        var additionalOperationsPage = new AdditionalOperationsPage(_services);
-        Navigator.Navigate(additionalOperationsPage);
+        if (_additionalOperationsPage == null)
+        {
+            _additionalOperationsPage = new AdditionalOperationsPage(_services);
+        }
+        Navigator.Navigate(_additionalOperationsPage);
+        UpdateLanguage();
+        if (_additionalOperationsPage.tbSearchDebt != null)
+        {
+            HintAssist.SetHint(_additionalOperationsPage.tbSearchDebt, DeLong_Desktop.Resources.Resource.Search);
+            HintAssist.SetHint(_additionalOperationsPage.tbDollarPayment, DeLong_Desktop.Resources.Resource.Dollar);
+            HintAssist.SetHint(_additionalOperationsPage.tbCardPayment, DeLong_Desktop.Resources.Resource.Plastik_);
+            HintAssist.SetHint(_additionalOperationsPage.tbCashPayment, DeLong_Desktop.Resources.Resource.Naqd_);
+        }
     }
 
     private void btnCash_Click(object sender, RoutedEventArgs e)

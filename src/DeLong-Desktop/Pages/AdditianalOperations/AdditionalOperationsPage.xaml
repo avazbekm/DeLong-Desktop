@@ -98,7 +98,7 @@
             <!-- Tab 1: Qarzni To‘lash -->
             <TabItem x:Name="debtTabItem"  Margin="4,0,0,0">
                 <TabItem.Header>
-                    <TextBlock  Text="Qarzni to‘lash" Padding="10 0" FontSize="16" />
+                    <TextBlock x:Name="tbqarznitolash"  Text="Qarzni to‘lash" Padding="10 0" FontSize="16" />
                 </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -124,9 +124,9 @@
                     <!-- Qarzlar ro‘yxati -->
                     <DataGrid x:Name="debtDataGrid" Grid.Row="1" Margin="5,5,5,5" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Grid.ColumnSpan="5" SelectionChanged="DebtDataGrid_SelectionChanged">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Mijoz nomi" IsReadOnly="True" Binding="{Binding CustomerName}" Width="250"/>
-                            <DataGridTextColumn Header="Qarz summasi" IsReadOnly="True" Binding="{Binding RemainingAmount, StringFormat=N2}" Width="150"/>
-                            <DataGridTextColumn Header="To'lash muddat" IsReadOnly="True" Binding="{Binding DueDate, StringFormat=dd.MM.yyyy}" Width="150"/>
+                            <DataGridTextColumn x:Name="dtmijoznomi" Header="Mijoz nomi" IsReadOnly="True" Binding="{Binding CustomerName}" Width="250"/>
+                            <DataGridTextColumn x:Name="dtqarzsummasi" Header="Qarz summasi" IsReadOnly="True" Binding="{Binding RemainingAmount, StringFormat=N2}" Width="150"/>
+                            <DataGridTextColumn x:Name="dttolashmuddati" Header="To'lash muddat" IsReadOnly="True" Binding="{Binding DueDate, StringFormat=dd.MM.yyyy}" Width="150"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <!-- Yangi Row: Jami qarz va to‘lov summalari -->
