@@ -325,4 +325,9 @@ public partial class MainWindow : Window
         var additionalOperationsPage = new AdditionalOperationsPage(_services);
         Navigator.Navigate(additionalOperationsPage);
     }
-} 
+
+    private void btnCash_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+}

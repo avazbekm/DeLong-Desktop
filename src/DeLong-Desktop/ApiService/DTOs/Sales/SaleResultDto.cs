@@ -10,7 +10,7 @@ public class SaleResultDto
     public long? UserId { get; set; }
     public string CustomerName { get; set; } = string.Empty;  // Mijoz ismi
     public decimal TotalAmount { get; set; }
-    public decimal PaidAmount { get; set; }
+    public decimal PaidAmount { get; set; } // to'langan qismi
     public decimal RemainingAmount { get; set; }
     public string Status { get; set; } = string.Empty;  // Enum string sifatida
     public DateTimeOffset CreatedAt { get; set; }

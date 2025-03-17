@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DeLong_Desktop"
         mc:Ignorable="d"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Bosh sahifa" Height="580" Width="800"
+        Title="Bosh sahifa" Height="600" Width="800"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <DropShadowEffect x:Key="DefaultDropShadowEffect" ShadowDepth="5" Opacity="0.5" BlurRadius="10"/>
@@ -21,7 +21,7 @@
             <StackPanel Margin="20">
 
                 <Button x:Name="btnChiqim"
-                        Height="45"
+                        Height="40"
                         Margin="0 0 0 5"
                         Content="Sotuv amallari"
                         FontSize="18"
@@ -31,8 +31,19 @@
                         Background="#476072"
                         md:ButtonAssist.CornerRadius="17" Click="btnChiqim_Click"/>
 
+                <Button x:Name="btnCash"
+                        Height="40"
+                        Margin="0 0 0 5"
+                        Content="Kassa"
+                        FontSize="18"
+                        BorderThickness="0"
+                        Foreground="Snow"                        
+                        Style="{DynamicResource MaterialDesignPaperLightButton}"
+                        Background="#476072"
+                        md:ButtonAssist.CornerRadius="17" Click="btnCash_Click"/>
+
                 <Button x:Name="btnMijoz" 
-                        Height="45"
+                        Height="40"
                         Margin="0 0 0 5"
                         Content="Mijoz"
                         FontSize="18"
@@ -43,7 +54,7 @@
                         md:ButtonAssist.CornerRadius="17" Click="bntMijoz_Click"/>
 
                 <Button x:Name="btnMaxsulot"
-                        Height="45"
+                        Height="40"
                         Margin="0 0 0 5"
                         Content="Mahsulot"
                         FontSize="18"
@@ -54,7 +65,7 @@
                         md:ButtonAssist.CornerRadius="17" Click="btnMaxsulot_Click"/>
 
                 <Button x:Name="btnOmbor"
-                        Height="45"
+                        Height="40"
                         Margin="0 0 0 5"
                         Content="Ombor"
                         FontSize="18"
@@ -65,7 +76,7 @@
                         md:ButtonAssist.CornerRadius="17" Click="btnOmbor_Click"/>
 
                 <Button x:Name="btnKirim"
-                        Height="45"
+                        Height="40"
                         Margin="0 0 0 5"
                         Content="Kirim"
                         FontSize="18"
@@ -77,7 +88,7 @@
 
                 <!-- Qo‘shimcha Amallar tugmasi -->
                 <Button x:Name="btnAdditionalOperations"
-                        Height="45"
+                        Height="40"
                         Margin="0 0 0 5"
                         Content="Qo‘shimcha amallar"
                         FontSize="18"
@@ -88,7 +99,7 @@
                         md:ButtonAssist.CornerRadius="17" Click="OnAdditionalOperationsClick"/>
 
                 <Button x:Name="btnSaleHistory"
-                        Height="45"
+                        Height="40"
                         Margin="0 0 0 5"
                         Content="Sotuv tarixi"
                         FontSize="18"
@@ -110,7 +121,7 @@
                         md:ButtonAssist.CornerRadius="17"/>
 
                 <Border 
-                    Height="45" 
+                    Height="40" 
                     Background="#476072" 
                     CornerRadius="15" 
                     Margin="0,0,0,10"
@@ -169,7 +180,7 @@
                 </Border>
 
                 <Button x:Name="btnChiqish"
-                        Height="45"
+                        Height="40"
                         Margin="0 0 0 5"
                         Content="Chiqish"
                         FontSize="18"
