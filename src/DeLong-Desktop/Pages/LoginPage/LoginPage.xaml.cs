@@ -14,6 +14,7 @@ public partial class LoginPage : Page
     {
         InitializeComponent();
         _serviceProvider = serviceProvider;
+        txtUsername.Focus();
     }
 
     private void btnLogin_Click(object sender, RoutedEventArgs e)

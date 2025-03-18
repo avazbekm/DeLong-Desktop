@@ -71,6 +71,15 @@ public partial class App : Application
         services.AddHttpClient<ITransactionItemService, TransactionItemService>()
                 .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
 
+        services.AddHttpClient<ICashRegisterService, CashRegisterService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
+        services.AddHttpClient<ICashTransferService, CashTransferService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
+        services.AddHttpClient<ICashWarehouseService, CashWarehouseService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl);
+
 
         var serviceProvider = services.BuildServiceProvider();
         new LoginWindow(serviceProvider).Show();

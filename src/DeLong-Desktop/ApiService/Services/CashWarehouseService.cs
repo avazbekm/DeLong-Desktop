@@ -74,11 +74,11 @@ public class CashWarehouseService : ICashWarehouseService
         }
     }
 
-    public async ValueTask<CashWarehouseResultDto> RetrieveByIdAsync(long id)
+    public async ValueTask<CashWarehouseResultDto> RetrieveByIdAsync()
     {
         try
         {
-            var response = await _httpClient.GetAsync($"api/CashWarehouse/get/{id}");
+            var response = await _httpClient.GetAsync($"api/CashWarehouse/get");
 
             if (!response.IsSuccessStatusCode)
                 return null;

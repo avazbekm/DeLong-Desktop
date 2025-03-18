@@ -10,6 +10,7 @@ using DeLong_Desktop.Pages.SaleHistory;
 using DeLong_Desktop.Windows.DollarKurs;
 using DeLong_Desktop.Pages.SalesPractice;
 using DeLong_Desktop.Pages.AdditionalOperations;
+using DeLong_Desktop.Pages.Cashs;
 
 namespace DeLong_Desktop;
 
@@ -348,6 +349,8 @@ public partial class MainWindow : Window
 
     private void btnCash_Click(object sender, RoutedEventArgs e)
     {
-
+        
+            var cashPage = new CashPage(_services);
+        Navigator.Navigate(cashPage);
     }
 }

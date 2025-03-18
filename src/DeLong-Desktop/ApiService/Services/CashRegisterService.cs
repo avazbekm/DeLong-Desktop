@@ -153,4 +153,27 @@ public class CashRegisterService : ICashRegisterService
             return Enumerable.Empty<CashRegisterResultDto>();
         }
     }
+
+    public async ValueTask<IEnumerable<CashRegisterResultDto>> RetrieveOpenRegistersAsync()
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync("api/CashRegister/get-open");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                MessageBox.Show($"API xato kodi: {response.StatusCode}");
+                return Enumerable.Empty<CashRegisterResultDto>();
+            }
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<Response<List<CashRegisterResultDto>>>(jsonResponse);
+            return result?.Data ?? Enumerable.Empty<CashRegisterResultDto>();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Xatolik: {ex.Message}");
+            return Enumerable.Empty<CashRegisterResultDto>();
+        }
+    }
 }

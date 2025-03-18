@@ -9,7 +9,271 @@
       xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
       Title="Kassa bo'limi">
 
-    <Grid>
-        
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Kassani boshqarish" FontSize="24" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,10"/>
+
+        <TabControl Grid.Row="1" Background="{StaticResource SecondaryBackground}" BorderBrush="{StaticResource PrimaryBorderColor}">
+            <!-- Cash Registers Tab (Vertikal StackPanel ko‘rinishi) -->
+            <TabItem xmlns:helpers="clr-namespace:DeLong_Desktop.ApiService.Helpers">
+                <TabItem.Header>
+                    <TextBlock Text="Kassa qoldiqlari" Foreground="{StaticResource PrimaryTextColor}" FontSize="20" FontWeight="Bold"/>
+                </TabItem.Header>
+                <TabItem.Resources>
+                    <helpers:UtcToUzbekistanTimeConverter x:Key="UtcToUzbekistanTimeConverter"/>
+                </TabItem.Resources>
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Cash Registers List -->
+                        <ItemsControl x:Name="CashRegisterGrid" Background="{StaticResource SecondaryBackground}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="5" 
+                                CornerRadius="8" 
+                                BorderBrush="{StaticResource PrimaryBorderColor}" 
+                                BorderThickness="1" 
+                                Padding="10">
+                                        <!-- Gradient Background -->
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#F5F7FA" Offset="0"/>
+                                                <GradientStop Color="#E9ECEF" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+
+                                        <StackPanel Orientation="Vertical">
+                                            <!-- Ochilgan sana va vaqt (Header) -->
+                                            <TextBlock Text="{Binding OpenedAt, Converter={StaticResource UtcToUzbekistanTimeConverter}, StringFormat='Kassa ochilgan vaqt: {0}'}" 
+                                           Foreground="{StaticResource PrimaryTextColor}" 
+                                           FontWeight="Bold" 
+                                           FontSize="20" 
+                                           Margin="0,0,0,8">
+                                                <TextBlock.Effect>
+                                                    <DropShadowEffect ShadowDepth="2" BlurRadius="2" Opacity="0.2"/>
+                                                </TextBlock.Effect>
+                                            </TextBlock>
+
+                                            <!-- Ombor nomi -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="Ombor: " 
+                                               Foreground="{StaticResource PrimaryTextColor}" 
+                                               FontSize="20" 
+                                               FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding WarehouseName}" 
+                                               Foreground="{StaticResource SecondaryTextColor}" 
+                                               FontSize="20"/>
+                                            </StackPanel>
+
+                                            <!-- UZS -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="UZS: " 
+                                               Foreground="{StaticResource PrimaryTextColor}" 
+                                               FontSize="20" 
+                                               FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding UzsBalance, StringFormat={}{0:N0}}" 
+                                               Foreground="#28A745" 
+                                               FontSize="20"/>
+                                            </StackPanel>
+
+                                            <!-- UZP -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="UZP: " 
+                                               Foreground="{StaticResource PrimaryTextColor}" 
+                                               FontSize="20" 
+                                               FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding UzpBalance, StringFormat={}{0:N0}}" 
+                                               Foreground="#007BFF" 
+                                               FontSize="20"/>
+                                            </StackPanel>
+
+                                            <!-- USD -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="USD: " 
+                                               Foreground="{StaticResource PrimaryTextColor}" 
+                                               FontSize="20" 
+                                               FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding UsdBalance, StringFormat={}{0:N0}}" 
+                                               Foreground="#FFC107" 
+                                               FontSize="20"/>
+                                            </StackPanel>
+
+                                            <!-- Qarz -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="Qarz: " 
+                                               Foreground="{StaticResource PrimaryTextColor}" 
+                                               FontSize="20" 
+                                               FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding DebtAmount, StringFormat={}{0:N0}}" 
+                                               Foreground="#DC3545" 
+                                               FontSize="20"/>
+                                            </StackPanel>
+
+                                            <!-- Separator -->
+                                            <Separator Background="{StaticResource PrimaryBorderColor}" Margin="0,5"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                            <!-- ItemsPanel uchun vertikal joylashuv -->
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                </Grid>
+            </TabItem>
+            <!-- Cash Transfers Tab -->
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Kassa o'tkazmalari" Foreground="{StaticResource PrimaryTextColor}" FontSize="20" FontWeight="Bold"/>
+                </TabItem.Header>
+                <Grid Margin="10" Background="{StaticResource SecondaryBackground}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border CornerRadius="10" Padding="15" Background="{StaticResource OtherBackground}" BorderBrush="{StaticResource PrimaryBorderColor}" BorderThickness="2" >
+                        <StackPanel Grid.Row="0" Orientation="Vertical" >
+                            <!-- Qayerdan pul olinmoqda -->
+                            <Border Width="280" Height="45" Margin="5" Background="{DynamicResource OtherBackground}" CornerRadius="8" BorderBrush="{StaticResource SelectedBorderColor}" BorderThickness="2">
+                                <ComboBox x:Name="FromComboBox" Width="260" Height="45" SelectedIndex="1" Background="Transparent" Foreground="{StaticResource PrimaryTextColor}" BorderBrush="{DynamicResource OtherBackground }"  FontSize="16" FontWeight="Bold">
+                                    <ComboBoxItem>Kassadan</ComboBoxItem>
+                                    <ComboBoxItem>Zaxiradan</ComboBoxItem>
+                                </ComboBox>
+                            </Border>
+                            <!-- Pul turi -->
+                            <Border Width="280" Height="45" Margin="5" Background="{DynamicResource OtherBackground}" CornerRadius="8" BorderBrush="{StaticResource SelectedBorderColor}" BorderThickness="2">
+                                <ComboBox x:Name="CurrencyComboBox" Width="260" Height="45" SelectedIndex="0" Background="Transparent" Foreground="{StaticResource PrimaryTextColor}" BorderBrush="{StaticResource OtherBackground}"  FontSize="16" FontWeight="Bold">
+                                    <ComboBoxItem>So'm</ComboBoxItem>
+                                    <ComboBoxItem>Plastik</ComboBoxItem>
+                                    <ComboBoxItem>Dollar</ComboBoxItem>
+                                </ComboBox>
+                            </Border>
+                            
+                            <!-- Miqdor -->
+                            <Border Width="280" Height="45" Margin="5" Background="{DynamicResource OtherBackground}" CornerRadius="8" BorderBrush="{StaticResource SelectedBorderColor}" BorderThickness="2">
+                                <TextBox x:Name="AmountTextBox" Width="260" Height="45" md:HintAssist.Hint="0.00" Foreground="{DynamicResource PrimaryTextColor}" Background="Transparent" BorderBrush="{StaticResource OtherBackground}" Padding="5" TextAlignment="Right" FontSize="18" FontWeight="Bold"/>
+                            </Border>
+                            <!-- Qayerga o'tkaziladi -->
+                            <Border Width="280" Height="45" Margin="5" Background="{DynamicResource OtherBackground}" CornerRadius="8" BorderBrush="{StaticResource SelectedBorderColor}" BorderThickness="2">
+                                <ComboBox x:Name="ToComboBox" Width="260" Height="45" SelectedIndex="0" Background="Transparent" Foreground="{StaticResource PrimaryTextColor}" BorderBrush="{StaticResource OtherBackground}" FontSize="16" FontWeight="Bold">
+                                    <ComboBoxItem>Kassaga</ComboBoxItem>
+                                    <ComboBoxItem>Zaxiraga</ComboBoxItem>
+                                </ComboBox>
+                            </Border>
+
+                            <!-- Izoh -->
+                            <Border Width="280" Height="45" Margin="5" Background="{DynamicResource OtherBackground}" CornerRadius="8" BorderBrush="{StaticResource SelectedBorderColor}" BorderThickness="2">
+                                <TextBox x:Name="NoteTextBox" Width="260" Height="45" md:HintAssist.Hint="Izoh" Foreground="{DynamicResource PrimaryTextColor}" Background="Transparent" BorderBrush="{StaticResource OtherBackground}" Padding="5" FontSize="16" FontWeight="Bold"/>
+                            </Border>
+                            <!-- O'tkazish tugmasi -->
+
+                                <Button x:Name="TransferButton" Margin="0 5" Content="O'tkazish" Width="280" Height="45" Background="{DynamicResource SelectedBackground}" Foreground="{StaticResource SecondaryTextColor}" BorderBrush="{StaticResource SelectedBorderColor}" md:ButtonAssist.CornerRadius="8"  FontSize="18" FontWeight="Bold" Padding="5" Cursor="Hand" Click="TransferButton_Click">
+                                    <Button.Effect>
+                                        <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="3"/>
+                                    </Button.Effect>
+                                </Button>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+            <!-- Cash Warehouses Tab -->
+            <TabItem >
+                <TabItem.Header>
+                    <TextBlock Text="Zaxiradagi pullar" Foreground="{StaticResource PrimaryTextColor}" FontSize="20" FontWeight="Bold"/>
+                </TabItem.Header>
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Cash Warehouses List -->
+                        <ItemsControl x:Name="CashWarehouseGrid" Background="{StaticResource SecondaryBackground}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="5" 
+                                        CornerRadius="8" 
+                                        BorderBrush="{StaticResource PrimaryBorderColor}" 
+                                        BorderThickness="1" 
+                                        Padding="10">
+                                        <!-- Gradient Background -->
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#F5F7FA" Offset="0"/>
+                                                <GradientStop Color="#E9ECEF" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+
+                                        <StackPanel Orientation="Vertical">
+                                            <!-- Zaxiradagi pul qoldiqlari (Header) -->
+                                            <TextBlock Text="Zaxiradagi pul qoldiqlar" 
+                                           Foreground="{StaticResource PrimaryTextColor}" 
+                                           FontWeight="Bold" 
+                                           FontSize="20" 
+                                           Margin="0,0,0,8">
+                                                <TextBlock.Effect>
+                                                    <DropShadowEffect ShadowDepth="2" BlurRadius="2" Opacity="0.2"/>
+                                                </TextBlock.Effect>
+                                            </TextBlock>
+
+                                            <!-- Hozirgi vaqt -->
+                                            <TextBlock Text="{Binding CurrentDateTime, StringFormat='Hozirgi vaqt: {0:dd.MM.yyyy HH:mm}'}" Foreground="{StaticResource PrimaryTextColor}" FontWeight="Bold" FontSize="20" Margin="0,0,0,8">
+                                                <TextBlock.Effect>
+                                                    <DropShadowEffect ShadowDepth="2" BlurRadius="2" Opacity="0.2"/>
+                                                </TextBlock.Effect>
+                                            </TextBlock>
+
+                                            <!-- UZS -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="UZS: " Foreground="{StaticResource PrimaryTextColor}" FontSize="20" FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding UzsBalance, StringFormat={}{0:N0}}" Foreground="#28A745" FontSize="20"/>
+                                            </StackPanel>
+
+                                            <!-- UZP -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="UZP: " Foreground="{StaticResource PrimaryTextColor}" FontSize="20" FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding UzpBalance, StringFormat={}{0:N0}}" Foreground="#007BFF" FontSize="20"/>
+                                            </StackPanel>
+
+                                            <!-- USD -->
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <TextBlock Text="USD: " 
+                                               Foreground="{StaticResource PrimaryTextColor}" 
+                                               FontSize="20" 
+                                               FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding UsdBalance, StringFormat={}{0:N0}}" 
+                                               Foreground="#FFC107" 
+                                               FontSize="20"/>
+                                            </StackPanel>
+
+                                            <!-- Separator -->
+                                            <Separator Background="{StaticResource PrimaryBorderColor}" Margin="0,5"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                            <!-- ItemsPanel uchun vertikal joylashuv -->
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Page>

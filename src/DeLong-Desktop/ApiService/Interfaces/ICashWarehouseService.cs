@@ -7,6 +7,6 @@ public interface ICashWarehouseService
     ValueTask<CashWarehouseResultDto> AddAsync(CashWarehouseCreationDto dto);
     ValueTask<CashWarehouseResultDto> ModifyAsync(CashWarehouseUpdateDto dto);
     ValueTask<bool> RemoveAsync(long id);
-    ValueTask<CashWarehouseResultDto> RetrieveByIdAsync(long id);
+    ValueTask<CashWarehouseResultDto> RetrieveByIdAsync();
     ValueTask<IEnumerable<CashWarehouseResultDto>> RetrieveAllAsync();
 }

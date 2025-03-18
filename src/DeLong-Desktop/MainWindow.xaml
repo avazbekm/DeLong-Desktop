@@ -110,7 +110,7 @@
                         md:ButtonAssist.CornerRadius="17" Click="btnSaleHistory_Click"/>
 
                 <Button x:Name="btnHisobot"
-                        Height="45"
+                        Height="40"
                         Margin="0 0 0 5"
                         Content="Hisobot"
                         FontSize="18"

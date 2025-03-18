@@ -11,4 +11,5 @@ public interface ICashRegisterService
     ValueTask<IEnumerable<CashRegisterResultDto>> RetrieveAllAsync();
     ValueTask<IEnumerable<CashRegisterResultDto>> RetrieveAllByUserIdAsync(long userId);
     ValueTask<IEnumerable<CashRegisterResultDto>> RetrieveAllByWarehouseIdAsync(long warehouseId);
+    ValueTask<IEnumerable<CashRegisterResultDto>> RetrieveOpenRegistersAsync();
 }
