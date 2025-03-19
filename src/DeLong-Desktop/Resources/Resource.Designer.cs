@@ -169,6 +169,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chek Id.
+        /// </summary>
+        internal static string Chek_Id {
+            get {
+                return ResourceManager.GetString("Chek Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mijoz FIO.
         /// </summary>
         internal static string ClientFullname {
@@ -277,15 +286,6 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To&apos;lash muddati.
-        /// </summary>
-        internal static string DueDate {
-            get {
-                return ResourceManager.GetString("DueDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Chiqish.
         /// </summary>
         internal static string Exit {
@@ -318,6 +318,15 @@ namespace DeLong_Desktop.Resources {
         internal static string Income {
             get {
                 return ResourceManager.GetString("Income", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Izoh.
+        /// </summary>
+        internal static string Izoh {
+            get {
+                return ResourceManager.GetString("Izoh", resourceCulture);
             }
         }
         
@@ -363,6 +372,15 @@ namespace DeLong_Desktop.Resources {
         internal static string kategoriya_boyicha_qidiruv {
             get {
                 return ResourceManager.GetString("kategoriya boyicha qidiruv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kimdan qaytmoqda.
+        /// </summary>
+        internal static string Kimdan_qaytmoqda {
+            get {
+                return ResourceManager.GetString("Kimdan qaytmoqda", resourceCulture);
             }
         }
         
@@ -579,6 +597,15 @@ namespace DeLong_Desktop.Resources {
         internal static string Qarzni_tolash {
             get {
                 return ResourceManager.GetString("Qarzni tolash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Qaytgan mahsulotlar.
+        /// </summary>
+        internal static string Qaytgan_mahsulotlar {
+            get {
+                return ResourceManager.GetString("Qaytgan mahsulotlar", resourceCulture);
             }
         }
         

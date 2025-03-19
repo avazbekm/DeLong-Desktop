@@ -380,4 +380,16 @@
   <data name="Tolash" xml:space="preserve">
     <value>支付</value>
   </data>
+  <data name="Qaytgan mahsulotlar" xml:space="preserve">
+    <value>退货商品</value>
+  </data>
+  <data name="Chek Id" xml:space="preserve">
+    <value>小票编号</value>
+  </data>
+  <data name="Kimdan qaytmoqda" xml:space="preserve">
+    <value>从谁退回</value>
+  </data>
+  <data name="Izoh" xml:space="preserve">
+    <value>注释</value>
+  </data>
 </root>

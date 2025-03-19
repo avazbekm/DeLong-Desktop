@@ -189,9 +189,6 @@
   <data name="DueData " xml:space="preserve">
     <value>DueData </value>
   </data>
-  <data name="DueDate" xml:space="preserve">
-    <value>To'lash muddati</value>
-  </data>
   <data name="Exit" xml:space="preserve">
     <value>Chiqish</value>
   </data>
@@ -380,5 +377,17 @@
   </data>
   <data name="Tolash" xml:space="preserve">
     <value>Tolash</value>
+  </data>
+  <data name="Qaytgan mahsulotlar" xml:space="preserve">
+    <value>Qaytgan mahsulotlar</value>
+  </data>
+  <data name="Chek Id" xml:space="preserve">
+    <value>Chek Id</value>
+  </data>
+  <data name="Kimdan qaytmoqda" xml:space="preserve">
+    <value>Kimdan qaytmoqda</value>
+  </data>
+  <data name="Izoh" xml:space="preserve">
+    <value>Izoh</value>
   </data>
 </root>
