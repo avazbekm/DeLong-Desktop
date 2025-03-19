@@ -145,7 +145,7 @@
                             <TextBox Grid.Column="2" x:Name="tbCashPayment" md:HintAssist.Hint="Naqd" FontWeight="Bold" Width="100" Margin="5" FontSize="16" Background="{DynamicResource SecondaryBackground}" TextChanged="tbCashPayment_TextChanged"/>
                             <TextBox Grid.Column="3" x:Name="tbCardPayment" md:HintAssist.Hint="Plastik" FontWeight="Bold" Width="100" Margin="5" FontSize="16" Background="{DynamicResource SecondaryBackground}" TextChanged="tbCardPayment_TextChanged"/>
                             <TextBox Grid.Column="4" x:Name="tbDollarPayment" md:HintAssist.Hint="Dollar" FontWeight="Bold" Width="100" Margin="5" FontSize="16" Background="{DynamicResource SecondaryBackground}" TextChanged="tbDollarPayment_TextChanged"/>
-                            <Button x:Name="btnPayAllDebts" Grid.Column="5" Content="To‘lash" FontSize="16" Click="PayAllDebtsButton_Click" Width="80" Margin="5" Background="{DynamicResource SelectedBackground}"/>
+                            <Button x:Name="btnPayAllDebts" Grid.Column="5" Content="To‘lash" FontSize="16" Click="PayAllDebtsButton_Click" Margin="5" Background="{DynamicResource SelectedBackground}"/>
                         </Grid>
                     </Border>
                 </Grid>

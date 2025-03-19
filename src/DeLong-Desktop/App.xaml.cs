@@ -1,9 +1,9 @@
 ﻿using System.Windows;
+using DeLong.Service.Services;
+using DeLong_Desktop.Windows.Login;
 using DeLong_Desktop.ApiService.Services;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using DeLong_Desktop.Windows.Login;
-using DeLong.Service.Services;
 
 namespace DeLong_Desktop;
 
@@ -16,7 +16,7 @@ public partial class App : Application
         IServiceCollection services = new ServiceCollection();
 
         // **Barcha servislar uchun umumiy API manzili**
-        var apiBaseUrl = new Uri("http://localhost:5208/");
+        var apiBaseUrl = new Uri("http://13.61.150.163/");
 
         // **Servislarni qo‘shish (Clean Code)**
         services.AddHttpClient<IUserService, UserService>()
