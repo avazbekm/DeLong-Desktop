@@ -547,6 +547,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pechat.
+        /// </summary>
+        internal static string Pechat {
+            get {
+                return ResourceManager.GetString("Pechat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Telefon.
         /// </summary>
         internal static string Phone {
@@ -700,6 +709,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sana.
+        /// </summary>
+        internal static string Sana {
+            get {
+                return ResourceManager.GetString("Sana", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Qidiruv.
         /// </summary>
         internal static string Search {
@@ -741,6 +759,15 @@ namespace DeLong_Desktop.Resources {
         internal static string Sotish_ {
             get {
                 return ResourceManager.GetString("Sotish ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sotuvlar tarixi.
+        /// </summary>
+        internal static string Sotuvlar_tarixi {
+            get {
+                return ResourceManager.GetString("Sotuvlar tarixi", resourceCulture);
             }
         }
         

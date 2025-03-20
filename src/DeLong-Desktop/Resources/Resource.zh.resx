@@ -401,4 +401,13 @@
   <data name="Qaysi omborga" xml:space="preserve">
     <value>选择仓库</value>
   </data>
+  <data name="Sotuvlar tarixi" xml:space="preserve">
+    <value>销售历史</value>
+  </data>
+  <data name="Sana" xml:space="preserve">
+    <value>日期</value>
+  </data>
+  <data name="Pechat" xml:space="preserve">
+    <value>打印</value>
+  </data>
 </root>

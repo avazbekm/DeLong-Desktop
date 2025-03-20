@@ -31,7 +31,7 @@
                 </Border>
 
                 <!-- Sarlavha -->
-                <TextBlock Grid.Column="1" Text="Sotuvlar Tarixi" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource SecondaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock x:Name="tbsotuvlartarixi" Grid.Column="1" Text="Sotuvlar Tarixi" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource SecondaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
         </Border>
 
