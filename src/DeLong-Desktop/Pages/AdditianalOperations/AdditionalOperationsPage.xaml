@@ -154,7 +154,7 @@
             <!-- Tab 2: Qaytgan Mahsulotlarni Qabul Qilish -->
             <TabItem x:Name="returnTabItem" Margin="0,0,0,-2">
                 <TabItem.Header>
-                    <TextBlock Text="Qaytgan mahsulotlar" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="tbqaytganmahsulotlar" Text="Qaytgan mahsulotlar" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" FontWeight="SemiBold"/>
                 </TabItem.Header>
                 <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>

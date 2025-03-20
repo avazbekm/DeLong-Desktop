@@ -197,9 +197,20 @@ public partial class MainWindow : Window
         _additionalOperationsPage.dttolashmuddati.Header = DeLong_Desktop.Resources.Resource.Tolash_muddati;
         _additionalOperationsPage.tbTotalDebtLabel.Text = DeLong_Desktop.Resources.Resource.Jami_qarz;
         _additionalOperationsPage.btnPayAllDebts.Content = DeLong_Desktop.Resources.Resource.Tolash;
+        _additionalOperationsPage.tbqaytganmahsulotlar.Text = DeLong_Desktop.Resources.Resource.Qaytgan_mahsulotlar;
+        HintAssist.SetHint(_additionalOperationsPage.tbSaleId,DeLong_Desktop.Resources.Resource.Chek_Id);
+        HintAssist.SetHint(_additionalOperationsPage.tbReturnedFrom,DeLong_Desktop.Resources.Resource.Kimdan_qaytmoqda);
+        HintAssist.SetHint(_additionalOperationsPage.cbSalePriceProducts, DeLong_Desktop.Resources.Resource.Mahsulotni_tanlang_);
         HintAssist.SetHint(_additionalOperationsPage.tbDollarPayment,DeLong_Desktop.Resources.Resource.Dollar);
         HintAssist.SetHint(_additionalOperationsPage.tbCardPayment,DeLong_Desktop.Resources.Resource.Plastik_);
         HintAssist.SetHint(_additionalOperationsPage.tbCashPayment,DeLong_Desktop.Resources.Resource.Naqd_);
+        HintAssist.SetHint(_additionalOperationsPage.tbReturnQuantity, DeLong_Desktop.Resources.Resource.Miqdori_);
+        HintAssist.SetHint(_additionalOperationsPage.tbUnitOfMeasure, DeLong_Desktop.Resources.Resource.Olchov_birligi);
+        HintAssist.SetHint(_additionalOperationsPage.tbReturnAmount, DeLong_Desktop.Resources.Resource.Umumiy_summasi_);
+        HintAssist.SetHint(_additionalOperationsPage.tbComment, DeLong_Desktop.Resources.Resource.Izoh);
+        _additionalOperationsPage.btnConfirmReturn.Content = DeLong_Desktop.Resources.Resource.Confirm;
+
+
         #endregion
 
     }
@@ -341,16 +352,23 @@ public partial class MainWindow : Window
         if (_additionalOperationsPage.tbSearchDebt != null)
         {
             HintAssist.SetHint(_additionalOperationsPage.tbSearchDebt, DeLong_Desktop.Resources.Resource.Search);
+            HintAssist.SetHint(_additionalOperationsPage.tbSaleId, DeLong_Desktop.Resources.Resource.Chek_Id);
+            HintAssist.SetHint(_additionalOperationsPage.tbReturnedFrom, DeLong_Desktop.Resources.Resource.Kimdan_qaytmoqda);
+            HintAssist.SetHint(_additionalOperationsPage.cbSalePriceProducts, DeLong_Desktop.Resources.Resource.Mahsulotni_tanlang_);
             HintAssist.SetHint(_additionalOperationsPage.tbDollarPayment, DeLong_Desktop.Resources.Resource.Dollar);
             HintAssist.SetHint(_additionalOperationsPage.tbCardPayment, DeLong_Desktop.Resources.Resource.Plastik_);
             HintAssist.SetHint(_additionalOperationsPage.tbCashPayment, DeLong_Desktop.Resources.Resource.Naqd_);
+            HintAssist.SetHint(_additionalOperationsPage.tbReturnQuantity, DeLong_Desktop.Resources.Resource.Miqdori_);
+            HintAssist.SetHint(_additionalOperationsPage.tbUnitOfMeasure, DeLong_Desktop.Resources.Resource.Olchov_birligi);
+            HintAssist.SetHint(_additionalOperationsPage.tbReturnAmount, DeLong_Desktop.Resources.Resource.Umumiy_summasi_);
+            HintAssist.SetHint(_additionalOperationsPage.tbComment, DeLong_Desktop.Resources.Resource.Izoh);
         }
     }
 
     private void btnCash_Click(object sender, RoutedEventArgs e)
     {
         
-            var cashPage = new CashPage(_services);
+        var cashPage = new CashPage(_services);
         Navigator.Navigate(cashPage);
     }
 }
