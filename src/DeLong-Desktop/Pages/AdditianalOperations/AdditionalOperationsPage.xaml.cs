@@ -775,4 +775,9 @@ public partial class AdditionalOperationsPage : Page
             MessageBox.Show($"Tranzaksiya saqlashda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+
+    private void cbTransactionType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+    }
 }
