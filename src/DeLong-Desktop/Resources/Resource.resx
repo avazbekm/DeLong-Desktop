@@ -390,4 +390,13 @@
   <data name="Izoh" xml:space="preserve">
     <value>Izoh</value>
   </data>
+  <data name="Omborlar ortasida otkazmalar" xml:space="preserve">
+    <value>Omborlar ortasida otkazmalar</value>
+  </data>
+  <data name="Mahsulot tannarxi" xml:space="preserve">
+    <value>Mahsulot tannarxi</value>
+  </data>
+  <data name="Qaysi omborga" xml:space="preserve">
+    <value>Qaysi omborga</value>
+  </data>
 </root>

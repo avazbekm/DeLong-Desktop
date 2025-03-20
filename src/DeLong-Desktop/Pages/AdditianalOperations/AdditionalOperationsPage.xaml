@@ -261,13 +261,14 @@
             <!-- Tab 3: Omborlar O‘rtasida Provodka -->
             <TabItem x:Name="transferTabItem" Margin="0,0,2,0">
                 <TabItem.Header>
-                    <TextBlock Text="Omborlar o‘rtasida o'tkazmalar" Margin="10 0" FontSize="16"/>
+                    <TextBlock x:Name="tbomborlarortasidaotkazmalar" Text="Omborlar o‘rtasida o'tkazmalar" Margin="10 0" FontSize="16"/>
                 </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="39*"/>
-                        <ColumnDefinition Width="94*"/>
-                        <ColumnDefinition Width="25*"/>
+                        <ColumnDefinition Width="195*"/>
+                        <ColumnDefinition Width="399*"/>
+                        <ColumnDefinition Width="71*"/>
+                        <ColumnDefinition Width="125*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -276,7 +277,7 @@
                     </Grid.RowDefinitions>
 
                     <!-- Yangi StackPanel: Mahsulot qo‘shish -->
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,5,0,5" Grid.ColumnSpan="3">
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,5,0,5" Grid.ColumnSpan="2">
                         <ComboBox x:Name="cbProductList" FontSize="16" md:HintAssist.Hint="Mahsulotlar ro‘yxati" Width="180" Margin="5" IsEditable="True" PreviewKeyUp="cbProductList_PreviewKeyUp"/>
                         <TextBox x:Name="tbQuantity" CaretBrush="{DynamicResource  PrimaryCursorColor}" FontSize="16" TextAlignment="Center" md:HintAssist.Hint="Miqdor" Width="100" Margin="5"/>
                         <Button x:Name="btnAddProduct" Content="Qo‘shish" Click="AddProductButton_Click" Margin="5"/>
@@ -285,7 +286,7 @@
                     <!-- Provodka ro‘yxati -->
                     <DataGrid x:Name="transferDataGrid" Grid.Row="1" Margin="5,5,5,5" AutoGenerateColumns="False" CanUserAddRows="False"
                   Background="{DynamicResource SecondaryBackground}" 
-                  Foreground="{DynamicResource SecondaryTextColor}" Grid.ColumnSpan="3">
+                  Foreground="{DynamicResource SecondaryTextColor}" Grid.ColumnSpan="4">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Mahsulot nomi" Binding="{Binding ProductName}" Width="150" IsReadOnly="True"/>
                             <DataGridTemplateColumn Header="Miqdor" Width="100">
@@ -309,15 +310,15 @@
                     </DataGrid>
 
                     <!-- Provodka qo‘shish -->
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,5,0,5" Grid.ColumnSpan="3">
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,5,0,5" Grid.ColumnSpan="4">
                         <ComboBox x:Name="cbToWarehouse" FontSize="18" md:HintAssist.Hint="Qaysi omborga" Width="150" Margin="5"/>
-                        <ComboBox x:Name="cbTransactionType" FontSize="18" md:HintAssist.Hint="Tranzaksiya turi" Width="150" Margin="5"/>
+                        <ComboBox x:Name="cbTransactionType" FontSize="18" md:HintAssist.Hint="Tranzaksiya turi" Width="150" Margin="5" SelectionChanged="cbTransactionType_SelectionChanged"/>
                         <TextBox x:Name="tbCommentProvodka" FontSize="18" CaretBrush="{DynamicResource PrimaryCursorColor}" md:HintAssist.Hint="Izoh" Padding="5" Width="300" Margin="5"/>
                         <Button x:Name="btnSaveTransfer" Content="Jo‘natish" Click="SaveTransferButton_Click" Margin="5"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
-            
+
         </TabControl>
     </Grid>
 </Page>
