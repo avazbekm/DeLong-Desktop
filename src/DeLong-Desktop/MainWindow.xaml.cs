@@ -11,6 +11,7 @@ using DeLong_Desktop.Pages.Warehouses;
 using DeLong_Desktop.Pages.SaleHistory;
 using DeLong_Desktop.Pages.SalesPractice;
 using DeLong_Desktop.Pages.AdditionalOperations;
+using DeLong_Desktop.Pages.Reports;
 
 namespace DeLong_Desktop;
 
@@ -410,5 +411,11 @@ public partial class MainWindow : Window
         
         var cashPage = new CashPage(_services);
         Navigator.Navigate(cashPage);
+    }
+
+    private void btnReport_Click(object sender, RoutedEventArgs e)
+    {
+        var reportPage = new ReportPage();
+        Navigator.Navigate(reportPage);
     }
 }

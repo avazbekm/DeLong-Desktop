@@ -118,6 +118,7 @@
                         Foreground="Snow"                        
                         Style="{DynamicResource MaterialDesignPaperLightButton}"
                         Background="#476072"
+                        Click="btnReport_Click"
                         md:ButtonAssist.CornerRadius="17"/>
 
                 <Border 
