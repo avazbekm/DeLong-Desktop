@@ -399,4 +399,13 @@
   <data name="Qaysi omborga" xml:space="preserve">
     <value>Qaysi omborga</value>
   </data>
+  <data name="Sotuvlar tarixi" xml:space="preserve">
+    <value>Sotuvlar tarixi</value>
+  </data>
+  <data name="Sana" xml:space="preserve">
+    <value>Sana</value>
+  </data>
+  <data name="Pechat" xml:space="preserve">
+    <value>Pechat</value>
+  </data>
 </root>

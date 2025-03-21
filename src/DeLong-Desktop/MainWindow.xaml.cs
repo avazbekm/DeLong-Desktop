@@ -23,6 +23,7 @@ public partial class MainWindow : Window
     private ProductsPage _productpage;
     private CustomersPage _customerPage;
     private WarehousePage _warehousePage;
+    private SaleHistoryPage _saleHistoryPage;
     private SalePracticePage _salePracticePage;
     private readonly IServiceProvider _services;
     private AdditionalOperationsPage _additionalOperationsPage;
@@ -101,6 +102,11 @@ public partial class MainWindow : Window
             _additionalOperationsPage = new AdditionalOperationsPage(_services);
         }
 
+        if (_saleHistoryPage == null)
+        {
+            _saleHistoryPage = new SaleHistoryPage(_services);
+        }
+
         #region CustomerPage
         _customerPage.userDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Customer;
         _customerPage.userDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.ClientFullname;
@@ -140,7 +146,6 @@ public partial class MainWindow : Window
         _salePracticePage.ProductGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.Olchov_birligi;
         _salePracticePage.ProductGrid.Columns[5].Header = DeLong_Desktop.Resources.Resource.Umumiy_summasi_;
         _salePracticePage.ProductGrid.Columns[6].Header = DeLong_Desktop.Resources.Resource.Ochirish;
-
         HintAssist.SetHint(_salePracticePage.cbxPayment,DeLong_Desktop.Resources.Resource.Mijozni_tanlang_);
         _salePracticePage.lbljami.Content = DeLong_Desktop.Resources.Resource.Jami_summa_;
         _salePracticePage.lblnaqd.Content = DeLong_Desktop.Resources.Resource.Naqd_;
@@ -177,6 +182,7 @@ public partial class MainWindow : Window
 
         #region MainWindow
         btnOmbor.Content = DeLong_Desktop.Resources.Resource.Warehouse;
+        btnCash.Content = DeLong_Desktop.Resources.Resource.Cash;
         btnChiqim.Content = DeLong_Desktop.Resources.Resource.Expense;
         btnChiqish.Content = DeLong_Desktop.Resources.Resource.Exit;
         btnHisobot.Content = DeLong_Desktop.Resources.Resource.Report;
@@ -222,6 +228,16 @@ public partial class MainWindow : Window
         _additionalOperationsPage.transferDataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.Umumiy_summasi_;
         _additionalOperationsPage.transferDataGrid.Columns[5].Header = DeLong_Desktop.Resources.Resource.Ochirish;
         _additionalOperationsPage.btnSaveTransfer.Content = DeLong_Desktop.Resources.Resource.Confirm;
+        #endregion
+
+        #region  SaleHistoryPage
+        _saleHistoryPage.tbsotuvlartarixi.Text = DeLong_Desktop.Resources.Resource.Sotuvlar_tarixi;
+        _saleHistoryPage.saleDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Chek_Id;
+        _saleHistoryPage.saleDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.ClientFullname;
+        _saleHistoryPage.saleDataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.Umumiy_summasi_;
+        _saleHistoryPage.saleDataGrid.Columns[3].Header = DeLong_Desktop.Resources.Resource.Sana;
+        _saleHistoryPage.saleDataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.Pechat;
+        HintAssist.SetHint(_saleHistoryPage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
         #endregion
     }
 
@@ -347,8 +363,16 @@ public partial class MainWindow : Window
 
     private void btnSaleHistory_Click(object sender, RoutedEventArgs e)
     {
-        var saleHistoryPage = new SaleHistoryPage(_services);
-        Navigator.Navigate(saleHistoryPage);
+        if (_saleHistoryPage == null)
+        {
+            _saleHistoryPage = new SaleHistoryPage(_services);
+        }
+        Navigator.Navigate(_saleHistoryPage);
+        UpdateLanguage();
+        if (_saleHistoryPage.txtSearch != null)
+        {
+            HintAssist.SetHint(_saleHistoryPage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
+        }
     }
 
     private void OnAdditionalOperationsClick(object sender, RoutedEventArgs e)
