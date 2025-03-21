@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.Pages.AdditianalOperations;
 using DeLong_Desktop.ApiService.DTOs.DebtPayments;
 using DeLong_Desktop.ApiService.DTOs.Transactions;
+using DeLong_Desktop.ApiService.DTOs.CashRegisters;
+using DeLong_Desktop.ApiService.DTOs.CashTransfers;
 using DeLong_Desktop.ApiService.DTOs.TransactionItems;
 
 namespace DeLong_Desktop.Pages.AdditionalOperations;
@@ -28,6 +30,8 @@ public partial class AdditionalOperationsPage : Page
     private readonly IKursDollarService _kursDollarService;
     private readonly IDebtPaymentService _debtPaymentService;
     private readonly ITransactionService _transactionService;
+    private readonly ICashRegisterService _cashRegisterService; // Yangi qo‘shildi
+    private readonly ICashTransferService _cashTransferService; // Yangi qo‘shildi
     private readonly IReturnProductService _returnProductService;
     private readonly ITransactionItemService _transactionItemService;
 
@@ -52,9 +56,10 @@ public partial class AdditionalOperationsPage : Page
         _kursDollarService = services.GetRequiredService<IKursDollarService>();
         _transactionService = services.GetRequiredService<ITransactionService>();
         _debtPaymentService = services.GetRequiredService<IDebtPaymentService>();
+        _cashRegisterService = services.GetRequiredService<ICashRegisterService>(); // Yangi qo‘shildi
+        _cashTransferService = services.GetRequiredService<ICashTransferService>(); // Yangi qo‘shildi
         _returnProductService = services.GetRequiredService<IReturnProductService>();
         _transactionItemService = services.GetRequiredService<ITransactionItemService>();
-
         LoadDebts();
         LoadSalePriceProducts();
         // DataGrid ga bog‘lash
@@ -218,6 +223,7 @@ public partial class AdditionalOperationsPage : Page
         {
             allDebts = new List<DebtItem>();
 
+            TimeZoneInfo uzbekistanZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Tashkent");
             var groupedDebts = await _debtService.RetrieveAllGroupedByCustomerAsync();
             if (groupedDebts != null && groupedDebts.Any())
             {
@@ -225,10 +231,11 @@ public partial class AdditionalOperationsPage : Page
                 {
                     foreach (var debt in customer.Value)
                     {
+
                         var debtItem = new DebtItem
                         {
                             Id = debt.Id,
-                            DueDate = debt.DueDate.ToString("dd.MM.yyyy"),
+                            DueDate = TimeHelper.ConvertToUzbekistanTime(debt.DueDate).ToString("dd.MM.yyyy"),
                             DueDateValue = debt.DueDate,
                             RemainingAmount = debt.RemainingAmount,
                             CustomerName = customer.Key.ToUpper()
@@ -418,8 +425,24 @@ public partial class AdditionalOperationsPage : Page
                 return;
             }
 
+            // Kassani yangilash uchun ochiq kassani olish
+            var cashRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
+            if (cashRegisters == null || !cashRegisters.Any())
+            {
+                MessageBox.Show("Ochiq kassa topilmadi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            var currentRegister = cashRegisters.LastOrDefault();
+
+            decimal uzsBalance = currentRegister.UzsBalance;
+            decimal uzpBalance = currentRegister.UzpBalance;
+            decimal usdBalance = currentRegister.UsdBalance;
+
             // Muddati bo‘yicha tartiblangan qarzlar
             decimal remainingPayment = totalPayment;
+            decimal remainingCash = cashAmount;
+            decimal remainingCard = cardAmount;
+            decimal remainingDollar = dollarAmount;
 
             foreach (var debt in selectedCustomerDebts)
             {
@@ -432,9 +455,9 @@ public partial class AdditionalOperationsPage : Page
                     decimal remainingAmountToPay = amountToPay;
 
                     // Naqd to‘lov
-                    if (remainingAmountToPay > 0 && cashAmount > 0)
+                    if (remainingAmountToPay > 0 && remainingCash > 0)
                     {
-                        decimal cashToPay = Math.Min(cashAmount, remainingAmountToPay);
+                        decimal cashToPay = Math.Min(remainingCash, remainingAmountToPay);
                         var cashPaymentDto = new DebtPaymentCreationDto
                         {
                             DebtId = debt.Id,
@@ -443,14 +466,31 @@ public partial class AdditionalOperationsPage : Page
                             PaymentMethod = "Cash"
                         };
                         await _debtPaymentService.AddAsync(cashPaymentDto);
-                        cashAmount -= cashToPay;
+
+                        // Kassaga so‘m qo‘shish
+                        uzsBalance += cashToPay;
+
+                        // Transfer yozish
+                        var cashTransferDto = new CashTransferCreationDto
+                        {
+                            CashRegisterId = currentRegister.Id,
+                            From = "Customer",
+                            To = "Cash",
+                            Currency = "So'm",
+                            Amount = cashToPay,
+                            Note = $"Qarz to‘lovi (DebtId: {debt.Id}) - Naqd",
+                            TransferDate = DateTimeOffset.UtcNow
+                        };
+                        await _cashTransferService.AddAsync(cashTransferDto);
+
+                        remainingCash -= cashToPay;
                         remainingAmountToPay -= cashToPay;
                     }
 
                     // Plastik to‘lov
-                    if (remainingAmountToPay > 0 && cardAmount > 0)
+                    if (remainingAmountToPay > 0 && remainingCard > 0)
                     {
-                        decimal cardToPay = Math.Min(cardAmount, remainingAmountToPay);
+                        decimal cardToPay = Math.Min(remainingCard, remainingAmountToPay);
                         var cardPaymentDto = new DebtPaymentCreationDto
                         {
                             DebtId = debt.Id,
@@ -459,14 +499,31 @@ public partial class AdditionalOperationsPage : Page
                             PaymentMethod = "Card"
                         };
                         await _debtPaymentService.AddAsync(cardPaymentDto);
-                        cardAmount -= cardToPay;
+
+                        // Kassaga plastik qo‘shish
+                        uzpBalance += cardToPay;
+
+                        // Transfer yozish
+                        var cardTransferDto = new CashTransferCreationDto
+                        {
+                            CashRegisterId = currentRegister.Id,
+                            From = "Customer",
+                            To = "Cash",
+                            Currency = "Plastik",
+                            Amount = cardToPay,
+                            Note = $"Qarz to‘lovi (DebtId: {debt.Id}) - Plastik",
+                            TransferDate = DateTimeOffset.UtcNow
+                        };
+                        await _cashTransferService.AddAsync(cardTransferDto);
+
+                        remainingCard -= cardToPay;
                         remainingAmountToPay -= cardToPay;
                     }
 
                     // Dollar to‘lov
-                    if (remainingAmountToPay > 0 && dollarAmount > 0)
+                    if (remainingAmountToPay > 0 && remainingDollar > 0)
                     {
-                        decimal remainingDollarInSom = dollarAmount * dollarKurs;
+                        decimal remainingDollarInSom = remainingDollar * dollarKurs;
                         decimal dollarToPayInSom = Math.Min(remainingDollarInSom, remainingAmountToPay);
                         if (dollarToPayInSom > 0)
                         {
@@ -478,8 +535,26 @@ public partial class AdditionalOperationsPage : Page
                                 PaymentMethod = "Dollar"
                             };
                             await _debtPaymentService.AddAsync(dollarPaymentDto);
+
                             decimal usedDollars = dollarToPayInSom / dollarKurs;
-                            dollarAmount -= usedDollars;
+
+                            // Kassaga dollar qo‘shish
+                            usdBalance += usedDollars;
+
+                            // Transfer yozish
+                            var dollarTransferDto = new CashTransferCreationDto
+                            {
+                                CashRegisterId = currentRegister.Id,
+                                From = "Customer",
+                                To = "Cash",
+                                Currency = "Dollar",
+                                Amount = usedDollars,
+                                Note = $"Qarz to‘lovi (DebtId: {debt.Id}) - Dollar",
+                                TransferDate = DateTimeOffset.UtcNow
+                            };
+                            await _cashTransferService.AddAsync(dollarTransferDto);
+
+                            remainingDollar -= usedDollars;
                             remainingAmountToPay -= dollarToPayInSom;
                         }
                     }
@@ -487,6 +562,17 @@ public partial class AdditionalOperationsPage : Page
                     remainingPayment -= amountToPay;
                 }
             }
+
+            // Kassani yangilash
+            var updatedRegister = new CashRegisterUpdateDto
+            {
+                Id = currentRegister.Id,
+                UzsBalance = uzsBalance,
+                UzpBalance = uzpBalance,
+                UsdBalance = usdBalance
+            };
+            await _cashRegisterService.ModifyAsync(updatedRegister);
+
             MessageBox.Show("To‘lov muvaffaqiyatli amalga oshirildi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
             LoadDebts();
             tbCashPayment.Text = null;

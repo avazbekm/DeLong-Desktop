@@ -8,6 +8,7 @@ using DeLong_Desktop.ApiService.DTOs.Sales;
 using DeLong_Desktop.ApiService.DTOs.Payments;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.Discounts;
+using DeLong_Desktop.ApiService.Helpers;
 
 namespace DeLong_Desktop.Pages.SaleHistory;
 
@@ -67,7 +68,7 @@ public partial class SaleHistoryPage : Page
                         Id = sale.Id,
                         CustomerName = customerName.ToUpper(),
                         TotalAmount = sale.TotalAmount,
-                        CreatedAt = sale.CreatedAt
+                        CreatedAt = TimeHelper.ConvertToUzbekistanTime( sale.CreatedAt)
                     });
                 }
                 saleDataGrid.ItemsSource = allSaleItems;

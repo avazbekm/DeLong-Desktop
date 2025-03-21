@@ -16,7 +16,7 @@ public partial class App : Application
         IServiceCollection services = new ServiceCollection();
 
         // **Barcha servislar uchun umumiy API manzili**
-        var apiBaseUrl = new Uri("http://13.61.150.163/");
+        var apiBaseUrl = new Uri("http://localhost:5208/");
 
         // **Servislarni qo‘shish (Clean Code)**
         services.AddHttpClient<IUserService, UserService>()

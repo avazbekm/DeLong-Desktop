@@ -1,91 +1,238 @@
-﻿using System.Windows;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using DeLong_Desktop.ApiService.Helpers;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using DeLong_Desktop.ApiService.DTOs.CashRegisters;
+using DeLong_Desktop.ApiService.DTOs.CashTransfers;
 using DeLong_Desktop.ApiService.DTOs.CashWarehouses;
+using DeLong_Desktop.ApiService.DTOs.CashRegisters;
 
-namespace DeLong_Desktop.Pages.Cashs;
-
-/// <summary>
-/// Interaction logic for CashPage.xaml
-/// </summary>
-public partial class CashPage : Page
+namespace DeLong_Desktop.Pages.Cashs
 {
-    private readonly ICashRegisterService _cashRegisterService;
-    private readonly ICashTransferService _cashTransferService;
-    private readonly ICashWarehouseService _cashWarehouseService;
-
-    public CashPage(IServiceProvider services)
+    public partial class CashPage : Page
     {
-        InitializeComponent();
-        _cashRegisterService = services.GetRequiredService<ICashRegisterService>();
-        _cashTransferService = services.GetRequiredService<ICashTransferService>();
-        _cashWarehouseService = services.GetRequiredService<ICashWarehouseService>();
-        LoadData();
-        LoadWarehouseData();
-    }
+        private readonly ICashRegisterService _cashRegisterService;
+        private readonly ICashTransferService _cashTransferService;
+        private readonly ICashWarehouseService _cashWarehouseService;
 
-    private async void LoadWarehouseData()
-    {
-        var latestWarehouse = await _cashWarehouseService.RetrieveByIdAsync();
-        CashWarehouseGrid.ItemsSource = new List<CashWarehouseResultDto> { latestWarehouse }; // ItemsControl uchun ro‘yxat
-    }
-    private async void LoadData()
-    {
-        // Faqat ochiq kassalarni olish
-        var openRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
-        CashRegisterGrid.ItemsSource = openRegisters;
-
-        if (openRegisters == null || !openRegisters.Any())
+        public CashPage(IServiceProvider services)
         {
-            System.Windows.MessageBox.Show("Hozirda ochiq kassalar yo‘q!", "Xabar", MessageBoxButton.OK, MessageBoxImage.Information);
+            InitializeComponent();
+            _cashRegisterService = services.GetRequiredService<ICashRegisterService>();
+            _cashTransferService = services.GetRequiredService<ICashTransferService>();
+            _cashWarehouseService = services.GetRequiredService<ICashWarehouseService>();
+            LoadData();
+            LoadWarehouseData();
         }
 
-    }
+        private async void LoadWarehouseData()
+        {
+            var latestWarehouse = await _cashWarehouseService.RetrieveByIdAsync();
+            CashWarehouseGrid.ItemsSource = new List<CashWarehouseResultDto> { latestWarehouse };
+        }
 
-    private void AddCashTransfer_Click(object sender, RoutedEventArgs e)
-    {
+        private async void LoadData()
+        {
+            var openRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
+            CashRegisterGrid.ItemsSource = openRegisters;
 
-    }
+            if (openRegisters == null || !openRegisters.Any())
+            {
+                MessageBox.Show("Hozirda ochiq kassalar yo‘q!", "Xabar", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
 
-    private void AddWarehouse_Click(object sender, RoutedEventArgs e)
-    {
+        private async void TransferButton_Click(object sender, RoutedEventArgs e)
+        {
+            // 1. FromComboBox va ToComboBox bir xil bo'lmasligini tekshirish
+            string from = (FromComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            string to = (ToComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
-    }
+            if ((from == "Zaxiradan" && to == "Zaxiraga") || (from == "Kassadan" && to == "Kassaga"))
+            {
+                MessageBox.Show("Qayerdan va qayerga o'tkazish bir xil bo'lmasligi kerak!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-    private void AddCashRegister_Click(object sender, RoutedEventArgs e)
-    {
+            // 2. AmountTextBox qiymati 0 bo'lmasligini tekshirish
+            if (!decimal.TryParse(AmountTextBox.Text, out decimal amount) || amount <= 0)
+            {
+                MessageBox.Show("Miqdor 0 dan katta bo'lishi kerak va to'g'ri kiritilishi lozim!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-    }
+            // 3. Valyutani aniqlash
+            string currency = (CurrencyComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
-    private void NoteTextBox_GotFocus(object sender, RoutedEventArgs e)
-    {
+            // 4. Balanslarni xizmatlardan olish
+            decimal availableBalance = 0;
+            var openRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
+            var warehouse = await _cashWarehouseService.RetrieveByIdAsync();
 
-    }
+            if (openRegisters == null || !openRegisters.Any())
+            {
+                MessageBox.Show("Ochiq kassa topilmadi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-    private void TransferButton_Click(object sender, RoutedEventArgs e)
-    {
+            // Birinchi ochiq kassani olamiz
+            var firstRegister = openRegisters.First();
 
-    }
+            if (from == "Zaxiradan")
+            {
+                if (warehouse == null)
+                {
+                    MessageBox.Show("Zaxira ma'lumotlari topilmadi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                switch (currency)
+                {
+                    case "So'm":
+                        availableBalance = warehouse.UzsBalance;
+                        break;
+                    case "Plastik":
+                        availableBalance = warehouse.UzpBalance;
+                        break;
+                    case "Dollar":
+                        availableBalance = warehouse.UsdBalance;
+                        break;
+                }
+            }
+            else if (from == "Kassadan")
+            {
+                switch (currency)
+                {
+                    case "So'm":
+                        availableBalance = firstRegister.UzsBalance;
+                        break;
+                    case "Plastik":
+                        availableBalance = firstRegister.UzpBalance;
+                        break;
+                    case "Dollar":
+                        availableBalance = firstRegister.UsdBalance;
+                        break;
+                }
+            }
 
-    private void AmountTextBox_GotFocus(object sender, RoutedEventArgs e)
-    {
+            // 5. Miqdor yetarli ekanligini tekshirish
+            if (amount > availableBalance)
+            {
+                MessageBox.Show($"Yetarli mablag' yo'q! {currency} bo'yicha joriy balans: {availableBalance}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-    }
+            // 6. O'tkazma amalga oshirish (xizmat orqali)
+            try
+            {
+                await PerformTransfer(from, to, currency, amount, NoteTextBox.Text, firstRegister.Id);
+                MessageBox.Show($"O'tkazma muvaffaqiyatli: {amount} {currency} {from} dan {to} ga. Izoh: {NoteTextBox.Text}", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
 
-    private void AmountTextBox_LostFocus(object sender, RoutedEventArgs e)
-    {
+                // Ma'lumotlarni qayta yuklash
+                LoadData();
+                LoadWarehouseData();
 
-    }
+                // Maydonlarni tozalash
+                AmountTextBox.Text = null;
+                NoteTextBox.Text = "";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
-    private void NoteTextBox_LostFocus(object sender, RoutedEventArgs e)
-    {
+        // O'tkazmani amalga oshirish va balanslarni yangilash uchun funksiya
+        private async Task PerformTransfer(string from, string to, string currency, decimal amount, string note, long cashRegisterId)
+        {
+            // 1. Transfer DTO yaratish
+            var transferDto = new CashTransferCreationDto
+            {
+                CashRegisterId = cashRegisterId,
+                From = from == "Zaxiradan" ? "Reserve" : "Cash",
+                To = to == "Zaxiraga" ? "Reserve" : "Cash",
+                Currency = currency,
+                Amount = amount,
+                Note = note,
+                TransferDate = DateTimeOffset.UtcNow
+            };
 
-    }
+            // 2. O'tkazmani serverga yuborish
+            await _cashTransferService.AddAsync(transferDto);
 
-    private void AmountTextBox_TextChanged(object sender, TextChangedEventArgs e)
-    {
+            // 3. Balanslarni yangilash
+            var openRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
+            var warehouse = await _cashWarehouseService.RetrieveByIdAsync();
+            var register = openRegisters.First(r => r.Id == cashRegisterId);
 
+            if (from == "Zaxiradan" && to == "Kassaga")
+            {
+                // Zaxiradan Kassaga
+                await UpdateBalances(warehouse, register, currency, -amount, amount);
+            }
+            else if (from == "Kassadan" && to == "Zaxiraga")
+            {
+                // Kassadan Zaxiraga
+                await UpdateBalances(warehouse, register, currency, amount, -amount);
+            }
+        }
+
+        // Balanslarni yangilash uchun yordamchi funksiya
+        private async Task UpdateBalances(CashWarehouseResultDto warehouse, CashRegisterResultDto register, string currency, decimal warehouseChange, decimal registerChange)
+        {
+            // Zaxira va kassa uchun yangi DTO'lar tayyorlash
+            var updatedWarehouse = new CashWarehouseUpdateDto
+            {
+                Id = warehouse.Id,
+                UzsBalance = warehouse.UzsBalance,
+                UzpBalance = warehouse.UzpBalance,
+                UsdBalance = warehouse.UsdBalance
+            };
+
+            var updatedRegister = new CashRegisterUpdateDto
+            {
+                Id = register.Id,
+                UzsBalance = register.UzsBalance,
+                UzpBalance = register.UzpBalance,
+                UsdBalance = register.UsdBalance,
+                DebtAmount = register.DebtAmount
+            };
+
+            // Valyutaga qarab balanslarni o'zgartirish
+            switch (currency)
+            {
+                case "So'm":
+                    updatedWarehouse.UzsBalance += warehouseChange;
+                    updatedRegister.UzsBalance += registerChange;
+                    break;
+                case "Plastik":
+                    updatedWarehouse.UzpBalance += warehouseChange;
+                    updatedRegister.UzpBalance += registerChange;
+                    break;
+                case "Dollar":
+                    updatedWarehouse.UsdBalance += warehouseChange;
+                    updatedRegister.UsdBalance += registerChange;
+                    break;
+            }
+
+            // Yangilangan ma'lumotlarni serverga yuborish
+            await _cashWarehouseService.ModifyAsync(updatedWarehouse);
+            await _cashRegisterService.ModifyAsync(updatedRegister);
+        }
+
+        private void NoteTextBox_GotFocus(object sender, RoutedEventArgs e) { }
+
+        private void AmountTextBox_GotFocus(object sender, RoutedEventArgs e) { }
+
+        private void AmountTextBox_LostFocus(object sender, RoutedEventArgs e) { }
+
+        private void NoteTextBox_LostFocus(object sender, RoutedEventArgs e) { }
+
+        private void AmountTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
+        }
     }
 }

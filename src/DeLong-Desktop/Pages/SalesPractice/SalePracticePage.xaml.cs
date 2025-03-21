@@ -17,6 +17,9 @@ using DeLong_Desktop.ApiService.DTOs.SaleItems;
 using DeLong_Desktop.ApiService.DTOs.Discounts;
 using DeLong_Desktop.Windows.Sales.PrintOrExcel;
 using DeLong_Desktop.Windows.Sales.SelectionCustomer;
+using DeLong_Desktop.ApiService.DTOs.CashRegisters;
+using DeLong_Desktop.ApiService.DTOs.CashTransfers;
+
 
 namespace DeLong_Desktop.Pages.SalesPractice;
 
@@ -33,6 +36,8 @@ public partial class SalePracticePage : Page
     private readonly IDiscountService _discountService;
     private readonly ISaleItemService _saleItemService;
     private readonly IKursDollarService _kursDollarService;
+    private readonly ICashRegisterService _cashRegisterService; // Yangi qo‘shildi
+    private readonly ICashTransferService _cashTransferService; // Yangi qo‘shildi
 
     private TextBox lastUpdatedTextBox;
 
@@ -54,7 +59,8 @@ public partial class SalePracticePage : Page
         _saleItemService = services.GetRequiredService<ISaleItemService>(); // Yangi qo‘shildi
         _discountService = services.GetRequiredService<IDiscountService>(); // Yangi qo‘shildi
         _kursDollarService = services.GetRequiredService<IKursDollarService>();
-
+        _cashRegisterService = services.GetRequiredService<ICashRegisterService>(); // Yangi qo‘shildi
+        _cashTransferService = services.GetRequiredService<ICashTransferService>(); // Yangi qo‘shildi
 
         ProductGrid.ItemsSource = Items; // Faqat 1 marta bog'lash
 
@@ -520,6 +526,7 @@ public partial class SalePracticePage : Page
                 return;
             }
 
+            // Mahsulotlar qo‘shilishi va narx yangilanishi (o‘zgartirilmadi)
             try
             {
                 foreach (var product in ProductGrid.Items.Cast<ProductItem>())
@@ -580,8 +587,24 @@ public partial class SalePracticePage : Page
                 return;
             }
 
+            // Kassani yangilash va transferlarni yozish
             try
             {
+                // Ochiq kassani olish
+                var cashRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
+                if (cashRegisters == null || !cashRegisters.Any())
+                {
+                    MessageBox.Show("Ochiq kassa topilmadi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                var currentRegister = cashRegisters.LastOrDefault();
+
+                // Kassadagi joriy qoldiqlarni olish
+                decimal uzsBalance = currentRegister.UzsBalance;
+                decimal uzpBalance = currentRegister.UzpBalance;
+                decimal usdBalance = currentRegister.UsdBalance;
+
+                // To‘lovlarni qo‘shish va kassa qoldiqlarini yangilash
                 if (decimal.TryParse(tbCrashSum.Text, out decimal cashAmount) && cashAmount > 0)
                 {
                     var cashDto = new PaymentCreationDto
@@ -591,6 +614,22 @@ public partial class SalePracticePage : Page
                         Type = PaymentType.Cash
                     };
                     await _paymentService.AddAsync(cashDto);
+
+                    // Kassaga so‘m qo‘shish
+                    uzsBalance += cashAmount;
+
+                    // Transfer yozish
+                    var cashTransferDto = new CashTransferCreationDto
+                    {
+                        CashRegisterId = currentRegister.Id,
+                        From = "Customer",
+                        To = "Cash",
+                        Currency = "So'm",
+                        Amount = cashAmount,
+                        Note = $"Sotuv #{createdSale.Id} - Naqd to‘lov",
+                        TransferDate = DateTimeOffset.UtcNow
+                    };
+                    await _cashTransferService.AddAsync(cashTransferDto);
                 }
 
                 if (decimal.TryParse(tbPlastikSum.Text, out decimal cardAmount) && cardAmount > 0)
@@ -602,6 +641,22 @@ public partial class SalePracticePage : Page
                         Type = PaymentType.Card
                     };
                     await _paymentService.AddAsync(cardDto);
+
+                    // Kassaga plastik qo‘shish
+                    uzpBalance += cardAmount;
+
+                    // Transfer yozish
+                    var cardTransferDto = new CashTransferCreationDto
+                    {
+                        CashRegisterId = currentRegister.Id,
+                        From = "Customer",
+                        To = "Cash",
+                        Currency = "Plastik",
+                        Amount = cardAmount,
+                        Note = $"Sotuv #{createdSale.Id} - Plastik to‘lov",
+                        TransferDate = DateTimeOffset.UtcNow
+                    };
+                    await _cashTransferService.AddAsync(cardTransferDto);
                 }
 
                 if (decimal.TryParse(tbDollar.Text, out decimal dollarAmount) && dollarAmount > 0)
@@ -613,6 +668,22 @@ public partial class SalePracticePage : Page
                         Type = PaymentType.Dollar
                     };
                     await _paymentService.AddAsync(dollarDto);
+
+                    // Kassaga dollar qo‘shish
+                    usdBalance += dollarAmount;
+
+                    // Transfer yozish
+                    var dollarTransferDto = new CashTransferCreationDto
+                    {
+                        CashRegisterId = currentRegister.Id,
+                        From = "Customer",
+                        To = "Cash",
+                        Currency = "Dollar",
+                        Amount = dollarAmount,
+                        Note = $"Sotuv #{createdSale.Id} - Dollar to‘lov",
+                        TransferDate = DateTimeOffset.UtcNow
+                    };
+                    await _cashTransferService.AddAsync(dollarTransferDto);
                 }
 
                 if (decimal.TryParse(tbqarz.Text, out decimal debtAmount) && debtAmount > 0)
@@ -638,6 +709,19 @@ public partial class SalePracticePage : Page
                         DueDate = _selectedDebtDate.Value.ToUniversalTime()
                     };
                     await _debtService.AddAsync(debtDto);
+
+                    // Qarz transferini yozish (qarz kassaga emas, mijozdan keladi)
+                    var debtTransferDto = new CashTransferCreationDto
+                    {
+                        CashRegisterId = currentRegister.Id,
+                        From = "Customer",
+                        To = "Debt",
+                        Currency = "So'm",
+                        Amount = debtAmount,
+                        Note = $"Sotuv #{createdSale.Id} - Qarz",
+                        TransferDate = DateTimeOffset.UtcNow
+                    };
+                    await _cashTransferService.AddAsync(debtTransferDto);
                 }
 
                 if (decimal.TryParse(tbDiscount.Text, out decimal discountAmount) && discountAmount > 0)
@@ -649,6 +733,16 @@ public partial class SalePracticePage : Page
                     };
                     await _discountService.AddAsync(discountDto);
                 }
+
+                // Kassani yangilash
+                var updatedRegister = new CashRegisterUpdateDto
+                {
+                    Id = currentRegister.Id,
+                    UzsBalance = uzsBalance,
+                    UzpBalance = uzpBalance,
+                    UsdBalance = usdBalance
+                };
+                await _cashRegisterService.ModifyAsync(updatedRegister);
             }
             catch (Exception ex)
             {
@@ -656,6 +750,7 @@ public partial class SalePracticePage : Page
                 return;
             }
 
+            // Qolgan qism (print/export) o‘zgartirilmadi
             var saleItemsToPrint = ProductGrid.Items.Cast<ProductItem>().Select(product => new SaleItemPrintModel
             {
                 SerialNumber = product.SerialNumber,
@@ -688,14 +783,44 @@ public partial class SalePracticePage : Page
             }
 
             MessageBox.Show("Sotuv muvaffaqiyatli amalga oshirildi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
-            // SaleHistoryPage ga o‘tish olib tashlandi
         }
         finally
         {
             btnFinishSale.IsEnabled = true;
+            ResetToDefaultValues();
         }
-    }    
-    
+    }
+
+    private void ResetToDefaultValues()
+    {
+        // TextBox’larni tozalash (placeholder’lar uchun bo‘sh qiymat)
+        tbCrashSum.Text = "";
+        tbPlastikSum.Text = "";
+        tbDollar.Text = "";
+        tbqarz.Text = "";
+        tbDiscount.Text = "";
+        tbQuantity.Text = ""; // Placeholder "1.0" ko‘rinadi
+
+        // TextBlock’larni default qiymatga qaytarish
+        tbQoldiq.Text = "0.00";
+        tbTotalPrice.Text = "0.00";
+
+        // ComboBox’larni tozalash
+        cbxProduct.SelectedItem = null;
+        cbxPayment.SelectedItem = null;
+        SelectedCustomerId = null;
+
+        // DataGrid’ni tozalash
+        Items.Clear();
+
+        // Qarz sanasini tozalash
+        _selectedDebtDate = null;
+        dpDueDate.SelectedDate = null;
+        dpDueDate.Visibility = Visibility.Collapsed;
+
+        // Fokusni mahsulot tanlashga qo‘yish (ixtiyoriy)
+        cbxProduct.Focus();
+    }
     // Excelga o‘tkazish funktsiyasi
     private void ExportToExcel(List<SaleItemPrintModel> saleItems, SaleResultDto sale, ComboboxCustomerItem customer)
     {
