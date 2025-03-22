@@ -40,7 +40,7 @@
                 </DataGrid>
             </StackPanel>
         </Border>
-
+ 
         <!-- Export tugmalari -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0" Grid.Row="2">
             <Button x:Name="ExportExcelButton" Content="Excelga eksport" Width="150" Margin="5" Background="#03DAC6" Foreground="Black" Click="ExportExcelButton_Click"/>

@@ -142,7 +142,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Naqd.
+        ///   Looks up a localized string similar to Kassa.
         /// </summary>
         internal static string Cash {
             get {
