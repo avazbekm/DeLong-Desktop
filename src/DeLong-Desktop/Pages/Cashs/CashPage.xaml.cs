@@ -1,15 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.ApiService.Helpers;
 using DeLong_Desktop.ApiService.Interfaces;
+using DeLong_Desktop.ApiService.DTOs.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.CashTransfers;
 using DeLong_Desktop.ApiService.DTOs.CashWarehouses;
 using DeLong_Desktop.ApiService.DTOs.CashRegisters;
-using DeLong_Desktop.ApiService.DTOs.Enums;
 
 namespace DeLong_Desktop.Pages.Cashs
 {
@@ -25,8 +22,11 @@ namespace DeLong_Desktop.Pages.Cashs
             _cashRegisterService = services.GetRequiredService<ICashRegisterService>();
             _cashTransferService = services.GetRequiredService<ICashTransferService>();
             _cashWarehouseService = services.GetRequiredService<ICashWarehouseService>();
+            // SelectionChanged hodisasini vaqtincha o‘chirish
+            FromComboBox.SelectionChanged -= FromComboBox_SelectionChanged;
             LoadData();
             LoadWarehouseData();
+            FromComboBox.SelectionChanged += FromComboBox_SelectionChanged; // Yuklashdan keyin qayta ulash
         }
 
         private async void LoadWarehouseData()
@@ -48,28 +48,57 @@ namespace DeLong_Desktop.Pages.Cashs
 
         private async void TransferButton_Click(object sender, RoutedEventArgs e)
         {
-            // 1. FromComboBox va ToComboBox bir xil bo'lmasligini tekshirish
+            // 1. FromComboBox va ToComboBox qiymatlarini olish
             string from = (FromComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
             string to = (ToComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
-            if ((from == "Zaxiradan" && to == "Zaxiraga") || (from == "Kassadan" && to == "Kassaga"))
+            // 2. Bir xil bo‘lmasligini va ruxsat etilmagan kombinatsiyalarni tekshirish
+            if ((from == "Zaxiradan" && to == "Zaxiraga") || (from == "Kassadan" && to == "Kassaga") || from == to)
             {
                 MessageBox.Show("Qayerdan va qayerga o'tkazish bir xil bo'lmasligi kerak!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            // 2. AmountTextBox qiymati 0 bo'lmasligini tekshirish
+            // 3. "Kassadan" faqat "Zaxiraga" yoki "Boshqa" ga bo‘lishini tekshirish
+            if (from == "Kassadan" && to != "Zaxiraga" && to != "Boshqa")
+            {
+                MessageBox.Show("Kassadan faqat Zaxiraga yoki Boshqa ga o'tkazish mumkin!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // 4. "Zaxiradan" faqat "Kassaga" ga bo‘lishini tekshirish
+            if (from == "Zaxiradan" && to != "Kassaga")
+            {
+                MessageBox.Show("Zaxiradan faqat Kassaga o'tkazish mumkin!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // 5. "Boshqa" faqat "Kassaga" ga bo‘lishini tekshirish
+            if (from == "Boshqa" && to != "Kassaga")
+            {
+                MessageBox.Show("Boshqa dan faqat Kassaga o'tkazish mumkin!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // 6. AmountTextBox qiymati 0 bo'lmasligini tekshirish
             if (!decimal.TryParse(AmountTextBox.Text, out decimal amount) || amount <= 0)
             {
                 MessageBox.Show("Miqdor 0 dan katta bo'lishi kerak va to'g'ri kiritilishi lozim!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            // 3. Valyutani aniqlash
+            // 7. Valyutani aniqlash
             string currency = (CurrencyComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
-            // 4. Balanslarni xizmatlardan olish
-            decimal availableBalance = 0;
+            // 8. Izohni olish
+            var note = NoteTextBox.Text;
+            if (string.IsNullOrEmpty(note))
+            {
+                MessageBox.Show("Izohni to'ldiring", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // 9. Balanslarni xizmatlardan olish
             var openRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
             var warehouse = await _cashWarehouseService.RetrieveByIdAsync();
 
@@ -79,9 +108,10 @@ namespace DeLong_Desktop.Pages.Cashs
                 return;
             }
 
-            // Birinchi ochiq kassani olamiz
             var firstRegister = openRegisters.First();
 
+            // 10. Balansni tekshirish (faqat "Kassadan" yoki "Zaxiradan" uchun)
+            decimal availableBalance = 0;
             if (from == "Zaxiradan")
             {
                 if (warehouse == null)
@@ -118,25 +148,23 @@ namespace DeLong_Desktop.Pages.Cashs
                 }
             }
 
-            // 5. Miqdor yetarli ekanligini tekshirish
-            if (amount > availableBalance)
+            // 11. Miqdor yetarli ekanligini tekshirish (faqat "Zaxiradan" yoki "Kassadan" uchun)
+            if (from != "Boshqa" && amount > availableBalance)
             {
                 MessageBox.Show($"Yetarli mablag' yo'q! {currency} bo'yicha joriy balans: {availableBalance}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            // 6. O'tkazma amalga oshirish (xizmat orqali)
+            // 12. O'tkazma amalga oshirish
             try
             {
-                await PerformTransfer(from, to, currency, amount,  firstRegister.Id);
+                await PerformTransfer(from, to, currency, amount, note, firstRegister.Id);
                 MessageBox.Show($"O'tkazma muvaffaqiyatli: {amount} {currency} {from} dan {to} ga.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                // Ma'lumotlarni qayta yuklash
                 LoadData();
                 LoadWarehouseData();
-
-                // Maydonlarni tozalash
                 AmountTextBox.Text = null;
+                NoteTextBox.Text = null;
             }
             catch (Exception ex)
             {
@@ -145,19 +173,21 @@ namespace DeLong_Desktop.Pages.Cashs
         }
 
         // O'tkazmani amalga oshirish va balanslarni yangilash uchun funksiya
-        private async Task PerformTransfer(string from, string to, string currency, decimal amount, long cashRegisterId)
+        private async Task PerformTransfer(string from, string to, string currency, decimal amount, string note, long cashRegisterId)
         {
             // 1. Transfer DTO yaratish
             var transferDto = new CashTransferCreationDto
             {
                 CashRegisterId = cashRegisterId,
-                From = from == "Zaxiradan" ? "Reserve" : "Cash",
-                To = to == "Zaxiraga" ? "Reserve" : "Cash",
+                From = from == "Zaxiradan" ? "Reserve" : (from == "Kassadan" ? "Cash" : "Other"),
+                To = to == "Zaxiraga" ? "Reserve" : (to == "Kassaga" ? "Cash" : "Other"),
                 Currency = currency,
                 Amount = amount,
-                Note = from == "Zaxiradan" ? "kassaga o'tkazildi":"zaxiraga o'tkazildi",
+                Note = note,
                 TransferDate = DateTimeOffset.UtcNow,
-                TransferType = (from == "Zaxiradan" && to == "Kassaga") ? CashTransferType.Income : CashTransferType.Expense // Yangi qo‘shildi
+                TransferType = (from == "Zaxiradan" && to == "Kassaga") || (from == "Boshqa" && to == "Kassaga")
+                    ? CashTransferType.Income
+                    : CashTransferType.Expense
             };
 
             // 2. O'tkazmani serverga yuborish
@@ -178,8 +208,17 @@ namespace DeLong_Desktop.Pages.Cashs
                 // Kassadan Zaxiraga
                 await UpdateBalances(warehouse, register, currency, amount, -amount);
             }
+            else if (from == "Boshqa" && to == "Kassaga")
+            {
+                // Boshqadan Kassaga (faqat kassaga kirim)
+                await UpdateBalances(warehouse, register, currency, 0, amount);
+            }
+            else if (from == "Kassadan" && to == "Boshqa")
+            {
+                // Kassadan Boshqa (faqat kassadan chiqim)
+                await UpdateBalances(warehouse, register, currency, 0, -amount);
+            }
         }
-
         // Balanslarni yangilash uchun yordamchi funksiya
         private async Task UpdateBalances(CashWarehouseResultDto warehouse, CashRegisterResultDto register, string currency, decimal warehouseChange, decimal registerChange)
         {
@@ -233,6 +272,34 @@ namespace DeLong_Desktop.Pages.Cashs
         private void AmountTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
+        }
+
+        private void FromComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Agar FromComboBox yoki ToComboBox null bo‘lsa, hech narsa qilmaymiz
+            if (FromComboBox == null || ToComboBox == null)
+                return;
+
+            // SelectedItem null emasligini tekshirish
+            if (FromComboBox.SelectedItem is ComboBoxItem item && item.Content != null)
+            {
+                string selectedFrom = item.Content.ToString();
+                ToComboBox.Items.Clear(); // ToComboBox ni tozalash
+
+                if (selectedFrom == "Kassadan")
+                {
+                    ToComboBox.Items.Add(new ComboBoxItem { Content = "Zaxiraga" });
+                    ToComboBox.Items.Add(new ComboBoxItem { Content = "Boshqa" });
+                    ToComboBox.SelectedIndex = 0; // "Zaxiraga" default
+                    ToComboBox.IsEnabled = true;  // Tanlash mumkin
+                }
+                else if (selectedFrom == "Zaxiradan" || selectedFrom == "Boshqa")
+                {
+                    ToComboBox.Items.Add(new ComboBoxItem { Content = "Kassaga" });
+                    ToComboBox.SelectedIndex = 0; // "Kassaga" default
+                    ToComboBox.IsEnabled = false; // Faqat "Kassaga"
+                }
+            }
         }
     }
 }
