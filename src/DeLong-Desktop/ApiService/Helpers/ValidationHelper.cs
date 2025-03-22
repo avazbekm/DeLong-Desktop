@@ -99,5 +99,34 @@ public static class ValidationHelper
         }
     }
 
-}
+    public static void ValidateDecimalInput(TextBox textBox)
+    {
+        if (textBox == null) return;
 
+        string inputText = textBox.Text;
+        StringBuilder filteredText = new StringBuilder();
+        bool hasDecimalSeparator = false;
+
+        foreach (char c in inputText)
+        {
+            if (char.IsDigit(c))
+            {
+                filteredText.Append(c);
+            }
+            else if ((c == '.' || c == ',') && !hasDecimalSeparator)
+            {
+                filteredText.Append(c);
+                hasDecimalSeparator = true;
+            }
+        }
+
+        int oldCaretIndex = textBox.CaretIndex;
+
+        if (textBox.Text != filteredText.ToString())
+        {
+            textBox.Text = filteredText.ToString();
+            textBox.CaretIndex = Math.Min(oldCaretIndex, textBox.Text.Length);
+        }
+    }
+
+}

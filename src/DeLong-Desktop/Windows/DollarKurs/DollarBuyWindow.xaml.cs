@@ -5,6 +5,7 @@ using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.CashRegisters;
 using DeLong_Desktop.ApiService.DTOs.CashTransfers;
+using DeLong_Desktop.ApiService.DTOs.Enums;
 
 namespace DeLong_Desktop.Windows.DollarKurs
 {
@@ -70,18 +71,19 @@ namespace DeLong_Desktop.Windows.DollarKurs
                     UzsBalance = somBalance - somAmount, // So'mdan ayirish
                     UzpBalance = lastRegister.UzpBalance, // Plastik o'zgarmaydi
                     UsdBalance = dollarBalance + dollarAmount, // Dollarga qo'shish
-                    DebtAmount = lastRegister.DebtAmount
                 };
 
                 // 6. Yangilangan kassa ma'lumotlarini serverga yuborish
                 await cashRegisterService.ModifyAsync(updatedRegister);
-        
+
                 var cashTransferSom = new CashTransferCreationDto
                 {
                     Amount = somAmount,
                     CashRegisterId = lastRegister.Id,
                     Currency = "So'm",
-                    Note = "valyuta sotib olish uchun"
+                    Note = "valyuta sotib olish uchun",
+                    TransferDate = DateTimeOffset.UtcNow,
+                    TransferType = CashTransferType.Expense
                 };
                 await cashTransferService.AddAsync(cashTransferSom);
 
@@ -90,7 +92,9 @@ namespace DeLong_Desktop.Windows.DollarKurs
                     CashRegisterId = lastRegister.Id,
                     Amount = dollarAmount,
                     Currency = "Dollar",
-                    Note = "valyuta sotib olindi"
+                    Note = "valyuta sotib olindi",
+                    TransferDate = DateTimeOffset.UtcNow,
+                    TransferType = CashTransferType.Income
                 };
                 await cashTransferService.AddAsync(cashTransferDollar);
 

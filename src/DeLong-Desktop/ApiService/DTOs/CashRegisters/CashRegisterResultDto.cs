@@ -13,7 +13,6 @@ public class CashRegisterResultDto
     public decimal UzsBalance { get; set; }  // So‘m qoldig‘i
     public decimal UzpBalance { get; set; }  // Plastik qoldig‘i
     public decimal UsdBalance { get; set; }  // Dollar qoldig‘i
-    public decimal DebtAmount { get; set; }  // Nasiya summasi
 
     public DateTimeOffset OpenedAt { get; set; } // Kassa ochilgan vaqt
     public DateTimeOffset? ClosedAt { get; set; } // Kassa yopilgan vaqt (agar yopilgan bo‘lsa)

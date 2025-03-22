@@ -627,7 +627,8 @@ public partial class SalePracticePage : Page
                         Currency = "So'm",
                         Amount = cashAmount,
                         Note = $"Sotuv #{createdSale.Id} - Naqd to‘lov",
-                        TransferDate = DateTimeOffset.UtcNow
+                        TransferDate = DateTimeOffset.UtcNow,
+                        TransferType = CashTransferType.Income
                     };
                     await _cashTransferService.AddAsync(cashTransferDto);
                 }
@@ -654,7 +655,8 @@ public partial class SalePracticePage : Page
                         Currency = "Plastik",
                         Amount = cardAmount,
                         Note = $"Sotuv #{createdSale.Id} - Plastik to‘lov",
-                        TransferDate = DateTimeOffset.UtcNow
+                        TransferDate = DateTimeOffset.UtcNow,
+                        TransferType = CashTransferType.Income
                     };
                     await _cashTransferService.AddAsync(cardTransferDto);
                 }
@@ -681,7 +683,8 @@ public partial class SalePracticePage : Page
                         Currency = "Dollar",
                         Amount = dollarAmount,
                         Note = $"Sotuv #{createdSale.Id} - Dollar to‘lov",
-                        TransferDate = DateTimeOffset.UtcNow
+                        TransferDate = DateTimeOffset.UtcNow,
+                        TransferType = CashTransferType.Income
                     };
                     await _cashTransferService.AddAsync(dollarTransferDto);
                 }
@@ -709,19 +712,6 @@ public partial class SalePracticePage : Page
                         DueDate = _selectedDebtDate.Value.ToUniversalTime()
                     };
                     await _debtService.AddAsync(debtDto);
-
-                    // Qarz transferini yozish (qarz kassaga emas, mijozdan keladi)
-                    var debtTransferDto = new CashTransferCreationDto
-                    {
-                        CashRegisterId = currentRegister.Id,
-                        From = "Customer",
-                        To = "Debt",
-                        Currency = "So'm",
-                        Amount = debtAmount,
-                        Note = $"Sotuv #{createdSale.Id} - Qarz",
-                        TransferDate = DateTimeOffset.UtcNow
-                    };
-                    await _cashTransferService.AddAsync(debtTransferDto);
                 }
 
                 if (decimal.TryParse(tbDiscount.Text, out decimal discountAmount) && discountAmount > 0)

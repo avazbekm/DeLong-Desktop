@@ -9,5 +9,4 @@ public class CashRegisterCreationDto
     public decimal UzsBalance { get; set; } = 0; // So‘m qoldig‘i (default 0)
     public decimal UzpBalance { get; set; } = 0; // Plastik qoldig‘i (default 0)
     public decimal UsdBalance { get; set; } = 0; // Dollar qoldig‘i (default 0)
-    public decimal DebtAmount { get; set; } = 0; // Nasiya summasi (default 0)
 }

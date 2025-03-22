@@ -52,10 +52,10 @@
                                         <StackPanel Orientation="Vertical">
                                             <!-- Ochilgan sana va vaqt (Header) -->
                                             <TextBlock Text="{Binding OpenedAt, Converter={StaticResource UtcToUzbekistanTimeConverter}, StringFormat='Kassa ochilgan vaqt: {0}'}" 
-                                           Foreground="{StaticResource PrimaryTextColor}" 
-                                           FontWeight="Bold" 
-                                           FontSize="20" 
-                                           Margin="0,0,0,8">
+                                                Foreground="{StaticResource PrimaryTextColor}" 
+                                                FontWeight="Bold" 
+                                                FontSize="20" 
+                                                Margin="0,0,0,8">
                                                 <TextBlock.Effect>
                                                     <DropShadowEffect ShadowDepth="2" BlurRadius="2" Opacity="0.2"/>
                                                 </TextBlock.Effect>
@@ -64,48 +64,48 @@
                                             <!-- Ombor nomi -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                                                 <TextBlock Text="Ombor: " 
-                                               Foreground="{StaticResource PrimaryTextColor}" 
-                                               FontSize="20" 
-                                               FontWeight="SemiBold"/>
-                                                <TextBlock Text="{Binding WarehouseName}" 
-                                               Foreground="{StaticResource SecondaryTextColor}" 
-                                               FontSize="20"/>
+                                                    Foreground="{StaticResource PrimaryTextColor}" 
+                                                    FontSize="20" 
+                                                    FontWeight="SemiBold"/>
+                                                    <TextBlock Text="{Binding WarehouseName}" 
+                                                    Foreground="{StaticResource SecondaryTextColor}" 
+                                                    FontSize="20"/>
                                             </StackPanel>
 
                                             <!-- UZS -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                                                 <TextBlock Text="UZS: " 
-                                               Foreground="{StaticResource PrimaryTextColor}" 
-                                               FontSize="20" 
-                                               FontWeight="SemiBold"/>
+                                                    Foreground="{StaticResource PrimaryTextColor}" 
+                                                    FontSize="20" 
+                                                    FontWeight="SemiBold"/>
                                                 <TextBlock Text="{Binding UzsBalance, StringFormat={}{0:N0}}" 
-                                               Foreground="#28A745" 
-                                               FontSize="20"/>
+                                                    Foreground="#28A745" 
+                                                    FontSize="20"/>
                                             </StackPanel>
 
                                             <!-- UZP -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                                                 <TextBlock Text="UZP: " 
-                                               Foreground="{StaticResource PrimaryTextColor}" 
-                                               FontSize="20" 
-                                               FontWeight="SemiBold"/>
+                                                    Foreground="{StaticResource PrimaryTextColor}" 
+                                                    FontSize="20" 
+                                                    FontWeight="SemiBold"/>
                                                 <TextBlock Text="{Binding UzpBalance, StringFormat={}{0:N0}}" 
-                                               Foreground="#007BFF" 
-                                               FontSize="20"/>
+                                                    Foreground="#007BFF" 
+                                                    FontSize="20"/>
                                             </StackPanel>
 
                                             <!-- USD -->
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                                                 <TextBlock Text="USD: " 
-                                               Foreground="{StaticResource PrimaryTextColor}" 
-                                               FontSize="20" 
-                                               FontWeight="SemiBold"/>
+                                                    Foreground="{StaticResource PrimaryTextColor}" 
+                                                    FontSize="20" 
+                                                    FontWeight="SemiBold"/>
                                                 <TextBlock Text="{Binding UsdBalance, StringFormat={}{0:N0}}" 
-                                               Foreground="#FFC107" 
-                                               FontSize="20"/>
+                                                    Foreground="#FFC107" 
+                                                    FontSize="20"/>
                                             </StackPanel>
 
-                                            <!-- Qarz -->
+                                            <!-- Qarz --><!--
                                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                                                 <TextBlock Text="Qarz: " 
                                                Foreground="{StaticResource PrimaryTextColor}" 
@@ -114,7 +114,7 @@
                                                 <TextBlock Text="{Binding DebtAmount, StringFormat={}{0:N0}}" 
                                                Foreground="#DC3545" 
                                                FontSize="20"/>
-                                            </StackPanel>
+                                            </StackPanel>-->
 
                                             <!-- Separator -->
                                             <Separator Background="{StaticResource PrimaryBorderColor}" Margin="0,5"/>
@@ -173,10 +173,10 @@
                                 </ComboBox>
                             </Border>
 
-                            <!-- Izoh -->
+                            <!-- Izoh --><!--
                             <Border Width="280" Height="45" Margin="5" Background="{DynamicResource OtherBackground}" CornerRadius="8" BorderBrush="{StaticResource SelectedBorderColor}" BorderThickness="2">
                                 <TextBox x:Name="NoteTextBox" Width="260" Height="45" md:HintAssist.Hint="Izoh" Foreground="{DynamicResource PrimaryTextColor}" Background="Transparent" BorderBrush="{StaticResource OtherBackground}" Padding="5" FontSize="16" FontWeight="Bold"/>
-                            </Border>
+                            </Border>-->
                             <!-- O'tkazish tugmasi -->
 
                                 <Button x:Name="TransferButton" Margin="0 5" Content="O'tkazish" Width="280" Height="45" Background="{DynamicResource SelectedBackground}" Foreground="{StaticResource SecondaryTextColor}" BorderBrush="{StaticResource SelectedBorderColor}" md:ButtonAssist.CornerRadius="8"  FontSize="18" FontWeight="Bold" Padding="5" Cursor="Hand" Click="TransferButton_Click">

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.CashTransfers;
 using DeLong_Desktop.ApiService.DTOs.CashWarehouses;
 using DeLong_Desktop.ApiService.DTOs.CashRegisters;
+using DeLong_Desktop.ApiService.DTOs.Enums;
 
 namespace DeLong_Desktop.Pages.Cashs
 {
@@ -127,8 +128,8 @@ namespace DeLong_Desktop.Pages.Cashs
             // 6. O'tkazma amalga oshirish (xizmat orqali)
             try
             {
-                await PerformTransfer(from, to, currency, amount, NoteTextBox.Text, firstRegister.Id);
-                MessageBox.Show($"O'tkazma muvaffaqiyatli: {amount} {currency} {from} dan {to} ga. Izoh: {NoteTextBox.Text}", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+                await PerformTransfer(from, to, currency, amount,  firstRegister.Id);
+                MessageBox.Show($"O'tkazma muvaffaqiyatli: {amount} {currency} {from} dan {to} ga.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 // Ma'lumotlarni qayta yuklash
                 LoadData();
@@ -136,7 +137,6 @@ namespace DeLong_Desktop.Pages.Cashs
 
                 // Maydonlarni tozalash
                 AmountTextBox.Text = null;
-                NoteTextBox.Text = "";
             }
             catch (Exception ex)
             {
@@ -145,7 +145,7 @@ namespace DeLong_Desktop.Pages.Cashs
         }
 
         // O'tkazmani amalga oshirish va balanslarni yangilash uchun funksiya
-        private async Task PerformTransfer(string from, string to, string currency, decimal amount, string note, long cashRegisterId)
+        private async Task PerformTransfer(string from, string to, string currency, decimal amount, long cashRegisterId)
         {
             // 1. Transfer DTO yaratish
             var transferDto = new CashTransferCreationDto
@@ -155,8 +155,9 @@ namespace DeLong_Desktop.Pages.Cashs
                 To = to == "Zaxiraga" ? "Reserve" : "Cash",
                 Currency = currency,
                 Amount = amount,
-                Note = note,
-                TransferDate = DateTimeOffset.UtcNow
+                Note = from == "Zaxiradan" ? "kassaga o'tkazildi":"zaxiraga o'tkazildi",
+                TransferDate = DateTimeOffset.UtcNow,
+                TransferType = (from == "Zaxiradan" && to == "Kassaga") ? CashTransferType.Income : CashTransferType.Expense // Yangi qo‘shildi
             };
 
             // 2. O'tkazmani serverga yuborish
@@ -197,7 +198,6 @@ namespace DeLong_Desktop.Pages.Cashs
                 UzsBalance = register.UzsBalance,
                 UzpBalance = register.UzpBalance,
                 UsdBalance = register.UsdBalance,
-                DebtAmount = register.DebtAmount
             };
 
             // Valyutaga qarab balanslarni o'zgartirish

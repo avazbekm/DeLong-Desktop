@@ -61,7 +61,6 @@ public partial class AdditionalOperationsPage : Page
         _returnProductService = services.GetRequiredService<IReturnProductService>();
         _transactionItemService = services.GetRequiredService<ITransactionItemService>();
         LoadDebts();
-        LoadSalePriceProducts();
         // DataGrid ga bog‘lash
         transferDataGrid.ItemsSource = TransferItems;
 
@@ -479,7 +478,8 @@ public partial class AdditionalOperationsPage : Page
                             Currency = "So'm",
                             Amount = cashToPay,
                             Note = $"Qarz to‘lovi (DebtId: {debt.Id}) - Naqd",
-                            TransferDate = DateTimeOffset.UtcNow
+                            TransferDate = DateTimeOffset.UtcNow,
+                            TransferType = CashTransferType.Income
                         };
                         await _cashTransferService.AddAsync(cashTransferDto);
 
@@ -512,7 +512,8 @@ public partial class AdditionalOperationsPage : Page
                             Currency = "Plastik",
                             Amount = cardToPay,
                             Note = $"Qarz to‘lovi (DebtId: {debt.Id}) - Plastik",
-                            TransferDate = DateTimeOffset.UtcNow
+                            TransferDate = DateTimeOffset.UtcNow,
+                            TransferType = CashTransferType.Income
                         };
                         await _cashTransferService.AddAsync(cardTransferDto);
 
@@ -550,7 +551,8 @@ public partial class AdditionalOperationsPage : Page
                                 Currency = "Dollar",
                                 Amount = usedDollars,
                                 Note = $"Qarz to‘lovi (DebtId: {debt.Id}) - Dollar",
-                                TransferDate = DateTimeOffset.UtcNow
+                                TransferDate = DateTimeOffset.UtcNow,
+                                TransferType = CashTransferType.Income
                             };
                             await _cashTransferService.AddAsync(dollarTransferDto);
 
@@ -603,29 +605,6 @@ public partial class AdditionalOperationsPage : Page
         ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
     }
 
-    private async void LoadSalePriceProducts()
-    {
-        //try
-        //{
-        //    // SalePrice dan mahsulotlar ro‘yxatini olish (taxminiy xizmat)
-        //    var salePrices = await _salePriceService.RetrieveAllAsync(); // Bu metod sizning loyihangizda bo‘lishi kerak
-        //    if (salePrices != null && salePrices.Any())
-        //    {
-        //        cbSalePriceProducts.ItemsSource = salePrices.Select(sp => new
-        //        {
-        //            ProductId = sp.ProductId,
-        //            ProductName = sp.ProductName // Mahsulot nomi
-        //        }).ToList();
-        //        cbSalePriceProducts.DisplayMemberPath = "ProductName";
-        //        cbSalePriceProducts.SelectedValuePath = "ProductId";
-        //    }
-        //}
-        //catch (Exception ex)
-        //{
-        //    MessageBox.Show($"Mahsulotlarni yuklashda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
-        //}
-    }
-
     private async void ConfirmReturnButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -637,12 +616,13 @@ public partial class AdditionalOperationsPage : Page
             }
 
             var returnedFrom = tbReturnedFrom.Text;
-            var selectedProduct = cbSalePriceProducts.SelectedItem as dynamic;
-            if (selectedProduct == null)
+            if (cbSalePriceProducts.SelectedValue == null)
             {
                 MessageBox.Show("Iltimos, mahsulot tanlang!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            long productId = (long)cbSalePriceProducts.SelectedValue;
+            string productName = (cbSalePriceProducts.SelectedItem as dynamic)?.ProductName?.ToLower() ?? "nom alum";
 
             if (!decimal.TryParse(tbReturnQuantity.Text, out decimal quantity) || quantity <= 0)
             {
@@ -657,21 +637,55 @@ public partial class AdditionalOperationsPage : Page
                 return;
             }
 
-            if (!decimal.TryParse(tbReturnAmount.Text, out decimal amount) || amount <= 0)
+            if (!decimal.TryParse(tbReturnAmount.Text, out decimal returnAmount) || returnAmount <= 0)
             {
                 MessageBox.Show("Iltimos, to‘g‘ri summa kiriting!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             var comment = tbComment.Text.ToLower();
+
+            var cashRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
+            if (cashRegisters == null || !cashRegisters.Any())
+            {
+                MessageBox.Show("Ochiq kassa topilmadi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            var currentRegister = cashRegisters.LastOrDefault();
+
+            if (currentRegister.UzsBalance < returnAmount)
+            {
+                MessageBox.Show($"Kassadagi qoldiq yetmaydi! Joriy balans: {currentRegister.UzsBalance:N2} so‘m, Talab qilinadigan summa: {returnAmount:N2} so‘m", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var prices = await _priceService.RetrieveAllAsync(productId);
+            if (prices == null || !prices.Any())
+            {
+                MessageBox.Show("Mahsulot uchun narx topilmadi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var latestPrice = prices.OrderByDescending(p => p.Id).First();
+            var priceUpdateDto = new PriceUpdateDto
+            {
+                Id = latestPrice.Id,
+                CostPrice = latestPrice.CostPrice,
+                SellingPrice = latestPrice.SellingPrice,
+                UnitOfMeasure = latestPrice.UnitOfMeasure,
+                Quantity = latestPrice.Quantity + quantity,
+                ProductId = latestPrice.ProductId
+            };
+            await _priceService.ModifyAsync(priceUpdateDto);
+
             var returnDto = new ReturnProductCreationDto
             {
                 SaleId = saleId,
-                ProductId = selectedProduct.ProductId,
-                ProductName = selectedProduct.ProductName.ToLower(),
-                Quatity = quantity,
+                ProductId = productId,
+                ProductName = productName,
+                Quantity = quantity,
                 UnitOfMeasure = unitOfMeasure.ToLower(),
-                ReturnSumma = amount,
+                ReturnSumma = returnAmount,
                 Reason = comment
             };
 
@@ -689,29 +703,49 @@ public partial class AdditionalOperationsPage : Page
             }
 
             var result = await _returnProductService.AddAsync(returnDto);
-
-            if (result != null)
-            {
-                MessageBox.Show("Qaytgan mahsulot muvaffaqiyatli tasdiqlandi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
-                tbSaleId.Text = "";
-                tbReturnedFrom.Text = "";
-                cbSalePriceProducts.SelectedIndex = -1;
-                tbReturnQuantity.Text = "";
-                tbUnitOfMeasure.Text = "";
-                tbReturnAmount.Text = "";
-                tbComment.Text = "";
-            }
-            else
+            if (result == null)
             {
                 MessageBox.Show("Qaytgan mahsulotni tasdiqlashda xatolik yuz berdi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
+
+            var cashTransferDto = new CashTransferCreationDto
+            {
+                CashRegisterId = currentRegister.Id,
+                From = "Cash",
+                To = "Customer",
+                Currency = "So'm",
+                Amount = returnAmount,
+                Note = $"ChekId: {saleId}, {quantity} {returnDto.UnitOfMeasure} {productName} {tbReturnedFrom.Text} tomonidan qaytarildi.",
+                TransferDate = DateTimeOffset.UtcNow,
+                TransferType = CashTransferType.Expense
+            };
+            await _cashTransferService.AddAsync(cashTransferDto);
+
+            var updatedRegister = new CashRegisterUpdateDto
+            {
+                Id = currentRegister.Id,
+                UzsBalance = currentRegister.UzsBalance - returnAmount,
+                UzpBalance = currentRegister.UzpBalance,
+                UsdBalance = currentRegister.UsdBalance
+            };
+            await _cashRegisterService.ModifyAsync(updatedRegister);
+
+            MessageBox.Show("Qaytgan mahsulot muvaffaqiyatli tasdiqlandi va kassa yangilandi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            tbSaleId.Text = "";
+            tbReturnedFrom.Text = "";
+            cbSalePriceProducts.SelectedIndex = -1;
+            tbReturnQuantity.Text = "";
+            tbUnitOfMeasure.Text = "";
+            tbReturnAmount.Text = "";
+            tbComment.Text = "";
         }
         catch (Exception ex)
         {
             MessageBox.Show($"Xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
-
     private void tbSaleId_TextChanged(object sender, TextChangedEventArgs e)
     {
         ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
@@ -783,7 +817,7 @@ public partial class AdditionalOperationsPage : Page
     // Mahsulot nomini olish uchun taxminiy funksiya (real loyihada ProductService ishlatilishi mumkin)
     private void tbReturnQuantity_TextChanged(object sender, TextChangedEventArgs e)
     {
-        ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
+        ValidationHelper.ValidateDecimalInput(sender as TextBox);
     }
 
     private void tbReturnAmount_TextChanged(object sender, TextChangedEventArgs e)

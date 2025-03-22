@@ -7,7 +7,7 @@ public class ReturnProductCreationDto
     public long SaleId { get; set; }      // Savdo qilgan mahsulotlar ro‘yxati olish uchun ID
     public long ProductId { get; set; }
     public string ProductName { get; set; } = string.Empty;
-    public decimal Quatity { get; set; }
+    public decimal Quantity { get; set; }
     public string UnitOfMeasure { get; set; } = string.Empty;
     public decimal ReturnSumma { get; set; }
     public string Reason { get; set; } = string.Empty; // Qaytish sababi
