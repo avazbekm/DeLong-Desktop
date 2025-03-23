@@ -2,10 +2,10 @@
 using System.Windows.Controls;
 using DeLong_Desktop.ApiService.Helpers;
 using DeLong_Desktop.ApiService.Interfaces;
+using DeLong_Desktop.ApiService.DTOs.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.CashRegisters;
 using DeLong_Desktop.ApiService.DTOs.CashTransfers;
-using DeLong_Desktop.ApiService.DTOs.Enums;
 
 namespace DeLong_Desktop.Windows.DollarKurs
 {
@@ -80,6 +80,8 @@ namespace DeLong_Desktop.Windows.DollarKurs
                 {
                     Amount = somAmount,
                     CashRegisterId = lastRegister.Id,
+                    From = "Kassa",
+                    To = "Mijoz",
                     Currency = "So'm",
                     Note = "valyuta sotib olish uchun",
                     TransferDate = DateTimeOffset.UtcNow,
@@ -90,6 +92,8 @@ namespace DeLong_Desktop.Windows.DollarKurs
                 var cashTransferDollar = new CashTransferCreationDto
                 {
                     CashRegisterId = lastRegister.Id,
+                    From = "Mijoz",
+                    To = "Kassa",
                     Amount = dollarAmount,
                     Currency = "Dollar",
                     Note = "valyuta sotib olindi",

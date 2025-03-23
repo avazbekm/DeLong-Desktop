@@ -88,7 +88,7 @@ namespace DeLong_Desktop.Pages.Cashs
             }
 
             // 7. Valyutani aniqlash
-            string currency = (CurrencyComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            string currency = (CurrencyComboBox1.SelectedItem as ComboBoxItem)?.Content.ToString();
 
             // 8. Izohni olish
             var note = NoteTextBox.Text;
@@ -179,8 +179,8 @@ namespace DeLong_Desktop.Pages.Cashs
             var transferDto = new CashTransferCreationDto
             {
                 CashRegisterId = cashRegisterId,
-                From = from == "Zaxiradan" ? "Reserve" : (from == "Kassadan" ? "Cash" : "Other"),
-                To = to == "Zaxiraga" ? "Reserve" : (to == "Kassaga" ? "Cash" : "Other"),
+                From = from == "Zaxiradan" ? "Zaxira" : (from == "Kassadan" ? "Kassa" : "Boshqa"),
+                To = to == "Zaxiraga" ? "Zaxira" : (to == "Kassaga" ? "Kassa" : "Boshqa"),
                 Currency = currency,
                 Amount = amount,
                 Note = note,
@@ -299,6 +299,78 @@ namespace DeLong_Desktop.Pages.Cashs
                     ToComboBox.SelectedIndex = 0; // "Kassaga" default
                     ToComboBox.IsEnabled = false; // Faqat "Kassaga"
                 }
+            }
+        }
+
+        private async void ShowTurnoverButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string selectedCurrency = (CurrencyComboBox.SelectedItem as ComboBoxItem)?.Content.ToString() switch
+                {
+                    "So'm (UZS)" => "So'm",
+                    "Plastik (UZP)" => "Plastik",
+                    "Dollar (USD)" => "Dollar",
+                    _ => "So'm"
+                };
+
+                var openRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
+                if (openRegisters == null || !openRegisters.Any())
+                {
+                    MessageBox.Show("Ochiq kassa topilmadi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                var currentRegister = openRegisters.First();
+                var openedAt = currentRegister.OpenedAt;
+
+                var transfers = await _cashTransferService.RetrieveAllAsync();
+                if (transfers == null || !transfers.Any())
+                {
+                    MessageBox.Show("Kassa aylanmasi ma’lumotlari topilmadi!", "Xabar", MessageBoxButton.OK, MessageBoxImage.Information);
+                    TurnoverListView.Visibility = Visibility.Collapsed;
+                    viewListHeader.Visibility = Visibility.Hidden;
+                    totalSummary.Visibility = Visibility.Hidden;
+                    return;
+                }
+
+                var filteredTransfers = transfers
+                    .Where(t => t.CashRegisterId == currentRegister.Id &&
+                                t.TransferDate >= openedAt &&
+                                t.Currency == selectedCurrency)
+                    .OrderBy(t => t.TransferDate)
+                    .Select((t, index) => new
+                    {
+                        SequenceNumber = index + 1,
+                        From = t.From,
+                        To = t.To,
+                        Note = t.Note,
+                        Income = t.TransferType == CashTransferType.Income ? t.Amount : 0,
+                        Expense = t.TransferType == CashTransferType.Expense ? t.Amount : 0,
+                        TransferDate = t.TransferDate
+                    })
+                    .ToList();
+
+                TurnoverListView.ItemsSource = filteredTransfers;
+                TurnoverListView.Visibility = Visibility.Visible;
+                viewListHeader.Visibility = Visibility.Visible;
+                totalSummary.Visibility = Visibility.Visible;
+
+                // Jami kirim va chiqimni hisoblash
+                decimal totalIncome = filteredTransfers.Sum(t => t.Income);
+                decimal totalExpense = filteredTransfers.Sum(t => t.Expense);
+
+                // TextBlock’larni yangilash
+                tbTotalIncome.Text = totalIncome.ToString("N0");
+                tbTotalExpense.Text = totalExpense.ToString("N0");
+
+                if (!filteredTransfers.Any())
+                {
+                    MessageBox.Show($"Tanlangan valyuta ({selectedCurrency}) bo‘yicha aylanma topilmadi!", "Xabar", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

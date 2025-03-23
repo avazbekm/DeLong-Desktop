@@ -16,9 +16,9 @@ using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.SaleItems;
 using DeLong_Desktop.ApiService.DTOs.Discounts;
 using DeLong_Desktop.Windows.Sales.PrintOrExcel;
-using DeLong_Desktop.Windows.Sales.SelectionCustomer;
 using DeLong_Desktop.ApiService.DTOs.CashRegisters;
 using DeLong_Desktop.ApiService.DTOs.CashTransfers;
+using DeLong_Desktop.Windows.Sales.SelectionCustomer;
 
 
 namespace DeLong_Desktop.Pages.SalesPractice;
@@ -604,6 +604,9 @@ public partial class SalePracticePage : Page
                 decimal uzpBalance = currentRegister.UzpBalance;
                 decimal usdBalance = currentRegister.UsdBalance;
 
+                // Mijoz nomini olish (agar mavjud bo‘lsa)
+                string customerName = selectedItem? .Name ?? "Noma'lum mijoz";
+
                 // To‘lovlarni qo‘shish va kassa qoldiqlarini yangilash
                 if (decimal.TryParse(tbCrashSum.Text, out decimal cashAmount) && cashAmount > 0)
                 {
@@ -622,11 +625,11 @@ public partial class SalePracticePage : Page
                     var cashTransferDto = new CashTransferCreationDto
                     {
                         CashRegisterId = currentRegister.Id,
-                        From = "Customer",
-                        To = "Cash",
+                        From = "Mijoz",
+                        To = "Kassa",
                         Currency = "So'm",
                         Amount = cashAmount,
-                        Note = $"Sotuv #{createdSale.Id} - Naqd to‘lov",
+                        Note = $"Sotuv #{createdSale.Id} - Naqd to‘lov (Mijoz: {customerName})",
                         TransferDate = DateTimeOffset.UtcNow,
                         TransferType = CashTransferType.Income
                     };
@@ -650,11 +653,11 @@ public partial class SalePracticePage : Page
                     var cardTransferDto = new CashTransferCreationDto
                     {
                         CashRegisterId = currentRegister.Id,
-                        From = "Customer",
-                        To = "Cash",
+                        From = "Mijoz",
+                        To = "Kassa",
                         Currency = "Plastik",
                         Amount = cardAmount,
-                        Note = $"Sotuv #{createdSale.Id} - Plastik to‘lov",
+                        Note = $"Sotuv #{createdSale.Id} - Plastik to‘lov (Mijoz: {customerName})",
                         TransferDate = DateTimeOffset.UtcNow,
                         TransferType = CashTransferType.Income
                     };
@@ -678,11 +681,11 @@ public partial class SalePracticePage : Page
                     var dollarTransferDto = new CashTransferCreationDto
                     {
                         CashRegisterId = currentRegister.Id,
-                        From = "Customer",
-                        To = "Cash",
+                        From = "Mijoz",
+                        To = "Kassa",
                         Currency = "Dollar",
                         Amount = dollarAmount,
-                        Note = $"Sotuv #{createdSale.Id} - Dollar to‘lov",
+                        Note = $"Sotuv #{createdSale.Id} - Dollar to‘lov (Mijoz: {customerName})",
                         TransferDate = DateTimeOffset.UtcNow,
                         TransferType = CashTransferType.Income
                     };
@@ -780,7 +783,6 @@ public partial class SalePracticePage : Page
             ResetToDefaultValues();
         }
     }
-
     private void ResetToDefaultValues()
     {
         // TextBox’larni tozalash (placeholder’lar uchun bo‘sh qiymat)

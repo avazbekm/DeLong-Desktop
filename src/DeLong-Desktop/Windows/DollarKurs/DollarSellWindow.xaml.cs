@@ -1,12 +1,11 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.ApiService.Helpers;
+using DeLong_Desktop.ApiService.DTOs.Enums;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.CashRegisters;
 using DeLong_Desktop.ApiService.DTOs.CashTransfers;
-using DeLong_Desktop.ApiService.Services;
-using DeLong_Desktop.ApiService.DTOs.Enums;
 
 namespace DeLong_Desktop.Windows.DollarKurs
 {
@@ -82,6 +81,8 @@ namespace DeLong_Desktop.Windows.DollarKurs
                     CashRegisterId = lastRegister.Id,
                     Amount = somAmount,
                     Currency = "So'm",
+                    From = "Mijoz",
+                    To = "Kassa",
                     Note = "valyuta sotuvidan tushum",
                     TransferDate = DateTimeOffset.UtcNow,
                     TransferType = CashTransferType.Income
@@ -92,6 +93,8 @@ namespace DeLong_Desktop.Windows.DollarKurs
                 {
                     CashRegisterId = lastRegister.Id,
                     Amount = dollarAmount,
+                    From = "Kassa",
+                    To = "Mijoz",
                     Currency = "Dollar",
                     Note = "valyuta sotildi",
                     TransferDate = DateTimeOffset.UtcNow,

@@ -338,7 +338,7 @@ public partial class AdditionalOperationsPage : Page
                     {
                         DebtId = selectedDebt.Id,
                         Amount = cashAmount,
-                        PaymentDate = DateTimeOffset.Now.ToUniversalTime(),
+                        PaymentDate = DateTimeOffset.UtcNow,
                         PaymentMethod = "Cash"
                     };
                     await _debtPaymentService.AddAsync(cashPaymentDto);
@@ -350,7 +350,7 @@ public partial class AdditionalOperationsPage : Page
                     {
                         DebtId = selectedDebt.Id,
                         Amount = cardAmount,
-                        PaymentDate = DateTimeOffset.Now.ToUniversalTime(),
+                        PaymentDate = DateTimeOffset.UtcNow,
                         PaymentMethod = "Card"
                     };
                     await _debtPaymentService.AddAsync(cardPaymentDto);
@@ -362,7 +362,7 @@ public partial class AdditionalOperationsPage : Page
                     {
                         DebtId = selectedDebt.Id,
                         Amount = dollarInSom, // So‘mga aylantirilgan summa
-                        PaymentDate = DateTimeOffset.Now.ToUniversalTime(),
+                        PaymentDate = DateTimeOffset.UtcNow,
                         PaymentMethod = "Dollar"
                     };
                     await _debtPaymentService.AddAsync(dollarPaymentDto);
@@ -443,6 +443,9 @@ public partial class AdditionalOperationsPage : Page
             decimal remainingCard = cardAmount;
             decimal remainingDollar = dollarAmount;
 
+            // Mijoz nomini olish (birinchi qarzdan)
+            string customerName = selectedCustomerDebts.First().CustomerName;
+
             foreach (var debt in selectedCustomerDebts)
             {
                 if (remainingPayment <= 0)
@@ -465,24 +468,6 @@ public partial class AdditionalOperationsPage : Page
                             PaymentMethod = "Cash"
                         };
                         await _debtPaymentService.AddAsync(cashPaymentDto);
-
-                        // Kassaga so‘m qo‘shish
-                        uzsBalance += cashToPay;
-
-                        // Transfer yozish
-                        var cashTransferDto = new CashTransferCreationDto
-                        {
-                            CashRegisterId = currentRegister.Id,
-                            From = "Customer",
-                            To = "Cash",
-                            Currency = "So'm",
-                            Amount = cashToPay,
-                            Note = $"Qarz to‘lovi (DebtId: {debt.Id}) - Naqd",
-                            TransferDate = DateTimeOffset.UtcNow,
-                            TransferType = CashTransferType.Income
-                        };
-                        await _cashTransferService.AddAsync(cashTransferDto);
-
                         remainingCash -= cashToPay;
                         remainingAmountToPay -= cashToPay;
                     }
@@ -499,24 +484,6 @@ public partial class AdditionalOperationsPage : Page
                             PaymentMethod = "Card"
                         };
                         await _debtPaymentService.AddAsync(cardPaymentDto);
-
-                        // Kassaga plastik qo‘shish
-                        uzpBalance += cardToPay;
-
-                        // Transfer yozish
-                        var cardTransferDto = new CashTransferCreationDto
-                        {
-                            CashRegisterId = currentRegister.Id,
-                            From = "Customer",
-                            To = "Cash",
-                            Currency = "Plastik",
-                            Amount = cardToPay,
-                            Note = $"Qarz to‘lovi (DebtId: {debt.Id}) - Plastik",
-                            TransferDate = DateTimeOffset.UtcNow,
-                            TransferType = CashTransferType.Income
-                        };
-                        await _cashTransferService.AddAsync(cardTransferDto);
-
                         remainingCard -= cardToPay;
                         remainingAmountToPay -= cardToPay;
                     }
@@ -532,30 +499,12 @@ public partial class AdditionalOperationsPage : Page
                             {
                                 DebtId = debt.Id,
                                 Amount = dollarToPayInSom,
-                                PaymentDate = DateTimeOffset.Now.ToUniversalTime(),
+                                PaymentDate = DateTimeOffset.UtcNow,
                                 PaymentMethod = "Dollar"
                             };
                             await _debtPaymentService.AddAsync(dollarPaymentDto);
 
                             decimal usedDollars = dollarToPayInSom / dollarKurs;
-
-                            // Kassaga dollar qo‘shish
-                            usdBalance += usedDollars;
-
-                            // Transfer yozish
-                            var dollarTransferDto = new CashTransferCreationDto
-                            {
-                                CashRegisterId = currentRegister.Id,
-                                From = "Customer",
-                                To = "Cash",
-                                Currency = "Dollar",
-                                Amount = usedDollars,
-                                Note = $"Qarz to‘lovi (DebtId: {debt.Id}) - Dollar",
-                                TransferDate = DateTimeOffset.UtcNow,
-                                TransferType = CashTransferType.Income
-                            };
-                            await _cashTransferService.AddAsync(dollarTransferDto);
-
                             remainingDollar -= usedDollars;
                             remainingAmountToPay -= dollarToPayInSom;
                         }
@@ -563,6 +512,60 @@ public partial class AdditionalOperationsPage : Page
 
                     remainingPayment -= amountToPay;
                 }
+            }
+
+            // Naqd transfer (agar kiritilgan bo‘lsa)
+            if (cashAmount > 0)
+            {
+                uzsBalance += cashAmount;
+                var cashTransferDto = new CashTransferCreationDto
+                {
+                    CashRegisterId = currentRegister.Id,
+                    From = "Mijoz",
+                    To = "Kassa",
+                    Currency = "So'm",
+                    Amount = cashAmount,
+                    Note = $"{customerName}ni qarzi to‘landi",
+                    TransferDate = DateTimeOffset.UtcNow,
+                    TransferType = CashTransferType.Income
+                };
+                await _cashTransferService.AddAsync(cashTransferDto);
+            }
+
+            // Plastik transfer (agar kiritilgan bo‘lsa)
+            if (cardAmount > 0)
+            {
+                uzpBalance += cardAmount;
+                var cardTransferDto = new CashTransferCreationDto
+                {
+                    CashRegisterId = currentRegister.Id,
+                    From = "Mijoz",
+                    To = "Kassa",
+                    Currency = "Plastik",
+                    Amount = cardAmount,
+                    Note = $"{customerName}ni qarzi to‘landi",
+                    TransferDate = DateTimeOffset.UtcNow,
+                    TransferType = CashTransferType.Income
+                };
+                await _cashTransferService.AddAsync(cardTransferDto);
+            }
+
+            // Dollar transfer (agar kiritilgan bo‘lsa)
+            if (dollarAmount > 0)
+            {
+                usdBalance += dollarAmount;
+                var dollarTransferDto = new CashTransferCreationDto
+                {
+                    CashRegisterId = currentRegister.Id,
+                    From = "Mijoz",
+                    To = "Kassa",
+                    Currency = "Dollar",
+                    Amount = dollarAmount,
+                    Note = $"{customerName}ni qarzi to‘landi",
+                    TransferDate = DateTimeOffset.UtcNow,
+                    TransferType = CashTransferType.Income
+                };
+                await _cashTransferService.AddAsync(dollarTransferDto);
             }
 
             // Kassani yangilash
