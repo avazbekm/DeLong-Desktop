@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.CashTransfers;
 using DeLong_Desktop.ApiService.DTOs.CashWarehouses;
 using DeLong_Desktop.ApiService.DTOs.CashRegisters;
+using System.Windows.Media;
 
 namespace DeLong_Desktop.Pages.Cashs
 {
@@ -15,7 +16,7 @@ namespace DeLong_Desktop.Pages.Cashs
         private readonly ICashRegisterService _cashRegisterService;
         private readonly ICashTransferService _cashTransferService;
         private readonly ICashWarehouseService _cashWarehouseService;
-
+        private long? _currentCashRegisterId = null; // Joriy ochiq kassa ID’sini saqlash uchun
         public CashPage(IServiceProvider services)
         {
             InitializeComponent();
@@ -25,10 +26,15 @@ namespace DeLong_Desktop.Pages.Cashs
             // SelectionChanged hodisasini vaqtincha o‘chirish
             FromComboBox.SelectionChanged -= FromComboBox_SelectionChanged;
             LoadData();
+            Loaded += CashPage_Loaded; // Page yuklanganda tugma holatini tekshirish
             LoadWarehouseData();
             FromComboBox.SelectionChanged += FromComboBox_SelectionChanged; // Yuklashdan keyin qayta ulash
         }
 
+        private async void CashPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            await UpdateButtonState(); // Tugma holatini yangilash
+        }
         private async void LoadWarehouseData()
         {
             var latestWarehouse = await _cashWarehouseService.RetrieveByIdAsync();
@@ -371,6 +377,206 @@ namespace DeLong_Desktop.Pages.Cashs
             catch (Exception ex)
             {
                 MessageBox.Show($"Xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void OpenDayButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var openRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
+                if (openRegisters != null && openRegisters.Any())
+                {
+                    // Kassa ochiq bo‘lsa, yopish logikasi
+                    var currentRegister = openRegisters.First();
+                    _currentCashRegisterId = currentRegister.Id;
+
+                    var confirm = MessageBox.Show("Haqiqatdan ham kunni yopmoqchimisiz?", "Tasdiqlash",
+                        MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (confirm == MessageBoxResult.Yes)
+                    {
+                        // Zaxira omborini olish (agar mavjud bo‘lmasa, yangi yaratish mumkin)
+                        var warehouse = await _cashWarehouseService.RetrieveByIdAsync(); // 
+                        if (warehouse == null)
+                        {
+                            var newWarehouseDto = new CashWarehouseCreationDto();
+                            warehouse = await _cashWarehouseService.AddAsync(newWarehouseDto);
+                            if (warehouse == null)
+                            {
+                                MessageBox.Show("Zaxira omborini yaratishda xatolik!", "Xatolik",
+                                    MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
+                            }
+                        }
+
+                        if (currentRegister.UzsBalance != 0 || currentRegister.UzpBalance != 0 || currentRegister.UsdBalance != 0)
+                        {
+                            var resetBalance = MessageBox.Show("Balanslar 0 emas! Qoldiqlarni zaxiraga o‘tkazib, balansni 0 qilishni xohlaysizmi?",
+                                "Balans tekshiruvi", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                            if (resetBalance == MessageBoxResult.Yes)
+                            {
+                                // Kassadagi qoldiqlarni CashTransferga yozish
+                                if (currentRegister.UzsBalance > 0)
+                                {
+                                    var uzsTransfer = new CashTransferCreationDto
+                                    {
+                                        CashRegisterId = currentRegister.Id,
+                                        From = "Kassa",
+                                        To = "Zaxira",
+                                        Currency = "UZS",
+                                        Amount = currentRegister.UzsBalance,
+                                        Note = "Kun yopilganda UZS qoldiq zaxiraga o‘tkazildi",
+                                        TransferType = CashTransferType.Expense,
+                                        TransferDate = DateTimeOffset.UtcNow
+                                    };
+                                    await _cashTransferService.AddAsync(uzsTransfer);
+                                }
+                                if (currentRegister.UzpBalance > 0)
+                                {
+                                    var uzpTransfer = new CashTransferCreationDto
+                                    {
+                                        CashRegisterId = currentRegister.Id,
+                                        From = "Kassa",
+                                        To = "Zaxira",
+                                        Currency = "UZP",
+                                        Amount = currentRegister.UzpBalance,
+                                        Note = "Kun yopilganda UZP qoldiq zaxiraga o‘tkazildi",
+                                        TransferType = CashTransferType.Expense,
+                                        TransferDate = DateTimeOffset.UtcNow
+                                    };
+                                    await _cashTransferService.AddAsync(uzpTransfer);
+                                }
+                                if (currentRegister.UsdBalance > 0)
+                                {
+                                    var usdTransfer = new CashTransferCreationDto
+                                    {
+                                        CashRegisterId = currentRegister.Id,
+                                        From = "Kassa",
+                                        To = "Zaxira",
+                                        Currency = "USD",
+                                        Amount = currentRegister.UsdBalance,
+                                        Note = "Kun yopilganda USD qoldiq zaxiraga o‘tkazildi",
+                                        TransferType = CashTransferType.Expense,
+                                        TransferDate = DateTimeOffset.UtcNow
+                                    };
+                                    await _cashTransferService.AddAsync(usdTransfer);
+                                }
+
+                                // CashWarehouse balansini yangilash
+                                var updateWarehouseDto = new CashWarehouseUpdateDto
+                                {
+                                    Id = warehouse.Id,
+                                    UzsBalance = warehouse.UzsBalance + currentRegister.UzsBalance,
+                                    UzpBalance = warehouse.UzpBalance + currentRegister.UzpBalance,
+                                    UsdBalance = warehouse.UsdBalance + currentRegister.UsdBalance
+                                };
+                                var updatedWarehouse = await _cashWarehouseService.ModifyAsync(updateWarehouseDto);
+                                if (updatedWarehouse == null)
+                                {
+                                    MessageBox.Show("Zaxira balansini yangilashda xatolik!", "Xatolik",
+                                        MessageBoxButton.OK, MessageBoxImage.Error);
+                                    return;
+                                }
+
+                                // Kassani yopish va balanslarni 0 qilish
+                                var updateDto = new CashRegisterUpdateDto
+                                {
+                                    Id = currentRegister.Id,
+                                    UzsBalance = 0,
+                                    UzpBalance = 0,
+                                    UsdBalance = 0,
+                                    ClosedAt = DateTimeOffset.UtcNow
+                                };
+                                var updatedRegister = await _cashRegisterService.ModifyAsync(updateDto);
+                                if (updatedRegister != null)
+                                {
+                                    MessageBox.Show("Qoldiqlar zaxiraga o‘tkazildi va kun muvaffaqiyatli yopildi!",
+                                        "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    await UpdateButtonState();
+                                    CashRegisterGrid.ItemsSource = await _cashRegisterService.RetrieveOpenRegistersAsync();
+                                    LoadWarehouseData(); // Zaxira ma’lumotlarini yangilash
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Kunni yopishda xatolik yuz berdi!", "Xatolik",
+                                        MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // Balanslar 0 bo‘lsa, darhol yopish
+                            var updateDto = new CashRegisterUpdateDto
+                            {
+                                Id = currentRegister.Id,
+                                UzsBalance = 0,
+                                UzpBalance = 0,
+                                UsdBalance = 0,
+                                ClosedAt = DateTimeOffset.UtcNow
+                            };
+                            var updatedRegister = await _cashRegisterService.ModifyAsync(updateDto);
+                            if (updatedRegister != null)
+                            {
+                                MessageBox.Show("Kun muvaffaqiyatli yopildi!", "Muvaffaqiyat",
+                                    MessageBoxButton.OK, MessageBoxImage.Information);
+                                await UpdateButtonState();
+                                CashRegisterGrid.ItemsSource = await _cashRegisterService.RetrieveOpenRegistersAsync();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Kunni yopishda xatolik yuz berdi!", "Xatolik",
+                                    MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // Kassa yopiq bo‘lsa, ochish logikasi
+                    var newCashRegister = new CashRegisterCreationDto
+                    {
+                        UserId = 1, // Dinamik olish mumkin
+                        WarehouseId = 1, // Zaxira ID’si (dinamik qilish mumkin)
+                        UzsBalance = 0, // Zaxiradan avtomatik yuklanmaydi
+                        UzpBalance = 0,
+                        UsdBalance = 0
+                    };
+
+                    var createdRegister = await _cashRegisterService.AddAsync(newCashRegister);
+                    if (createdRegister != null)
+                    {
+                        _currentCashRegisterId = createdRegister.Id;
+                        MessageBox.Show("Kun muvaffaqiyatli ochildi!", "Muvaffaqiyat",
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+                        await UpdateButtonState();
+                        CashRegisterGrid.ItemsSource = await _cashRegisterService.RetrieveOpenRegistersAsync();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Kassa ochishda xatolik yuz berdi!", "Xatolik",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private async Task UpdateButtonState()
+        {
+            var openRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
+            if (openRegisters != null && openRegisters.Any())
+            {
+                OpenDayButton.Content = "Kunni yopish";
+                OpenDayButton.Foreground = new SolidColorBrush(Colors.Yellow);
+                _currentCashRegisterId = openRegisters.First().Id;
+            }
+            else
+            {
+                OpenDayButton.Content = "Kunni ochish";
+                OpenDayButton.Foreground = new SolidColorBrush(Colors.Snow);
+                _currentCashRegisterId = null;
             }
         }
     }

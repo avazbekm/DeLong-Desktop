@@ -14,9 +14,26 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <!-- "Kassani boshqarish" va "Kunni ochish" tugmasi -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <!-- Matn uchun -->
+                <ColumnDefinition Width="Auto"/>
+                <!-- Tugma uchun -->
+            </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Kassani boshqarish" FontSize="24" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,10"/>
+            <TextBlock Grid.Column="0" Text="Kassani boshqarish" FontSize="24" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,10" VerticalAlignment="Center"/>
 
+            <Button x:Name="OpenDayButton" Grid.Column="1" Content="Kunni ochish" Width="150" Height="40" 
+            Background="{DynamicResource SelectedBackground}" Foreground="{StaticResource SecondaryTextColor}" 
+            BorderBrush="{StaticResource SelectedBorderColor}" md:ButtonAssist.CornerRadius="8" FontSize="16" 
+            FontWeight="Bold" Padding="5" Cursor="Hand" Click="OpenDayButton_Click" Margin="10,0,0,10">
+                <Button.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="3"/>
+                </Button.Effect>
+            </Button>
+        </Grid>
         <TabControl Grid.Row="1" Background="{StaticResource SecondaryBackground}" BorderBrush="{StaticResource PrimaryBorderColor}">
             <!-- Cash Registers Tab (Vertikal StackPanel ko‘rinishi) -->
             <TabItem xmlns:helpers="clr-namespace:DeLong_Desktop.ApiService.Helpers">
