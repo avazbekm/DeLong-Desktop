@@ -37,7 +37,7 @@ class PriceService : IPriceService
 
     public async ValueTask<bool> RemoveAsync(long id)
     {
-        var response = await _httpClient.DeleteAsync($"api/Price/delete/{id}");
+        var response = await _httpClient.DeleteAsync($"api/Price/remove/{id}");
         response.EnsureSuccessStatusCode();
         return response.IsSuccessStatusCode;
     }
@@ -64,7 +64,7 @@ class PriceService : IPriceService
 
     public async ValueTask<IEnumerable<PriceResultDto>> RetrieveAllAsync(long productId)
     {
-        var response = await _httpClient.GetAsync($"api/Price/get-allProductId?productId={productId}");
+        var response = await _httpClient.GetAsync($"api/Price/get-all-product/{productId}");
         response.EnsureSuccessStatusCode();
 
         var jsonResponse = await response.Content.ReadAsStringAsync();
