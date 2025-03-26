@@ -41,7 +41,7 @@ public class EmployeeService : IEmployeeService
 
     public async ValueTask<bool> RemoveAsync(long id)
     {
-        var response = await _httpClient.DeleteAsync($"api/Employee/delete/{id}");
+        var response = await _httpClient.DeleteAsync($"api/Employee/remove/{id}");
 
         return response.IsSuccessStatusCode; // Agar muvaffaqiyatli bo'lsa, true qaytaradi ✅
     }

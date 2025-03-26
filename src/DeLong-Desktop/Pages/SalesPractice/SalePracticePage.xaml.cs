@@ -19,6 +19,7 @@ using DeLong_Desktop.Windows.Sales.PrintOrExcel;
 using DeLong_Desktop.ApiService.DTOs.CashRegisters;
 using DeLong_Desktop.ApiService.DTOs.CashTransfers;
 using DeLong_Desktop.Windows.Sales.SelectionCustomer;
+using DeLong_Desktop.Pages.SaleHistory;
 
 
 namespace DeLong_Desktop.Pages.SalesPractice;
@@ -83,7 +84,7 @@ public partial class SalePracticePage : Page
                 tbDolarKurs.Text = latestRate.SellingDollar.ToString("F2"); // Formatlangan kurs qiymatini ko'rsatish
             }
             else
-                MessageBox.Show("Bugungi dollar kursni o'rnating.","Kurs ma'lumot");
+                MessageBox.Show("Bugungi dollar kursni o'rnating.", "Kurs ma'lumot");
         }
         catch (Exception ex)
         {
@@ -774,8 +775,8 @@ public partial class SalePracticePage : Page
                     return;
                 }
             }
-
             MessageBox.Show("Sotuv muvaffaqiyatli amalga oshirildi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+
         }
         finally
         {

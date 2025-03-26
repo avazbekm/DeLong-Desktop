@@ -37,41 +37,6 @@ public class DebtService : IDebtService
         }
     }
 
-    public async ValueTask<DebtResultDto> ModifyAsync(DebtUpdateDto dto)
-    {
-        try
-        {
-            var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync("api/Debt/update", content);
-
-            if (!response.IsSuccessStatusCode)
-                return null;
-
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<Response<DebtResultDto>>(jsonResponse);
-            return result?.Data;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Xatolik: {ex.Message}");
-            return null;
-        }
-    }
-
-    public async ValueTask<bool> RemoveAsync(long id)
-    {
-        try
-        {
-            var response = await _httpClient.DeleteAsync($"api/Debt/delete/{id}");
-            return response.IsSuccessStatusCode;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Xatolik: {ex.Message}");
-            return false;
-        }
-    }
-
     public async ValueTask<DebtResultDto> RetrieveByIdAsync(long id)
     {
         try

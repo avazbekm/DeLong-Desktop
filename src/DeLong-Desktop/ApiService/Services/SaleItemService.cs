@@ -62,7 +62,7 @@ public class SaleItemService : ISaleItemService
     {
         try
         {
-            var response = await _httpClient.DeleteAsync($"api/SaleItem/delete/{id}");
+            var response = await _httpClient.DeleteAsync($"api/SaleItem/remove/{id}");
             return response.IsSuccessStatusCode;
         }
         catch (Exception ex)

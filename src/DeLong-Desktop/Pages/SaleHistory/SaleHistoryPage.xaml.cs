@@ -16,11 +16,11 @@ public partial class SaleHistoryPage : Page
 {
     private readonly ISaleService _saleService;
     private readonly IUserService _userService;
+    private readonly IDebtService _debtService;
+    private readonly IPaymentService _paymentService;
+    private readonly IProductService _productService;
     private readonly ICustomerService _customerService;
     private readonly ISaleItemService _saleItemService;
-    private readonly IProductService _productService;
-    private readonly IPaymentService _paymentService;
-    private readonly IDebtService _debtService;
     private readonly IDiscountService _discountService;
     private List<SaleDisplayItem> allSaleItems;
     private string CustomerName;
@@ -37,6 +37,7 @@ public partial class SaleHistoryPage : Page
         _debtService = services.GetRequiredService<IDebtService>();
         _discountService = services.GetRequiredService<IDiscountService>();
         LoadSales();
+     
     }
 
     private async void LoadSales()

@@ -1,13 +1,13 @@
 ﻿using System.Windows;
+using System.Windows.Media;
 using System.Windows.Controls;
 using DeLong_Desktop.ApiService.Helpers;
 using DeLong_Desktop.ApiService.Interfaces;
 using DeLong_Desktop.ApiService.DTOs.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.CashTransfers;
-using DeLong_Desktop.ApiService.DTOs.CashWarehouses;
 using DeLong_Desktop.ApiService.DTOs.CashRegisters;
-using System.Windows.Media;
+using DeLong_Desktop.ApiService.DTOs.CashWarehouses;
 
 namespace DeLong_Desktop.Pages.Cashs
 {
@@ -391,7 +391,7 @@ namespace DeLong_Desktop.Pages.Cashs
                     var currentRegister = openRegisters.First();
                     _currentCashRegisterId = currentRegister.Id;
 
-                    var confirm = MessageBox.Show("Haqiqatdan ham kunni yopmoqchimisiz?", "Tasdiqlash",
+                    var confirm = MessageBox.Show("E'tiborli bo'ling kunni yopishni xohlaysizmi?", "Tasdiqlash",
                         MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (confirm == MessageBoxResult.Yes)
                     {

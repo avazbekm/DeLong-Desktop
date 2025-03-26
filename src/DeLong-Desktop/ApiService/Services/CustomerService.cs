@@ -37,7 +37,7 @@ class CustomerService : ICustomerService
 
     public async ValueTask<bool> RemoveAsync(long id)
     {
-        var response = await _httpClient.DeleteAsync($"api/Customer/delete/{id}");
+        var response = await _httpClient.DeleteAsync($"api/Customer/remove/{id}");
         response.EnsureSuccessStatusCode();
         return response.IsSuccessStatusCode;
     }
@@ -54,7 +54,7 @@ class CustomerService : ICustomerService
 
     public async ValueTask<CustomerResultDto> RetrieveByInnAsync(int INN)
     {
-        var response = await _httpClient.GetAsync($"api/Customer/get/INN?inn={INN}");
+        var response = await _httpClient.GetAsync($"api/Customer/get/INN/{INN}");
         response.EnsureSuccessStatusCode();
 
         var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -64,7 +64,7 @@ class CustomerService : ICustomerService
 
     public async ValueTask<CustomerResultDto> RetrieveByJshshirAsync(string jshshir)
     {
-        var response = await _httpClient.GetAsync($"api/Customer/get/Jshshir?jshshir={jshshir}");
+        var response = await _httpClient.GetAsync($"api/Customer/get/jshshir/{jshshir}");
         response.EnsureSuccessStatusCode();
 
         var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -84,7 +84,7 @@ class CustomerService : ICustomerService
 
     public async ValueTask<IEnumerable<CustomerResultDto>> RetrieveAllAsync()
     {
-        var response = await _httpClient.GetAsync("api/Customer/get-allCustomers");
+        var response = await _httpClient.GetAsync("api/Customer/get-all-customers");
         response.EnsureSuccessStatusCode();
 
         var jsonResponse = await response.Content.ReadAsStringAsync();

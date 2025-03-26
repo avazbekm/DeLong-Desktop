@@ -63,7 +63,7 @@ public class DiscountService : IDiscountService
     {
         try
         {
-            var response = await _httpClient.DeleteAsync($"api/Discount/delete/{id}");
+            var response = await _httpClient.DeleteAsync($"api/Discount/remove/{id}");
             return response.IsSuccessStatusCode;
         }
         catch (Exception ex)

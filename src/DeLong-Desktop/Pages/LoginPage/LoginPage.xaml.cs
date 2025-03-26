@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using DeLong_Desktop.ApiService.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Pages.LoginPage;
 
@@ -8,16 +10,18 @@ namespace DeLong_Desktop.Pages.LoginPage;
 /// </summary>
 public partial class LoginPage : Page
 {
+    private readonly IAuthService _authService;
     private readonly IServiceProvider _serviceProvider;
 
     public LoginPage(IServiceProvider serviceProvider)
     {
         InitializeComponent();
         _serviceProvider = serviceProvider;
+        _authService = _serviceProvider.GetRequiredService<IAuthService>();
         txtUsername.Focus();
     }
 
-    private void btnLogin_Click(object sender, RoutedEventArgs e)
+    private async void btnLogin_Click(object sender, RoutedEventArgs e)
     {
         string username = txtUsername.Text;
         string password = txtPassword.Password;
@@ -28,23 +32,20 @@ public partial class LoginPage : Page
             return;
         }
 
-        if (username == "admin" && password == "1234")
+        try
         {
-            try
+            string token = await _authService.LoginAsync(username, password);
+            if (token != null)
             {
-                var loginWindow = Window.GetWindow(this);
-                var mainWindow = new MainWindow(_serviceProvider);
+                App.Current.Properties["Token"] = token; // Tokenni saqlash
+                var mainWindow = new MainWindow(_serviceProvider); // Agar DI kerak bo‘lsa, qo‘shiladi
                 mainWindow.Show();
-                loginWindow.Close(); // MainWindow ochilgandan keyin yopamiz
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"MainWindow ochishda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                Window.GetWindow(this).Close();
             }
         }
-        else
+        catch (Exception ex)
         {
-            MessageBox.Show("Noto‘g‘ri foydalanuvchi nomi yoki parol!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"Kirishda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

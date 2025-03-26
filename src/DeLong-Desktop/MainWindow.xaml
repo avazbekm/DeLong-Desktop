@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DeLong_Desktop"
         mc:Ignorable="d"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Bosh sahifa" Height="600" Width="800"
+        Title="DeLong" Height="600" Width="800"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <DropShadowEffect x:Key="DefaultDropShadowEffect" ShadowDepth="5" Opacity="0.5" BlurRadius="10"/>
