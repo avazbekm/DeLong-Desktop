@@ -133,6 +133,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Boshqa.
+        /// </summary>
+        internal static string Boshqa {
+            get {
+                return ResourceManager.GetString("Boshqa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Plastik.
         /// </summary>
         internal static string Card {
@@ -210,6 +219,33 @@ namespace DeLong_Desktop.Resources {
         internal static string CostPrice {
             get {
                 return ResourceManager.GetString("CostPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currency_Dollar .
+        /// </summary>
+        internal static string Currency_Dollar_ {
+            get {
+                return ResourceManager.GetString("Currency_Dollar ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plastik (UZP).
+        /// </summary>
+        internal static string Currency_Plastic_ {
+            get {
+                return ResourceManager.GetString("Currency_Plastic ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to So&apos;m (UZS).
+        /// </summary>
+        internal static string Currency_Sum {
+            get {
+                return ResourceManager.GetString("Currency_Sum", resourceCulture);
             }
         }
         
@@ -358,6 +394,51 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kassa aylanmasi.
+        /// </summary>
+        internal static string Kassa_aylanmasi {
+            get {
+                return ResourceManager.GetString("Kassa aylanmasi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kassa o&apos;tkazmalari.
+        /// </summary>
+        internal static string Kassa_o_tkazmalari {
+            get {
+                return ResourceManager.GetString("Kassa o\'tkazmalari", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kassadan.
+        /// </summary>
+        internal static string Kassadan {
+            get {
+                return ResourceManager.GetString("Kassadan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kassaga.
+        /// </summary>
+        internal static string Kassaga {
+            get {
+                return ResourceManager.GetString("Kassaga", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kassani boshqarish.
+        /// </summary>
+        internal static string Kassani_boshqarish {
+            get {
+                return ResourceManager.GetString("Kassani boshqarish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kategoriya.
         /// </summary>
         internal static string Kategoriya {
@@ -381,6 +462,15 @@ namespace DeLong_Desktop.Resources {
         internal static string Kimdan_qaytmoqda {
             get {
                 return ResourceManager.GetString("Kimdan qaytmoqda", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kunni ochish.
+        /// </summary>
+        internal static string Kunni_ochish {
+            get {
+                return ResourceManager.GetString("Kunni ochish", resourceCulture);
             }
         }
         
@@ -471,6 +561,15 @@ namespace DeLong_Desktop.Resources {
         internal static string Narxi_ {
             get {
                 return ResourceManager.GetString("Narxi ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O&apos;tkazish.
+        /// </summary>
+        internal static string O_tkazish {
+            get {
+                return ResourceManager.GetString("O\'tkazish", resourceCulture);
             }
         }
         
@@ -921,6 +1020,33 @@ namespace DeLong_Desktop.Resources {
         internal static string Yakunlash_ {
             get {
                 return ResourceManager.GetString("Yakunlash ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zaxiradagi pullar.
+        /// </summary>
+        internal static string Zaxiradagi_pullar {
+            get {
+                return ResourceManager.GetString("Zaxiradagi pullar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zaxiradan.
+        /// </summary>
+        internal static string Zaxiradan {
+            get {
+                return ResourceManager.GetString("Zaxiradan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zaxiraga.
+        /// </summary>
+        internal static string Zaxiraga {
+            get {
+                return ResourceManager.GetString("Zaxiraga", resourceCulture);
             }
         }
     }
