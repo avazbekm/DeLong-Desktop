@@ -1,14 +1,18 @@
-﻿using System.Windows;
-using System.Windows.Media;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using DeLong_Desktop.ApiService.Interfaces;
+using System.Windows.Media;
 using DeLong_Desktop.ApiService.DTOs.Debts;
-using DeLong_Desktop.ApiService.DTOs.Sales;
-using DeLong_Desktop.ApiService.DTOs.Payments;
-using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.Discounts;
+using DeLong_Desktop.ApiService.DTOs.Payments;
+using DeLong_Desktop.ApiService.DTOs.Sales;
 using DeLong_Desktop.ApiService.Helpers;
+using DeLong_Desktop.ApiService.Interfaces;
+using DeLong_Desktop.Pages.SalesPractice;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Pages.SaleHistory;
 
@@ -36,11 +40,27 @@ public partial class SaleHistoryPage : Page
         _paymentService = services.GetRequiredService<IPaymentService>();
         _debtService = services.GetRequiredService<IDebtService>();
         _discountService = services.GetRequiredService<IDiscountService>();
-        LoadSales();
-     
+
+        // Sahifa yuklanishi uchun Loaded hodisasiga bog‘lash
+        this.Loaded += async (s, e) => await LoadSalesAsync();
+
+        // SalePracticePage ni topib, SaleCompleted event’iga obuna bo‘lish
+        if (Application.Current.MainWindow is Window mainWindow)
+        {
+            var salePracticePage = FindChild<SalePracticePage>(mainWindow);
+            if (salePracticePage != null)
+            {
+                salePracticePage.SaleCompleted += (s, e) => Refresh();
+            }
+        }
     }
 
-    private async void LoadSales()
+    public async void Refresh()
+    {
+        await LoadSalesAsync();
+    }
+
+    private async Task LoadSalesAsync()
     {
         try
         {
@@ -49,7 +69,6 @@ public partial class SaleHistoryPage : Page
 
             if (sales != null && sales.Any())
             {
-                // Oxirgi sotuv birinchi qatorda turishi uchun CreatedAt bo‘yicha teskari tartiblash
                 foreach (var sale in sales.OrderByDescending(s => s.CreatedAt))
                 {
                     string customerName = "Noma'lum";
@@ -69,7 +88,7 @@ public partial class SaleHistoryPage : Page
                         Id = sale.Id,
                         CustomerName = customerName.ToUpper(),
                         TotalAmount = sale.TotalAmount,
-                        CreatedAt = TimeHelper.ConvertToUzbekistanTime( sale.CreatedAt)
+                        CreatedAt = TimeHelper.ConvertToUzbekistanTime(sale.CreatedAt)
                     });
                 }
                 saleDataGrid.ItemsSource = allSaleItems;
@@ -105,7 +124,6 @@ public partial class SaleHistoryPage : Page
         {
             try
             {
-                // printga berish uchun customer nameni olindi
                 CustomerName = selectedSale.CustomerName;
 
                 if (sender is Button button)
@@ -187,7 +205,6 @@ public partial class SaleHistoryPage : Page
             };
             doc.Blocks.Add(header);
 
-            // chekId qo'shamiz
             Paragraph chekId = new Paragraph(new Run($"ChekId: {sale.Id}"))
             {
                 FontSize = 14,
@@ -196,21 +213,17 @@ public partial class SaleHistoryPage : Page
             };
             doc.Blocks.Add(chekId);
 
-            // Mijoz va sana bir qatorda
             Paragraph customerInfo = new Paragraph();
             customerInfo.FontSize = 14;
             customerInfo.Margin = new Thickness(0, 0, 0, 0);
-            customerInfo.TextAlignment = TextAlignment.Left; // Umumiy qatorni chapga joylashtiramiz
+            customerInfo.TextAlignment = TextAlignment.Left;
 
-            // Mijoz nomi (chapda)
             Run customerNameRun = new Run($"Mijoz: {CustomerName.ToUpper()}");
             customerInfo.Inlines.Add(customerNameRun);
 
-            // Bo‘sh joy qo‘shish (o‘rtada bo‘sh joy uchun)
             customerInfo.Inlines.Add(new Run(new string(' ', 100)));
 
-            // Sana (o‘ngda)
-            Run dateRun = new Run($"Sana: {createdAt:dd-MM-yyyy}");
+            Run dateRun = new Run($"Sana: {TimeHelper.ConvertToUzbekistanTime(createdAt):dd.MM.yyyy}");
             customerInfo.Inlines.Add(dateRun);
 
             doc.Blocks.Add(customerInfo);
@@ -259,7 +272,6 @@ public partial class SaleHistoryPage : Page
             };
             doc.Blocks.Add(totalAmount);
 
-            // To‘lovlar – "Debt" turi chiqarilmaydi
             if (payments != null && payments.Any())
             {
                 foreach (var payment in payments)
@@ -283,11 +295,10 @@ public partial class SaleHistoryPage : Page
                 }
             }
 
-            // Qarzlar – faqat bitta qarz ko‘rsatiladi
             if (debts != null && debts.Any())
             {
                 var latestDebt = debts.OrderByDescending(d => d.Id).First();
-                Paragraph debtInfo = new Paragraph(new Run($"Qarz: {latestDebt.RemainingAmount:N2} (Muddat: {latestDebt.DueDate:dd-MM-yyyy})"))
+                Paragraph debtInfo = new Paragraph(new Run($"Qarz: {latestDebt.RemainingAmount:N2} (Muddat: {TimeHelper.ConvertToUzbekistanTime(latestDebt.DueDate):dd.MM.yyyy})"))
                 {
                     FontSize = 14,
                     Margin = new Thickness(0, 5, 55, 0),
@@ -296,7 +307,6 @@ public partial class SaleHistoryPage : Page
                 doc.Blocks.Add(debtInfo);
             }
 
-            // Chegirmalar
             if (discounts != null && discounts.Any())
             {
                 foreach (var discount in discounts)
@@ -321,5 +331,24 @@ public partial class SaleHistoryPage : Page
                 MessageBox.Show($"Chop etishda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+    }
+
+    private T FindChild<T>(DependencyObject parent) where T : DependencyObject
+    {
+        if (parent == null) return null;
+
+        int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
+        for (int i = 0; i < childrenCount; i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+            if (child is T typedChild)
+            {
+                return typedChild;
+            }
+
+            var result = FindChild<T>(child);
+            if (result != null) return result;
+        }
+        return null;
     }
 }

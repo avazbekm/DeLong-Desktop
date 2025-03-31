@@ -7,10 +7,12 @@ using DeLong_Desktop.Pages.Cashs;
 using DeLong_Desktop.Pages.Reports;
 using DeLong_Desktop.Pages.Products;
 using DeLong_Desktop.Pages.Customers;
-using DeLong_Desktop.Pages.Warehouses;
 using DeLong_Desktop.Pages.SaleHistory;
 using DeLong_Desktop.Pages.SalesPractice;
 using DeLong_Desktop.Pages.AdditionalOperations;
+using DeLong_Desktop.Pages.Reports;
+using DeLong_Desktop.Pages.Suppliers;
+using DeLong_Desktop.Pages.Branches;
 
 namespace DeLong_Desktop;
 
@@ -23,7 +25,6 @@ public partial class MainWindow : Window
     private CashPage _cashPage;
     private ProductsPage _productpage;
     private CustomersPage _customerPage;
-    private WarehousePage _warehousePage;
     private SaleHistoryPage _saleHistoryPage;
     private SalePracticePage _salePracticePage;
     private readonly IServiceProvider _services;
@@ -86,11 +87,6 @@ public partial class MainWindow : Window
         if (_productpage == null)
         {
             _productpage = new ProductsPage(_services);
-        }
-
-        if (_warehousePage == null)
-        {
-            _warehousePage = new WarehousePage(_services);
         }
 
         if (_inputPage == null)
@@ -215,18 +211,9 @@ public partial class MainWindow : Window
         _productpage.dataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.Amallar_;
         #endregion
 
-        #region WarehousePage
-        HintAssist.SetHint(_warehousePage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
-        _warehousePage.btnAdd.Content = DeLong_Desktop.Resources.Resource.Add;
-        _warehousePage.btnExcel.Content = DeLong_Desktop.Resources.Resource.ToExcell;
-        _warehousePage.warehouseDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Ombor_nomi_;
-        _warehousePage.warehouseDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.Ombor_mudiri_;
-        _warehousePage.warehouseDataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.Address;
-        _warehousePage.warehouseDataGrid.Columns[3].Header = DeLong_Desktop.Resources.Resource.Action;
-        #endregion
-
         #region MainWindow
-        btnOmbor.Content = DeLong_Desktop.Resources.Resource.Warehouse;
+        btnSupplier.Content = DeLong_Desktop.Resources.Resource.Supplier;
+        btnBranch.Content = DeLong_Desktop.Resources.Resource.Branch;
         btnCash.Content = DeLong_Desktop.Resources.Resource.Cash;
         btnChiqim.Content = DeLong_Desktop.Resources.Resource.Expense;
         btnChiqish.Content = DeLong_Desktop.Resources.Resource.Exit;
@@ -328,25 +315,6 @@ public partial class MainWindow : Window
         {
             HintAssist.SetHint(_productpage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
             HintAssist.SetHint(_productpage.cmbCategory, DeLong_Desktop.Resources.Resource.Category);
-        }
-    }
-
-    /// <summary>
-    /// Ombor sahifasiga o'tish.
-    /// </summary>
-    private void btnOmbor_Click(object sender, RoutedEventArgs e)
-    {
-        if (_warehousePage == null)
-        {
-            _warehousePage = new WarehousePage(_services);
-        }
-
-        Navigator.Navigate(_warehousePage);
-        UpdateLanguage(); // Matnlarni sahifaga moslashtirish
-
-        if (_warehousePage.txtSearch != null)
-        {
-            HintAssist.SetHint(_warehousePage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
         }
     }
 
@@ -469,5 +437,17 @@ public partial class MainWindow : Window
     {
         var reportPage = new ReportPage();
         Navigator.Navigate(reportPage);
+    }
+
+    private void btnSupplier_Click(object sender, RoutedEventArgs e)
+    {
+        var suppliersPage = new SuppliersPage(_services);
+        Navigator.Navigate(suppliersPage);
+    }
+
+    private void btnBranch_Click(object sender, RoutedEventArgs e)
+    {
+        var branchesPage= new BranchesPage(_services);
+        Navigator.Navigate(branchesPage);
     }
 }

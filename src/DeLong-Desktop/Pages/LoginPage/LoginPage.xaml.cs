@@ -23,12 +23,15 @@ public partial class LoginPage : Page
 
     private async void btnLogin_Click(object sender, RoutedEventArgs e)
     {
+        btnLogin.IsEnabled = false; // Tugmani o‘chirish
+
         string username = txtUsername.Text;
         string password = txtPassword.Password;
 
         if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
         {
             MessageBox.Show("Foydalanuvchi nomi va parolni kiriting!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+            btnLogin.IsEnabled = true; // Xato bo‘lsa qayta yoqish
             return;
         }
 
@@ -46,6 +49,10 @@ public partial class LoginPage : Page
         catch (Exception ex)
         {
             MessageBox.Show($"Kirishda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        finally
+        {
+            btnLogin.IsEnabled = true; // Har qanday holatda tugmani qayta yoqish
         }
     }
 }

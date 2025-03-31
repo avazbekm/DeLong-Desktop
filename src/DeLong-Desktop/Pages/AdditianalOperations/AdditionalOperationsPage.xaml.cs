@@ -26,7 +26,6 @@ public partial class AdditionalOperationsPage : Page
     private readonly IProductService _productService;
     private readonly ISaleItemService _saleItemService;
     private readonly ICustomerService _customerService;
-    private readonly IWarehouseService _warehouseService; // Omborlar uchun servis
     private readonly IKursDollarService _kursDollarService;
     private readonly IDebtPaymentService _debtPaymentService;
     private readonly ITransactionService _transactionService;
@@ -52,7 +51,6 @@ public partial class AdditionalOperationsPage : Page
         _productService = services.GetRequiredService<IProductService>();
         _customerService = services.GetRequiredService<ICustomerService>();
         _saleItemService = services.GetRequiredService<ISaleItemService>();
-        _warehouseService = services.GetRequiredService<IWarehouseService>();
         _kursDollarService = services.GetRequiredService<IKursDollarService>();
         _transactionService = services.GetRequiredService<ITransactionService>();
         _debtPaymentService = services.GetRequiredService<IDebtPaymentService>();
@@ -66,32 +64,9 @@ public partial class AdditionalOperationsPage : Page
 
         // Mahsulotlar ro‘yxatini yuklash
         LoadProductData();
-        LoadWarehouses(); // Omborlarni yuklash
         cbTransactionType.ItemsSource = Enum.GetNames(typeof(TransactionType));
     }
 
-    private async void LoadWarehouses()
-    {
-        try
-        {
-            // Omborlar ro‘yxatini olish
-            var warehouses = await _warehouseService.RetrieveAllAsync();
-            if (warehouses == null || !warehouses.Any())
-            {
-                MessageBox.Show("Omborlar topilmadi! API yoki ma’lumot bazasini tekshiring.");
-                return;
-            }
-
-            // ComboBox’ga omborlarni yuklash
-            cbToWarehouse.ItemsSource = warehouses;
-            cbToWarehouse.DisplayMemberPath = "Name"; // Ombor nomini ko‘rsatish
-            cbToWarehouse.SelectedValuePath = "Id";   // Ombor ID’sini saqlash
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Omborlarni yuklashda xatolik: {ex.Message}");
-        }
-    }
 
     // Mahsulotlar ro‘yxatini ComboBox ga yuklash
     private async void LoadProductData()
@@ -290,6 +265,7 @@ public partial class AdditionalOperationsPage : Page
             tbTotalDebt.Text = "0.00 so‘m";
         }
     }
+
     private async void PayDebtButton_Click(object sender, RoutedEventArgs e)
     {
         if (sender is Button button && button.DataContext is DebtItem selectedDebt)
@@ -589,6 +565,7 @@ public partial class AdditionalOperationsPage : Page
             MessageBox.Show($"To‘lov amalga oshirishda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+
     private void AcceptReturnedProductButton_Click(object sender, RoutedEventArgs e) { }
     private void AddReturnedProductButton_Click(object sender, RoutedEventArgs e) { }
     private void TransferProductButton_Click(object sender, RoutedEventArgs e) { }
@@ -849,7 +826,7 @@ public partial class AdditionalOperationsPage : Page
             // Tranzaksiya DTO yaratish
             var transactionDto = new TransactionCreationDto
             {
-                WarehouseIdTo = (long)cbToWarehouse.SelectedValue,
+                BranchIdTo = (long)cbToWarehouse.SelectedValue,
                 TransactionType = (TransactionType)Enum.Parse(typeof(TransactionType), cbTransactionType.SelectedItem.ToString()),
                 Comment = tbCommentProvodka.Text
             };

@@ -345,17 +345,14 @@
   <data name="Valyutani ayirboshlash " xml:space="preserve">
     <value>Valyutani ayirboshlash </value>
   </data>
-  <data name="Warehouse" xml:space="preserve">
-    <value>Ombor</value>
+  <data name="Supplier" xml:space="preserve">
+    <value>Taminotchi</value>
   </data>
   <data name="WarehouseTransfer" xml:space="preserve">
     <value>Omborlar o‘rtasida o'tkazmalar</value>
   </data>
   <data name="Yakunlash " xml:space="preserve">
     <value>Yakunlash </value>
-  </data>
-  <data name="To‘lov summasi " xml:space="preserve">
-    <value>To'lov summasi</value>
   </data>
   <data name="Qoshimcha amallar" xml:space="preserve">
     <value>Qoshimcha amallar</value>
@@ -449,5 +446,8 @@
   </data>
   <data name="Zaxiradagi pullar" xml:space="preserve">
     <value>Zaxiradagi pullar</value>
+
+  <data name="Branch" xml:space="preserve">
+    <value>Filial</value>
   </data>
 </root>

@@ -27,7 +27,7 @@
                 <TextBox x:Name="tbDollarKurs" Foreground ="{DynamicResource SecondaryTextColor}" FontSize="16" BorderThickness="0,0,0,1" CaretBrush="{DynamicResource SecondaryTextColor}" BorderBrush="{DynamicResource PrimaryBorderColor}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom" TextChanged="tbDollarKurs_TextChanged"/>
                 <!-- olish narxi -->
                 <Label Content="So'mda:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
-                <TextBox x:Name="tbDollarOlishKurs" IsReadOnly="True" CaretBrush="{DynamicResource SecondaryTextColor}" Foreground ="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource PrimaryBorderColor}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbDollarOlishKurs_TextChanged"/>
+                <TextBox x:Name="tbDollarOlishKurs" IsReadOnly="True" CaretBrush="{DynamicResource SecondaryTextColor}" Foreground ="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource PrimaryBorderColor}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
             </Grid>
             <Button x:Name="btnAddDollarKurs" Content="Sotib olish" Padding="0" FontSize="18" Style="{DynamicResource MaterialDesignPaperSecondaryLightButton}" Width="350" Foreground="{DynamicResource SecondaryTextColor}" Background="{DynamicResource SecondaryBackground}" BorderThickness="0" Height="30" Click="btnAddDollarKurs_Click"/>
         </StackPanel>

@@ -1,0 +1,40 @@
+﻿<Window x:Class="DeLong_Desktop.Windows.Suppliers.EditSupplierWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DeLong_Desktop.Windows.Suppliers"
+        mc:Ignorable="d"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Taminotchi Tahrirlash" Height="250" Width="400"
+        WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#334257" Offset="0"/>
+            <GradientStop Color="#476072" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Taminotchi Tahrirlash" FontSize="22" FontWeight="Bold" Foreground="Snow" HorizontalAlignment="Center" Margin="0 0 0 20"/>
+
+        <Border Grid.Row="1" Background="#548CA8" CornerRadius="5" Margin="0 0 0 15" Padding="5">
+            <TextBox x:Name="txtPhone" CaretBrush="{DynamicResource SecondaryTextColor}" BorderThickness="0" Background="Transparent" Foreground="Snow" md:HintAssist.Hint="Telefon raqami" FontSize="14"/>
+        </Border>
+
+        <Border Grid.Row="2" Background="#548CA8" CornerRadius="5" Margin="0 0 0 15" Padding="5">
+            <TextBox x:Name="txtName" CaretBrush="{DynamicResource SecondaryTextColor}" BorderThickness="0" Background="Transparent" Foreground="Snow" md:HintAssist.Hint="Taminotchi nomi" FontSize="14"/>
+        </Border>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Saqlash" Width="110" Background="#548CA8" Foreground="Snow" BorderThickness="0" Click="Save_Click" Margin="0 0 10 0"/>
+            <Button Content="Bekor qilish" Width="110" Background="Transparent" Foreground="Snow" BorderBrush="Snow" BorderThickness="1" Click="Cancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

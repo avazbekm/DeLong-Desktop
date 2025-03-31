@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.Companents;
 using DeLong_Desktop.Pages.Input;
@@ -8,18 +9,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Windows.Pirces;
 
-/// <summary>
-/// Interaction logic for PriceAddWindow.xaml
-/// </summary>
 public partial class PriceAddWindow : Window
 {
     private readonly IServiceProvider services;
     private readonly IPriceService priceService;
+    public bool IsModified { get; set; } = false;
+    public event EventHandler PriceModified; // Yangi hodisa
 
     public PriceAddWindow(IServiceProvider services)
     {
         InitializeComponent();
-        tbQuantity.Focus(); // Ochilganda fokusni o'rnatish
+        tbQuantity.Focus();
         this.services = services;
         priceService = services.GetRequiredService<IPriceService>();
     }
@@ -28,6 +28,12 @@ public partial class PriceAddWindow : Window
     {
         try
         {
+            if (string.IsNullOrEmpty(tbQuantity.Text))
+            {
+                MessageBox.Show("Miqdorni kiriting.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             PriceUpdateDto priceUpdateDto = new PriceUpdateDto()
             {
                 Id = PriceInfo.PriceId,
@@ -38,12 +44,14 @@ public partial class PriceAddWindow : Window
                 ProductId = InputInfo.ProductId
             };
 
-            // Warehouseni qo'shish uchun xizmat chaqirilyapti
             bool result = await priceService.ModifyAsync(priceUpdateDto);
 
             if (result)
             {
                 MessageBox.Show($"{tbQuantity.Text} {PriceInfo.UnitOfMesure} muvaffaqiyatli qo'shildi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+                IsModified = true;
+                PriceModified?.Invoke(this, EventArgs.Empty); // Yangilash signalini yuborish
+                Close();
             }
             else
             {
@@ -52,23 +60,16 @@ public partial class PriceAddWindow : Window
         }
         catch (Exception ex)
         {
-            // Kutilmagan xatoliklar uchun
             MessageBox.Show($"Kutilmagan xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-
-        Close(); // Yopish
     }
 
     private void tbQuantity_TextChanged(object sender, TextChangedEventArgs e)
     {
         TextBox textBox = sender as TextBox;
-
         if (textBox != null)
         {
-            // Hozirgi matnni olish
             string currentText = textBox.Text;
-
-            // Faqat raqamlar va bir dona "." ga ruxsat berish
             string filteredText = "";
             bool hasDot = false;
 
@@ -81,18 +82,16 @@ public partial class PriceAddWindow : Window
                 else if (c == '.' && !hasDot)
                 {
                     filteredText += c;
-                    hasDot = true; // "." faqat bir marta bo'lishi uchun
+                    hasDot = true;
                 }
             }
 
-            // Matnni yangilash, agar o'zgartirish kerak bo'lsa
             if (currentText != filteredText)
             {
                 int caretIndex = textBox.CaretIndex - (currentText.Length - filteredText.Length);
                 textBox.Text = filteredText;
-                textBox.CaretIndex = Math.Max(0, caretIndex); // Kursorni saqlash
+                textBox.CaretIndex = Math.Max(0, caretIndex);
             }
         }
     }
-
 }

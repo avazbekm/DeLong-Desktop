@@ -7,12 +7,48 @@
         mc:Ignorable="d"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Narx qo'shish oynasi" 
-        Background="#334257" Height="240" Width="400"
+        Background="#334257" Height="330" Width="400"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
-   
-    <StackPanel x:Name="spPrice" >
+
+    <StackPanel x:Name="spPrice">
         <StackPanel Orientation="Vertical">
+            <!-- Yetkazib beruvchi ComboBox -->
+            <Grid Margin="20 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Yetkazib beruvchi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Column="0"/>
+                <ComboBox x:Name="cbSupplier" Grid.Column="1" Foreground="Snow" FontSize="16" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cbSupplier_SelectionChanged">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="Background" Value="Gray"/>
+                            <Setter Property="Foreground" Value="Snow"/>
+                            <!-- Matn rangini oq saqlash uchun -->
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+            </Grid>
+
+            <!-- Qabul qiluvchi ComboBox -->
+            <Grid Margin="20 0 20 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Qabul qiluvchi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Column="0"/>
+                <ComboBox x:Name="cbReceiver" Grid.Column="1" Foreground="Snow" FontSize="16" DisplayMemberPath="Name" SelectedValuePath="Id">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="Background" Value="Gray"/>
+                            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
+                            <!-- Matn rangini oq saqlash uchun -->
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+            </Grid>
+
             <Grid Margin="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -44,5 +80,4 @@
             <Button x:Name="btnAddPrice" Content="Saqlash" Padding="0" FontSize="18" Style="{DynamicResource MaterialDesignPaperSecondaryLightButton}" Width="350" Foreground="Snow" Background="#548CA8" BorderThickness="0" Height="30" Click="btnAddPrice_Click"/>
         </StackPanel>
     </StackPanel>
-
 </Window>

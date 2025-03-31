@@ -40,10 +40,6 @@ public partial class App : Application
                 .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl)
                 .AddHttpMessageHandler<AuthDelegatingHandler>();
 
-        services.AddHttpClient<IWarehouseService, WarehouseService>()
-                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl)
-                .AddHttpMessageHandler<AuthDelegatingHandler>();
-
         services.AddHttpClient<IKursDollarService, KursDollarService>()
                 .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl)
                 .AddHttpMessageHandler<AuthDelegatingHandler>();
@@ -101,6 +97,14 @@ public partial class App : Application
                 .AddHttpMessageHandler<AuthDelegatingHandler>();
 
         services.AddHttpClient<IAuthService, AuthService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl)
+                .AddHttpMessageHandler<AuthDelegatingHandler>();
+
+        services.AddHttpClient<IBranchService, BranchService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl)
+                .AddHttpMessageHandler<AuthDelegatingHandler>();
+
+        services.AddHttpClient<ISupplierService, SupplierService>()
                 .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl)
                 .AddHttpMessageHandler<AuthDelegatingHandler>();
 

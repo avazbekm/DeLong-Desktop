@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.ApiService.Helpers;
@@ -9,15 +10,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Windows.Products;
 
-/// <summary>
-/// Interaction logic for ProductAddWindow.xaml
-/// </summary>
 public partial class ProductAddWindow : Window
 {
     private readonly ICategoryService categoryService;
     private readonly IProductService productService;
     private readonly IPriceService priceService;
     private readonly IServiceProvider services;
+    public bool IsCreated { get; set; } = false;
+    public event EventHandler ProductAdded; // Yangi hodisa qo‘shildi
 
     public ProductAddWindow(IServiceProvider services)
     {
@@ -60,7 +60,7 @@ public partial class ProductAddWindow : Window
                 productDataGrid.ItemsSource = items;
             }
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
@@ -76,7 +76,6 @@ public partial class ProductAddWindow : Window
             spJisNew.Visibility = Visibility.Collapsed;
             grCategoryShow.Visibility = Visibility.Visible;
             grProductShow.Visibility = Visibility.Collapsed;
-
 
             List<Item> items = new List<Item>();
             var existCategories = await categoryService.RetrieveAllAsync();
@@ -95,7 +94,7 @@ public partial class ProductAddWindow : Window
             }
             categoryDataGrid.ItemsSource = items;
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
@@ -139,9 +138,9 @@ public partial class ProductAddWindow : Window
             }
             categoryDataGrid.ItemsSource = items;
         }
-        catch (Exception ex) 
-        { 
-            MessageBox.Show(ex.Message); 
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
         }
     }
 
@@ -165,14 +164,12 @@ public partial class ProductAddWindow : Window
                 MessageBox.Show("Kategoriya nomini kiriting.");
                 return;
             }
-            // Kategoriyani yaratish uchun DTO obyekti
             CategoryCreationDto categoryCreationDto = new CategoryCreationDto
             {
                 Name = txtbCategoryName.Text,
                 Description = txtbDescriptionCategory.Text
             };
 
-            // Kategoriya qo'shish uchun xizmat chaqirilyapti
             bool result = await categoryService.AddAsync(categoryCreationDto);
             if (result)
             {
@@ -185,23 +182,22 @@ public partial class ProductAddWindow : Window
         }
         catch (Exception ex)
         {
-            // Kutilmagan xatoliklar uchun
             MessageBox.Show($"Kutilmagan xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
-    private void txtbCategoryName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    private void txtbCategoryName_TextChanged(object sender, TextChangedEventArgs e)
     {
         string searchText = txtbCategoryName.Text.Trim();
         FilterCategories(searchText);
     }
 
-    private void txtbName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    private void txtbName_TextChanged(object sender, TextChangedEventArgs e)
     {
         string searchText = txtbName.Text.Trim();
         FilterProducts(searchText);
     }
-    
+
     private async void FilterCategories(string searchText)
     {
         try
@@ -226,8 +222,8 @@ public partial class ProductAddWindow : Window
                 categoryDataGrid.ItemsSource = items;
             }
         }
-        catch (Exception ex) 
-        { 
+        catch (Exception ex)
+        {
             MessageBox.Show(ex.Message);
         }
     }
@@ -252,12 +248,11 @@ public partial class ProductAddWindow : Window
                             TartibRaqam = ++Number,
                             Name = product.Name.ToUpper()
                         });
-
                 }
                 productDataGrid.ItemsSource = items;
             }
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
@@ -265,8 +260,7 @@ public partial class ProductAddWindow : Window
 
     private void Edit_Button_Click(object sender, RoutedEventArgs e)
     {
-        
-        if (rbtnCategory.IsChecked.HasValue.Equals(true) && spQaytish.Visibility != Visibility.Visible )
+        if (rbtnCategory.IsChecked.HasValue.Equals(true) && spQaytish.Visibility != Visibility.Visible)
         {
             return;
         }
@@ -289,7 +283,10 @@ public partial class ProductAddWindow : Window
             ProductCreationDto productCreationDto = new ProductCreationDto();
 
             if (txtbName.Text.Equals(""))
+            {
                 MessageBox.Show("Ma'lumotni to'liq kiriting.");
+                return;
+            }
 
             productCreationDto.Name = txtbName.Text.Trim();
             productCreationDto.Description = txtbDescription.Text.Trim();
@@ -307,7 +304,10 @@ public partial class ProductAddWindow : Window
             bool result = await productService.AddAsync(productCreationDto);
             if (result)
             {
-                MessageBox.Show("Kategoriya muvaffaqiyatli saqlandi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Mahsulot muvaffaqiyatli saqlandi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+                IsCreated = true;
+                ProductAdded?.Invoke(this, EventArgs.Empty); // Hodisani chaqiramiz
+                this.Close();
             }
             else
             {
@@ -316,7 +316,6 @@ public partial class ProductAddWindow : Window
         }
         catch (Exception ex)
         {
-            // Kutilmagan xatoliklar uchun
             MessageBox.Show($"Kutilmagan xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
