@@ -1,10 +1,10 @@
 ﻿using System.Windows;
-
 using System.Globalization;
 using System.Windows.Controls;
 using MaterialDesignThemes.Wpf;
 using DeLong_Desktop.Pages.Input;
 using DeLong_Desktop.Pages.Cashs;
+using DeLong_Desktop.Pages.Reports;
 using DeLong_Desktop.Pages.Products;
 using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.Pages.SaleHistory;
@@ -22,6 +22,7 @@ namespace DeLong_Desktop;
 public partial class MainWindow : Window
 {
     private InputPage _inputPage;
+    private CashPage _cashPage;
     private ProductsPage _productpage;
     private CustomersPage _customerPage;
     private SaleHistoryPage _saleHistoryPage;
@@ -102,6 +103,50 @@ public partial class MainWindow : Window
         {
             _saleHistoryPage = new SaleHistoryPage(_services);
         }
+
+        if (_cashPage == null)
+        {
+            _cashPage = new CashPage(_services);
+        }
+
+        #region  CashPage
+        _cashPage.tbkassaniboshqarish.Text = DeLong_Desktop.Resources.Resource.Kassani_boshqarish;
+        _cashPage.OpenDayButton.Content = DeLong_Desktop.Resources.Resource.Kunni_ochish;
+        _cashPage.tbkassaqoldiqlari.Text = DeLong_Desktop.Resources.Resource.Kassani_boshqarish;
+        _cashPage.ShowTurnoverButton.Content = DeLong_Desktop.Resources.Resource.Kassa_aylanmasi;
+        _cashPage.tbkassaotkazmalari.Text = DeLong_Desktop.Resources.Resource.Kassa_o_tkazmalari;
+        _cashPage.TransferButton.Content = DeLong_Desktop.Resources.Resource.O_tkazish;
+        _cashPage.tbzaxiradagipullar.Text = DeLong_Desktop.Resources.Resource.Zaxiradagi_pullar;
+        HintAssist.SetHint(_cashPage.NoteTextBox, DeLong_Desktop.Resources.Resource.Izoh);
+
+        if (_cashPage.CurrencyComboBox.Items.Count >= 3)
+        {
+            ((ComboBoxItem)_cashPage.CurrencyComboBox.Items[0]).Content = DeLong_Desktop.Resources.Resource.Currency_Sum;
+            ((ComboBoxItem)_cashPage.CurrencyComboBox.Items[1]).Content = DeLong_Desktop.Resources.Resource.Currency_Plastic_;
+            ((ComboBoxItem)_cashPage.CurrencyComboBox.Items[2]).Content = DeLong_Desktop.Resources.Resource.Currency_Dollar_;
+        }
+
+        if (_cashPage.FromComboBox.Items.Count >= 3)
+        {
+            ((ComboBoxItem)_cashPage.FromComboBox.Items[0]).Content = DeLong_Desktop.Resources.Resource.Kassadan;
+            ((ComboBoxItem)_cashPage.FromComboBox.Items[1]).Content = DeLong_Desktop.Resources.Resource.Zaxiradan;
+            ((ComboBoxItem)_cashPage.FromComboBox.Items[2]).Content = DeLong_Desktop.Resources.Resource.Boshqa;
+        }
+
+        if (_cashPage.CurrencyComboBox1.Items.Count >= 3)
+        {
+            ((ComboBoxItem)_cashPage.CurrencyComboBox1.Items[0]).Content = DeLong_Desktop.Resources.Resource.Currency_Sum;
+            ((ComboBoxItem)_cashPage.CurrencyComboBox1.Items[1]).Content = DeLong_Desktop.Resources.Resource.Currency_Plastic_;
+            ((ComboBoxItem)_cashPage.CurrencyComboBox1.Items[2]).Content = DeLong_Desktop.Resources.Resource.Currency_Dollar_;
+        }
+
+        if (_cashPage.ToComboBox.Items.Count >= 3)
+        {
+            ((ComboBoxItem)_cashPage.ToComboBox.Items[0]).Content = DeLong_Desktop.Resources.Resource.Kassaga;
+            ((ComboBoxItem)_cashPage.ToComboBox.Items[1]).Content = DeLong_Desktop.Resources.Resource.Zaxiraga;
+            ((ComboBoxItem)_cashPage.ToComboBox.Items[2]).Content = DeLong_Desktop.Resources.Resource.Boshqa;
+        }
+        #endregion
 
         #region CustomerPage
         _customerPage.userDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Customer;
@@ -375,9 +420,17 @@ public partial class MainWindow : Window
 
     private void btnCash_Click(object sender, RoutedEventArgs e)
     {
-        
-        var cashPage = new CashPage(_services);
-        Navigator.Navigate(cashPage);
+
+        if (_cashPage == null)
+        {
+            _cashPage = new CashPage(_services);
+        }
+        Navigator.Navigate(_cashPage);
+        UpdateLanguage();
+        if (_cashPage.NoteTextBox != null)
+        {
+            HintAssist.SetHint(_cashPage.NoteTextBox, DeLong_Desktop.Resources.Resource.Izoh);
+        }
     }
 
     private void btnReport_Click(object sender, RoutedEventArgs e)

@@ -410,7 +410,49 @@
   <data name="Pechat" xml:space="preserve">
     <value>打印</value>
   </data>
+  <data name="Kassani boshqarish" xml:space="preserve">
+    <value>收银管理</value>
+  </data>
+  <data name="Kunni ochish" xml:space="preserve">
+    <value>开启收银</value>
+  </data>
+  <data name="Currency_Sum" xml:space="preserve">
+    <value>苏姆 (UZS)</value>
+  </data>
+  <data name="Currency_Plastic " xml:space="preserve">
+    <value>塑料 (UZP)</value>
+  </data>
+  <data name="Currency_Dollar " xml:space="preserve">
+    <value>美元 (USD)</value>
+  </data>
+  <data name="Kassa aylanmasi" xml:space="preserve">
+    <value>收银周转</value>
+  </data>
+  <data name="Kassadan" xml:space="preserve">
+    <value>来自收银</value>
+  </data>
+  <data name="Zaxiradan" xml:space="preserve">
+    <value>来自库存</value>
+  </data>
+  <data name="Boshqa" xml:space="preserve">
+    <value>其他</value>
+  </data>
+  <data name="Kassa o'tkazmalari" xml:space="preserve">
+    <value>收银转账</value>
+  </data>
+  <data name="Kassaga" xml:space="preserve">
+    <value>到收银</value>
+  </data>
+  <data name="Zaxiraga" xml:space="preserve">
+    <value>到库存</value>
+  </data>
+  <data name="O'tkazish" xml:space="preserve">
+    <value>转账</value>
+  </data>
+  <data name="Zaxiradagi pullar" xml:space="preserve">
+    <value>库存资金</value>
   <data name="Branch" xml:space="preserve">
     <value>分支</value>
+
   </data>
 </root>

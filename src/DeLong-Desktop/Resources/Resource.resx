@@ -405,6 +405,48 @@
   <data name="Pechat" xml:space="preserve">
     <value>Pechat</value>
   </data>
+  <data name="Kassani boshqarish" xml:space="preserve">
+    <value>Kassani boshqarish</value>
+  </data>
+  <data name="Kunni ochish" xml:space="preserve">
+    <value>Kunni ochish</value>
+  </data>
+  <data name="Currency_Sum" xml:space="preserve">
+    <value>So'm (UZS)</value>
+  </data>
+  <data name="Currency_Plastic " xml:space="preserve">
+    <value>Plastik (UZP)</value>
+  </data>
+  <data name="Currency_Dollar " xml:space="preserve">
+    <value>Currency_Dollar </value>
+  </data>
+  <data name="Kassa aylanmasi" xml:space="preserve">
+    <value>Kassa aylanmasi</value>
+  </data>
+  <data name="Kassadan" xml:space="preserve">
+    <value>Kassadan</value>
+  </data>
+  <data name="Zaxiradan" xml:space="preserve">
+    <value>Zaxiradan</value>
+  </data>
+  <data name="Boshqa" xml:space="preserve">
+    <value>Boshqa</value>
+  </data>
+  <data name="Kassa o'tkazmalari" xml:space="preserve">
+    <value>Kassa o'tkazmalari</value>
+  </data>
+  <data name="Kassaga" xml:space="preserve">
+    <value>Kassaga</value>
+  </data>
+  <data name="Zaxiraga" xml:space="preserve">
+    <value>Zaxiraga</value>
+  </data>
+  <data name="O'tkazish" xml:space="preserve">
+    <value>O'tkazish</value>
+  </data>
+  <data name="Zaxiradagi pullar" xml:space="preserve">
+    <value>Zaxiradagi pullar</value>
+
   <data name="Branch" xml:space="preserve">
     <value>Filial</value>
   </data>
