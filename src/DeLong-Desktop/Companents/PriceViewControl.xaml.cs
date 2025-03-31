@@ -1,18 +1,17 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Controls;
 using DeLong_Desktop.Windows.Pirces;
-
 
 namespace DeLong_Desktop.Companents;
 
-/// <summary>
-/// Interaction logic for PriceViewControl.xaml
-/// </summary>
 public partial class PriceViewControl : UserControl
 {
     private readonly IServiceProvider services;
+    public event EventHandler PriceUpdated;
+
     public PriceViewControl(IServiceProvider services)
     {
         InitializeComponent();
@@ -21,14 +20,10 @@ public partial class PriceViewControl : UserControl
 
     private void OnAddClick(object sender, MouseButtonEventArgs e)
     {
-        // Senderni aniqlash
         var clickedLabel = sender as Label;
-
         if (clickedLabel != null)
         {
-            // Parent bo'lgan PriceViewControlni aniqlash
             var parentControl = FindParent<PriceViewControl>(clickedLabel);
-
             if (parentControl != null)
             {
                 PriceInfo.PriceId = long.Parse(parentControl.tbPriceId.Text);
@@ -38,33 +33,18 @@ public partial class PriceViewControl : UserControl
                 PriceInfo.UnitOfMesure = parentControl.tbUnitOfMesure.Text;
             }
         }
+
         var addWindow = new PriceAddWindow(services);
-        addWindow.ShowDialog(); // Yangi oynani modal tarzda ochish
-    }
-
-    // Yuqoridagi funksiya uchun yordamchi FindParent metodi
-    private T FindParent<T>(DependencyObject child) where T : DependencyObject
-    {
-        DependencyObject parent = VisualTreeHelper.GetParent(child);
-
-        while (parent != null && !(parent is T))
-        {
-            parent = VisualTreeHelper.GetParent(parent);
-        }
-
-        return parent as T;
+        addWindow.PriceModified += (s, e) => PriceUpdated?.Invoke(this, EventArgs.Empty); // Yangilash signalini uzatish
+        addWindow.ShowDialog();
     }
 
     private void OnEditClick(object sender, MouseButtonEventArgs e)
     {
-        // Senderni aniqlash
         var clickedLabel = sender as Label;
-
         if (clickedLabel != null)
         {
-            // Parent bo'lgan PriceViewControlni aniqlash
             var parentControl = FindParent<PriceViewControl>(clickedLabel);
-
             if (parentControl != null)
             {
                 PriceInfo.PriceId = long.Parse(parentControl.tbPriceId.Text);
@@ -74,10 +54,24 @@ public partial class PriceViewControl : UserControl
                 PriceInfo.UnitOfMesure = parentControl.tbUnitOfMesure.Text;
             }
         }
-        PriceEditWindow priceEditWindow = new PriceEditWindow(services);
-        priceEditWindow.tbIncomePrice.Text = PriceInfo.ArrivalPrice.ToString();
-        priceEditWindow.tbSellPrice.Text= PriceInfo.SellingPrice.ToString();
-        priceEditWindow.tbUnitOfMesure.Text= PriceInfo.UnitOfMesure.ToString();
+
+        PriceEditWindow priceEditWindow = new PriceEditWindow(services)
+        {
+            tbIncomePrice = { Text = PriceInfo.ArrivalPrice.ToString() },
+            tbSellPrice = { Text = PriceInfo.SellingPrice.ToString() },
+            tbUnitOfMesure = { Text = PriceInfo.UnitOfMesure }
+        };
+        priceEditWindow.PriceModified += (s, e) => PriceUpdated?.Invoke(this, EventArgs.Empty); // Yangilash signalini uzatish
         priceEditWindow.ShowDialog();
+    }
+
+    private T FindParent<T>(DependencyObject child) where T : DependencyObject
+    {
+        DependencyObject parent = VisualTreeHelper.GetParent(child);
+        while (parent != null && !(parent is T))
+        {
+            parent = VisualTreeHelper.GetParent(parent);
+        }
+        return parent as T;
     }
 }

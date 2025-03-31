@@ -16,6 +16,7 @@ public partial class ProductEditWindow : Window
     private readonly IProductService productService;
     private readonly IPriceService priceService;
     private readonly IServiceProvider services;
+    public bool IsModified { get; set; } = false; // Yangi xususiyat qo'shildi
 
     public ProductEditWindow(IServiceProvider services)
     {
@@ -103,6 +104,7 @@ public partial class ProductEditWindow : Window
         string searchText = txtbCategoryName.Text.Trim();
         FilterCategories(searchText);
     }
+
     private async void FilterCategories(string searchText)
     {
         List<Item> items = new List<Item>();
@@ -128,7 +130,6 @@ public partial class ProductEditWindow : Window
 
     private void Edit_Button_Click(object sender, RoutedEventArgs e)
     {
-
         if (rbtnCategory.IsChecked.HasValue.Equals(true) && spQaytish.Visibility != Visibility.Visible)
         {
             return;
@@ -170,6 +171,8 @@ public partial class ProductEditWindow : Window
             if (result)
             {
                 MessageBox.Show("Mahsulot muvaffaqiyatli yangilandi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+                IsModified = true; // O'zgarish bo'lganini belgilaymiz
+                this.Close(); // Oynani yopamiz
             }
             else
             {
@@ -178,7 +181,6 @@ public partial class ProductEditWindow : Window
         }
         catch (Exception ex)
         {
-            // Kutilmagan xatoliklar uchun
             MessageBox.Show($"Kutilmagan xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
@@ -200,12 +202,14 @@ public partial class ProductEditWindow : Window
                 Description = txtbDescriptionCategory.Text.ToLower()
             };
 
-            // categoriyani yangilash uchun chaqirildi
+            // Categoriyani yangilash uchun chaqirildi
             bool result = await this.categoryService.ModifyAsync(categoryUpdateDto);
 
             if (result)
             {
                 MessageBox.Show("Kategoriya muvaffaqiyatli yangilandi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+                IsModified = true; // O'zgarish bo'lganini belgilaymiz
+                this.Close(); // Oynani yopamiz
             }
             else
             {
@@ -214,9 +218,7 @@ public partial class ProductEditWindow : Window
         }
         catch (Exception ex)
         {
-            // Kutilmagan xatoliklar uchun
             MessageBox.Show($"Kutilmagan xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-        
     }
 }

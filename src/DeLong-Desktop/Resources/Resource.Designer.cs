@@ -133,6 +133,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filial.
+        /// </summary>
+        internal static string Branch {
+            get {
+                return ResourceManager.GetString("Branch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Plastik.
         /// </summary>
         internal static string Card {
@@ -781,6 +790,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Taminotchi.
+        /// </summary>
+        internal static string Supplier {
+            get {
+                return ResourceManager.GetString("Supplier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to T/r .
         /// </summary>
         internal static string T_r_ {
@@ -894,15 +912,6 @@ namespace DeLong_Desktop.Resources {
         internal static string Valyutani_ayirboshlash_ {
             get {
                 return ResourceManager.GetString("Valyutani ayirboshlash ", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ombor.
-        /// </summary>
-        internal static string Warehouse {
-            get {
-                return ResourceManager.GetString("Warehouse", resourceCulture);
             }
         }
         

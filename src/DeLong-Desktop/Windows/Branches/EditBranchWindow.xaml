@@ -1,0 +1,27 @@
+﻿<Window x:Class="DeLong_Desktop.Windows.Branches.EditBranchWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Filial Tahrirlash" Height="250" Width="400"
+        WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        Background="#334257">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Filial tahrirlash" FontSize="20" Foreground="Snow" HorizontalAlignment="Center" Margin="0 0 0 20"/>
+
+        <TextBox x:Name="txtBranchName" Grid.Row="1" md:HintAssist.Hint="Filial nomi" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" Margin="0 0 0 15" Background="{DynamicResource SelectedBackground}" Padding="5"/>
+
+        <TextBox x:Name="txtLocation" Grid.Row="2" md:HintAssist.Hint="Filial manzili" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="16"  Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" Margin="0 0 0 15" Background="{DynamicResource SelectedBackground}" Padding="5"/>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="btnSave" Content="Saqlash" BorderThickness="0" md:ButtonAssist.CornerRadius="10" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Margin="0 0 10 0" Click="Save_Click"/>
+            <Button x:Name="btnCancel" Content="Bekor qilish" BorderThickness="0" md:ButtonAssist.CornerRadius="10" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" Click="Cancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

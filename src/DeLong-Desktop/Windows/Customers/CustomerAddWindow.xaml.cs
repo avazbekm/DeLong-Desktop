@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
+using DeLong_Desktop.Pages.Products;
 using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.ApiService.Helpers;
 using DeLong_Desktop.ApiService.DTOs.Enums;
@@ -9,6 +10,7 @@ using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.Customers;
 using DeLong_Desktop.ApiService.DTOs.Employees;
+using DeLong_Desktop.ApiService.DTOs.Branchs;
 
 namespace DeLong_Desktop.Windows.Customers;
 
@@ -20,6 +22,7 @@ public partial class CustomerAddWindow : Window
     private readonly IUserService userService;
     private readonly ICustomerService customerService;
     private readonly IEmployeeService employeeService;
+    private readonly IBranchService branchService; // BranchService qo‘shildi
     private readonly IServiceProvider services;
     public bool IsCreated { get; set; } = false;
 
@@ -33,9 +36,27 @@ public partial class CustomerAddWindow : Window
         this.userService = services.GetRequiredService<IUserService>();
         this.customerService = services.GetRequiredService<ICustomerService>();
         this.employeeService = services.GetRequiredService<IEmployeeService>();
+        this.branchService = services.GetRequiredService<IBranchService>(); // BranchService inizializatsiyasi
+        LoadBranchesAsync(); // Filiallar yuklanadi
     }
-      
-        // radio buttonlar
+
+    // Filiallar yuklash uchun yangi metod
+    private async void LoadBranchesAsync()
+    {
+        try
+        {
+            var branches = await branchService.RetrieveAllAsync();
+            cmbBranches.ItemsSource = branches;
+            cmbBranches.DisplayMemberPath = "BranchName"; // Filial nomini ko‘rsatish
+            cmbBranches.SelectedValuePath = "Id"; // Filial ID sini tanlash
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Filiallarni yuklashda xatolik: {ex.Message}");
+        }
+    }
+
+    // Radio buttonlar
     private void rbtnYurdik_Checked(object sender, RoutedEventArgs e)
     {
         spYurCutomer.Visibility = Visibility.Visible;
@@ -45,6 +66,7 @@ public partial class CustomerAddWindow : Window
         spQaytish.Visibility = Visibility.Hidden;
         spEmployee.Visibility = Visibility.Hidden;
     }
+
     private void rbtnYaTT_Checked(object sender, RoutedEventArgs e)
     {
         spYurCutomer.Visibility = Visibility.Hidden;
@@ -54,6 +76,7 @@ public partial class CustomerAddWindow : Window
         spQaytish.Visibility = Visibility.Hidden;
         spEmployee.Visibility = Visibility.Hidden;
     }
+
     private void rbtnJismoniy_Checked(object sender, RoutedEventArgs e)
     {
         spYurCutomer.Visibility = Visibility.Hidden;
@@ -63,7 +86,8 @@ public partial class CustomerAddWindow : Window
         spQaytish.Visibility = Visibility.Hidden;
         spEmployee.Visibility = Visibility.Hidden;
     }
-    private async void rbtnEmployee_Checked(object sender, RoutedEventArgs e)
+
+    private void rbtnEmployee_Checked(object sender, RoutedEventArgs e)
     {
         spYurCutomer.Visibility = Visibility.Hidden;
         spJisCutomer.Visibility = Visibility.Hidden;
@@ -73,9 +97,7 @@ public partial class CustomerAddWindow : Window
         spEmployee.Visibility = Visibility.Visible;
 
         cmbRoles.ItemsSource = Enum.GetValues(typeof(Role));
-
     }
-
 
     private void RadioButton_Checked(object sender, RoutedEventArgs e)
     {
@@ -86,7 +108,7 @@ public partial class CustomerAddWindow : Window
         }
         else
         {
-            MessageBox.Show("Jinsini tanglang iltimos.");
+            MessageBox.Show("Jinsini tanlang iltimos.");
             return;
         }
     }
@@ -104,7 +126,6 @@ public partial class CustomerAddWindow : Window
         userCreationDto.TelegramPhone = txtJisTelegramRaqam.Text;
         userCreationDto.JSHSHIR = txtJisJSHSHIR.Text;
         userJshshir = txtJisJSHSHIR.Text;
-
 
         if (!dateOfBirthPicker.SelectedDate.HasValue)
         {
@@ -131,7 +152,6 @@ public partial class CustomerAddWindow : Window
         else if (gender.Equals("Ayol"))
             userCreationDto.Gender = (Gender)1;
 
-
         if (userCreationDto.FirstName.Equals("") ||
             userCreationDto.LastName.Equals("") ||
             userCreationDto.SeriaPasport.Equals("") ||
@@ -139,7 +159,6 @@ public partial class CustomerAddWindow : Window
             userCreationDto.JSHSHIR.Equals("") ||
             userCreationDto.TelegramPhone.Equals("") ||
             userCreationDto.Phone.Equals(""))
-
             MessageBox.Show("Malumotni to'liq kiriting!");
         else
         {
@@ -149,11 +168,13 @@ public partial class CustomerAddWindow : Window
             {
                 MessageBox.Show($" Saqlandi.");
                 IsCreated = true;
+                this.Close();
             }
             else
                 MessageBox.Show($"{"Saqlashda xatolik"}");
         }
     }
+
     private async void btnYurAdd_Click(object sender, RoutedEventArgs e)
     {
         CustomerCreationDto customerCreationDto = new CustomerCreationDto();
@@ -193,7 +214,6 @@ public partial class CustomerAddWindow : Window
            customerCreationDto.BankName.Equals("") ||
            customerCreationDto.OKONX.Equals("") ||
            customerCreationDto.YurAddress.Equals(""))
-
             MessageBox.Show("Ma'lumotni to'liq kiriting!");
         else
         {
@@ -203,11 +223,15 @@ public partial class CustomerAddWindow : Window
             {
                 MessageBox.Show($" Saqlandi.");
                 IsCreated = true;
+                ProductsPage productsPage = new ProductsPage(services);
+                productsPage.LoadData(ProductInfo.CategoryId);
+                this.Close();
             }
             else
                 MessageBox.Show($"{"Saqlashda xatolik"}");
         }
     }
+
     private void btnRahbar_Click(object sender, RoutedEventArgs e)
     {
         spYurYattJis.Visibility = Visibility.Hidden;
@@ -217,6 +241,7 @@ public partial class CustomerAddWindow : Window
         spQaytish.Visibility = Visibility.Visible;
         spJisNew.Visibility = Visibility.Visible;
     }
+
     private void btnQaytish_Click(object sender, RoutedEventArgs e)
     {
         if (rbtnYurdik.IsChecked.Equals(true))
@@ -238,6 +263,7 @@ public partial class CustomerAddWindow : Window
             spJisNew.Visibility = Visibility.Hidden;
         }
     }
+
     private void btnNewAdd_Click(object sender, RoutedEventArgs e)
     {
         spYurCutomer.Visibility = Visibility.Hidden;
@@ -247,6 +273,7 @@ public partial class CustomerAddWindow : Window
         spQaytish.Visibility = Visibility.Visible;
         spJisNew.Visibility = Visibility.Hidden;
     }
+
     private async void btnSearch_Click(object sender, RoutedEventArgs e)
     {
         if (txtSearchJ.Text.Length != 14)
@@ -267,6 +294,7 @@ public partial class CustomerAddWindow : Window
             btnNewAdd.Visibility = Visibility.Visible;
         }
     }
+
     private void btnExistClient_Click(object sender, RoutedEventArgs e)
     {
         if (rbtnYurdik.IsChecked.Equals(true))
@@ -288,9 +316,9 @@ public partial class CustomerAddWindow : Window
             spJisNew.Visibility = Visibility.Hidden;
         }
     }
+
     private void btnYaTTRahbar_Click(object sender, RoutedEventArgs e)
     {
-
         spYurYattJis.Visibility = Visibility.Hidden;
         spYurCutomer.Visibility = Visibility.Hidden;
         spJisCutomer.Visibility = Visibility.Hidden;
@@ -298,6 +326,7 @@ public partial class CustomerAddWindow : Window
         spQaytish.Visibility = Visibility.Visible;
         spJisNew.Visibility = Visibility.Visible;
     }
+
     private async void btnYattAdd_Click(object sender, RoutedEventArgs e)
     {
         CustomerCreationDto customerCreationDto = new CustomerCreationDto();
@@ -317,7 +346,7 @@ public partial class CustomerAddWindow : Window
             return;
         }
         customerCreationDto.BankAccount = RemoveDashes(txtYattXisobRaqam.Text);
-        
+
         customerCreationDto.BankName = txtYattBank.Text.ToLower();
         customerCreationDto.YurAddress = txtYattFirmaAdres.Text.ToLower();
         customerCreationDto.Phone = txtYattTelefon.Text;
@@ -344,12 +373,12 @@ public partial class CustomerAddWindow : Window
             {
                 MessageBox.Show($" Saqlandi.");
                 IsCreated = true;
+                this.Close();
             }
             else
                 MessageBox.Show($"{"Saqlashda xatolik"}");
         }
     }
-
     // qo'shimcha funsiya
     // xisob raqamni - larni olib tashlaydigan function
     public string RemoveDashes(string input)
@@ -501,7 +530,6 @@ public partial class CustomerAddWindow : Window
     {
         ValidationHelper.ValidatePhone(sender as TextBox);
     }
-
     private async void btnSaveEmployee_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -536,9 +564,17 @@ public partial class CustomerAddWindow : Window
             // talangan userni chaqirib olamiz
             var existUser = CustomerInfo.User;
 
+            // filialni tanlash
+            if (cmbBranches.SelectedItem is not BranchResultDto selectedBranch)
+            {
+                MessageBox.Show("Iltimos, filialni tanlang!");
+                return;
+            }
+
             EmployeeCreationDto employeeCreationDto = new EmployeeCreationDto()
             {
                 UserId = existUser.Id,
+                BranchId = selectedBranch.Id,
                 Username = txtLogin.Text.ToLower(),
                 Password = txtParol.Text
             };
@@ -573,6 +609,7 @@ public partial class CustomerAddWindow : Window
                 if (updatedUser)
                 {
                     MessageBox.Show($"Xodim {existUser.Role} lavozimiga muvaffaqiyatli o'tkazildi!");
+                    this.Close();
                 }
                 else
                 {
@@ -589,8 +626,6 @@ public partial class CustomerAddWindow : Window
             MessageBox.Show($"Xatolik: {ex.Message}");
         }
     }
-
-
     private void txtParol_TextChanged(object sender, TextChangedEventArgs e)
     {
         if (sender is TextBox textBox)
@@ -599,6 +634,5 @@ public partial class CustomerAddWindow : Window
             textBox.Foreground = isValid ? Brushes.LightGreen : Brushes.LightCoral;
         }
     }
-
 }
 

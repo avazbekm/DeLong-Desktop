@@ -18,6 +18,7 @@ public partial class ProductAddWindow : Window
     private readonly IProductService productService;
     private readonly IPriceService priceService;
     private readonly IServiceProvider services;
+    public bool IsCreated { get; set; } = false; // Yangi xususiyat qo'shildi
 
     public ProductAddWindow(IServiceProvider services)
     {
@@ -60,7 +61,7 @@ public partial class ProductAddWindow : Window
                 productDataGrid.ItemsSource = items;
             }
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
@@ -76,7 +77,6 @@ public partial class ProductAddWindow : Window
             spJisNew.Visibility = Visibility.Collapsed;
             grCategoryShow.Visibility = Visibility.Visible;
             grProductShow.Visibility = Visibility.Collapsed;
-
 
             List<Item> items = new List<Item>();
             var existCategories = await categoryService.RetrieveAllAsync();
@@ -95,7 +95,7 @@ public partial class ProductAddWindow : Window
             }
             categoryDataGrid.ItemsSource = items;
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
@@ -139,9 +139,9 @@ public partial class ProductAddWindow : Window
             }
             categoryDataGrid.ItemsSource = items;
         }
-        catch (Exception ex) 
-        { 
-            MessageBox.Show(ex.Message); 
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
         }
     }
 
@@ -201,7 +201,7 @@ public partial class ProductAddWindow : Window
         string searchText = txtbName.Text.Trim();
         FilterProducts(searchText);
     }
-    
+
     private async void FilterCategories(string searchText)
     {
         try
@@ -226,8 +226,8 @@ public partial class ProductAddWindow : Window
                 categoryDataGrid.ItemsSource = items;
             }
         }
-        catch (Exception ex) 
-        { 
+        catch (Exception ex)
+        {
             MessageBox.Show(ex.Message);
         }
     }
@@ -257,7 +257,7 @@ public partial class ProductAddWindow : Window
                 productDataGrid.ItemsSource = items;
             }
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
@@ -265,8 +265,7 @@ public partial class ProductAddWindow : Window
 
     private void Edit_Button_Click(object sender, RoutedEventArgs e)
     {
-        
-        if (rbtnCategory.IsChecked.HasValue.Equals(true) && spQaytish.Visibility != Visibility.Visible )
+        if (rbtnCategory.IsChecked.HasValue.Equals(true) && spQaytish.Visibility != Visibility.Visible)
         {
             return;
         }
@@ -307,7 +306,9 @@ public partial class ProductAddWindow : Window
             bool result = await productService.AddAsync(productCreationDto);
             if (result)
             {
-                MessageBox.Show("Kategoriya muvaffaqiyatli saqlandi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Mahsulot muvaffaqiyatli saqlandi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+                IsCreated = true; // Mahsulot qo'shilganini belgilaymiz
+                this.Close(); // Oynani yopamiz
             }
             else
             {

@@ -250,7 +250,7 @@ public partial class CustomersPage : Page
     {
         CustomerEditWindow customerEditWindow = new CustomerEditWindow(services);
         if (userDataGrid.SelectedItem is Item selectedUser)
-        { 
+        {
             CustomerInfo.CustomerId = selectedUser.Id;
             CustomerInfo.UserJshshir = selectedUser.JSHSHIR;
             CustomerInfo.YurJshshir = selectedUser.YurJshshir;
@@ -265,7 +265,6 @@ public partial class CustomersPage : Page
             customerEditWindow.spQaytish.Visibility = Visibility.Hidden;
             customerEditWindow.spEmployee.Visibility = Visibility.Hidden;
 
-
             var existCustomer = await this.customerService.RetrieveByIdAsync(CustomerInfo.CustomerId);
             CustomerInfo.UserId = existCustomer.UserId;
             customerEditWindow.txtYurINN.Text = existCustomer.INN.ToString();
@@ -278,7 +277,6 @@ public partial class CustomersPage : Page
             customerEditWindow.spJisNew.Visibility = Visibility.Hidden;
             customerEditWindow.spQaytish.Visibility = Visibility.Hidden;
             customerEditWindow.spEmployee.Visibility = Visibility.Hidden;
-
 
             var existYaTT = await this.customerService.RetrieveByJshshirAsync(CustomerInfo.YurJshshir);
             customerEditWindow.txtYattJSHSHIR.Text = existYaTT.JSHSHIR;
@@ -295,7 +293,6 @@ public partial class CustomersPage : Page
                 customerEditWindow.spJisNew.Visibility = Visibility.Hidden;
                 customerEditWindow.spQaytish.Visibility = Visibility.Hidden;
                 customerEditWindow.spEmployee.Visibility = Visibility.Hidden;
-
 
                 CustomerInfo.UserId = existUser.Id;
                 customerEditWindow.txtJisJSHSHIR.Text = existUser.JSHSHIR;
@@ -317,5 +314,9 @@ public partial class CustomersPage : Page
         }
 
         customerEditWindow.ShowDialog();
+        if (customerEditWindow.IsModified) // Agar o'zgarish bo'lsa
+        {
+            Loading(); // Ma'lumotlarni yangilaymiz
+        }
     }
 }

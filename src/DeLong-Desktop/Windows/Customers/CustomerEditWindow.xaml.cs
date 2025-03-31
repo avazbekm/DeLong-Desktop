@@ -20,9 +20,10 @@ public partial class CustomerEditWindow : Window
     private readonly ICustomerService customerService;
     private readonly IEmployeeService employeeService;
     private readonly IServiceProvider services;
-    public bool IsCreated { get; set; } = false;
+    public bool IsModified { get; set; } = false; // `IsCreated` o'rniga `IsModified` ishlatildi
     string gender = "";
     string userJshshir = "";
+
     public CustomerEditWindow(IServiceProvider services)
     {
         InitializeComponent();
@@ -31,6 +32,7 @@ public partial class CustomerEditWindow : Window
         this.customerService = services.GetRequiredService<ICustomerService>();
         this.employeeService = services.GetRequiredService<IEmployeeService>();
     }
+
     // radio buttonlar
     private void RadioButton_Checked(object sender, RoutedEventArgs e)
     {
@@ -41,13 +43,12 @@ public partial class CustomerEditWindow : Window
         }
         else
         {
-            MessageBox.Show("Jinsini tanglang iltimos.");
+            MessageBox.Show("Jinsini tanlang iltimos.");
             return;
         }
-
     }
 
-    // qo'shimcha funsiya
+    // qo'shimcha funksiya
     // xisob raqamni - larni olib tashlaydigan function
     public string RemoveDashes(string input)
         => new string(input.Where(char.IsDigit).ToArray());
@@ -73,26 +74,30 @@ public partial class CustomerEditWindow : Window
             }
         }
     }
+
     private void txtJisTelefon_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
         ValidationHelper.ValidatePhone(textBox);
     }
+
     private void txtJisTelegramRaqam_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
         ValidationHelper.ValidatePhone(textBox);
     }
+
     private void txtPasportSeria_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
         ValidationHelper.ValidatePasportInformation(textBox);
     }
+
     private async void txtYurINN_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
         ValidationHelper.ValidateOnlyNumberInput(textBox);
-  
+
         if (txtYurINN.Text.Length == 9)
         {
             var inn = int.Parse(txtYurINN.Text);
@@ -109,21 +114,25 @@ public partial class CustomerEditWindow : Window
             }
         }
     }
+
     private void txtYurMFO_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
         ValidationHelper.ValidateOnlyNumberInput(textBox);
     }
+
     private void txtYurOKONX_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
         ValidationHelper.ValidateOnlyNumberInput(textBox);
     }
+
     private void txtYurXisobRaqam_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
         ValidationHelper.ValidateAccountNumber(textBox);
     }
+
     private async void txtYattJSHSHIR_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
@@ -143,26 +152,31 @@ public partial class CustomerEditWindow : Window
             }
         }
     }
+
     private void txtYurPhone_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
         ValidationHelper.ValidatePhone(textBox);
     }
+
     private void txtYattXisobRaqam_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
         ValidationHelper.ValidateAccountNumber(textBox);
     }
+
     private void txtYattMFO_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
         ValidationHelper.ValidateOnlyNumberInput(textBox);
     }
+
     private void txtYattTelefon_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
         ValidationHelper.ValidatePhone(textBox);
     }
+
     private void txtSearchJ_TextChanged(object sender, TextChangedEventArgs e)
     {
         var textBox = sender as TextBox;
@@ -172,7 +186,6 @@ public partial class CustomerEditWindow : Window
     // buttonlar
     private void btnRahbar_Click(object sender, RoutedEventArgs e)
     {
-        //spYurYattJis.Visibility = Visibility.Hidden;
         spYurCutomer.Visibility = Visibility.Hidden;
         spJisCutomer.Visibility = Visibility.Hidden;
         spYattCutomer.Visibility = Visibility.Hidden;
@@ -182,7 +195,6 @@ public partial class CustomerEditWindow : Window
 
     private void rbtnYurdik_Checked(object sender, RoutedEventArgs e)
     {
-
     }
 
     private void btnQaytish_Click(object sender, RoutedEventArgs e)
@@ -193,7 +205,7 @@ public partial class CustomerEditWindow : Window
             spYattCutomer.Visibility = Visibility.Hidden;
             spJisCutomer.Visibility = Visibility.Hidden;
             spJisNew.Visibility = Visibility.Hidden;
-            spQaytish.Visibility= Visibility.Hidden;
+            spQaytish.Visibility = Visibility.Hidden;
         }
         else if (CustomerInfo.CustomerId > 0 && !CustomerInfo.YurJshshir.Equals(""))
         {
@@ -222,7 +234,6 @@ public partial class CustomerEditWindow : Window
             userUpdateDto.JSHSHIR = txtJisJSHSHIR.Text;
             userJshshir = txtJisJSHSHIR.Text;
 
-
             if (!dateOfBirthPicker.SelectedDate.HasValue)
             {
                 MessageBox.Show("Tug'ulgan sanani kiriting iltimos.");
@@ -248,7 +259,6 @@ public partial class CustomerEditWindow : Window
             else if (gender.Equals("Ayol"))
                 userUpdateDto.Gender = (Gender)1;
 
-
             if (userUpdateDto.FirstName.Equals("") ||
                 userUpdateDto.LastName.Equals("") ||
                 userUpdateDto.SeriaPasport.Equals("") ||
@@ -256,19 +266,23 @@ public partial class CustomerEditWindow : Window
                 userUpdateDto.JSHSHIR.Equals("") ||
                 userUpdateDto.TelegramPhone.Equals("") ||
                 userUpdateDto.Phone.Equals(""))
-
+            {
                 MessageBox.Show("Malumotni to'liq kiriting!");
+            }
             else
             {
                 var result = this.userService.ModifyAsync(userUpdateDto);
 
                 if (!result.IsCompletedSuccessfully)
                 {
-                    MessageBox.Show($" Saqlandi.");
-                    IsCreated = true;
+                    MessageBox.Show("Muvaffaqiyatli saqlandi.");
+                    IsModified = true; // O'zgarish bo'lganini belgilaymiz
+                    this.Close();
                 }
                 else
-                    MessageBox.Show($"{"Saqlashda xatolik"}");
+                {
+                    MessageBox.Show("Saqlashda xatolik yuz berdi.");
+                }
             }
         }
         catch (Exception ex)
@@ -294,7 +308,7 @@ public partial class CustomerEditWindow : Window
             customerUpdateDto.JSHSHIR = txtYattJSHSHIR.Text;
             customerUpdateDto.MFO = txtYattMFO.Text;
 
-            if (txtYattXisobRaqam.Text.Length != 23)
+            if (txtYattXisobRaqam.Text.Length != 24)
             {
                 MessageBox.Show("Xisob raqamni to'liq kiriting iltimos.");
                 return;
@@ -320,23 +334,28 @@ public partial class CustomerEditWindow : Window
                 customerUpdateDto.MFO.Equals("") ||
                 customerUpdateDto.BankName.Equals("") ||
                 customerUpdateDto.YurAddress.Equals(""))
+            {
                 MessageBox.Show("Ma'lumotni to'liq kiriting!");
+            }
             else
             {
-                var result = customerService.ModifyAsync(customerUpdateDto);
+                var result = await customerService.ModifyAsync(customerUpdateDto);
 
-                if (!result.IsCompletedSuccessfully)
+                if (result)
                 {
-                    MessageBox.Show($" Saqlandi.");
-                    IsCreated = true;
+                    MessageBox.Show("Muvaffaqiyatli saqlandi.");
+                    IsModified = true; // O'zgarish bo'lganini belgilaymiz
+                    this.Close();
                 }
                 else
-                    MessageBox.Show($"{"Saqlashda xatolik"}");
+                {
+                    MessageBox.Show("Saqlashda xatolik yuz berdi.");
+                }
             }
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message );
+            MessageBox.Show(ex.Message);
         }
     }
 
@@ -351,7 +370,6 @@ public partial class CustomerEditWindow : Window
 
     private async void btnSearch_Click(object sender, RoutedEventArgs e)
     {
-
         var existUser = await this.userService.RetrieveByJSHSHIRAsync(txtSearchJ.Text);
 
         if (existUser is not null)
@@ -397,9 +415,9 @@ public partial class CustomerEditWindow : Window
         customerUpdateDto.INN = int.Parse(txtYurINN.Text);
         customerUpdateDto.MFO = txtYurMFO.Text;
 
-        if (txtYurXisobRaqam.Text.Length != 23)
+        if (txtYurXisobRaqam.Text.Length != 24)
         {
-            MessageBox.Show("Xisob raqamni to'liq kiriting iltimos."); 
+            MessageBox.Show("Xisob raqamni to'liq kiriting iltimos.");
             return;
         }
         customerUpdateDto.Phone = txtYurPhone.Text;
@@ -416,26 +434,30 @@ public partial class CustomerEditWindow : Window
         else
             customerUpdateDto.UserId = CustomerInfo.UserId;
 
-        if (customerUpdateDto.Name.Equals("") || 
+        if (customerUpdateDto.Name.Equals("") ||
            customerUpdateDto.INN.Equals("") ||
            customerUpdateDto.Phone.Equals("") ||
            customerUpdateDto.MFO.Equals("") ||
            customerUpdateDto.BankName.Equals("") ||
            customerUpdateDto.OKONX.Equals("") ||
            customerUpdateDto.YurAddress.Equals(""))
-
+        {
             MessageBox.Show("Ma'lumotni to'liq kiriting!");
+        }
         else
         {
-            var result = this.customerService.ModifyAsync(customerUpdateDto);
+            var result = await this.customerService.ModifyAsync(customerUpdateDto);
 
-            if (!result.IsCompletedSuccessfully)
+            if (result)
             {
-                MessageBox.Show($" Saqlandi.");
-                IsCreated = true;
+                MessageBox.Show("Muvaffaqiyatli saqlandi.");
+                IsModified = true; // O'zgarish bo'lganini belgilaymiz
+                this.Close();
             }
             else
-                MessageBox.Show($"{"Saqlashda xatolik"}");
+            {
+                MessageBox.Show("Saqlashda xatolik yuz berdi.");
+            }
         }
     }
 
@@ -460,7 +482,6 @@ public partial class CustomerEditWindow : Window
                     txtEmployeeTelegramRaqam.Text = existUser.TelegramPhone;
                     cmbRoles.SelectedItem = existUser.Role; // Avtomatik role tanlash
 
-
                     var positions = await this.employeeService.RetrieveAllAsync();
                     var position = positions.FirstOrDefault(u => u.UserId.Equals(existUser.Id));
                     if (position is not null)
@@ -475,7 +496,7 @@ public partial class CustomerEditWindow : Window
                 }
             }
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
@@ -518,7 +539,6 @@ public partial class CustomerEditWindow : Window
 
             userJshshir = txtEmployeeJSHSHIR.Text;
 
-
             if (!dateOfBirthPickerEmployee.SelectedDate.HasValue)
             {
                 MessageBox.Show("Tug'ulgan sanani kiriting iltimos.");
@@ -544,7 +564,6 @@ public partial class CustomerEditWindow : Window
             else if (gender.Equals("Ayol"))
                 userUpdateDto.Gender = (Gender)1;
 
-
             if (userUpdateDto.FirstName.Equals("") ||
                 userUpdateDto.LastName.Equals("") ||
                 userUpdateDto.SeriaPasport.Equals("") ||
@@ -552,13 +571,14 @@ public partial class CustomerEditWindow : Window
                 userUpdateDto.JSHSHIR.Equals("") ||
                 userUpdateDto.TelegramPhone.Equals("") ||
                 userUpdateDto.Phone.Equals(""))
-
+            {
                 MessageBox.Show("Malumotni to'liq kiriting!");
+            }
             else
             {
-                var result = this.userService.ModifyAsync(userUpdateDto);
+                var result = await this.userService.ModifyAsync(userUpdateDto);
 
-                if (!result.IsCompletedSuccessfully)
+                if (result)
                 {
                     EmployeeUpdateDto employeeUpdateDto = new EmployeeUpdateDto();
                     employeeUpdateDto.Id = CustomerInfo.EmployeeId;
@@ -573,25 +593,26 @@ public partial class CustomerEditWindow : Window
                     }
 
                     var empoloyeeUpdate = await this.employeeService.ModifyAsync(employeeUpdateDto);
-                    if (empoloyeeUpdate is null)
+                    if (empoloyeeUpdate != null)
+                    {
+                        MessageBox.Show("Muvaffaqiyatli o'zgartirildi.");
+                        IsModified = true; // O'zgarish bo'lganini belgilaymiz
+                        this.Close();
+                    }
+                    else
                     {
                         MessageBox.Show("Login yoki Parolni saqlashda xatolik");
-                        return;
                     }
-
-                    MessageBox.Show($" Muvaffaqiyatli o'zgardi.");
-                    IsCreated = true;
                 }
                 else
-                    MessageBox.Show($"{"Saqlashda xatolik"}");
+                {
+                    MessageBox.Show("Saqlashda xatolik yuz berdi.");
+                }
             }
-
-
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
-
     }
 }

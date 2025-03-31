@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.Companents;
 using DeLong_Desktop.Pages.Input;
@@ -8,13 +9,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Windows.Pirces;
 
-/// <summary>
-/// Interaction logic for PriceEditWindow.xaml
-/// </summary>
 public partial class PriceEditWindow : Window
 {
     private readonly IServiceProvider services;
     private readonly IPriceService priceService;
+    public bool IsModified { get; set; } = false;
+    public event EventHandler PriceModified; // Yangi hodisa
+
     public PriceEditWindow(IServiceProvider services)
     {
         InitializeComponent();
@@ -26,10 +27,7 @@ public partial class PriceEditWindow : Window
     {
         if (sender is TextBox textBox)
         {
-            // Save the cursor position
             int selectionStart = textBox.SelectionStart;
-
-            // Filter out invalid characters and ensure only one decimal point
             string filteredText = string.Empty;
             bool decimalPointSeen = false;
 
@@ -46,12 +44,9 @@ public partial class PriceEditWindow : Window
                 }
             }
 
-            // Update the TextBox content if the text was modified
             if (textBox.Text != filteredText)
             {
                 textBox.Text = filteredText;
-
-                // Restore the cursor position
                 textBox.SelectionStart = Math.Min(selectionStart, filteredText.Length);
             }
         }
@@ -61,10 +56,7 @@ public partial class PriceEditWindow : Window
     {
         if (sender is TextBox textBox)
         {
-            // Save the cursor position
             int selectionStart = textBox.SelectionStart;
-
-            // Filter out invalid characters and ensure only one decimal point
             string filteredText = string.Empty;
             bool decimalPointSeen = false;
 
@@ -81,12 +73,9 @@ public partial class PriceEditWindow : Window
                 }
             }
 
-            // Update the TextBox content if the text was modified
             if (textBox.Text != filteredText)
             {
                 textBox.Text = filteredText;
-
-                // Restore the cursor position
                 textBox.SelectionStart = Math.Min(selectionStart, filteredText.Length);
             }
         }
@@ -96,10 +85,7 @@ public partial class PriceEditWindow : Window
     {
         if (sender is TextBox textBox)
         {
-            // Save the cursor position
             int selectionStart = textBox.SelectionStart;
-
-            // Filter out invalid characters and ensure only one decimal point
             string filteredText = string.Empty;
             bool decimalPointSeen = false;
 
@@ -116,12 +102,9 @@ public partial class PriceEditWindow : Window
                 }
             }
 
-            // Update the TextBox content if the text was modified
             if (textBox.Text != filteredText)
             {
                 textBox.Text = filteredText;
-
-                // Restore the cursor position
                 textBox.SelectionStart = Math.Min(selectionStart, filteredText.Length);
             }
         }
@@ -131,6 +114,14 @@ public partial class PriceEditWindow : Window
     {
         try
         {
+            if (string.IsNullOrEmpty(tbIncomePrice.Text) ||
+                string.IsNullOrEmpty(tbSellPrice.Text) ||
+                string.IsNullOrEmpty(tbUnitOfMesure.Text))
+            {
+                MessageBox.Show("Ma'lumotlarni to'liq kiriting.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             PriceUpdateDto priceUpdateDto = new PriceUpdateDto()
             {
                 Id = PriceInfo.PriceId,
@@ -141,12 +132,14 @@ public partial class PriceEditWindow : Window
                 ProductId = InputInfo.ProductId
             };
 
-            // Warehouseni qo'shish uchun xizmat chaqirilyapti
             bool result = await priceService.ModifyAsync(priceUpdateDto);
 
             if (result)
             {
-                MessageBox.Show($"Narx muvaffaqiyatli yangilandi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Narx muvaffaqiyatli yangilandi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+                IsModified = true;
+                PriceModified?.Invoke(this, EventArgs.Empty); // Yangilash signalini yuborish
+                Close();
             }
             else
             {
@@ -155,10 +148,7 @@ public partial class PriceEditWindow : Window
         }
         catch (Exception ex)
         {
-            // Kutilmagan xatoliklar uchun
             MessageBox.Show($"Kutilmagan xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-
-        Close(); // Yopish
     }
 }

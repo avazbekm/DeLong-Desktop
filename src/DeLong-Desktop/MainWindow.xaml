@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DeLong_Desktop"
         mc:Ignorable="d"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="DeLong" Height="600" Width="800"
+        Title="DeLong" Height="620" Width="800"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <DropShadowEffect x:Key="DefaultDropShadowEffect" ShadowDepth="5" Opacity="0.5" BlurRadius="10"/>
@@ -52,6 +52,17 @@
                         Foreground="Snow"
                         Style="{DynamicResource MaterialDesignPaperLightButton}"
                         md:ButtonAssist.CornerRadius="17" Click="bntMijoz_Click"/>
+              
+                <Button x:Name="btnSupplier"
+                        Height="40"
+                        Margin="0 0 0 5"
+                        Content="Taminotchi"
+                        FontSize="18"
+                        BorderThickness="0"
+                        Foreground="Snow"                        
+                        Style="{DynamicResource MaterialDesignPaperLightButton}"
+                        Background="#476072"
+                        md:ButtonAssist.CornerRadius="17" Click="btnSupplier_Click"/>
 
                 <Button x:Name="btnMaxsulot"
                         Height="40"
@@ -64,16 +75,6 @@
                         Background="#476072"
                         md:ButtonAssist.CornerRadius="17" Click="btnMaxsulot_Click"/>
 
-                <Button x:Name="btnOmbor"
-                        Height="40"
-                        Margin="0 0 0 5"
-                        Content="Ombor"
-                        FontSize="18"
-                        BorderThickness="0"
-                        Foreground="Snow"                        
-                        Style="{DynamicResource MaterialDesignPaperLightButton}"
-                        Background="#476072"
-                        md:ButtonAssist.CornerRadius="17" Click="btnOmbor_Click"/>
 
                 <Button x:Name="btnKirim"
                         Height="40"
@@ -120,6 +121,18 @@
                         Background="#476072"
                         Click="btnReport_Click"
                         md:ButtonAssist.CornerRadius="17"/>
+
+                <Button x:Name="btnBranch"
+                        Height="40"
+                        Margin="0 0 0 5"
+                        Content="Filial"
+                        FontSize="18"
+                        BorderThickness="0"
+                        Foreground="Snow"                        
+                        Style="{DynamicResource MaterialDesignPaperLightButton}"
+                        Background="#476072"
+                        md:ButtonAssist.CornerRadius="17" Click="btnBranch_Click"/>
+
 
                 <Border 
                     Height="40" 

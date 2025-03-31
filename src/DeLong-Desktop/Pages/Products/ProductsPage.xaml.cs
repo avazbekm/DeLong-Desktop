@@ -31,14 +31,14 @@ public partial class ProductsPage : Page
     }
 
     // Kategoriyalarni yuklash
-    private async void LoadCategoriesAsync()
+    public async void LoadCategoriesAsync()
     {
         try
         {
             var categories = await this.categoryService.RetrieveAllAsync();
 
             // Kategoriya elementlarini ComboBoxga qo'shish
-            var comboBoxItems = new List<ItemCombobox>();
+            var comboBoxItems = new List<ItemCombobox> { new ItemCombobox { Id = 0, Name = "Barcha kategoriyalar" } }; // "Tanlanmagan" elementi qo‘shildi
             foreach (var category in categories)
             {
                 comboBoxItems.Add(new ItemCombobox
@@ -52,7 +52,6 @@ public partial class ProductsPage : Page
             cmbCategory.ItemsSource = comboBoxItems;
             cmbCategory.DisplayMemberPath = "Name"; // Ko'rsatiladigan nom
             cmbCategory.SelectedValuePath = "Id";  // Tanlangan qiymat
-
         }
         catch (Exception ex)
         {
@@ -66,12 +65,15 @@ public partial class ProductsPage : Page
         {
             // dataGrid.ItemSource ni tozalaymiz.
             dataGrid.ItemsSource = string.Empty;
-            // Bu yerda tanlangan kategoriya bo'yicha mahsulotlarni filtrlashni qo'shishingiz mumkin
-            LoadData(selectedCategoryId);
+            // "Barcha kategoriyalar" tanlangan bo'lsa, LoadData() chaqiriladi, aks holda LoadData(selectedCategoryId)
+            if (selectedCategoryId == 0)
+                LoadData();
+            else
+                LoadData(selectedCategoryId);
         }
     }
 
-    private async void LoadData(long categoryId)
+    public async void LoadData(long categoryId)
     {
         // dataGrid.ItemSource ni tozalaymiz.
         dataGrid.ItemsSource = null;
@@ -90,7 +92,7 @@ public partial class ProductsPage : Page
         {
             foreach (var product in products)
             {
-                if (product.CategoryId == categoryId) 
+                if (product.CategoryId == categoryId)
                 {
                     var category = categories.FirstOrDefault(p => p.Id.Equals(categoryId));
                     items.Add(new Item()
@@ -119,7 +121,7 @@ public partial class ProductsPage : Page
         List<Item> items = new List<Item>();
 
         // kategoriyalar olish
-        var categories  = await categoryService.RetrieveAllAsync();
+        var categories = await categoryService.RetrieveAllAsync();
 
         // Mahsulotlarni olish
         var products = await productService.RetrieveAllAsync();
@@ -150,6 +152,13 @@ public partial class ProductsPage : Page
     {
         ProductAddWindow productAddWindow = new ProductAddWindow(services);
         productAddWindow.ShowDialog();
+        if (productAddWindow.IsCreated)
+        {
+            if (cmbCategory.SelectedValue is long selectedCategoryId)
+                LoadData(selectedCategoryId);
+            else
+                LoadData();
+        }
     }
 
     private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -165,7 +174,7 @@ public partial class ProductsPage : Page
 
         if (cmbCategory.SelectedValue is long selectedCategoryId)
             categoryId = selectedCategoryId;
-        
+
         // Mahsulotlar ro'yxati
         List<Item> items = new List<Item>();
 
@@ -184,19 +193,19 @@ public partial class ProductsPage : Page
                 {
                     var category = categories.FirstOrDefault(c => c.Id.Equals(product.CategoryId));
 
-                        if (product.Name.Contains(searchText.ToLower()))
-                            items.Add(new Item()
-                            {
-                                Id = product.Id,
-                                Name = product.Name.ToUpper(),
-                                Stock = product.MinStockLevel ?? 0,
-                                Category = category.Name.ToUpper(),
-                                IsActive = product.IsActive,
-                                CategoryId = category.Id
-                            });
+                    if (product.Name.Contains(searchText.ToLower()))
+                        items.Add(new Item()
+                        {
+                            Id = product.Id,
+                            Name = product.Name.ToUpper(),
+                            Stock = product.MinStockLevel ?? 0,
+                            Category = category.Name.ToUpper(),
+                            IsActive = product.IsActive,
+                            CategoryId = category.Id
+                        });
                 }
             }
-            else 
+            else
             {
                 foreach (var product in products)
                 {
@@ -230,6 +239,13 @@ public partial class ProductsPage : Page
         productEditWindow.spCategory.Visibility = Visibility.Visible;
 
         productEditWindow.ShowDialog();
+        if (productEditWindow.IsModified) // Agar o'zgarish bo'lsa
+        {
+            if (cmbCategory.SelectedValue is long selectedCategoryId)
+                LoadData(selectedCategoryId); // Tanlangan kategoriya bo'yicha yangilash
+            else
+                LoadData(); // Umumiy ro'yxatni yangilash
+        }
     }
 
     private void btnExcel_Click(object sender, RoutedEventArgs e)

@@ -347,8 +347,8 @@
   <data name="Valyutani ayirboshlash " xml:space="preserve">
     <value>货币兑换</value>
   </data>
-  <data name="Warehouse" xml:space="preserve">
-    <value>仓库</value>
+  <data name="Supplier" xml:space="preserve">
+    <value>供應商</value>
   </data>
   <data name="WarehouseTransfer" xml:space="preserve">
     <value>倉庫間轉移</value>
@@ -409,5 +409,8 @@
   </data>
   <data name="Pechat" xml:space="preserve">
     <value>打印</value>
+  </data>
+  <data name="Branch" xml:space="preserve">
+    <value>分支</value>
   </data>
 </root>

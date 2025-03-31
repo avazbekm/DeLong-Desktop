@@ -25,12 +25,12 @@
 
         <DataGrid x:Name="userDataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Firma nomi" Binding="{Binding FirmaName}" Width="*"/>
-                <DataGridTextColumn Header="Mijoz F.I.O" Binding="{Binding Name}" Width="*"/>
-                <DataGridTextColumn Header="Telefon" Binding="{Binding Phone}" Width="*"/>
-                <DataGridTextColumn Header="Telegram raqam" Binding="{Binding TelegramPhone}" Width="*"/>
-                <DataGridTextColumn Header="JSHSHIR" Binding="{Binding JSHSHIR}" Width="*"/>
-                <DataGridTextColumn Header="Manzili" Binding="{Binding Adress}" Width="*"/>
+                <DataGridTextColumn Header="Firma nomi" Binding="{Binding FirmaName}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Mijoz F.I.O" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Telefon" Binding="{Binding Phone}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Telegram raqam" Binding="{Binding TelegramPhone}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="JSHSHIR" Binding="{Binding JSHSHIR}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Manzili" Binding="{Binding Adress}" Width="*" IsReadOnly="True"/>
                 <DataGridTemplateColumn Header="Actions" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
