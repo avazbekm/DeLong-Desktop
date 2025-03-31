@@ -1,9 +1,11 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.Companents;
 using DeLong_Desktop.Windows.Pirces;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using DeLong_Desktop.Windows.Products;
 
 namespace DeLong_Desktop.Pages.Input;
 
@@ -24,8 +26,8 @@ public partial class InputPage : Page
 
         LoadCategoriesAsync();
         LoadProductsAsync();
+        AppState.CurrentInputPage = this; // Saqlash
     }
-
     private async void LoadCategoriesAsync()
     {
         try
@@ -48,7 +50,7 @@ public partial class InputPage : Page
         }
     }
 
-    private async void LoadProductsAsync()
+    public async void LoadProductsAsync()
     {
         productDataGrid.ItemsSource = string.Empty;
         List<ItemProduct> items = new List<ItemProduct>();
@@ -78,7 +80,7 @@ public partial class InputPage : Page
         }
     }
 
-    private async void LoadDataAsync(long categoryId)
+    public async void LoadDataAsync(long categoryId)
     {
         productDataGrid.ItemsSource = null;
         List<ItemProduct> items = new List<ItemProduct>();
@@ -199,7 +201,7 @@ public partial class InputPage : Page
                 btnAddPrice.Visibility = Visibility.Collapsed;
                 tbProductName.Text = "";
             }
-            RefreshPrices(product.Id); // Narxlarni yangilash
+            RefreshPrices(product.Id);
         }
     }
 
@@ -222,7 +224,6 @@ public partial class InputPage : Page
                         tbUnitOfMesure = { Text = price.UnitOfMeasure },
                         tbPriceId = { Text = price.Id.ToString() }
                     };
-                    // Har bir o‘zgarishda RefreshPrices chaqiriladi
                     priceViewControl.PriceUpdated += (s, e) => RefreshPrices(InputInfo.ProductId);
                     wrpPrice.Children.Add(priceViewControl);
                 }
@@ -237,15 +238,18 @@ public partial class InputPage : Page
     private void btnAddPrice_Click(object sender, RoutedEventArgs e)
     {
         PirceWindow pirceWindow = new PirceWindow(services);
-        pirceWindow.PriceAdded += (s, e) => RefreshPrices(InputInfo.ProductId); // Yangi hodisa qo‘shildi
+        pirceWindow.PriceAdded += (s, e) => RefreshPrices(InputInfo.ProductId);
         pirceWindow.ShowDialog();
-        // if (pirceWindow.IsCreated && InputInfo.ProductId > 0)
-        // {
-        //     RefreshPrices(InputInfo.ProductId);
-        // }
     }
 
     private void categoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+    }
+
+    private void btnAddProduct_Click(object sender, RoutedEventArgs e)
+    {
+        ProductAddWindow productAddWindow = new ProductAddWindow(services);
+        productAddWindow.ProductAdded += (s, ev) => LoadProductsAsync(); // Hodisani ushlaymiz
+        productAddWindow.ShowDialog();
     }
 }

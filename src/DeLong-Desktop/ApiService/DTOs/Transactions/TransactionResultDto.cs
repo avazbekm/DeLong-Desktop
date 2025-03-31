@@ -12,6 +12,6 @@ public class TransactionResultDto
     public TransactionType TransactionType { get; set; } // Tranzaksiya turi
     public string Comment { get; set; } = string.Empty; // Izoh
     public List<TransactionItemResultDto> Items { get; set; } = new List<TransactionItemResultDto>(); // Tranzaksiya elementlari
-    public DateTime CreatedAt { get; set; } // Yaratilgan vaqt (Auditable’dan)
-    public DateTime? UpdatedAt { get; set; } // Yangilangan vaqt (Auditable’dan)
+    public DateTimeOffset CreatedAt { get; set; } // Yaratilgan vaqt (Auditable’dan)
+    public DateTimeOffset? UpdatedAt { get; set; } // Yangilangan vaqt (Auditable’dan)
 }

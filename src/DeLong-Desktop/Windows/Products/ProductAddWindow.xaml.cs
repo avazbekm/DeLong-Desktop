@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.ApiService.Helpers;
@@ -9,16 +10,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Windows.Products;
 
-/// <summary>
-/// Interaction logic for ProductAddWindow.xaml
-/// </summary>
 public partial class ProductAddWindow : Window
 {
     private readonly ICategoryService categoryService;
     private readonly IProductService productService;
     private readonly IPriceService priceService;
     private readonly IServiceProvider services;
-    public bool IsCreated { get; set; } = false; // Yangi xususiyat qo'shildi
+    public bool IsCreated { get; set; } = false;
+    public event EventHandler ProductAdded; // Yangi hodisa qo‘shildi
 
     public ProductAddWindow(IServiceProvider services)
     {
@@ -165,14 +164,12 @@ public partial class ProductAddWindow : Window
                 MessageBox.Show("Kategoriya nomini kiriting.");
                 return;
             }
-            // Kategoriyani yaratish uchun DTO obyekti
             CategoryCreationDto categoryCreationDto = new CategoryCreationDto
             {
                 Name = txtbCategoryName.Text,
                 Description = txtbDescriptionCategory.Text
             };
 
-            // Kategoriya qo'shish uchun xizmat chaqirilyapti
             bool result = await categoryService.AddAsync(categoryCreationDto);
             if (result)
             {
@@ -185,18 +182,17 @@ public partial class ProductAddWindow : Window
         }
         catch (Exception ex)
         {
-            // Kutilmagan xatoliklar uchun
             MessageBox.Show($"Kutilmagan xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
-    private void txtbCategoryName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    private void txtbCategoryName_TextChanged(object sender, TextChangedEventArgs e)
     {
         string searchText = txtbCategoryName.Text.Trim();
         FilterCategories(searchText);
     }
 
-    private void txtbName_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    private void txtbName_TextChanged(object sender, TextChangedEventArgs e)
     {
         string searchText = txtbName.Text.Trim();
         FilterProducts(searchText);
@@ -252,7 +248,6 @@ public partial class ProductAddWindow : Window
                             TartibRaqam = ++Number,
                             Name = product.Name.ToUpper()
                         });
-
                 }
                 productDataGrid.ItemsSource = items;
             }
@@ -288,7 +283,10 @@ public partial class ProductAddWindow : Window
             ProductCreationDto productCreationDto = new ProductCreationDto();
 
             if (txtbName.Text.Equals(""))
+            {
                 MessageBox.Show("Ma'lumotni to'liq kiriting.");
+                return;
+            }
 
             productCreationDto.Name = txtbName.Text.Trim();
             productCreationDto.Description = txtbDescription.Text.Trim();
@@ -307,8 +305,9 @@ public partial class ProductAddWindow : Window
             if (result)
             {
                 MessageBox.Show("Mahsulot muvaffaqiyatli saqlandi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
-                IsCreated = true; // Mahsulot qo'shilganini belgilaymiz
-                this.Close(); // Oynani yopamiz
+                IsCreated = true;
+                ProductAdded?.Invoke(this, EventArgs.Empty); // Hodisani chaqiramiz
+                this.Close();
             }
             else
             {
@@ -317,7 +316,6 @@ public partial class ProductAddWindow : Window
         }
         catch (Exception ex)
         {
-            // Kutilmagan xatoliklar uchun
             MessageBox.Show($"Kutilmagan xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }

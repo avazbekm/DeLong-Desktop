@@ -7,6 +7,7 @@ using DeLong_Desktop.Windows.Products;
 using Page = System.Windows.Controls.Page;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using DeLong_Desktop.Pages.Input;
 
 namespace DeLong_Desktop.Pages.Products;
 
@@ -151,14 +152,22 @@ public partial class ProductsPage : Page
     private void btnAdd_Click(object sender, RoutedEventArgs e)
     {
         ProductAddWindow productAddWindow = new ProductAddWindow(services);
-        productAddWindow.ShowDialog();
-        if (productAddWindow.IsCreated)
+        productAddWindow.ProductAdded += (s, ev) =>
         {
             if (cmbCategory.SelectedValue is long selectedCategoryId)
                 LoadData(selectedCategoryId);
             else
                 LoadData();
-        }
+
+            if (AppState.CurrentInputPage != null)
+            {
+                if (cmbCategory.SelectedValue is long categoryId && categoryId != 0)
+                    AppState.CurrentInputPage.LoadDataAsync(categoryId);
+                else
+                    AppState.CurrentInputPage.LoadProductsAsync();
+            }
+        };
+        productAddWindow.ShowDialog();
     }
 
     private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)

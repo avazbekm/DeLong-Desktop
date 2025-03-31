@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.Pages.Input;
 using DeLong_Desktop.ApiService.Interfaces;
+using DeLong_Desktop.ApiService.DTOs.Enums;
 using DeLong_Desktop.ApiService.DTOs.Prices;
+using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.Transactions;
 using DeLong_Desktop.ApiService.DTOs.TransactionItems;
-using DeLong_Desktop.ApiService.DTOs.Enums;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Windows.Pirces;
 
@@ -86,7 +83,7 @@ public partial class PirceWindow : Window
 
     private async void cbSupplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (cbSupplier.SelectedItem != null)
+         if (cbSupplier.SelectedItem != null)
         {
             var selectedItem = cbSupplier.SelectedItem as dynamic;
             long? selectedId = selectedItem?.Id;
