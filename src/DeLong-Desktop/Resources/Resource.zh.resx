@@ -449,10 +449,10 @@
   <data name="O'tkazish" xml:space="preserve">
     <value>转账</value>
   </data>
-  <data name="Zaxiradagi pullar" xml:space="preserve">
-    <value>库存资金</value>
   <data name="Branch" xml:space="preserve">
     <value>分支</value>
-
+  </data>
+  <data name="Zaxiradagi_pullar" xml:space="preserve">
+    <value>儲備資金</value>
   </data>
 </root>

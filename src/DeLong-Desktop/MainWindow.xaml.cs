@@ -10,7 +10,6 @@ using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.Pages.SaleHistory;
 using DeLong_Desktop.Pages.SalesPractice;
 using DeLong_Desktop.Pages.AdditionalOperations;
-using DeLong_Desktop.Pages.Reports;
 using DeLong_Desktop.Pages.Suppliers;
 using DeLong_Desktop.Pages.Branches;
 
@@ -144,7 +143,7 @@ public partial class MainWindow : Window
         {
             ((ComboBoxItem)_cashPage.ToComboBox.Items[0]).Content = DeLong_Desktop.Resources.Resource.Kassaga;
             ((ComboBoxItem)_cashPage.ToComboBox.Items[1]).Content = DeLong_Desktop.Resources.Resource.Zaxiraga;
-            ((ComboBoxItem)_cashPage.ToComboBox.Items[2]).Content = DeLong_Desktop.Resources.Resource.Boshqa;
+           // ((ComboBoxItem)_cashPage.ToComboBox.Items[2]).Content = DeLong_Desktop.Resources.Resource.Boshqa;
         }
         #endregion
 

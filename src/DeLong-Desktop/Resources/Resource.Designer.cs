@@ -133,13 +133,20 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-
+        ///   Looks up a localized string similar to Boshqa.
+        /// </summary>
+        internal static string Boshqa {
+            get {
+                return ResourceManager.GetString("Boshqa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filial.
         /// </summary>
         internal static string Branch {
             get {
                 return ResourceManager.GetString("Branch", resourceCulture);
-
             }
         }
         
@@ -1030,7 +1037,7 @@ namespace DeLong_Desktop.Resources {
         /// </summary>
         internal static string Zaxiradagi_pullar {
             get {
-                return ResourceManager.GetString("Zaxiradagi pullar", resourceCulture);
+                return ResourceManager.GetString("Zaxiradagi_pullar", resourceCulture);
             }
         }
         
