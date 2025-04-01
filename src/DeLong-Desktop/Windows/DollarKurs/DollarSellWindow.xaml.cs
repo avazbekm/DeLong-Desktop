@@ -6,6 +6,7 @@ using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.CashRegisters;
 using DeLong_Desktop.ApiService.DTOs.CashTransfers;
+using DeLong_Desktop.Pages.Cashs;
 
 namespace DeLong_Desktop.Windows.DollarKurs
 {
@@ -102,7 +103,10 @@ namespace DeLong_Desktop.Windows.DollarKurs
                 };
                 await cashTransferService.AddAsync(cashTransferDollar);
 
-                // 7. Muvaffaqiyatli xabar va oynani yopish
+                // 7. CashPage ni yangilash uchun event chaqirish
+                CashEvents.RaiseCashUpdated();
+
+                // 8. Muvaffaqiyatli xabar va oynani yopish
                 MessageBox.Show($"Dollar sotildi: {dollarAmount:N2} USD, {somAmount:N2} so‘m qo‘shildi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }
@@ -135,5 +139,4 @@ namespace DeLong_Desktop.Windows.DollarKurs
         {
         }
     }
-
 }

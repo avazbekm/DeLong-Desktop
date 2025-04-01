@@ -232,17 +232,11 @@ public partial class InputPage : Page
                     ProductId = item.ProductId,
                     Quantity = item.Quantity,
                     UnitOfMeasure = item.UnitOfMeasure,
-                    PriceProduct = item.CostPrice
+                    PriceProduct = item.CostPrice,
                 }).ToList()
             };
 
             var transaction = await _transactionService.AddAsync(transactionDto);
-
-            foreach (var item in transactionDto.Items)
-            {
-                item.TransactionId = transaction.Id;
-                await _transactionItemService.AddAsync(item);
-            }
 
             MessageBox.Show("Tranzaksiya muvaffaqiyatli yakunlandi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
             _receiveItems.Clear();

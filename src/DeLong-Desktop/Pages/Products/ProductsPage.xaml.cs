@@ -3,11 +3,11 @@ using System.Windows;
 using ClosedXML.Excel;
 using System.Windows.Data;
 using System.Windows.Controls;
+using DeLong_Desktop.Pages.Input;
 using DeLong_Desktop.Windows.Products;
 using Page = System.Windows.Controls.Page;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using DeLong_Desktop.Pages.Input;
 
 namespace DeLong_Desktop.Pages.Products;
 

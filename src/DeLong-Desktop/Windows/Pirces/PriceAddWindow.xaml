@@ -12,7 +12,7 @@
         ResizeMode="NoResize">
     <StackPanel Margin="20">
         <Label Content="Miqdori:" FontSize="16" VerticalAlignment="Center" Foreground="Snow"/>
-        <TextBox x:Name="tbQuantity" FontSize="16" CaretBrush="Snow" Padding="5 0" Foreground="Snow" VerticalAlignment="Center" Margin="0,10,0,0" TextChanged="tbQuantity_TextChanged"/>
+        <TextBox x:Name="tbQuantity" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" Padding="5 0"  VerticalAlignment="Center" Margin="0,10,0,0" TextChanged="tbQuantity_TextChanged"/>
         <Button Content="Saqlash" BorderThickness="0" FontSize="16" Background="#548CA8" Width="100" Height="30" HorizontalAlignment="Right" Click="Save_Click"/>
     </StackPanel>
 </Window>

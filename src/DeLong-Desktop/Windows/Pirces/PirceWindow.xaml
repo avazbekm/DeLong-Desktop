@@ -63,21 +63,21 @@
 
                 <!-- Kelish narxi -->
                 <Label Content="Tannarxi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                <TextBox x:Name="tbIncomePrice" Foreground="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbIncomePrice_TextChanged"/>
+                <TextBox x:Name="tbIncomePrice" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbIncomePrice_TextChanged"/>
 
                 <!-- sotish narxi -->
-                <Label Content="Sotish narxi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
-                <TextBox x:Name="tbSellPrice" Foreground ="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbSellPrice_TextChanged"/>
+                <Label Content="Sotish narxi:" Foreground="{DynamicResource SecondaryTextColor}" FontSize="16" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
+                <TextBox x:Name="tbSellPrice" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbSellPrice_TextChanged"/>
 
                 <!-- Miqdori -->
-                <Label Content="Miqdori:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
-                <TextBox x:Name="tbQuantity" Foreground="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbQuantity_TextChanged"/>
+                <Label Content="Miqdori:" Foreground="{DynamicResource SecondaryTextColor}" FontSize="16" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
+                <TextBox x:Name="tbQuantity" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbQuantity_TextChanged"/>
 
                 <!-- o'lchov birligi -->
-                <Label Content="O'lchov birligi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
-                <TextBox x:Name="tbUnitOfMesure" md:HintAssist.Hint="( kg, dona, metr, litr, ... )" Foreground="Snow" FontSize="16" Padding="5 0" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                <Label Content="O'lchov birligi:" Foreground="{DynamicResource SecondaryTextColor}" FontSize="16" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
+                <TextBox x:Name="tbUnitOfMesure" md:HintAssist.Hint="( kg, dona, metr, litr, ... )" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" FontSize="16" Padding="5 0" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
             </Grid>
-            <Button x:Name="btnAddPrice" Content="Saqlash" Padding="0" FontSize="18" Style="{DynamicResource MaterialDesignPaperSecondaryLightButton}" Width="350" Foreground="Snow" Background="#548CA8" BorderThickness="0" Height="30" Click="btnAddPrice_Click"/>
+            <Button x:Name="btnAddPrice" Content="Saqlash" Padding="0" FontSize="18" Style="{DynamicResource MaterialDesignPaperSecondaryLightButton}" Width="350" Foreground="{DynamicResource SecondaryTextColor}" Background="{DynamicResource SecondaryBackground}" BorderThickness="0" Height="30" Click="btnAddPrice_Click"/>
         </StackPanel>
     </StackPanel>
 </Window>

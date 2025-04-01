@@ -31,7 +31,7 @@ public partial class CashPage : Page
         Loaded += CashPage_Loaded;
         FromComboBox.SelectionChanged += FromComboBox_SelectionChanged;
 
-        // Faqat shu qator qo‘shiladi
+        // Faqat shu qator qo‘shiladi (allaqachon mavjud)
         CashEvents.CashUpdated += async (s, e) => await RefreshCashData();
     }
 

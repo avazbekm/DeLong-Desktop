@@ -14,6 +14,7 @@ using DeLong_Desktop.ApiService.DTOs.Transactions;
 using DeLong_Desktop.ApiService.DTOs.CashRegisters;
 using DeLong_Desktop.ApiService.DTOs.CashTransfers;
 using DeLong_Desktop.ApiService.DTOs.TransactionItems;
+using DeLong_Desktop.Pages.Cashs;
 
 namespace DeLong_Desktop.Pages.AdditionalOperations;
 
@@ -29,17 +30,16 @@ public partial class AdditionalOperationsPage : Page
     private readonly IKursDollarService _kursDollarService;
     private readonly IDebtPaymentService _debtPaymentService;
     private readonly ITransactionService _transactionService;
-    private readonly ICashRegisterService _cashRegisterService; // Yangi qo‘shildi
-    private readonly ICashTransferService _cashTransferService; // Yangi qo‘shildi
+    private readonly ICashRegisterService _cashRegisterService;
+    private readonly ICashTransferService _cashTransferService;
     private readonly IReturnProductService _returnProductService;
     private readonly ITransactionItemService _transactionItemService;
 
     private List<DebtItem> allDebts;
     private List<DebtItem> selectedCustomerDebts;
 
-    // DataGrid uchun ObservableCollection
     public ObservableCollection<TransferItem> TransferItems { get; set; } = new();
-    private List<ComboboxItem> allProducts = new(); // Barcha mahsulotlar ro‘yxati saqlanadi
+    private List<ComboboxItem> allProducts = new();
 
     public AdditionalOperationsPage(IServiceProvider services)
     {
@@ -54,21 +54,16 @@ public partial class AdditionalOperationsPage : Page
         _kursDollarService = services.GetRequiredService<IKursDollarService>();
         _transactionService = services.GetRequiredService<ITransactionService>();
         _debtPaymentService = services.GetRequiredService<IDebtPaymentService>();
-        _cashRegisterService = services.GetRequiredService<ICashRegisterService>(); // Yangi qo‘shildi
-        _cashTransferService = services.GetRequiredService<ICashTransferService>(); // Yangi qo‘shildi
+        _cashRegisterService = services.GetRequiredService<ICashRegisterService>();
+        _cashTransferService = services.GetRequiredService<ICashTransferService>();
         _returnProductService = services.GetRequiredService<IReturnProductService>();
         _transactionItemService = services.GetRequiredService<ITransactionItemService>();
         LoadDebts();
-        // DataGrid ga bog‘lash
         transferDataGrid.ItemsSource = TransferItems;
-
-        // Mahsulotlar ro‘yxatini yuklash
         LoadProductData();
         cbTransactionType.ItemsSource = Enum.GetNames(typeof(TransactionType));
     }
 
-
-    // Mahsulotlar ro‘yxatini ComboBox ga yuklash
     private async void LoadProductData()
     {
         try
@@ -94,7 +89,7 @@ public partial class AdditionalOperationsPage : Page
             MessageBox.Show($"Mahsulotlarni yuklashda xatolik: {ex.Message}");
         }
     }
-    // "Qo‘shish" tugmasi uchun metod
+
     private async void AddProductButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -130,7 +125,7 @@ public partial class AdditionalOperationsPage : Page
                     TransferItems.Add(newItem);
                     break;
                 }
-                else 
+                else
                 {
                     var newItem = new TransferItem
                     {
@@ -143,7 +138,7 @@ public partial class AdditionalOperationsPage : Page
                     };
 
                     TransferItems.Add(newItem);
-                    quantity-= price.Quantity;
+                    quantity -= price.Quantity;
                 }
             }
         }
@@ -153,7 +148,6 @@ public partial class AdditionalOperationsPage : Page
         }
     }
 
-    // cbProductList uchun qidiruv logikasi
     private void cbProductList_PreviewKeyUp(object sender, KeyEventArgs e)
     {
         var comboBox = sender as ComboBox;
@@ -171,10 +165,10 @@ public partial class AdditionalOperationsPage : Page
         }
         else
         {
-            cbProductList.ItemsSource = allProducts; // Agar qidiruv bo‘sh bo‘lsa, barcha mahsulotlarni qaytarish
+            cbProductList.ItemsSource = allProducts;
         }
 
-        cbProductList.IsDropDownOpen = true; // Har doim ochiq qoladi
+        cbProductList.IsDropDownOpen = true;
     }
 
     private void DeleteProductButton_Click(object sender, RoutedEventArgs e)
@@ -191,6 +185,7 @@ public partial class AdditionalOperationsPage : Page
             MessageBox.Show($"O‘chirishda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+
     private async void LoadDebts()
     {
         try
@@ -205,7 +200,6 @@ public partial class AdditionalOperationsPage : Page
                 {
                     foreach (var debt in customer.Value)
                     {
-
                         var debtItem = new DebtItem
                         {
                             Id = debt.Id,
@@ -224,7 +218,6 @@ public partial class AdditionalOperationsPage : Page
             }
 
             debtDataGrid.ItemsSource = allDebts;
-            // Tanlangan mijozning qarzlarini yangilash
             DebtDataGrid_SelectionChanged(null, null);
         }
         catch (Exception ex)
@@ -232,6 +225,7 @@ public partial class AdditionalOperationsPage : Page
             MessageBox.Show($"Qarzlarni yuklashda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+
     private void SearchDebt_TextChanged(object sender, TextChangedEventArgs e)
     {
         string searchText = tbSearchDebt.Text.ToLower();
@@ -245,17 +239,16 @@ public partial class AdditionalOperationsPage : Page
 
         debtDataGrid.ItemsSource = filteredDebts;
     }
+
     private void DebtDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (debtDataGrid.SelectedItem is DebtItem selectedDebt)
         {
-            // Tanlangan mijozning barcha qarzlarini yig‘amiz
             selectedCustomerDebts = allDebts
                 .Where(debt => debt.CustomerName == selectedDebt.CustomerName)
-                .OrderBy(debt => debt.DueDateValue) // DateTimeOffset bo‘yicha tartiblash
+                .OrderBy(debt => debt.DueDateValue)
                 .ToList();
 
-            // Jami qarzni hisoblaymiz
             decimal totalDebt = selectedCustomerDebts.Sum(debt => debt.RemainingAmount);
             tbTotalDebt.Text = $"{totalDebt:N2} so‘m";
         }
@@ -270,7 +263,6 @@ public partial class AdditionalOperationsPage : Page
     {
         if (sender is Button button && button.DataContext is DebtItem selectedDebt)
         {
-            // To‘lov summalarini olish
             if (!decimal.TryParse(tbCashPayment.Text, out decimal cashAmount) || cashAmount < 0)
                 cashAmount = 0;
             if (!decimal.TryParse(tbCardPayment.Text, out decimal cardAmount) || cardAmount < 0)
@@ -278,7 +270,6 @@ public partial class AdditionalOperationsPage : Page
             if (!decimal.TryParse(tbDollarPayment.Text, out decimal dollarAmount) || dollarAmount < 0)
                 dollarAmount = 0;
 
-            // Umumiy to‘lov summasini hisoblash
             if (cashAmount == 0 && cardAmount == 0 && dollarAmount == 0)
             {
                 MessageBox.Show($"Qator ID: {selectedDebt.Id} uchun to‘g‘ri to‘lov summasini kiriting!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -287,7 +278,6 @@ public partial class AdditionalOperationsPage : Page
 
             try
             {
-                // Dollar kursini olish
                 var dollar = await _kursDollarService.RetrieveByIdAsync();
                 if (dollar == null && dollarAmount > 0)
                 {
@@ -297,17 +287,14 @@ public partial class AdditionalOperationsPage : Page
                 decimal dollarKurs = dollar?.AdmissionDollar ?? 0;
                 decimal dollarInSom = dollarAmount * dollarKurs;
 
-                // Umumiy to‘lov summasi (so‘mda)
                 decimal totalPayment = cashAmount + cardAmount + dollarInSom;
 
-                // Agar to‘lov summasi qarz summasidan ko‘p bo‘lsa, xato
                 if (totalPayment > selectedDebt.RemainingAmount)
                 {
                     MessageBox.Show($"To‘lov summasi ({totalPayment:N2} so‘m) qarz summasidan ({selectedDebt.RemainingAmount:N2} so‘m) ko‘p bo‘lishi mumkin emas!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
-                // Har bir to‘lov usulini alohida saqlash
                 if (cashAmount > 0)
                 {
                     var cashPaymentDto = new DebtPaymentCreationDto
@@ -337,7 +324,7 @@ public partial class AdditionalOperationsPage : Page
                     var dollarPaymentDto = new DebtPaymentCreationDto
                     {
                         DebtId = selectedDebt.Id,
-                        Amount = dollarInSom, // So‘mga aylantirilgan summa
+                        Amount = dollarInSom,
                         PaymentDate = DateTimeOffset.UtcNow,
                         PaymentMethod = "Dollar"
                     };
@@ -356,6 +343,7 @@ public partial class AdditionalOperationsPage : Page
             }
         }
     }
+
     private async void PayAllDebtsButton_Click(object sender, RoutedEventArgs e)
     {
         if (selectedCustomerDebts == null || !selectedCustomerDebts.Any())
@@ -379,7 +367,6 @@ public partial class AdditionalOperationsPage : Page
 
         try
         {
-            // Dollar kursini olish
             var dollar = await _kursDollarService.RetrieveByIdAsync();
             if (dollar == null)
             {
@@ -389,10 +376,8 @@ public partial class AdditionalOperationsPage : Page
             decimal dollarKurs = dollar.AdmissionDollar;
             decimal dollarInSom = dollarAmount * dollarKurs;
 
-            // Umumiy to‘lov summasi (so‘mda)
             decimal totalPayment = cashAmount + cardAmount + dollarInSom;
 
-            // Jami qarzni tekshirish
             decimal totalDebt = selectedCustomerDebts.Sum(debt => debt.RemainingAmount);
             if (totalPayment > totalDebt)
             {
@@ -400,7 +385,6 @@ public partial class AdditionalOperationsPage : Page
                 return;
             }
 
-            // Kassani yangilash uchun ochiq kassani olish
             var cashRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
             if (cashRegisters == null || !cashRegisters.Any())
             {
@@ -413,13 +397,11 @@ public partial class AdditionalOperationsPage : Page
             decimal uzpBalance = currentRegister.UzpBalance;
             decimal usdBalance = currentRegister.UsdBalance;
 
-            // Muddati bo‘yicha tartiblangan qarzlar
             decimal remainingPayment = totalPayment;
             decimal remainingCash = cashAmount;
             decimal remainingCard = cardAmount;
             decimal remainingDollar = dollarAmount;
 
-            // Mijoz nomini olish (birinchi qarzdan)
             string customerName = selectedCustomerDebts.First().CustomerName;
 
             foreach (var debt in selectedCustomerDebts)
@@ -432,7 +414,6 @@ public partial class AdditionalOperationsPage : Page
                 {
                     decimal remainingAmountToPay = amountToPay;
 
-                    // Naqd to‘lov
                     if (remainingAmountToPay > 0 && remainingCash > 0)
                     {
                         decimal cashToPay = Math.Min(remainingCash, remainingAmountToPay);
@@ -448,7 +429,6 @@ public partial class AdditionalOperationsPage : Page
                         remainingAmountToPay -= cashToPay;
                     }
 
-                    // Plastik to‘lov
                     if (remainingAmountToPay > 0 && remainingCard > 0)
                     {
                         decimal cardToPay = Math.Min(remainingCard, remainingAmountToPay);
@@ -464,7 +444,6 @@ public partial class AdditionalOperationsPage : Page
                         remainingAmountToPay -= cardToPay;
                     }
 
-                    // Dollar to‘lov
                     if (remainingAmountToPay > 0 && remainingDollar > 0)
                     {
                         decimal remainingDollarInSom = remainingDollar * dollarKurs;
@@ -490,7 +469,6 @@ public partial class AdditionalOperationsPage : Page
                 }
             }
 
-            // Naqd transfer (agar kiritilgan bo‘lsa)
             if (cashAmount > 0)
             {
                 uzsBalance += cashAmount;
@@ -508,7 +486,6 @@ public partial class AdditionalOperationsPage : Page
                 await _cashTransferService.AddAsync(cashTransferDto);
             }
 
-            // Plastik transfer (agar kiritilgan bo‘lsa)
             if (cardAmount > 0)
             {
                 uzpBalance += cardAmount;
@@ -526,7 +503,6 @@ public partial class AdditionalOperationsPage : Page
                 await _cashTransferService.AddAsync(cardTransferDto);
             }
 
-            // Dollar transfer (agar kiritilgan bo‘lsa)
             if (dollarAmount > 0)
             {
                 usdBalance += dollarAmount;
@@ -544,7 +520,6 @@ public partial class AdditionalOperationsPage : Page
                 await _cashTransferService.AddAsync(dollarTransferDto);
             }
 
-            // Kassani yangilash
             var updatedRegister = new CashRegisterUpdateDto
             {
                 Id = currentRegister.Id,
@@ -553,6 +528,9 @@ public partial class AdditionalOperationsPage : Page
                 UsdBalance = usdBalance
             };
             await _cashRegisterService.ModifyAsync(updatedRegister);
+
+            // CashPage ni yangilash uchun event chaqirish
+            CashEvents.RaiseCashUpdated();
 
             MessageBox.Show("To‘lov muvaffaqiyatli amalga oshirildi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
             LoadDebts();
@@ -568,6 +546,7 @@ public partial class AdditionalOperationsPage : Page
 
     private void AcceptReturnedProductButton_Click(object sender, RoutedEventArgs e) { }
     private void AddReturnedProductButton_Click(object sender, RoutedEventArgs e) { }
+
     private void TransferProductButton_Click(object sender, RoutedEventArgs e) { }
 
     private void tbCashPayment_TextChanged(object sender, TextChangedEventArgs e)
@@ -711,6 +690,9 @@ public partial class AdditionalOperationsPage : Page
             };
             await _cashRegisterService.ModifyAsync(updatedRegister);
 
+            // CashPage ni yangilash uchun event chaqirish
+            CashEvents.RaiseCashUpdated();
+
             MessageBox.Show("Qaytgan mahsulot muvaffaqiyatli tasdiqlandi va kassa yangilandi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
 
             tbSaleId.Text = "";
@@ -726,6 +708,7 @@ public partial class AdditionalOperationsPage : Page
             MessageBox.Show($"Xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+
     private void tbSaleId_TextChanged(object sender, TextChangedEventArgs e)
     {
         ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
@@ -742,12 +725,10 @@ public partial class AdditionalOperationsPage : Page
                 return;
             }
 
-            // SaleItemService dan saleId orqali sale itemlarni olamiz
             var saleItems = await _saleItemService.RetrieveAllBySaleIdAsync(saleId);
 
             if (saleItems != null && saleItems.Any())
             {
-                // Mahsulot nomini ProductService dan olish
                 var productNames = await Task.WhenAll(saleItems.Select(async item =>
                 {
                     var product = await _productService.RetrieveByIdAsync(item.ProductId);
@@ -769,7 +750,6 @@ public partial class AdditionalOperationsPage : Page
                 MessageBox.Show("Bu ID bilan hech qanday mahsulot topilmadi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
-            // SaleService dan mijoz nomini olamiz
             var saleDetails = await _saleService.RetrieveByIdAsync(saleId);
             if (saleDetails != null && saleDetails.CustomerId.HasValue && saleDetails.CustomerId > 0)
             {
@@ -794,7 +774,6 @@ public partial class AdditionalOperationsPage : Page
         }
     }
 
-    // Mahsulot nomini olish uchun taxminiy funksiya (real loyihada ProductService ishlatilishi mumkin)
     private void tbReturnQuantity_TextChanged(object sender, TextChangedEventArgs e)
     {
         ValidationHelper.ValidateDecimalInput(sender as TextBox);
@@ -809,21 +788,18 @@ public partial class AdditionalOperationsPage : Page
     {
         try
         {
-            // Validatsiya: DataGridda mahsulot borligini tekshirish
             if (TransferItems.Count == 0)
             {
                 MessageBox.Show("Hech qanday mahsulot qo‘shilmagan!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            // Validatsiya: Ombor va tranzaksiya turi tanlanganligini tekshirish
             if (cbToWarehouse.SelectedItem == null || cbTransactionType.SelectedItem == null)
             {
                 MessageBox.Show("Ombor yoki tranzaksiya turini tanlang!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            // Tranzaksiya DTO yaratish
             var transactionDto = new TransactionCreationDto
             {
                 BranchIdTo = (long)cbToWarehouse.SelectedValue,
@@ -831,7 +807,6 @@ public partial class AdditionalOperationsPage : Page
                 Comment = tbCommentProvodka.Text
             };
 
-            // Tranzaksiyani yaratish
             var createdTransaction = await _transactionService.AddAsync(transactionDto);
             if (createdTransaction == null)
             {
@@ -839,12 +814,11 @@ public partial class AdditionalOperationsPage : Page
                 return;
             }
 
-            // DataGriddagi har bir qator uchun tranzaksiya itemlarini qo‘shish
             foreach (var item in TransferItems)
             {
                 var transactionItemDto = new TransactionItemCreationDto
                 {
-                    TransactionId  = createdTransaction.Id,
+                    TransactionId = createdTransaction.Id,
                     ProductId = item.ProductId,
                     Quantity = item.Quantity,
                     PriceProduct = item.UnitPrice,
@@ -866,7 +840,6 @@ public partial class AdditionalOperationsPage : Page
                 await _priceService.ModifyAsync(priceUpdateDto);
             }
 
-            // Muvaffaqiyatli saqlangandan so‘ng ro‘yxatni tozalash
             MessageBox.Show("Tranzaksiya muvaffaqiyatli saqlandi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
             TransferItems.Clear();
         }
