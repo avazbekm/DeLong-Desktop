@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -18,7 +15,7 @@ using DeLong_Desktop.ApiService.DTOs.Prices;
 using DeLong_Desktop.ApiService.DTOs.SaleItems;
 using DeLong_Desktop.ApiService.DTOs.Sales;
 using DeLong_Desktop.ApiService.Interfaces;
-using DeLong_Desktop.Pages.SaleHistory;
+using DeLong_Desktop.Pages.Cashs;
 using DeLong_Desktop.Windows.DollarKurs;
 using DeLong_Desktop.Windows.Sales.DebtPacker;
 using DeLong_Desktop.Windows.Sales.PrintOrExcel;
@@ -49,7 +46,6 @@ public partial class SalePracticePage : Page
 
     public ObservableCollection<ProductItem> Items { get; set; } = new();
 
-    // SaleCompleted event’ini qo‘shish
     public event EventHandler SaleCompleted;
 
     public SalePracticePage(IServiceProvider services)
@@ -71,7 +67,6 @@ public partial class SalePracticePage : Page
 
         ProductGrid.ItemsSource = Items;
 
-        // ObservableCollection o‘zgarishlarini kuzatish
         Items.CollectionChanged += (s, e) => UpdateTotalSum();
 
         LoadingProductData();
@@ -514,214 +509,172 @@ public partial class SalePracticePage : Page
             };
 
             var createdSale = await _saleService.AddAsync(saleDto);
-
             if (createdSale == null)
             {
                 MessageBox.Show("Sotuvni yaratishda xatolik yuz berdi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            try
+            foreach (var product in ProductGrid.Items.Cast<ProductItem>())
             {
-                foreach (var product in ProductGrid.Items.Cast<ProductItem>())
+                var saleItemDto = new SaleItemCreationDto
                 {
-                    var saleItemDto = new SaleItemCreationDto
-                    {
-                        SaleId = createdSale.Id,
-                        ProductId = product.ProductId,
-                        UnitOfMeasure = product.Unit,
-                        Quantity = product.Quantity,
-                        UnitPrice = product.Price
-                    };
-
-                    var addedSaleItem = await _saleItemService.AddAsync(saleItemDto);
-                    if (addedSaleItem == null)
-                    {
-                        MessageBox.Show($"SaleItem qo‘shishda xatolik: {product.ProductName}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-
-                    var priceToUpdate = await _priceService.RetrieveByIdAsync(product.PriceId);
-                    if (priceToUpdate != null)
-                    {
-                        var updatedQuantity = priceToUpdate.Quantity - product.Quantity;
-                        if (updatedQuantity < 0)
-                        {
-                            MessageBox.Show($"{product.ProductName} uchun yetarli qoldiq yo‘q!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
-                        }
-
-                        var priceUpdateDto = new PriceUpdateDto
-                        {
-                            Id = priceToUpdate.Id,
-                            ProductId = priceToUpdate.ProductId,
-                            CostPrice = priceToUpdate.CostPrice,
-                            SellingPrice = priceToUpdate.SellingPrice,
-                            UnitOfMeasure = priceToUpdate.UnitOfMeasure,
-                            Quantity = updatedQuantity
-                        };
-
-                        var isPriceUpdated = await _priceService.ModifyAsync(priceUpdateDto);
-                        if (!isPriceUpdated)
-                        {
-                            MessageBox.Show($"{product.ProductName} narxini yangilashda xatolik!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show($"{product.ProductName} uchun narx topilmadi (PriceId: {product.PriceId})!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"SaleItem yoki narx yangilashda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            try
-            {
-                var cashRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
-                if (cashRegisters == null || !cashRegisters.Any())
+                    SaleId = createdSale.Id,
+                    ProductId = product.ProductId,
+                    UnitOfMeasure = product.Unit,
+                    Quantity = product.Quantity,
+                    UnitPrice = product.Price
+                };
+                var addedSaleItem = await _saleItemService.AddAsync(saleItemDto);
+                if (addedSaleItem == null)
                 {
-                    MessageBox.Show("Ochiq kassa topilmadi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show($"SaleItem qo‘shishda xatolik: {product.ProductName}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                var currentRegister = cashRegisters.LastOrDefault();
 
-                decimal uzsBalance = currentRegister.UzsBalance;
-                decimal uzpBalance = currentRegister.UzpBalance;
-                decimal usdBalance = currentRegister.UsdBalance;
-
-                string customerName = selectedItem?.Name ?? "Noma'lum mijoz";
-
-                if (decimal.TryParse(tbCrashSum.Text, out decimal cashAmount) && cashAmount > 0)
+                var priceToUpdate = await _priceService.RetrieveByIdAsync(product.PriceId);
+                if (priceToUpdate != null)
                 {
-                    var cashDto = new PaymentCreationDto
+                    var updatedQuantity = priceToUpdate.Quantity - product.Quantity;
+                    if (updatedQuantity < 0)
                     {
-                        SaleId = createdSale.Id,
-                        Amount = cashAmount,
-                        Type = PaymentType.Cash
-                    };
-                    await _paymentService.AddAsync(cashDto);
-
-                    uzsBalance += cashAmount;
-
-                    var cashTransferDto = new CashTransferCreationDto
-                    {
-                        CashRegisterId = currentRegister.Id,
-                        From = "Mijoz",
-                        To = "Kassa",
-                        Currency = "So'm",
-                        Amount = cashAmount,
-                        Note = $"Sotuv #{createdSale.Id} - Naqd to‘lov (Mijoz: {customerName})",
-                        TransferDate = DateTimeOffset.UtcNow,
-                        TransferType = CashTransferType.Income
-                    };
-                    await _cashTransferService.AddAsync(cashTransferDto);
-                }
-
-                if (decimal.TryParse(tbPlastikSum.Text, out decimal cardAmount) && cardAmount > 0)
-                {
-                    var cardDto = new PaymentCreationDto
-                    {
-                        SaleId = createdSale.Id,
-                        Amount = cardAmount,
-                        Type = PaymentType.Card
-                    };
-                    await _paymentService.AddAsync(cardDto);
-
-                    uzpBalance += cardAmount;
-
-                    var cardTransferDto = new CashTransferCreationDto
-                    {
-                        CashRegisterId = currentRegister.Id,
-                        From = "Mijoz",
-                        To = "Kassa",
-                        Currency = "Plastik",
-                        Amount = cardAmount,
-                        Note = $"Sotuv #{createdSale.Id} - Plastik to‘lov (Mijoz: {customerName})",
-                        TransferDate = DateTimeOffset.UtcNow,
-                        TransferType = CashTransferType.Income
-                    };
-                    await _cashTransferService.AddAsync(cardTransferDto);
-                }
-
-                if (decimal.TryParse(tbDollar.Text, out decimal dollarAmount) && dollarAmount > 0)
-                {
-                    var dollarDto = new PaymentCreationDto
-                    {
-                        SaleId = createdSale.Id,
-                        Amount = dollarAmount,
-                        Type = PaymentType.Dollar
-                    };
-                    await _paymentService.AddAsync(dollarDto);
-
-                    usdBalance += dollarAmount;
-
-                    var dollarTransferDto = new CashTransferCreationDto
-                    {
-                        CashRegisterId = currentRegister.Id,
-                        From = "Mijoz",
-                        To = "Kassa",
-                        Currency = "Dollar",
-                        Amount = dollarAmount,
-                        Note = $"Sotuv #{createdSale.Id} - Dollar to‘lov (Mijoz: {customerName})",
-                        TransferDate = DateTimeOffset.UtcNow,
-                        TransferType = CashTransferType.Income
-                    };
-                    await _cashTransferService.AddAsync(dollarTransferDto);
-                }
-
-                if (decimal.TryParse(tbqarz.Text, out decimal debtAmount) && debtAmount > 0)
-                {
-                    var debtPaymentDto = new PaymentCreationDto
-                    {
-                        SaleId = createdSale.Id,
-                        Amount = debtAmount,
-                        Type = PaymentType.Debt
-                    };
-                    await _paymentService.AddAsync(debtPaymentDto);
-
-                    if (!_selectedDebtDate.HasValue)
-                    {
-                        MessageBox.Show("Qarz uchun to‘lash sanasi tanlanmagan!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show($"{product.ProductName} uchun yetarli qoldiq yo‘q!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
 
-                    var debtDto = new DebtCreationDto
+                    var priceUpdateDto = new PriceUpdateDto
                     {
-                        SaleId = createdSale.Id,
-                        RemainingAmount = debtAmount,
-                        DueDate = _selectedDebtDate.Value.ToUniversalTime()
+                        Id = priceToUpdate.Id,
+                        ProductId = priceToUpdate.ProductId,
+                        CostPrice = priceToUpdate.CostPrice,
+                        SellingPrice = priceToUpdate.SellingPrice,
+                        UnitOfMeasure = priceToUpdate.UnitOfMeasure,
+                        Quantity = updatedQuantity
                     };
-                    await _debtService.AddAsync(debtDto);
-                }
-
-                if (decimal.TryParse(tbDiscount.Text, out decimal discountAmount) && discountAmount > 0)
-                {
-                    var discountDto = new DiscountCreationDto
+                    var isPriceUpdated = await _priceService.ModifyAsync(priceUpdateDto);
+                    if (!isPriceUpdated)
                     {
-                        SaleId = createdSale.Id,
-                        Amount = discountAmount
-                    };
-                    await _discountService.AddAsync(discountDto);
+                        MessageBox.Show($"{product.ProductName} narxini yangilashda xatolik!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
                 }
-
-                var updatedRegister = new CashRegisterUpdateDto
+                else
                 {
-                    Id = currentRegister.Id,
-                    UzsBalance = uzsBalance,
-                    UzpBalance = uzpBalance,
-                    UsdBalance = usdBalance
-                };
-                await _cashRegisterService.ModifyAsync(updatedRegister);
+                    MessageBox.Show($"{product.ProductName} uchun narx topilmadi (PriceId: {product.PriceId})!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
-            catch (Exception ex)
+
+            var cashRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
+            if (cashRegisters == null || !cashRegisters.Any())
             {
-                MessageBox.Show($"To‘lov yoki qarz qo‘shishda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Ochiq kassa topilmadi!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            var currentRegister = cashRegisters.First();
+
+            decimal uzsBalance = currentRegister.UzsBalance;
+            decimal uzpBalance = currentRegister.UzpBalance;
+            decimal usdBalance = currentRegister.UsdBalance;
+            string customerName = selectedItem?.Name ?? "Noma'lum mijoz";
+
+            if (decimal.TryParse(tbCrashSum.Text, out decimal cashAmount) && cashAmount > 0)
+            {
+                var cashDto = new PaymentCreationDto { SaleId = createdSale.Id, Amount = cashAmount, Type = PaymentType.Cash };
+                await _paymentService.AddAsync(cashDto);
+                uzsBalance += cashAmount;
+
+                var cashTransferDto = new CashTransferCreationDto
+                {
+                    CashRegisterId = currentRegister.Id,
+                    From = "Mijoz",
+                    To = "Kassa",
+                    Currency = "So'm",
+                    Amount = cashAmount,
+                    Note = $"Sotuv #{createdSale.Id} - Naqd to‘lov (Mijoz: {customerName})",
+                    TransferDate = DateTimeOffset.UtcNow,
+                    TransferType = CashTransferType.Income
+                };
+                await _cashTransferService.AddAsync(cashTransferDto);
+            }
+
+            if (decimal.TryParse(tbPlastikSum.Text, out decimal cardAmount) && cardAmount > 0)
+            {
+                var cardDto = new PaymentCreationDto { SaleId = createdSale.Id, Amount = cardAmount, Type = PaymentType.Card };
+                await _paymentService.AddAsync(cardDto);
+                uzpBalance += cardAmount;
+
+                var cardTransferDto = new CashTransferCreationDto
+                {
+                    CashRegisterId = currentRegister.Id,
+                    From = "Mijoz",
+                    To = "Kassa",
+                    Currency = "Plastik",
+                    Amount = cardAmount,
+                    Note = $"Sotuv #{createdSale.Id} - Plastik to‘lov (Mijoz: {customerName})",
+                    TransferDate = DateTimeOffset.UtcNow,
+                    TransferType = CashTransferType.Income
+                };
+                await _cashTransferService.AddAsync(cardTransferDto);
+            }
+
+            if (decimal.TryParse(tbDollar.Text, out decimal dollarAmount) && dollarAmount > 0)
+            {
+                var dollarDto = new PaymentCreationDto { SaleId = createdSale.Id, Amount = dollarAmount, Type = PaymentType.Dollar };
+                await _paymentService.AddAsync(dollarDto);
+                usdBalance += dollarAmount;
+
+                var dollarTransferDto = new CashTransferCreationDto
+                {
+                    CashRegisterId = currentRegister.Id,
+                    From = "Mijoz",
+                    To = "Kassa",
+                    Currency = "Dollar",
+                    Amount = dollarAmount,
+                    Note = $"Sotuv #{createdSale.Id} - Dollar to‘lov (Mijoz: {customerName})",
+                    TransferDate = DateTimeOffset.UtcNow,
+                    TransferType = CashTransferType.Income
+                };
+                await _cashTransferService.AddAsync(dollarTransferDto);
+            }
+
+            if (decimal.TryParse(tbqarz.Text, out decimal debtAmount) && debtAmount > 0)
+            {
+                var debtPaymentDto = new PaymentCreationDto { SaleId = createdSale.Id, Amount = debtAmount, Type = PaymentType.Debt };
+                await _paymentService.AddAsync(debtPaymentDto);
+
+                if (!_selectedDebtDate.HasValue)
+                {
+                    MessageBox.Show("Qarz uchun to‘lash sanasi tanlanmagan!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                var debtDto = new DebtCreationDto
+                {
+                    SaleId = createdSale.Id,
+                    RemainingAmount = debtAmount,
+                    DueDate = _selectedDebtDate.Value.ToUniversalTime()
+                };
+                await _debtService.AddAsync(debtDto);
+            }
+
+            if (decimal.TryParse(tbDiscount.Text, out decimal discountAmount) && discountAmount > 0)
+            {
+                var discountDto = new DiscountCreationDto { SaleId = createdSale.Id, Amount = discountAmount };
+                await _discountService.AddAsync(discountDto);
+            }
+
+            var updatedRegister = new CashRegisterUpdateDto
+            {
+                Id = currentRegister.Id,
+                UzsBalance = uzsBalance,
+                UzpBalance = uzpBalance,
+                UsdBalance = usdBalance
+            };
+            var isRegisterUpdated = await _cashRegisterService.ModifyAsync(updatedRegister);
+            if (isRegisterUpdated == null)
+            {
+                MessageBox.Show("Kassa balansini yangilashda xatolik!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -758,8 +711,10 @@ public partial class SalePracticePage : Page
 
             MessageBox.Show("Sotuv muvaffaqiyatli amalga oshirildi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            // SaleCompleted event’ini chaqirish
             SaleCompleted?.Invoke(this, EventArgs.Empty);
+
+            // Faqat shu qism o‘zgartirildi
+            CashEvents.RaiseCashUpdated();
         }
         finally
         {

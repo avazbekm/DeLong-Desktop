@@ -232,7 +232,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Currency_Dollar .
+        ///   Looks up a localized string similar to Dollar.
         /// </summary>
         internal static string Currency_Dollar_ {
             get {
@@ -241,7 +241,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Plastik (UZP).
+        ///   Looks up a localized string similar to Plastik.
         /// </summary>
         internal static string Currency_Plastic_ {
             get {
@@ -250,7 +250,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to So&apos;m (UZS).
+        ///   Looks up a localized string similar to So&apos;m.
         /// </summary>
         internal static string Currency_Sum {
             get {
@@ -925,7 +925,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tolash.
+        ///   Looks up a localized string similar to To&apos;lash.
         /// </summary>
         internal static string Tolash {
             get {
@@ -934,7 +934,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tolash muddati.
+        ///   Looks up a localized string similar to To&apos;lash muddati.
         /// </summary>
         internal static string Tolash_muddati {
             get {

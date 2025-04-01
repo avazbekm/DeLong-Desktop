@@ -1,207 +1,162 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.Companents;
 using DeLong_Desktop.Windows.Pirces;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using DeLong_Desktop.Windows.Products;
+using DeLong_Desktop.ApiService.DTOs.Products;
+using DeLong_Desktop.ApiService.DTOs.Prices;
+using DeLong_Desktop.ApiService.DTOs.Category;
+using DeLong_Desktop.ApiService.DTOs.Transactions;
+using DeLong_Desktop.ApiService.DTOs.TransactionItems;
+using DeLong_Desktop.ApiService.DTOs.Enums;
 
 namespace DeLong_Desktop.Pages.Input;
 
 public partial class InputPage : Page
 {
-    private readonly IServiceProvider services;
-    private readonly IPriceService priceService;
-    private readonly IProductService productService;
-    private readonly ICategoryService categoryService;
+    public readonly List<ReceiveItem> _receiveItems = new();
+    private readonly IServiceProvider _services;
+    private readonly IPriceService _priceService;
+    private readonly IProductService _productService;
+    private readonly ICategoryService _categoryService;
+    private readonly ITransactionService _transactionService;
+    private readonly ITransactionItemService _transactionItemService;
 
     public InputPage(IServiceProvider services)
     {
         InitializeComponent();
-        this.services = services;
-        categoryService = services.GetRequiredService<ICategoryService>();
-        productService = services.GetRequiredService<IProductService>();
-        priceService = services.GetRequiredService<IPriceService>();
+        _services = services;
+        _categoryService = services.GetRequiredService<ICategoryService>();
+        _productService = services.GetRequiredService<IProductService>();
+        _priceService = services.GetRequiredService<IPriceService>();
+        _transactionService = services.GetRequiredService<ITransactionService>();
+        _transactionItemService = services.GetRequiredService<ITransactionItemService>();
 
         LoadCategoriesAsync();
         LoadProductsAsync();
-        AppState.CurrentInputPage = this; // Saqlash
+        AppState.CurrentInputPage = this;
+        receiveDataGrid.ItemsSource = _receiveItems;
     }
-    private async void LoadCategoriesAsync()
+
+    // Kategoriyalarni yuklash
+    public async void LoadCategoriesAsync()
     {
         try
         {
-            var categories = await categoryService.RetrieveAllAsync();
-            var datagridItems = new List<ItemCategory>();
-            foreach (var category in categories)
+            var categories = await _categoryService.RetrieveAllAsync() ?? new List<CategoryResultDto>();
+            var comboBoxItems = new List<ItemCategory> { new() { Id = 0, Category = "Kategoriya tanlang" } };
+            comboBoxItems.AddRange(categories.Select(category => new ItemCategory
             {
-                datagridItems.Add(new ItemCategory
-                {
-                    Id = category.Id,
-                    Category = category.Name.ToUpper()
-                });
-            }
-            categoryDataGrid.ItemsSource = datagridItems;
+                Id = category.Id,
+                Category = category.Name.ToUpper()
+            }));
+
+            cbxCategory.ItemsSource = comboBoxItems;
+            cbxCategory.SelectedIndex = 0;
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Error loading categories: {ex.Message}");
+            MessageBox.Show($"Kategoriyalarni yuklashda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
+    // Mahsulotlarni yuklash
     public async void LoadProductsAsync()
     {
-        productDataGrid.ItemsSource = string.Empty;
-        List<ItemProduct> items = new List<ItemProduct>();
-        var products = await productService.RetrieveAllAsync();
-
-        if (products is not null)
-        {
-            foreach (var product in products)
-            {
-                items.Add(new ItemProduct()
-                {
-                    Id = product.Id,
-                    Product = product.Name.ToUpper(),
-                });
-            }
-        }
-        productDataGrid.ItemsSource = items;
+        await LoadProductsAsync(null);
     }
 
-    private void rbtnCategory_Checked(object sender, RoutedEventArgs e)
-    {
-        radioColumn.Header = "🔳";
-        if (categoryDataGrid.SelectedItem is ItemCategory selectedCategory)
-        {
-            InputInfo.CategoryId = selectedCategory.Id;
-            LoadDataAsync(selectedCategory.Id);
-        }
-    }
-
+    // Kategoriyaga qarab mahsulotlarni yuklash
     public async void LoadDataAsync(long categoryId)
     {
-        productDataGrid.ItemsSource = null;
-        List<ItemProduct> items = new List<ItemProduct>();
-        var products = await productService.RetrieveAllAsync();
+        await LoadProductsAsync(categoryId);
+    }
 
-        if (products is not null)
+    private async Task LoadProductsAsync(long? categoryId)
+    {
+        try
         {
-            foreach (var product in products)
-            {
-                if (product.CategoryId == categoryId)
+            productDataGrid.ItemsSource = null;
+            var products = await _productService.RetrieveAllAsync() ?? new List<ProductResultDto>();
+            var items = products
+                .Where(p => !categoryId.HasValue || p.CategoryId == categoryId.Value)
+                .Select(p => new ItemProduct
                 {
-                    items.Add(new ItemProduct()
-                    {
-                        Id = product.Id,
-                        Product = product.Name.ToUpper()
-                    });
-                }
-            }
+                    Id = p.Id,
+                    Product = p.Name.ToUpper()
+                })
+                .ToList();
+
+            productDataGrid.ItemsSource = items;
         }
-        productDataGrid.ItemsSource = items;
-    }
-
-    private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        string searchText = txtSearch.Text.Trim();
-        FilterCategoriya(searchText);
-    }
-
-    private async void FilterCategoriya(string searchText)
-    {
-        categoryDataGrid.ItemsSource = string.Empty;
-        List<ItemCategory> items = new List<ItemCategory>();
-        var categories = await categoryService.RetrieveAllAsync();
-
-        if (categories is not null)
+        catch (Exception ex)
         {
-            foreach (var category in categories)
-            {
-                if (category.Name.Contains(searchText.ToLower()))
-                    items.Add(new ItemCategory()
-                    {
-                        Id = category.Id,
-                        Category = category.Name.ToUpper(),
-                    });
-            }
-            categoryDataGrid.ItemsSource = items;
+            MessageBox.Show($"Mahsulotlarni yuklashda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void cbxCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (cbxCategory.SelectedValue is long selectedId)
+        {
+            InputInfo.CategoryId = selectedId;
+            if (selectedId == 0)
+                LoadProductsAsync(); // Barcha mahsulotlar
+            else
+                LoadDataAsync(selectedId); // Tanlangan kategoriya mahsulotlari
         }
     }
 
     private void txtProductSearch_TextChanged(object sender, TextChangedEventArgs e)
     {
         string searchText = txtProductSearch.Text.Trim();
-        if (InputInfo.CategoryId == 0)
-        {
-            FilterProductsAsync(searchText);
-        }
-        else
-        {
-            FilterProductsAsync(searchText, InputInfo.CategoryId);
-        }
+        FilterProductsAsync(searchText, InputInfo.CategoryId == 0 ? null : InputInfo.CategoryId);
     }
 
-    private async void FilterProductsAsync(string searchText)
+    private async void FilterProductsAsync(string searchText, long? categoryId)
     {
-        productDataGrid.ItemsSource = string.Empty;
-        List<ItemProduct> items = new List<ItemProduct>();
-        var products = await productService.RetrieveAllAsync();
-
-        if (products is not null)
+        try
         {
-            foreach (var product in products)
-            {
-                if (product.Name.Contains(searchText.ToLower()))
-                    items.Add(new ItemProduct()
-                    {
-                        Id = product.Id,
-                        Product = product.Name.ToUpper(),
-                    });
-            }
+            productDataGrid.ItemsSource = null;
+            var products = await _productService.RetrieveAllAsync() ?? new List<ProductResultDto>();
+            var items = products
+                .Where(p => p.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase) &&
+                            (!categoryId.HasValue || p.CategoryId == categoryId.Value))
+                .Select(p => new ItemProduct
+                {
+                    Id = p.Id,
+                    Product = p.Name.ToUpper()
+                })
+                .ToList();
+
+            productDataGrid.ItemsSource = items;
         }
-        productDataGrid.ItemsSource = items;
-    }
-
-    private async void FilterProductsAsync(string searchText, long categoryId)
-    {
-        productDataGrid.ItemsSource = string.Empty;
-        List<ItemProduct> items = new List<ItemProduct>();
-        var products = await productService.RetrieveAllAsync();
-
-        if (products is not null)
+        catch (Exception ex)
         {
-            foreach (var product in products)
-            {
-                if (product.Name.Contains(searchText.ToLower()) && product.CategoryId == categoryId)
-                    items.Add(new ItemProduct()
-                    {
-                        Id = product.Id,
-                        Product = product.Name.ToUpper(),
-                    });
-            }
+            MessageBox.Show($"Mahsulotlarni filtrlashda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-        productDataGrid.ItemsSource = items;
     }
 
     private void RadioButton_Click(object sender, RoutedEventArgs e)
     {
         rbtnProductHeader.Header = "🔳";
-        if (productDataGrid.SelectedItem is ItemProduct product)
+        if (productDataGrid.SelectedItem is ItemProduct product && product.Id > 0)
         {
             InputInfo.ProductId = product.Id;
-            if (product.Id > 0)
-            {
-                tbProductName.Text = product.Product.ToUpper();
-                btnAddPrice.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                btnAddPrice.Visibility = Visibility.Collapsed;
-                tbProductName.Text = "";
-            }
+            tbProductName.Text = product.Product.ToUpper();
+            btnAddPrice.Visibility = Visibility.Visible;
             RefreshPrices(product.Id);
+        }
+        else
+        {
+            InputInfo.ProductId = 0;
+            btnAddPrice.Visibility = Visibility.Collapsed;
+            tbProductName.Text = string.Empty;
+            wrpPrice.Children.Clear();
         }
     }
 
@@ -210,46 +165,92 @@ public partial class InputPage : Page
         try
         {
             wrpPrice.Children.Clear();
-            var existPrices = await priceService.RetrieveAllAsync(productId);
-
-            if (existPrices is not null && existPrices.Any())
+            var existPrices = await _priceService.RetrieveAllAsync(productId) ?? new List<PriceResultDto>();
+            foreach (var price in existPrices)
             {
-                foreach (var price in existPrices)
+                var priceViewControl = new PriceViewControl(_services)
                 {
-                    PriceViewControl priceViewControl = new PriceViewControl(services)
-                    {
-                        tbIncomePrice = { Text = price.CostPrice.ToString() },
-                        tbSellPrice = { Text = price.SellingPrice.ToString() },
-                        tbQuantity = { Text = price.Quantity.ToString() },
-                        tbUnitOfMesure = { Text = price.UnitOfMeasure },
-                        tbPriceId = { Text = price.Id.ToString() }
-                    };
-                    priceViewControl.PriceUpdated += (s, e) => RefreshPrices(InputInfo.ProductId);
-                    wrpPrice.Children.Add(priceViewControl);
-                }
+                    tbIncomePrice = { Text = price.CostPrice.ToString() },
+                    tbSellPrice = { Text = price.SellingPrice.ToString() },
+                    tbQuantity = { Text = price.Quantity.ToString() },
+                    tbUnitOfMesure = { Text = price.UnitOfMeasure },
+                    tbPriceId = { Text = price.Id.ToString() }
+                };
+                priceViewControl.PriceUpdated += (s, ev) => RefreshPrices(InputInfo.ProductId);
+                wrpPrice.Children.Add(priceViewControl);
             }
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Error retrieving prices: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"Narxlarni yuklashda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
     private void btnAddPrice_Click(object sender, RoutedEventArgs e)
     {
-        PirceWindow pirceWindow = new PirceWindow(services);
-        pirceWindow.PriceAdded += (s, e) => RefreshPrices(InputInfo.ProductId);
-        pirceWindow.ShowDialog();
+        if (InputInfo.ProductId <= 0 || productDataGrid.SelectedItem is not ItemProduct) return;
+
+        var priceWindow = new PirceWindow(_services);
+        priceWindow.PriceAdded += (s, ev) => RefreshPrices(InputInfo.ProductId);
+        priceWindow.ShowDialog();
     }
 
-    private void categoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void DeleteRow_Click(object sender, RoutedEventArgs e)
     {
+        if (sender is Button button && button.Tag is ReceiveItem item)
+        {
+            _receiveItems.Remove(item);
+            RefreshReceiveDataGrid();
+        }
     }
 
-    private void btnAddProduct_Click(object sender, RoutedEventArgs e)
+    public void RefreshReceiveDataGrid()
     {
-        ProductAddWindow productAddWindow = new ProductAddWindow(services);
-        productAddWindow.ProductAdded += (s, ev) => LoadProductsAsync(); // Hodisani ushlaymiz
-        productAddWindow.ShowDialog();
+        receiveDataGrid.ItemsSource = null;
+        receiveDataGrid.ItemsSource = _receiveItems;
+    }
+
+    private async void btnFinalize_Click(object sender, RoutedEventArgs e)
+    {
+        if (!_receiveItems.Any())
+        {
+            MessageBox.Show("Hech qanday mahsulot qo‘shilmagan!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        try
+        {
+            var transactionDto = new TransactionCreationDto
+            {
+                SupplierIdFrom = InputInfo.SupplierId,
+                BranchId = 1,
+                BranchIdTo = InputInfo.BranchId,
+                TransactionType = TransactionType.Kirim,
+                Comment = "Yetkazib beruvchidan mahsulot keldi.",
+                Items = _receiveItems.Select(item => new TransactionItemCreationDto
+                {
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity,
+                    UnitOfMeasure = item.UnitOfMeasure,
+                    PriceProduct = item.CostPrice
+                }).ToList()
+            };
+
+            var transaction = await _transactionService.AddAsync(transactionDto);
+
+            foreach (var item in transactionDto.Items)
+            {
+                item.TransactionId = transaction.Id;
+                await _transactionItemService.AddAsync(item);
+            }
+
+            MessageBox.Show("Tranzaksiya muvaffaqiyatli yakunlandi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+            _receiveItems.Clear();
+            RefreshReceiveDataGrid();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Tranzaksiya yakunlashda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 }

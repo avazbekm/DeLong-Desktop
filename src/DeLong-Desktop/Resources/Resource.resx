@@ -367,13 +367,13 @@
     <value>Qarz summasi</value>
   </data>
   <data name="Tolash muddati" xml:space="preserve">
-    <value>Tolash muddati</value>
+    <value>To'lash muddati</value>
   </data>
   <data name="Jami qarz" xml:space="preserve">
     <value>Jami qarz</value>
   </data>
   <data name="Tolash" xml:space="preserve">
-    <value>Tolash</value>
+    <value>To'lash</value>
   </data>
   <data name="Qaytgan mahsulotlar" xml:space="preserve">
     <value>Qaytgan mahsulotlar</value>
@@ -412,13 +412,13 @@
     <value>Kunni ochish</value>
   </data>
   <data name="Currency_Sum" xml:space="preserve">
-    <value>So'm (UZS)</value>
+    <value>So'm</value>
   </data>
   <data name="Currency_Plastic " xml:space="preserve">
-    <value>Plastik (UZP)</value>
+    <value>Plastik</value>
   </data>
   <data name="Currency_Dollar " xml:space="preserve">
-    <value>Currency_Dollar </value>
+    <value>Dollar</value>
   </data>
   <data name="Kassa aylanmasi" xml:space="preserve">
     <value>Kassa aylanmasi</value>

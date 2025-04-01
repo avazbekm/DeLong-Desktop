@@ -16,63 +16,68 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
-            <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <!--Kategoriya bo'yicha qidiruv-->
-        <Border x:Name="brQidiruv" Grid.Column="0" Grid.Row="0" Background="#476072" CornerRadius="10" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="10 5 10 0" Width="270" Height="30">
-            <TextBox x:Name="txtSearch" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="Kategoriyalar bo'yicha qidiruv" Style="{DynamicResource MaterialDesignFilledTextBox}" md:HintAssist.Foreground="Snow" Width="250" Height="32" Background="#476072" Foreground="#EEEEEE" TextChanged="txtSearch_TextChanged"/>
-        </Border>
-        <!--Mahsulotlar bo'yicha qidiruv-->
-        <Border x:Name="brProductQidiruv" Grid.Column="1" Grid.Row="0" Background="#476072" CornerRadius="10" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="10 5 10 0" Width="270" Height="30">
+
+        <!-- Mahsulotlar bo'yicha qidiruv -->
+        <Border x:Name="brProductQidiruv" Grid.Column="0" Grid.Row="0" Background="#476072" CornerRadius="10" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="10 5 10 0" Width="270" Height="30">
             <TextBox x:Name="txtProductSearch" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="Mahsulotlar bo'yicha qidiruv" Style="{DynamicResource MaterialDesignFilledTextBox}" md:HintAssist.Foreground="Snow" Width="250" Height="32" Background="#476072" Foreground="#EEEEEE" TextChanged="txtProductSearch_TextChanged"/>
         </Border>
-        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" Margin="10 0">
+
+        <!-- Mahsulot nomi va Qo‘shish tugmasi -->
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="10 0">
             <Label Content="Mahsulot nomi: " Margin="15 5 20 5" FontSize="20" Foreground="Snow"/>
-            <TextBlock x:Name="tbProductName" Grid.Column="2" Grid.Row="0" Text="" FontSize="20" Foreground="{DynamicResource SecondaryTextColor}" HorizontalAlignment="Right" Margin="50 10 30 3"/>
+            <TextBlock x:Name="tbProductName" Text="" FontSize="20" Foreground="Snow" HorizontalAlignment="Right" Margin="0 10 30 3"/>
+            <Button x:Name="btnAddPrice" Visibility="Hidden" Background="#476072" Style="{DynamicResource MaterialDesignPaperDarkButton}" Foreground="Snow" BorderThickness="0" HorizontalAlignment="Right" Height="30" Content="Qo'shish" Margin="0 6 10 1" Click="btnAddPrice_Click"/>
         </StackPanel>
-        <!--qo'shish tugmasi-->
-        <Button x:Name="btnAddPrice" Grid.Column="2" Visibility="Hidden" Grid.Row="0" Background="#476072" Style="{DynamicResource MaterialDesignPaperDarkButton}" Foreground="Snow" BorderThickness="0" HorizontalAlignment="Right" Height="30" Content="Qo'shish" Margin="100 6 70 1" Click="btnAddPrice_Click"/>
-        <!--Kategoriyalar ro'yxati-->
-        <Grid x:Name="spCategory" Grid.Row="1" Grid.Column="0" Margin="10 10 0 10">
-            <DataGrid x:Name="categoryDataGrid" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False" CanUserAddRows="False" Background="#548CA8" Foreground="Black" SelectionChanged="categoryDataGrid_SelectionChanged">
-                <DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="FontSize" Value="20" />
-                        <Setter Property="Foreground" Value="Black" />
-                        <Setter Property="Background" Value="#548CA8"/>
-                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+
+        <!-- Kategoriya ComboBox va Mahsulotlar DataGrid -->
+        <StackPanel Grid.Column="0" Grid.Row="1" Margin="0 10 0 10">
+            <ComboBox x:Name="cbxCategory"
+          Background="{DynamicResource SecondaryBackground}"
+          SelectedValuePath="Id"
+          MinWidth="235"
+          MaxWidth="300"
+          Padding="4"
+          Foreground="{DynamicResource PrimaryTextColor}"
+          BorderThickness="1"
+          BorderBrush="{DynamicResource SecondaryBorderColor}"
+          FontSize="22"
+          Margin="3 2"
+          Height="40"
+          IsEditable="False"
+          md:HintAssist.Hint="-- Kategoriya tanlang --"
+          SelectionChanged="cbxCategory_SelectionChanged">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Category}" Foreground="#FFF"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+                <ComboBox.ItemContainerStyle>
+                    <Style TargetType="ComboBoxItem" BasedOn="{StaticResource MaterialDesignComboBoxItemStyle}">
+                        <Setter Property="Background" Value="#808080"/>
+                        <Setter Property="Foreground" Value="#FFF"/>
+                        <Setter Property="Padding" Value="5"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#808080"/>
+                                <Setter Property="Foreground" Value="#FFF"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#808080"/>
+                                <Setter Property="Foreground" Value="#FFF"/>
+                            </Trigger>
+                        </Style.Triggers>
                     </Style>
-                </DataGrid.ColumnHeaderStyle>
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn x:Name="radioColumn" Header="🔲" Width="50">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <RadioButton x:Name="rbtnCategory" GroupName="CategoryGroup" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="rbtnCategory_Checked" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn x:Name="dtcategoriya" Header="Kategoriya" Binding="{Binding Category}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="FontSize" Value="20" />
-                                <Setter Property="Foreground" Value="Snow" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
-        <!--Mahsulotlar ro'yxati-->
-        <Grid Grid.Column="1" Grid.Row="1" Margin="0 10 0 10">
+                </ComboBox.ItemContainerStyle>
+            </ComboBox>
             <DataGrid x:Name="productDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Background="#548CA8" Foreground="Black" RowHeight="40" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" EnableRowVirtualization="True" VirtualizingStackPanel.IsVirtualizing="True">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="FontSize" Value="20" />
-                        <Setter Property="Foreground" Value="Black" />
+                        <Setter Property="Foreground" Value="Snow" />
                         <Setter Property="Background" Value="#548CA8"/>
+                        <Setter Property="Margin" Value="9 3"/>
                         <Setter Property="HorizontalContentAlignment" Value="Center" />
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
@@ -95,10 +100,45 @@
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
+        </StackPanel>
+
+        <!-- Narxlar va Qabul qilish DataGrid -->
+        <Grid x:Name="spPrice" Grid.Row="1" Grid.Column="1" Margin="0 10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="220"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ScrollViewer Grid.Row="0" Margin="5" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="wrpPrice" Orientation="Horizontal"/>
+                <!-- Vertikal narxlar -->
+            </ScrollViewer>
+            <StackPanel x:Name="spReciveProduct" Grid.Row="1" Margin="5">
+                <DataGrid x:Name="receiveDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Background="#548CA8" Foreground="Snow" RowHeight="40">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="FontSize" Value="16" />
+                            <Setter Property="Foreground" Value="Snow" />
+                            <Setter Property="Background" Value="#548CA8"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Mahsulot nomi" Binding="{Binding ProductName}" Width="*" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Miqdor" Binding="{Binding Quantity}" Width="80"/>
+                        <DataGridTextColumn Header="O'lchov birligi" Binding="{Binding UnitOfMeasure}" Width="100"/>
+                        <DataGridTextColumn Header="Tannarxi" Binding="{Binding CostPrice}" Width="80"/>
+                        <DataGridTextColumn Header="Umumiy yig'indi" Binding="{Binding TotalAmount}" Width="100" IsReadOnly="True"/>
+                        <DataGridTemplateColumn Header="O'chirish" Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="O'chirish" Click="DeleteRow_Click" Tag="{Binding}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Button x:Name="btnFinalize" Content="Yakunlash" BorderThickness="0" Margin="0 10 0 0" Height="30" Background="#476072" Foreground="Snow" Click="btnFinalize_Click"/>
+            </StackPanel>
         </Grid>
-        <!--Narxlar-->
-        <ScrollViewer x:Name="spPrice" Grid.Row="1" Grid.Column="2" Margin="0 10">
-            <StackPanel x:Name="wrpPrice"></StackPanel>
-        </ScrollViewer>
     </Grid>
 </Page>

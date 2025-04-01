@@ -16,39 +16,56 @@ public partial class CashPage : Page
     private readonly ICashRegisterService _cashRegisterService;
     private readonly ICashTransferService _cashTransferService;
     private readonly ICashWarehouseService _cashWarehouseService;
-    private long? _currentCashRegisterId = null; // Joriy ochiq kassa ID’sini saqlash uchun
+    private long? _currentCashRegisterId = null;
+
     public CashPage(IServiceProvider services)
     {
         InitializeComponent();
         _cashRegisterService = services.GetRequiredService<ICashRegisterService>();
         _cashTransferService = services.GetRequiredService<ICashTransferService>();
         _cashWarehouseService = services.GetRequiredService<ICashWarehouseService>();
-        // SelectionChanged hodisasini vaqtincha o‘chirish
+
         FromComboBox.SelectionChanged -= FromComboBox_SelectionChanged;
         LoadWarehouseData();
         LoadCashData();
-        Loaded += CashPage_Loaded; // Page yuklanganda tugma holatini tekshirish
-        FromComboBox.SelectionChanged += FromComboBox_SelectionChanged; // Yuklashdan keyin qayta ulash
+        Loaded += CashPage_Loaded;
+        FromComboBox.SelectionChanged += FromComboBox_SelectionChanged;
+
+        // Faqat shu qator qo‘shiladi
+        CashEvents.CashUpdated += async (s, e) => await RefreshCashData();
+    }
+
+    public async Task RefreshCashData()
+    {
+        LoadCashData();
+        LoadWarehouseData();
     }
 
     private async void CashPage_Loaded(object sender, RoutedEventArgs e)
     {
-        await UpdateButtonState(); // Tugma holatini yangilash
+        await UpdateButtonState();
     }
+
     private async void LoadWarehouseData()
     {
         var latestWarehouse = await _cashWarehouseService.RetrieveByIdAsync();
-        if(latestWarehouse == null) 
+        if (latestWarehouse == null)
         {
             CashWarehouseCreationDto cashWarehouseCreationDto = new CashWarehouseCreationDto();
             latestWarehouse = await _cashWarehouseService.AddAsync(cashWarehouseCreationDto);
         }
+        CashWarehouseGrid.ItemsSource = null;
         CashWarehouseGrid.ItemsSource = new List<CashWarehouseResultDto> { latestWarehouse };
     }
 
     private async void LoadCashData()
     {
         var openRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
+        if (openRegisters?.Any() == true)
+        {
+            var reg = openRegisters.First();
+        }
+        CashRegisterGrid.ItemsSource = null;
         CashRegisterGrid.ItemsSource = openRegisters;
 
         if (openRegisters == null || !openRegisters.Any())
@@ -59,49 +76,41 @@ public partial class CashPage : Page
 
     private async void TransferButton_Click(object sender, RoutedEventArgs e)
     {
-        // 1. FromComboBox va ToComboBox qiymatlarini olish
         string from = (FromComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
         string to = (ToComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
-        // 2. Bir xil bo‘lmasligini va ruxsat etilmagan kombinatsiyalarni tekshirish
         if ((from == "Zaxiradan" && to == "Zaxiraga") || (from == "Kassadan" && to == "Kassaga") || from == to)
         {
             MessageBox.Show("Qayerdan va qayerga o'tkazish bir xil bo'lmasligi kerak!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
 
-        // 3. "Kassadan" faqat "Zaxiraga" yoki "Boshqa" ga bo‘lishini tekshirish
         if (from == "Kassadan" && to != "Zaxiraga" && to != "Boshqa")
         {
             MessageBox.Show("Kassadan faqat Zaxiraga yoki Boshqa ga o'tkazish mumkin!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
 
-        // 4. "Zaxiradan" faqat "Kassaga" ga bo‘lishini tekshirish
         if (from == "Zaxiradan" && to != "Kassaga")
         {
             MessageBox.Show("Zaxiradan faqat Kassaga o'tkazish mumkin!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
 
-        // 5. "Boshqa" faqat "Kassaga" ga bo‘lishini tekshirish
         if (from == "Boshqa" && to != "Kassaga")
         {
             MessageBox.Show("Boshqa dan faqat Kassaga o'tkazish mumkin!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
 
-        // 6. AmountTextBox qiymati 0 bo'lmasligini tekshirish
         if (!decimal.TryParse(AmountTextBox.Text, out decimal amount) || amount <= 0)
         {
             MessageBox.Show("Miqdor 0 dan katta bo'lishi kerak va to'g'ri kiritilishi lozim!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
 
-        // 7. Valyutani aniqlash
         string currency = (CurrencyComboBox1.SelectedItem as ComboBoxItem)?.Content.ToString();
 
-        // 8. Izohni olish
         var note = NoteTextBox.Text;
         if (string.IsNullOrEmpty(note))
         {
@@ -109,7 +118,6 @@ public partial class CashPage : Page
             return;
         }
 
-        // 9. Balanslarni xizmatlardan olish
         var openRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
         var warehouse = await _cashWarehouseService.RetrieveByIdAsync();
 
@@ -121,7 +129,6 @@ public partial class CashPage : Page
 
         var firstRegister = openRegisters.First();
 
-        // 10. Balansni tekshirish (faqat "Kassadan" yoki "Zaxiradan" uchun)
         decimal availableBalance = 0;
         if (from == "Zaxiradan")
         {
@@ -159,14 +166,12 @@ public partial class CashPage : Page
             }
         }
 
-        // 11. Miqdor yetarli ekanligini tekshirish (faqat "Zaxiradan" yoki "Kassadan" uchun)
         if (from != "Boshqa" && amount > availableBalance)
         {
             MessageBox.Show($"Yetarli mablag' yo'q! {currency} bo'yicha joriy balans: {availableBalance}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
 
-        // 12. O'tkazma amalga oshirish
         try
         {
             await PerformTransfer(from, to, currency, amount, note, firstRegister.Id);
@@ -183,10 +188,8 @@ public partial class CashPage : Page
         }
     }
 
-    // O'tkazmani amalga oshirish va balanslarni yangilash uchun funksiya
     private async Task PerformTransfer(string from, string to, string currency, decimal amount, string note, long cashRegisterId)
     {
-        // 1. Transfer DTO yaratish
         var transferDto = new CashTransferCreationDto
         {
             CashRegisterId = cashRegisterId,
@@ -201,39 +204,32 @@ public partial class CashPage : Page
                 : CashTransferType.Expense
         };
 
-        // 2. O'tkazmani serverga yuborish
         await _cashTransferService.AddAsync(transferDto);
 
-        // 3. Balanslarni yangilash
         var openRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
         var warehouse = await _cashWarehouseService.RetrieveByIdAsync();
         var register = openRegisters.First(r => r.Id == cashRegisterId);
 
         if (from == "Zaxiradan" && to == "Kassaga")
         {
-            // Zaxiradan Kassaga
             await UpdateBalances(warehouse, register, currency, -amount, amount);
         }
         else if (from == "Kassadan" && to == "Zaxiraga")
         {
-            // Kassadan Zaxiraga
             await UpdateBalances(warehouse, register, currency, amount, -amount);
         }
         else if (from == "Boshqa" && to == "Kassaga")
         {
-            // Boshqadan Kassaga (faqat kassaga kirim)
             await UpdateBalances(warehouse, register, currency, 0, amount);
         }
         else if (from == "Kassadan" && to == "Boshqa")
         {
-            // Kassadan Boshqa (faqat kassadan chiqim)
             await UpdateBalances(warehouse, register, currency, 0, -amount);
         }
     }
-    // Balanslarni yangilash uchun yordamchi funksiya
+
     private async Task UpdateBalances(CashWarehouseResultDto warehouse, CashRegisterResultDto register, string currency, decimal warehouseChange, decimal registerChange)
     {
-        // Zaxira va kassa uchun yangi DTO'lar tayyorlash
         var updatedWarehouse = new CashWarehouseUpdateDto
         {
             Id = warehouse.Id,
@@ -250,7 +246,6 @@ public partial class CashPage : Page
             UsdBalance = register.UsdBalance,
         };
 
-        // Valyutaga qarab balanslarni o'zgartirish
         switch (currency)
         {
             case "So'm":
@@ -267,7 +262,6 @@ public partial class CashPage : Page
                 break;
         }
 
-        // Yangilangan ma'lumotlarni serverga yuborish
         await _cashWarehouseService.ModifyAsync(updatedWarehouse);
         await _cashRegisterService.ModifyAsync(updatedRegister);
     }
@@ -287,28 +281,26 @@ public partial class CashPage : Page
 
     private void FromComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        // Agar FromComboBox yoki ToComboBox null bo‘lsa, hech narsa qilmaymiz
         if (FromComboBox == null || ToComboBox == null)
             return;
 
-        // SelectedItem null emasligini tekshirish
         if (FromComboBox.SelectedItem is ComboBoxItem item && item.Content != null)
         {
             string selectedFrom = item.Content.ToString();
-            ToComboBox.Items.Clear(); // ToComboBox ni tozalash
+            ToComboBox.Items.Clear();
 
             if (selectedFrom == "Kassadan")
             {
                 ToComboBox.Items.Add(new ComboBoxItem { Content = "Zaxiraga" });
                 ToComboBox.Items.Add(new ComboBoxItem { Content = "Boshqa" });
-                ToComboBox.SelectedIndex = 0; // "Zaxiraga" default
-                ToComboBox.IsEnabled = true;  // Tanlash mumkin
+                ToComboBox.SelectedIndex = 0;
+                ToComboBox.IsEnabled = true;
             }
             else if (selectedFrom == "Zaxiradan" || selectedFrom == "Boshqa")
             {
                 ToComboBox.Items.Add(new ComboBoxItem { Content = "Kassaga" });
-                ToComboBox.SelectedIndex = 0; // "Kassaga" default
-                ToComboBox.IsEnabled = false; // Faqat "Kassaga"
+                ToComboBox.SelectedIndex = 0;
+                ToComboBox.IsEnabled = false;
             }
         }
     }
@@ -366,11 +358,9 @@ public partial class CashPage : Page
             viewListHeader.Visibility = Visibility.Visible;
             totalSummary.Visibility = Visibility.Visible;
 
-            // Jami kirim va chiqimni hisoblash
             decimal totalIncome = filteredTransfers.Sum(t => t.Income);
             decimal totalExpense = filteredTransfers.Sum(t => t.Expense);
 
-            // TextBlock’larni yangilash
             tbTotalIncome.Text = totalIncome.ToString("N0");
             tbTotalExpense.Text = totalExpense.ToString("N0");
 
@@ -392,7 +382,6 @@ public partial class CashPage : Page
             var openRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();
             if (openRegisters != null && openRegisters.Any())
             {
-                // Kassa ochiq bo‘lsa, yopish logikasi
                 var currentRegister = openRegisters.First();
                 _currentCashRegisterId = currentRegister.Id;
 
@@ -400,8 +389,7 @@ public partial class CashPage : Page
                     MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (confirm == MessageBoxResult.Yes)
                 {
-                    // Zaxira omborini olish (agar mavjud bo‘lmasa, yangi yaratish mumkin)
-                    var warehouse = await _cashWarehouseService.RetrieveByIdAsync(); // 
+                    var warehouse = await _cashWarehouseService.RetrieveByIdAsync();
                     if (warehouse == null)
                     {
                         var newWarehouseDto = new CashWarehouseCreationDto();
@@ -420,7 +408,6 @@ public partial class CashPage : Page
                             "Balans tekshiruvi", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                         if (resetBalance == MessageBoxResult.Yes)
                         {
-                            // Kassadagi qoldiqlarni CashTransferga yozish
                             if (currentRegister.UzsBalance > 0)
                             {
                                 var uzsTransfer = new CashTransferCreationDto
@@ -467,7 +454,6 @@ public partial class CashPage : Page
                                 await _cashTransferService.AddAsync(usdTransfer);
                             }
 
-                            // CashWarehouse balansini yangilash
                             var updateWarehouseDto = new CashWarehouseUpdateDto
                             {
                                 Id = warehouse.Id,
@@ -483,7 +469,6 @@ public partial class CashPage : Page
                                 return;
                             }
 
-                            // Kassani yopish va balanslarni 0 qilish
                             var updateDto = new CashRegisterUpdateDto
                             {
                                 Id = currentRegister.Id,
@@ -499,7 +484,7 @@ public partial class CashPage : Page
                                     "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
                                 await UpdateButtonState();
                                 CashRegisterGrid.ItemsSource = await _cashRegisterService.RetrieveOpenRegistersAsync();
-                                LoadWarehouseData(); // Zaxira ma’lumotlarini yangilash
+                                LoadWarehouseData();
                             }
                             else
                             {
@@ -510,7 +495,6 @@ public partial class CashPage : Page
                     }
                     else
                     {
-                        // Balanslar 0 bo‘lsa, darhol yopish
                         var updateDto = new CashRegisterUpdateDto
                         {
                             Id = currentRegister.Id,
@@ -537,11 +521,9 @@ public partial class CashPage : Page
             }
             else
             {
-                // Kassa yopiq bo‘lsa, ochish logikasi
                 var newCashRegister = new CashRegisterCreationDto
                 {
-                    WarehouseId = 1, // Zaxira ID’si (dinamik qilish mumkin)
-                    UzsBalance = 0, // Zaxiradan avtomatik yuklanmaydi
+                    UzsBalance = 0,
                     UzpBalance = 0,
                     UsdBalance = 0
                 };
@@ -567,6 +549,7 @@ public partial class CashPage : Page
             MessageBox.Show($"Xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+
     private async Task UpdateButtonState()
     {
         var openRegisters = await _cashRegisterService.RetrieveOpenRegistersAsync();

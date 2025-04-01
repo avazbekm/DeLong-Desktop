@@ -5,13 +5,13 @@ using MaterialDesignThemes.Wpf;
 using DeLong_Desktop.Pages.Input;
 using DeLong_Desktop.Pages.Cashs;
 using DeLong_Desktop.Pages.Reports;
+using DeLong_Desktop.Pages.Branches;
 using DeLong_Desktop.Pages.Products;
+using DeLong_Desktop.Pages.Suppliers;
 using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.Pages.SaleHistory;
 using DeLong_Desktop.Pages.SalesPractice;
 using DeLong_Desktop.Pages.AdditionalOperations;
-using DeLong_Desktop.Pages.Suppliers;
-using DeLong_Desktop.Pages.Branches;
 
 namespace DeLong_Desktop;
 
@@ -118,33 +118,33 @@ public partial class MainWindow : Window
         _cashPage.tbzaxiradagipullar.Text = DeLong_Desktop.Resources.Resource.Zaxiradagi_pullar;
         HintAssist.SetHint(_cashPage.NoteTextBox, DeLong_Desktop.Resources.Resource.Izoh);
 
-        if (_cashPage.CurrencyComboBox.Items.Count >= 3)
-        {
-            ((ComboBoxItem)_cashPage.CurrencyComboBox.Items[0]).Content = DeLong_Desktop.Resources.Resource.Currency_Sum;
-            ((ComboBoxItem)_cashPage.CurrencyComboBox.Items[1]).Content = DeLong_Desktop.Resources.Resource.Currency_Plastic_;
-            ((ComboBoxItem)_cashPage.CurrencyComboBox.Items[2]).Content = DeLong_Desktop.Resources.Resource.Currency_Dollar_;
-        }
+        //if (_cashPage.CurrencyComboBox.Items.Count >= 3)
+        //{
+        //    ((ComboBoxItem)_cashPage.CurrencyComboBox.Items[0]).Content = DeLong_Desktop.Resources.Resource.Currency_Sum;
+        //    ((ComboBoxItem)_cashPage.CurrencyComboBox.Items[1]).Content = DeLong_Desktop.Resources.Resource.Currency_Plastic_;
+        //    ((ComboBoxItem)_cashPage.CurrencyComboBox.Items[2]).Content = DeLong_Desktop.Resources.Resource.Currency_Dollar_;
+        //}
 
-        if (_cashPage.FromComboBox.Items.Count >= 3)
-        {
-            ((ComboBoxItem)_cashPage.FromComboBox.Items[0]).Content = DeLong_Desktop.Resources.Resource.Kassadan;
-            ((ComboBoxItem)_cashPage.FromComboBox.Items[1]).Content = DeLong_Desktop.Resources.Resource.Zaxiradan;
-            ((ComboBoxItem)_cashPage.FromComboBox.Items[2]).Content = DeLong_Desktop.Resources.Resource.Boshqa;
-        }
+        //if (_cashPage.FromComboBox.Items.Count >= 3)
+        //{
+        //    ((ComboBoxItem)_cashPage.FromComboBox.Items[0]).Content = DeLong_Desktop.Resources.Resource.Kassadan;
+        //    ((ComboBoxItem)_cashPage.FromComboBox.Items[1]).Content = DeLong_Desktop.Resources.Resource.Zaxiradan;
+        //    ((ComboBoxItem)_cashPage.FromComboBox.Items[2]).Content = DeLong_Desktop.Resources.Resource.Boshqa;
+        //}
 
-        if (_cashPage.CurrencyComboBox1.Items.Count >= 3)
-        {
-            ((ComboBoxItem)_cashPage.CurrencyComboBox1.Items[0]).Content = DeLong_Desktop.Resources.Resource.Currency_Sum;
-            ((ComboBoxItem)_cashPage.CurrencyComboBox1.Items[1]).Content = DeLong_Desktop.Resources.Resource.Currency_Plastic_;
-            ((ComboBoxItem)_cashPage.CurrencyComboBox1.Items[2]).Content = DeLong_Desktop.Resources.Resource.Currency_Dollar_;
-        }
+        //if (_cashPage.CurrencyComboBox1.Items.Count >= 3)
+        //{
+        //    ((ComboBoxItem)_cashPage.CurrencyComboBox1.Items[0]).Content = DeLong_Desktop.Resources.Resource.Currency_Sum;
+        //    ((ComboBoxItem)_cashPage.CurrencyComboBox1.Items[1]).Content = DeLong_Desktop.Resources.Resource.Currency_Plastic_;
+        //    ((ComboBoxItem)_cashPage.CurrencyComboBox1.Items[2]).Content = DeLong_Desktop.Resources.Resource.Currency_Dollar_;
+        //}
 
-        if (_cashPage.ToComboBox.Items.Count >= 3)
-        {
-            ((ComboBoxItem)_cashPage.ToComboBox.Items[0]).Content = DeLong_Desktop.Resources.Resource.Kassaga;
-            ((ComboBoxItem)_cashPage.ToComboBox.Items[1]).Content = DeLong_Desktop.Resources.Resource.Zaxiraga;
-           // ((ComboBoxItem)_cashPage.ToComboBox.Items[2]).Content = DeLong_Desktop.Resources.Resource.Boshqa;
-        }
+        //if (_cashPage.ToComboBox.Items.Count >= 3)
+        //{
+        //    ((ComboBoxItem)_cashPage.ToComboBox.Items[0]).Content = DeLong_Desktop.Resources.Resource.Kassaga;
+        //    ((ComboBoxItem)_cashPage.ToComboBox.Items[1]).Content = DeLong_Desktop.Resources.Resource.Zaxiraga;
+        //   // ((ComboBoxItem)_cashPage.ToComboBox.Items[2]).Content = DeLong_Desktop.Resources.Resource.Boshqa;
+        //}
         #endregion
 
         #region CustomerPage
@@ -161,9 +161,7 @@ public partial class MainWindow : Window
         #endregion
 
         #region KirimPage
-        HintAssist.SetHint(_inputPage.txtSearch, DeLong_Desktop.Resources.Resource.kategoriya_boyicha_qidiruv);
         HintAssist.SetHint(_inputPage.txtProductSearch, DeLong_Desktop.Resources.Resource.Mahsulotni_qidirish_);
-        _inputPage.dtcategoriya.Header = DeLong_Desktop.Resources.Resource.Kategoriya;
         _inputPage.dtmahsulot.Header = DeLong_Desktop.Resources.Resource.Product;
         #endregion
 
@@ -328,10 +326,6 @@ public partial class MainWindow : Window
         }
         Navigator.Navigate(_inputPage);
         UpdateLanguage();
-        if (_inputPage.txtSearch != null)
-        {
-            HintAssist.SetHint(_inputPage.txtSearch, DeLong_Desktop.Resources.Resource.kategoriya_boyicha_qidiruv);
-        }
         if (_inputPage.txtProductSearch != null)
         {
             HintAssist.SetHint(_inputPage.txtProductSearch, DeLong_Desktop.Resources.Resource.Mahsulotni_qidirish_);
