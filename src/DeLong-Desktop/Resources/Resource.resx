@@ -151,7 +151,7 @@
     <value>Toifa</value>
   </data>
   <data name="Chegirma " xml:space="preserve">
-    <value>Chegirma </value>
+    <value>Chegirma $ da</value>
   </data>
   <data name="ClientFullname" xml:space="preserve">
     <value>Mijoz FIO</value>
@@ -202,7 +202,7 @@
     <value>Kirim</value>
   </data>
   <data name="Jami summa " xml:space="preserve">
-    <value>Jami summa </value>
+    <value>Jami summa $ da</value>
   </data>
   <data name="JSHSHIR" xml:space="preserve">
     <value>JSHSHIR</value>
@@ -274,7 +274,7 @@
     <value>Mahsulot nomi</value>
   </data>
   <data name="Qarz" xml:space="preserve">
-    <value>Qarz</value>
+    <value>Qarz $ da</value>
   </data>
   <data name="Quantity" xml:space="preserve">
     <value>Miqdori</value>
@@ -322,7 +322,7 @@
     <value>Excellga o'tkazish</value>
   </data>
   <data name="Tolovsummasi" xml:space="preserve">
-    <value>To'lov summasi</value>
+    <value>To'lov summasi $ da</value>
   </data>
   <data name="TotalAmount" xml:space="preserve">
     <value>Umumiy summa</value>
@@ -449,5 +449,8 @@
   </data>
   <data name="Zaxiradagi_pullar" xml:space="preserve">
     <value>Zaxiradagi pullar</value>
+  </data>
+  <data name="To‘lov summasi " xml:space="preserve">
+    <value>To'lov summasi</value>
   </data>
 </root>

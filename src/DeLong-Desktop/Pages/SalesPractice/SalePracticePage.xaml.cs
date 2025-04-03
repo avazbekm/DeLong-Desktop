@@ -1,26 +1,27 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
+﻿using System.Windows;
+using ClosedXML.Excel;
 using System.Windows.Input;
 using System.Windows.Media;
-using ClosedXML.Excel;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using DeLong_Desktop.Pages.Cashs;
+using System.Collections.ObjectModel;
+using DeLong_Desktop.Windows.DollarKurs;
+using DeLong_Desktop.ApiService.Helpers; // DebtEvents uchun qo‘shildi
+using DeLong_Desktop.ApiService.DTOs.Debts;
+using DeLong_Desktop.ApiService.DTOs.Sales;
+using DeLong_Desktop.ApiService.DTOs.Enums;
+using DeLong_Desktop.ApiService.Interfaces;
+using DeLong_Desktop.ApiService.DTOs.Prices;
+using DeLong_Desktop.Windows.Sales.DebtPacker;
+using DeLong_Desktop.ApiService.DTOs.Payments;
+using DeLong_Desktop.ApiService.DTOs.SaleItems;
+using DeLong_Desktop.ApiService.DTOs.Discounts;
+using Microsoft.Extensions.DependencyInjection;
+using DeLong_Desktop.Windows.Sales.PrintOrExcel;
 using DeLong_Desktop.ApiService.DTOs.CashRegisters;
 using DeLong_Desktop.ApiService.DTOs.CashTransfers;
-using DeLong_Desktop.ApiService.DTOs.Debts;
-using DeLong_Desktop.ApiService.DTOs.Discounts;
-using DeLong_Desktop.ApiService.DTOs.Enums;
-using DeLong_Desktop.ApiService.DTOs.Payments;
-using DeLong_Desktop.ApiService.DTOs.Prices;
-using DeLong_Desktop.ApiService.DTOs.SaleItems;
-using DeLong_Desktop.ApiService.DTOs.Sales;
-using DeLong_Desktop.ApiService.Interfaces;
-using DeLong_Desktop.Pages.Cashs;
-using DeLong_Desktop.Windows.DollarKurs;
-using DeLong_Desktop.Windows.Sales.DebtPacker;
-using DeLong_Desktop.Windows.Sales.PrintOrExcel;
 using DeLong_Desktop.Windows.Sales.SelectionCustomer;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Pages.SalesPractice;
 
@@ -47,6 +48,7 @@ public partial class SalePracticePage : Page
     public ObservableCollection<ProductItem> Items { get; set; } = new();
 
     public event EventHandler SaleCompleted;
+    public static event EventHandler DebtUpdated; // Yangi event qo‘shildi
 
     public SalePracticePage(IServiceProvider services)
     {
@@ -246,7 +248,7 @@ public partial class SalePracticePage : Page
             double kurs = ParseDouble(tbDolarKurs.Text);
             double chegirma = ParseDouble(tbDiscount.Text);
 
-            tbQoldiq.Text = (crashSum + plastikSum + dollar * kurs).ToString("N2");
+            tbQoldiq.Text = ((crashSum + plastikSum)/kurs + dollar).ToString("N2");
             double qoldi = ParseDouble(tbQoldiq.Text);
 
             double gridTotalSum = Items.Sum(item => (double)item.TotalPrice);
@@ -656,6 +658,9 @@ public partial class SalePracticePage : Page
                     DueDate = _selectedDebtDate.Value.ToUniversalTime()
                 };
                 await _debtService.AddAsync(debtDto);
+
+                // Qarz qo‘shilganda DebtEvents ni ishga tushirish
+                DebtEvents.RaiseDebtUpdated();
             }
 
             if (decimal.TryParse(tbDiscount.Text, out decimal discountAmount) && discountAmount > 0)
@@ -713,7 +718,6 @@ public partial class SalePracticePage : Page
 
             SaleCompleted?.Invoke(this, EventArgs.Empty);
 
-            // Faqat shu qism o‘zgartirildi
             CashEvents.RaiseCashUpdated();
         }
         finally
@@ -782,6 +786,7 @@ public partial class SalePracticePage : Page
 
             worksheet.Cell(row, 4).Value = "Jami";
             worksheet.Cell(row, 5).Value = sale.TotalAmount;
+            worksheet.Cell(row, 5).Style.NumberFormat.Format = "$#,##0.00"; // Dollar belgisi
             worksheet.Range(row, 4, row, 5).Style.Font.Bold = true;
             row++;
 
@@ -807,25 +812,31 @@ public partial class SalePracticePage : Page
                 row++;
             }
 
+            // Chegirma (dollar formatida)
             if (decimal.TryParse(tbDiscount.Text, out decimal discountAmount) && discountAmount > 0)
             {
                 worksheet.Cell(row, 4).Value = "Chegirma";
                 worksheet.Cell(row, 5).Value = discountAmount;
+                worksheet.Cell(row, 5).Style.NumberFormat.Format = "$#,##0.00"; // Dollar belgisi
                 row++;
             }
 
+            // To‘lov summasi (dollar formatida)
             if (decimal.TryParse(tbQoldiq.Text, out decimal paymentSum) && paymentSum > 0)
             {
                 worksheet.Cell(row, 4).Value = "To‘lov summasi";
                 worksheet.Cell(row, 5).Value = paymentSum;
+                worksheet.Cell(row, 5).Style.NumberFormat.Format = "$#,##0.00"; // Dollar belgisi
                 worksheet.Range(row, 4, row, 5).Style.Font.Bold = true;
                 row++;
             }
 
+            // Qarz (dollar formatida)
             if (decimal.TryParse(tbqarz.Text, out decimal debtAmount) && debtAmount > 0)
             {
                 worksheet.Cell(row, 4).Value = "Qarz";
                 worksheet.Cell(row, 5).Value = debtAmount;
+                worksheet.Cell(row, 5).Style.NumberFormat.Format = "$#,##0.00"; // Dollar belgisi
                 worksheet.Range(row, 4, row, 5).Style.Font.Bold = true;
                 row++;
             }
@@ -906,7 +917,7 @@ public partial class SalePracticePage : Page
 
             doc.Blocks.Add(table);
 
-            Paragraph totalAmount = new Paragraph(new Run($"Jami: {sale.TotalAmount:N2}"))
+            Paragraph totalAmount = new Paragraph(new Run($"Jami: ${sale.TotalAmount:N2}"))
             {
                 FontSize = 16,
                 FontWeight = FontWeights.Bold,
@@ -950,7 +961,7 @@ public partial class SalePracticePage : Page
 
             if (decimal.TryParse(tbDiscount.Text, out decimal discountAmount) && discountAmount > 0)
             {
-                Paragraph discount = new Paragraph(new Run($"Chegirma: {discountAmount:N2}"))
+                Paragraph discount = new Paragraph(new Run($"Chegirma: ${discountAmount:N2}"))
                 {
                     FontSize = 14,
                     Margin = new Thickness(0, 5, 50, 0),
@@ -961,7 +972,7 @@ public partial class SalePracticePage : Page
 
             if (decimal.TryParse(tbQoldiq.Text, out decimal paymentSum) && paymentSum > 0)
             {
-                Paragraph paymentTotal = new Paragraph(new Run($"To‘lov summasi: {paymentSum:N2}"))
+                Paragraph paymentTotal = new Paragraph(new Run($"To‘lov summasi: ${paymentSum:N2}"))
                 {
                     FontSize = 14,
                     FontWeight = FontWeights.Bold,
@@ -973,7 +984,7 @@ public partial class SalePracticePage : Page
 
             if (decimal.TryParse(tbqarz.Text, out decimal debtAmount) && debtAmount > 0)
             {
-                Paragraph debt = new Paragraph(new Run($"Qarz: {debtAmount:N2}"))
+                Paragraph debt = new Paragraph(new Run($"Qarz: ${debtAmount:N2}"))
                 {
                     FontSize = 14,
                     FontWeight = FontWeights.Bold,

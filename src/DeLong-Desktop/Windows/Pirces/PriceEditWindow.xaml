@@ -25,11 +25,11 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Kelish narxi -->
-                <Label Content="Tannarxi:" Foreground="{DynamicResource SecondaryTextColor}" FontSize="16" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
+                <Label Content="Tannarxi dollarda:" Foreground="{DynamicResource SecondaryTextColor}" FontSize="16" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
                 <TextBox x:Name="tbIncomePrice" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbIncomePrice_TextChanged"/>
 
                 <!-- sotish narxi -->
-                <Label Content="Sotish narxi:" Foreground="{DynamicResource SecondaryTextColor}" FontSize="16" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
+                <Label Content="Sotish narxi dollarda:" Foreground="{DynamicResource SecondaryTextColor}" FontSize="16" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
                 <TextBox x:Name="tbSellPrice" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbSellPrice_TextChanged"/>
      
                 <!-- o'lchov birligi -->

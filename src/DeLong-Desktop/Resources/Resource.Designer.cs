@@ -178,7 +178,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chegirma .
+        ///   Looks up a localized string similar to Chegirma $ da.
         /// </summary>
         internal static string Chegirma_ {
             get {
@@ -385,7 +385,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Jami summa .
+        ///   Looks up a localized string similar to Jami summa $ da.
         /// </summary>
         internal static string Jami_summa_ {
             get {
@@ -709,7 +709,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Qarz.
+        ///   Looks up a localized string similar to Qarz $ da.
         /// </summary>
         internal static string Qarz {
             get {
@@ -943,7 +943,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To&apos;lov summasi.
+        ///   Looks up a localized string similar to To&apos;lov summasi $ da.
         /// </summary>
         internal static string Tolovsummasi {
             get {

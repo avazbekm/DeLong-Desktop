@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
+using DeLong_Desktop.Pages.Cashs;
 using DeLong_Desktop.ApiService.DTOs;
 using System.Collections.ObjectModel;
 using DeLong_Desktop.ApiService.Helpers;
@@ -14,7 +15,6 @@ using DeLong_Desktop.ApiService.DTOs.Transactions;
 using DeLong_Desktop.ApiService.DTOs.CashRegisters;
 using DeLong_Desktop.ApiService.DTOs.CashTransfers;
 using DeLong_Desktop.ApiService.DTOs.TransactionItems;
-using DeLong_Desktop.Pages.Cashs;
 
 namespace DeLong_Desktop.Pages.AdditionalOperations;
 
@@ -62,8 +62,10 @@ public partial class AdditionalOperationsPage : Page
         transferDataGrid.ItemsSource = TransferItems;
         LoadProductData();
         cbTransactionType.ItemsSource = Enum.GetNames(typeof(TransactionType));
-    }
 
+        // Eventga obuna bo'lish
+        DebtEvents.DebtUpdated += (s, e) => LoadDebts();
+    }
     private async void LoadProductData()
     {
         try
@@ -250,12 +252,12 @@ public partial class AdditionalOperationsPage : Page
                 .ToList();
 
             decimal totalDebt = selectedCustomerDebts.Sum(debt => debt.RemainingAmount);
-            tbTotalDebt.Text = $"{totalDebt:N2} so‘m";
+            tbTotalDebt.Text = $"{totalDebt:N2} dollar";
         }
         else
         {
             selectedCustomerDebts = new List<DebtItem>();
-            tbTotalDebt.Text = "0.00 so‘m";
+            tbTotalDebt.Text = "0.00 dollar";
         }
     }
 
@@ -374,9 +376,8 @@ public partial class AdditionalOperationsPage : Page
                 return;
             }
             decimal dollarKurs = dollar.AdmissionDollar;
-            decimal dollarInSom = dollarAmount * dollarKurs;
 
-            decimal totalPayment = cashAmount + cardAmount + dollarInSom;
+            decimal totalPayment = (cashAmount + cardAmount) / dollarKurs + dollarAmount;
 
             decimal totalDebt = selectedCustomerDebts.Sum(debt => debt.RemainingAmount);
             if (totalPayment > totalDebt)
@@ -561,7 +562,7 @@ public partial class AdditionalOperationsPage : Page
 
     private void tbDollarPayment_TextChanged(object sender, TextChangedEventArgs e)
     {
-        ValidationHelper.ValidateOnlyNumberInput(sender as TextBox);
+        ValidationHelper.ValidateDecimalInput(sender as TextBox);
     }
 
     private async void ConfirmReturnButton_Click(object sender, RoutedEventArgs e)

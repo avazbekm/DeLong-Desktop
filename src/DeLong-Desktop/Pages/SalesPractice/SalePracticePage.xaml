@@ -139,7 +139,7 @@
                         </Grid>
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Left">
-                        <Label Name="lblqarz" Content="Qarz " Foreground="{StaticResource TextForeground}" FontSize="20"/>
+                        <Label Name="lblqarz" Content="Qarz" Foreground="{StaticResource TextForeground}" FontSize="20"/>
                         <Grid MinWidth="120" Height="35">
                             <Border CornerRadius="7" Background="#F1F1F1">
                                 <TextBox x:Name="tbqarz" md:HintAssist.Hint="0.00" FontSize="18" Foreground="Black" Background="Transparent" Padding="5" BorderThickness="0" TextAlignment="Left" TextChanged="tbqarz_TextChanged"/>

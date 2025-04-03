@@ -27,11 +27,11 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Kelish narxi -->
-                <Label Content="Kelish narxi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
+                <Label Content="Tannarxi dollarda:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
                 <TextBox x:Name="tbIncomePrice" Text="0.00" Foreground="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
                 <!-- sotish narxi -->
-                <Label Content="Sotish narxi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
+                <Label Content="Sotish narxi dollarda:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
                 <TextBox x:Name="tbSellPrice" Text="0.00" Foreground ="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
                 <!-- Miqdori -->
