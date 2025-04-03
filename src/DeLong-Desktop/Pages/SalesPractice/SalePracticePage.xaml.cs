@@ -194,6 +194,12 @@ public partial class SalePracticePage : Page
                         BalanceAmount = price.Quantity
                     };
 
+                    // Quantity 0 yoki null bo'lsa qo'shmaslik
+                    if (newItem.Quantity <= 0)
+                    {
+                        continue; // Bu qatorni o'tkazib yuboramiz
+                    }
+
                     Items.Add(newItem);
                     break;
                 }
@@ -212,6 +218,12 @@ public partial class SalePracticePage : Page
                         BalanceAmount = price.Quantity
                     };
 
+                    // Quantity 0 yoki null bo'lsa qo'shmaslik
+                    if (newItem.Quantity <= 0)
+                    {
+                        continue; // Bu qatorni o'tkazib yuboramiz
+                    }
+
                     Items.Add(newItem);
                     quantity -= price.Quantity;
 
@@ -219,13 +231,19 @@ public partial class SalePracticePage : Page
                         break;
                 }
             }
+
+            // Quantity 0 yoki null bo'lgan qatorlarni o'chirish
+            var itemsToRemove = Items.Where(item => item.Quantity <= 0).ToList();
+            foreach (var item in itemsToRemove)
+            {
+                Items.Remove(item);
+            }
         }
         catch (Exception ex)
         {
             MessageBox.Show($"Mahsulot qo‘shishda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
-
     private void btnRemoveProduct_Click(object sender, RoutedEventArgs e)
     {
         var button = sender as Button;
@@ -471,6 +489,53 @@ public partial class SalePracticePage : Page
 
         try
         {
+            // ProductGrid bo'sh bo'lsa xabar chiqarish
+            if (!Items.Any())
+            {
+                MessageBox.Show("Avval mahsulot qo'shing!", "Ogohlantirish", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Quantity 0 yoki undan kichik bo'lgan mahsulotlarni tekshirish
+            var invalidItems = Items.Where(item => item.Quantity <= 0).ToList();
+            if (invalidItems.Any())
+            {
+                string invalidProducts = string.Join(", ", invalidItems.Select(item => item.ProductName));
+                MessageBox.Show($"Quyidagi mahsulotlarning miqdori 0 yoki undan kichik: {invalidProducts}. Iltimos, miqdorni to'g'rilang!",
+                               "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                // Birinchi noto'g'ri Quantityga fokus qo'yish
+                var firstInvalidItem = invalidItems.First();
+                int invalidIndex = Items.IndexOf(firstInvalidItem);
+                ProductGrid.SelectedIndex = invalidIndex;
+                ProductGrid.ScrollIntoView(firstInvalidItem);
+
+                // Quantity ustunini indeks orqali aniqlash
+                int quantityColumnIndex = -1;
+                for (int i = 0; i < ProductGrid.Columns.Count; i++)
+                {
+                    if (ProductGrid.Columns[i].SortMemberPath == "Quantity" || // Property nomi bilan tekshirish
+                        ProductGrid.Columns[i].Header?.ToString() == "Quantity") // Header nomi bilan tekshirish
+                    {
+                        quantityColumnIndex = i;
+                        break;
+                    }
+                }
+
+                if (quantityColumnIndex != -1) // Agar ustun topilsa
+                {
+                    ProductGrid.CurrentCell = new DataGridCellInfo(firstInvalidItem, ProductGrid.Columns[quantityColumnIndex]);
+                    ProductGrid.BeginEdit(); // Tahrirlash rejimiga o'tish
+                }
+                else
+                {
+                    // Agar Quantity ustuni topilmasa, umumiy fokus qo'yish
+                    ProductGrid.Focus();
+                }
+
+                return;
+            }
+
             if (!decimal.TryParse(tbTotalPrice.Text, out decimal totalPrice) || totalPrice != 0)
             {
                 MessageBox.Show("To‘lovni to‘liq amalga oshiring!", "Ogohlantirish", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -659,7 +724,6 @@ public partial class SalePracticePage : Page
                 };
                 await _debtService.AddAsync(debtDto);
 
-                // Qarz qo‘shilganda DebtEvents ni ishga tushirish
                 DebtEvents.RaiseDebtUpdated();
             }
 
@@ -726,7 +790,6 @@ public partial class SalePracticePage : Page
             ResetToDefaultValues();
         }
     }
-
     private void ResetToDefaultValues()
     {
         tbCrashSum.Text = "";
