@@ -17,30 +17,28 @@ public partial class CustomersPage : Page
 {
     private readonly IUserService userService;
     private readonly ICustomerService customerService;
-    
     private readonly IServiceProvider services;
+
+    // Event to notify when a customer is added
+    public static event EventHandler CustomerAdded;
+
     public bool IsCreated { get; set; } = false;
+
     public CustomersPage(IServiceProvider services)
     {
         InitializeComponent();
         this.services = services;
         userService = services.GetRequiredService<IUserService>();
         customerService = services.GetRequiredService<ICustomerService>();
-
         Loading();
     }
 
     private async void Loading()
     {
-        //datagridga malumotlar to'plash ushun
         List<Item> items = new List<Item>();
-        
-        // mijozlarni databasadan chaqirvodik
         var existCustomers = await customerService.RetrieveAllAsync();
-        
-        // jami mavjud jismoniy shaxslarni chaqirib oldik
         var existUsers = await userService.RetrieveAllAsync();
-        
+
         if (existCustomers is not null)
         {
             foreach (var custom in existCustomers)
@@ -75,17 +73,19 @@ public partial class CustomersPage : Page
                 });
             }
         }
-        userDataGrid.ItemsSource = items; ;
+        userDataGrid.ItemsSource = items;
     }
 
     private void btnAdd_Click(object sender, RoutedEventArgs e)
     {
         CustomerAddWindow customerAddWindow = new CustomerAddWindow(services);
         customerAddWindow.ShowDialog();
-        if(customerAddWindow.IsCreated) 
+        if (customerAddWindow.IsCreated)
+        {
             Loading();
-    }
-
+            CustomerAdded?.Invoke(this, EventArgs.Empty); // Raise the event
+        }
+    }   
     private async void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
     {
         List<Item> items = new List<Item>();

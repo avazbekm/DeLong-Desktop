@@ -11,14 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Pages.Products;
 
-/// <summary>
-/// Interaction logic for ProductsPage.xaml
-/// </summary>
 public partial class ProductsPage : Page
 {
     private readonly IProductService productService;
     private readonly ICategoryService categoryService;
     private readonly IServiceProvider services;
+
+    // Yangi mahsulot qo'shilganda xabar beruvchi event
+    public static event EventHandler ProductAdded;
 
     public ProductsPage(IServiceProvider services)
     {
@@ -38,8 +38,7 @@ public partial class ProductsPage : Page
         {
             var categories = await this.categoryService.RetrieveAllAsync();
 
-            // Kategoriya elementlarini ComboBoxga qo'shish
-            var comboBoxItems = new List<ItemCombobox> { new ItemCombobox { Id = 0, Name = "Barcha kategoriyalar" } }; // "Tanlanmagan" elementi qo‘shildi
+            var comboBoxItems = new List<ItemCombobox> { new ItemCombobox { Id = 0, Name = "Barcha kategoriyalar" } };
             foreach (var category in categories)
             {
                 comboBoxItems.Add(new ItemCombobox
@@ -49,14 +48,13 @@ public partial class ProductsPage : Page
                 });
             }
 
-            // ComboBoxni ma'lumotlar bilan to'ldirish
             cmbCategory.ItemsSource = comboBoxItems;
-            cmbCategory.DisplayMemberPath = "Name"; // Ko'rsatiladigan nom
-            cmbCategory.SelectedValuePath = "Id";  // Tanlangan qiymat
+            cmbCategory.DisplayMemberPath = "Name";
+            cmbCategory.SelectedValuePath = "Id";
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Error loading categories: {ex.Message}");
+            MessageBox.Show($"Kategoriyalarni yuklashda xato: {ex.Message}");
         }
     }
 
@@ -64,9 +62,7 @@ public partial class ProductsPage : Page
     {
         if (cmbCategory.SelectedValue is long selectedCategoryId)
         {
-            // dataGrid.ItemSource ni tozalaymiz.
             dataGrid.ItemsSource = string.Empty;
-            // "Barcha kategoriyalar" tanlangan bo'lsa, LoadData() chaqiriladi, aks holda LoadData(selectedCategoryId)
             if (selectedCategoryId == 0)
                 LoadData();
             else
@@ -76,19 +72,11 @@ public partial class ProductsPage : Page
 
     public async void LoadData(long categoryId)
     {
-        // dataGrid.ItemSource ni tozalaymiz.
         dataGrid.ItemsSource = null;
-
-        // Mahsulotlar ro'yxati
         List<Item> items = new List<Item>();
-
-        // Narxlarni olish
         var categories = await categoryService.RetrieveAllAsync();
-
-        // Mahsulotlarni olish
         var products = await productService.RetrieveAllAsync();
 
-        // Agar mahsulotlar mavjud bo'lsa, ularni ro'yxatga qo'shish
         if (products is not null)
         {
             foreach (var product in products)
@@ -108,26 +96,16 @@ public partial class ProductsPage : Page
                 }
             }
         }
-
-        // DataGrid'ni ma'lumot bilan to'ldirish
         dataGrid.ItemsSource = items;
     }
 
     private async void LoadData()
     {
-        // dataGrid.ItemSource ni tozalaymiz.
         dataGrid.ItemsSource = string.Empty;
-
-        // Mahsulotlar ro'yxati
         List<Item> items = new List<Item>();
-
-        // kategoriyalar olish
         var categories = await categoryService.RetrieveAllAsync();
-
-        // Mahsulotlarni olish
         var products = await productService.RetrieveAllAsync();
 
-        // Agar mahsulotlar mavjud bo'lsa, ularni ro'yxatga qo'shish
         if (products is not null)
         {
             foreach (var product in products)
@@ -144,8 +122,6 @@ public partial class ProductsPage : Page
                 });
             }
         }
-
-        // DataGrid'ni ma'lumot bilan to'ldirish
         dataGrid.ItemsSource = items;
     }
 
@@ -158,6 +134,9 @@ public partial class ProductsPage : Page
                 LoadData(selectedCategoryId);
             else
                 LoadData();
+
+            // Yangi mahsulot qo'shilganda eventni ishga tushirish
+            ProductAdded?.Invoke(this, EventArgs.Empty);
 
             if (AppState.CurrentInputPage != null)
             {
@@ -184,16 +163,10 @@ public partial class ProductsPage : Page
         if (cmbCategory.SelectedValue is long selectedCategoryId)
             categoryId = selectedCategoryId;
 
-        // Mahsulotlar ro'yxati
         List<Item> items = new List<Item>();
-
-        // kategoriyalar olish
         var categories = await categoryService.RetrieveAllAsync();
-
-        // Mahsulotlarni olish
         var products = await productService.RetrieveAllAsync();
 
-        // Agar mahsulotlar mavjud bo'lsa, ularni ro'yxatga qo'shish
         if (products is not null)
         {
             if (categoryId == 0)
@@ -201,7 +174,6 @@ public partial class ProductsPage : Page
                 foreach (var product in products)
                 {
                     var category = categories.FirstOrDefault(c => c.Id.Equals(product.CategoryId));
-
                     if (product.Name.Contains(searchText.ToLower()))
                         items.Add(new Item()
                         {
@@ -248,20 +220,18 @@ public partial class ProductsPage : Page
         productEditWindow.spCategory.Visibility = Visibility.Visible;
 
         productEditWindow.ShowDialog();
-        if (productEditWindow.IsModified) // Agar o'zgarish bo'lsa
+        if (productEditWindow.IsModified)
         {
             if (cmbCategory.SelectedValue is long selectedCategoryId)
-                LoadData(selectedCategoryId); // Tanlangan kategoriya bo'yicha yangilash
+                LoadData(selectedCategoryId);
             else
-                LoadData(); // Umumiy ro'yxatni yangilash
+                LoadData();
         }
     }
 
     private void btnExcel_Click(object sender, RoutedEventArgs e)
     {
-        // DataGrid ma'lumotlarini DataTable ga o'girish
         DataTable dataTable = new DataTable();
-
         foreach (var column in dataGrid.Columns)
         {
             dataTable.Columns.Add(column.Header.ToString());
@@ -276,7 +246,6 @@ public partial class ProductsPage : Page
                 {
                     Binding binding = textColumn.Binding as Binding;
                     string propertyName = binding?.Path.Path;
-
                     if (propertyName != null && item != null)
                     {
                         var value = item.GetType().GetProperty(propertyName)?.GetValue(item, null);
@@ -287,13 +256,11 @@ public partial class ProductsPage : Page
             dataTable.Rows.Add(row);
         }
 
-        // Excelga yozish
         using (var workbook = new XLWorkbook())
         {
             var worksheet = workbook.Worksheets.Add("Exported Data");
             worksheet.Cell(1, 1).InsertTable(dataTable);
 
-            // Fayl saqlash dialog oynasi
             var saveFileDialog = new Microsoft.Win32.SaveFileDialog
             {
                 Filter = "Excel Fayl (*.xlsx)|*.xlsx",
@@ -303,7 +270,7 @@ public partial class ProductsPage : Page
             if (saveFileDialog.ShowDialog() == true)
             {
                 workbook.SaveAs(saveFileDialog.FileName);
-                MessageBox.Show("Excelga o'tkazildi!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Excelga o'tkazildi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }

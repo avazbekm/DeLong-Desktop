@@ -198,9 +198,6 @@
   <data name="Faolligi " xml:space="preserve">
     <value>Faolligi </value>
   </data>
-  <data name="Income" xml:space="preserve">
-    <value>Kirim</value>
-  </data>
   <data name="Jami summa " xml:space="preserve">
     <value>Jami summa $ da</value>
   </data>
@@ -265,7 +262,7 @@
     <value>Plastik </value>
   </data>
   <data name="Product" xml:space="preserve">
-    <value>Mahsulotlar</value>
+    <value>Mahsulot</value>
   </data>
   <data name="ProductList" xml:space="preserve">
     <value>Mahsulotlar ro'yxati</value>
@@ -345,7 +342,7 @@
   <data name="Valyutani ayirboshlash " xml:space="preserve">
     <value>Valyutani ayirboshlash </value>
   </data>
-  <data name="Supplier" xml:space="preserve">
+  <data name="Suppliers" xml:space="preserve">
     <value>Taminotchi</value>
   </data>
   <data name="WarehouseTransfer" xml:space="preserve">
@@ -452,5 +449,35 @@
   </data>
   <data name="To‘lov summasi " xml:space="preserve">
     <value>To'lov summasi</value>
+  </data>
+  <data name="Sales" xml:space="preserve">
+    <value>Sotuv</value>
+  </data>
+  <data name="SalesOperations" xml:space="preserve">
+    <value>Sotuv amallar</value>
+  </data>
+  <data name="SalesHistory" xml:space="preserve">
+    <value>Sotuv tarixi</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Mahsulotlar</value>
+  </data>
+  <data name="Incoming" xml:space="preserve">
+    <value>Kirim</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Foydalanuvchi</value>
+  </data>
+  <data name="Customers" xml:space="preserve">
+    <value>Mijoz</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Sozlash</value>
+  </data>
+  <data name="Languages" xml:space="preserve">
+    <value>Tillar</value>
+  </data>
+  <data name="Branches" xml:space="preserve">
+    <value>Filial</value>
   </data>
 </root>

@@ -198,9 +198,6 @@
   <data name="Faolligi " xml:space="preserve">
     <value>活跃度</value>
   </data>
-  <data name="Income" xml:space="preserve">
-    <value>收入</value>
-  </data>
   <data name="Jami summa " xml:space="preserve">
     <value>总金额</value>
   </data>
@@ -304,12 +301,10 @@
     <value>船運</value>
   </data>
   <data name="Sotib olish " xml:space="preserve">
-    <value>购买
-</value>
+    <value>购买</value>
   </data>
   <data name="Sotish " xml:space="preserve">
-    <value>销售
-</value>
+    <value>销售</value>
   </data>
   <data name="Sotuvni amalga oshirish " xml:space="preserve">
     <value>进行销售</value>
@@ -347,17 +342,14 @@
   <data name="Valyutani ayirboshlash " xml:space="preserve">
     <value>货币兑换</value>
   </data>
-  <data name="Supplier" xml:space="preserve">
-    <value>供應商</value>
+  <data name="Suppliers" xml:space="preserve">
+    <value>塔米諾奇</value>
   </data>
   <data name="WarehouseTransfer" xml:space="preserve">
     <value>倉庫間轉移</value>
   </data>
   <data name="Yakunlash " xml:space="preserve">
     <value>完成</value>
-  </data>
-  <data name="To‘lov summasi " xml:space="preserve">
-    <value>付款金额</value>
   </data>
   <data name="Qoshimcha amallar" xml:space="preserve">
     <value>额外操作</value>
@@ -454,5 +446,38 @@
   </data>
   <data name="Zaxiradagi_pullar" xml:space="preserve">
     <value>儲備資金</value>
+  </data>
+  <data name="To‘lov summasi " xml:space="preserve">
+    <value>付款金额</value>
+  </data>
+  <data name="Sales" xml:space="preserve">
+    <value>销售</value>
+  </data>
+  <data name="SalesOperations" xml:space="preserve">
+    <value>销售操作</value>
+  </data>
+  <data name="SalesHistory" xml:space="preserve">
+    <value>销售历史</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>产品列表</value>
+  </data>
+  <data name="Incoming" xml:space="preserve">
+    <value>进货</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>使用者</value>
+  </data>
+  <data name="Customers" xml:space="preserve">
+    <value>顧客</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="Languages" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="Branches" xml:space="preserve">
+    <value>分支</value>
   </data>
 </root>

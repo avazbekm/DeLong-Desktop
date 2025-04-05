@@ -8,6 +8,7 @@
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="DeLong" Height="620" Width="800"
         WindowStartupLocation="CenterScreen">
+
     <Window.Resources>
         <DropShadowEffect x:Key="DefaultDropShadowEffect" ShadowDepth="5" Opacity="0.5" BlurRadius="10"/>
     </Window.Resources>
@@ -20,190 +21,165 @@
         <Grid Grid.Column="0" Background="#334257">
             <StackPanel Margin="20">
 
-                <Button x:Name="btnChiqim"
-                        Height="40"
-                        Margin="0 0 0 5"
-                        Content="Sotuv amallari"
-                        FontSize="18"
-                        BorderThickness="0"
-                        Foreground="Snow"                        
-                        Style="{DynamicResource MaterialDesignPaperLightButton}"
-                        Background="#476072"
-                        md:ButtonAssist.CornerRadius="17" Click="btnChiqim_Click"/>
+                <TreeView x:Name="SidenavMenuSales" FontSize="17" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource SecondaryTextColor}">
+                    <!-- Sotuv bo'limi -->
+                    <TreeViewItem x:Name="salesTreeItem" IsExpanded="False">
+                        <TreeViewItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="Cart" Width="20" Height="20" Margin="5,0"/>
+                                <TextBlock Text="{DynamicResource Sales}" VerticalAlignment="Center" Margin="5,0"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                        <!-- Sub-item'lar -->
+                        <TreeViewItem x:Name="salesOperationsTreeItem" Tag="SalesOperations" PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <md:PackIcon Kind="CartPlus" Width="20" Height="20" Margin="5,0"/>
+                                    <TextBlock Text="{DynamicResource SalesOperations}" VerticalAlignment="Center" Margin="5,0"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem x:Name="salesHistoryTreeItem" Tag="SalesHistory" PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <md:PackIcon Kind="History" Width="20" Height="20" Margin="5,0"/>
+                                    <TextBlock Text="{DynamicResource SalesHistory}" VerticalAlignment="Center" Margin="5,0"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </TreeViewItem>
+                </TreeView>
 
-                <Button x:Name="btnCash"
+                <TreeView x:Name="SidenavMenuProducts" FontSize="17" Background="Transparent" 
+                          BorderThickness="0" Foreground="{DynamicResource SecondaryTextColor}">
+                    <!-- Mahsulot bo'limi -->
+                    <TreeViewItem x:Name="productsTreeItem" IsExpanded="False">
+                        <TreeViewItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="PackageVariant" Width="20" Height="20" Margin="5,0"/>
+                                <TextBlock Text="{DynamicResource Products}" VerticalAlignment="Center" Margin="5,0"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                        <!-- Sub-item'lar -->
+                        <TreeViewItem x:Name="productsListTreeItem" Tag="ProductsList" 
+                                      PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <md:PackIcon Kind="Package" Width="20" Height="20" Margin="5,0"/>
+                                    <TextBlock Text="{DynamicResource ProductsList}" VerticalAlignment="Center" Margin="5,0"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem x:Name="incomingTreeItem" Tag="Incoming" 
+                                      PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <md:PackIcon Kind="PackageVariantClosed" Width="20" Height="20" Margin="5,0"/>
+                                    <TextBlock Text="{DynamicResource Incoming}" VerticalAlignment="Center" Margin="5,0"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </TreeViewItem>
+                </TreeView>
+
+                <TreeView x:Name="SidenavMenuUsers" FontSize="17" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource SecondaryTextColor}">
+                    <!-- Foydalanuvchi bo'limi -->
+                    <TreeViewItem x:Name="usersTreeItem" IsExpanded="False">
+                        <TreeViewItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="AccountGroup" Width="20" Height="20" Margin="5,0"/>
+                                <TextBlock Text="Foydalanuvchi" Style="{DynamicResource TreeViewItemHeaderStyle}" VerticalAlignment="Center" Margin="5,0"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                        <!-- Sub-item'lar -->
+                        <TreeViewItem x:Name="suppliersTreeItem" Tag="Suppliers" PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <md:PackIcon Kind="TruckDelivery" Width="20" Height="20" Margin="5,0"/>
+                                    <TextBlock Text="Taminotchi" Style="{DynamicResource TreeViewItemHeaderStyle}" VerticalAlignment="Center" Margin="5,0"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem x:Name="customersTreeItem" Tag="Customers" PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <md:PackIcon Kind="Account" Width="20" Height="20" Margin="5,0"/>
+                                    <TextBlock Text="Mijoz" Style="{DynamicResource TreeViewItemHeaderStyle}" VerticalAlignment="Center" Margin="5,0"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </TreeViewItem>
+                </TreeView>
+
+                <StackPanel Orientation="Horizontal">
+                    <md:PackIcon Kind="Cash" Foreground="{DynamicResource SecondaryTextColor}" 
+                 Width="20" Height="20" Margin="47 0 0 0" VerticalAlignment="Center"/>
+                    <Button x:Name="btnCash"
                         Height="40"
+                        FontSize="17"
+                        Width="150"
+                        Padding="8 0 0 0"
                         Margin="0 0 0 5"
+                        BorderThickness="0"
+                        HorizontalContentAlignment="Left"
+                        Foreground="{DynamicResource SecondaryTextColor}"
+                        Style="{DynamicResource MaterialDesignPaperLightButton}"
+                        Background="Transparent"
                         Content="Kassa"
-                        FontSize="18"
-                        BorderThickness="0"
-                        Foreground="Snow"                        
-                        Style="{DynamicResource MaterialDesignPaperLightButton}"
-                        Background="#476072"
-                        md:ButtonAssist.CornerRadius="17" Click="btnCash_Click"/>
-
-                <Button x:Name="btnMijoz" 
-                        Height="40"
-                        Margin="0 0 0 5"
-                        Content="Mijoz"
-                        FontSize="18"
-                        BorderThickness="0"
-                        Background="#476072"
-                        Foreground="Snow"
-                        Style="{DynamicResource MaterialDesignPaperLightButton}"
-                        md:ButtonAssist.CornerRadius="17" Click="bntMijoz_Click"/>
-              
-                <Button x:Name="btnSupplier"
-                        Height="40"
-                        Margin="0 0 0 5"
-                        Content="Taminotchi"
-                        FontSize="18"
-                        BorderThickness="0"
-                        Foreground="Snow"                        
-                        Style="{DynamicResource MaterialDesignPaperLightButton}"
-                        Background="#476072"
-                        md:ButtonAssist.CornerRadius="17" Click="btnSupplier_Click"/>
-
-                <Button x:Name="btnMaxsulot"
-                        Height="40"
-                        Margin="0 0 0 5"
-                        Content="Mahsulot"
-                        FontSize="18"
-                        BorderThickness="0"
-                        Foreground="Snow"
-                        Style="{DynamicResource MaterialDesignPaperLightButton}"
-                        Background="#476072"
-                        md:ButtonAssist.CornerRadius="17" Click="btnMaxsulot_Click"/>
-
-
-                <Button x:Name="btnKirim"
-                        Height="40"
-                        Margin="0 0 0 5"
-                        Content="Kirim"
-                        FontSize="18"
-                        BorderThickness="0"
-                        Foreground="Snow"                        
-                        Style="{DynamicResource MaterialDesignPaperLightButton}"
-                        Background="#476072"
-                        md:ButtonAssist.CornerRadius="17" Click="btnKirim_Click"/>
-
-                <!-- Qo‘shimcha Amallar tugmasi -->
+                        Click="btnCash_Click">
+                    </Button>
+                </StackPanel>
                 <Button x:Name="btnAdditionalOperations"
                         Height="40"
                         Margin="0 0 0 5"
                         Content="Qo‘shimcha amallar"
                         FontSize="18"
                         BorderThickness="0"
-                        Foreground="Snow"                        
+                        FontFamily="JetBrains Mono"
+                        Foreground="Snow" 
                         Style="{DynamicResource MaterialDesignPaperLightButton}"
-                        Background="#476072"
-                        md:ButtonAssist.CornerRadius="17" Click="OnAdditionalOperationsClick"/>
+                        Background="Transparent"
+                        Click="OnAdditionalOperationsClick"/>
 
-                <Button x:Name="btnSaleHistory"
-                        Height="40"
-                        Margin="0 0 0 5"
-                        Content="Sotuv tarixi"
-                        FontSize="18"
-                        BorderThickness="0"
-                        Foreground="Snow"                        
-                        Style="{DynamicResource MaterialDesignPaperLightButton}"
-                        Background="#476072"
-                        md:ButtonAssist.CornerRadius="17" Click="btnSaleHistory_Click"/>
+                <StackPanel Orientation="Horizontal">
+                    <md:PackIcon Kind="ReportArc" Foreground="{DynamicResource SecondaryTextColor}" Width="20" Height="20" Margin="47 0 0 0" VerticalAlignment="Center"/>
+                    <Button x:Name="btnHisobot" Height="40" Width="145" Margin="0 0 0 5" Padding="7 0 0 0" HorizontalContentAlignment="Left" Content="Hisobot" FontSize="17" BorderThickness="0" Foreground="{DynamicResource SecondaryTextColor}" Style="{DynamicResource MaterialDesignPaperLightButton}" Background="Transparent" Click="btnReport_Click"/>
+                </StackPanel>
 
-                <Button x:Name="btnHisobot"
-                        Height="40"
-                        Margin="0 0 0 5"
-                        Content="Hisobot"
-                        FontSize="18"
-                        BorderThickness="0"
-                        Foreground="Snow"                        
-                        Style="{DynamicResource MaterialDesignPaperLightButton}"
-                        Background="#476072"
-                        Click="btnReport_Click"
-                        md:ButtonAssist.CornerRadius="17"/>
-
-                <Button x:Name="btnBranch"
-                        Height="40"
-                        Margin="0 0 0 5"
-                        Content="Filial"
-                        FontSize="18"
-                        BorderThickness="0"
-                        Foreground="Snow"                        
-                        Style="{DynamicResource MaterialDesignPaperLightButton}"
-                        Background="#476072"
-                        md:ButtonAssist.CornerRadius="17" Click="btnBranch_Click"/>
-
-
-                <Border 
-                    Height="40" 
-                    Background="#476072" 
-                    CornerRadius="15" 
-                    Margin="0,0,0,10"
-                    Effect="{StaticResource DefaultDropShadowEffect}">
-
-                    <StackPanel 
-                        Orientation="Horizontal" 
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
-
-                        <!-- Globe Image -->
-                        <Image 
-                            Height="24"
-                            Width="24"
-                            Source="🌐"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Left" />
-
-                        <!-- Language ComboBox -->
-                        <ComboBox 
-                            x:Name="languageComboBox"
-                            Width="150"
-                            Foreground="#7AB2D3" 
-                            Background="#476072"
-                            FontFamily="JetBrains Mono" 
-                            FontSize="18"
-                            SelectionChanged="languageComboBox_SelectionChanged">
-
-                            <!-- ComboBox Item Styles -->
-                            <ComboBox.Resources>
-                                <Style TargetType="{x:Type ComboBoxItem}">
-                                    <Setter Property="Foreground" Value="#AB886D" />
-                                    <Setter Property="Background" Value="#333333" />
-                                    <Setter Property="FontFamily" Value="JetBrains Mono" />
-                                    <Setter Property="FontSize" Value="16" />
-                                    <Setter Property="FontWeight" Value="Bold" />
-                                </Style>
-                            </ComboBox.Resources>
-
-                            <!-- Uzbek Language Item -->
-                            <ComboBoxItem Tag="uz-UZ">
+                <TreeView x:Name="SidenavMenuSettings" FontSize="17" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource SecondaryTextColor}">
+                    <!-- Sozlash bo'limi -->
+                    <TreeViewItem x:Name="settingsTreeItem" IsExpanded="False">
+                        <TreeViewItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="Cog" Width="20" Height="20" Margin="5,0"/>
+                                <TextBlock Text="Sozlash" VerticalAlignment="Center" Margin="5,0"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                        <!-- Sub-item'lar -->
+                        <TreeViewItem x:Name="languagesTreeItem" Tag="Languages" PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
+                            <TreeViewItem.Header>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="O'zbek" Foreground="#ADD8E6" />
+                                    <md:PackIcon Kind="Translate" Width="20" Height="20" Margin="5,0"/>
+                                    <TextBlock x:Name="tbLanguage" Text="Tillar" VerticalAlignment="Center" Margin="5,0"/>
                                 </StackPanel>
-                            </ComboBoxItem>
-
-                            <!-- Chinese Language Item -->
-                            <ComboBoxItem Tag="zh-CN">
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem x:Name="branchesTreeItem" Tag="Branches" PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
+                            <TreeViewItem.Header>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="中文" Foreground="#ADD8E6" />
+                                    <md:PackIcon Kind="Store" Width="20" Height="20" Margin="5,0"/>
+                                    <TextBlock x:Name="tbBranch" Text="Filial" VerticalAlignment="Center" Margin="5,0"/>
                                 </StackPanel>
-                            </ComboBoxItem>
-                        </ComboBox>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </TreeViewItem>
+                </TreeView>
 
-                    </StackPanel>
-                </Border>
-
-                <Button x:Name="btnChiqish"
-                        Height="40"
-                        Margin="0 0 0 5"
-                        Content="Chiqish"
-                        FontSize="18"
-                        BorderThickness="0"
-                        Foreground="Snow"                        
-                        Style="{DynamicResource MaterialDesignPaperLightButton}"
-                        Background="#476072"
-                        md:ButtonAssist.CornerRadius="17" Click="btnChiqish_Click"/>
-
+                <StackPanel Orientation="Horizontal">
+                    <md:PackIcon Kind="Logout" Width="20" Foreground="{DynamicResource SecondaryTextColor}" Height="20" Margin="50 0 0 0" VerticalAlignment="Center"/>
+                    <Button x:Name="btnChiqish" Height="40" Width="135" HorizontalContentAlignment="Left" Padding="5 0 0 0" Margin="0,0,0,5" BorderThickness="0" FontSize="17" Foreground="Snow" Style="{DynamicResource MaterialDesignPaperLightButton}" Background="Transparent" Click="btnChiqish_Click">
+                    </Button>
+                </StackPanel>
             </StackPanel>
         </Grid>
 

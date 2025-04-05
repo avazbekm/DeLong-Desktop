@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.Companents;
 using DeLong_Desktop.Windows.Pirces;
 using DeLong_Desktop.ApiService.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
-using DeLong_Desktop.ApiService.DTOs.Products;
+using DeLong_Desktop.ApiService.DTOs.Enums;
 using DeLong_Desktop.ApiService.DTOs.Prices;
+using DeLong_Desktop.ApiService.DTOs.Products;
 using DeLong_Desktop.ApiService.DTOs.Category;
+using Microsoft.Extensions.DependencyInjection;
 using DeLong_Desktop.ApiService.DTOs.Transactions;
 using DeLong_Desktop.ApiService.DTOs.TransactionItems;
-using DeLong_Desktop.ApiService.DTOs.Enums;
 
 namespace DeLong_Desktop.Pages.Input;
 
@@ -30,9 +27,9 @@ public partial class InputPage : Page
     {
         InitializeComponent();
         _services = services;
-        _categoryService = services.GetRequiredService<ICategoryService>();
-        _productService = services.GetRequiredService<IProductService>();
         _priceService = services.GetRequiredService<IPriceService>();
+        _productService = services.GetRequiredService<IProductService>();
+        _categoryService = services.GetRequiredService<ICategoryService>();
         _transactionService = services.GetRequiredService<ITransactionService>();
         _transactionItemService = services.GetRequiredService<ITransactionItemService>();
 
@@ -223,7 +220,7 @@ public partial class InputPage : Page
             var transactionDto = new TransactionCreationDto
             {
                 SupplierIdFrom = InputInfo.SupplierId,
-                BranchId = 1,
+                BranchId = InputInfo.BranchId,
                 BranchIdTo = InputInfo.BranchId,
                 TransactionType = TransactionType.Kirim,
                 Comment = "Yetkazib beruvchidan mahsulot keldi.",

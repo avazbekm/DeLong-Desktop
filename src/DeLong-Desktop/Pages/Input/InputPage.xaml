@@ -71,7 +71,7 @@
                     </Style>
                 </ComboBox.ItemContainerStyle>
             </ComboBox>
-            <DataGrid x:Name="productDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Background="#548CA8" Foreground="Black" RowHeight="40" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" EnableRowVirtualization="True" VirtualizingStackPanel.IsVirtualizing="True">
+            <DataGrid x:Name="productDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="Black" RowHeight="40" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" EnableRowVirtualization="True" VirtualizingStackPanel.IsVirtualizing="True">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="FontSize" Value="20" />
@@ -127,11 +127,11 @@
                         <DataGridTextColumn Header="Miqdor" Binding="{Binding Quantity}" Width="80"/>
                         <DataGridTextColumn Header="O'lchov birligi" Binding="{Binding UnitOfMeasure}" Width="100"/>
                         <DataGridTextColumn Header="Tannarxi" Binding="{Binding CostPrice}" Width="80"/>
-                        <DataGridTextColumn Header="Umumiy yig'indi" Binding="{Binding TotalAmount}" Width="100" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Jami" Binding="{Binding TotalAmount}" Width="100" IsReadOnly="True"/>
                         <DataGridTemplateColumn Header="O'chirish" Width="80">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="O'chirish" Click="DeleteRow_Click" Tag="{Binding}"/>
+                                    <Button Content="🗑️" Padding="0" Background="red" Height="30" Click="DeleteRow_Click" Tag="{Binding}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

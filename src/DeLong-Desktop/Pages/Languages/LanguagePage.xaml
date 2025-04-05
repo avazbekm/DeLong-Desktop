@@ -10,8 +10,41 @@
       Title="LanguagePage">
 
     <StackPanel Background="#548CA8" Margin="10">
-        
+        <TextBlock Text="Tilni tanlash" FontSize="24" FontWeight="Bold" 
+                   Foreground="White" Margin="20,20,0,20" 
+                   HorizontalAlignment="Center"/>
 
+        <!-- O'zbek tili RadioButton -->
+        <Border Background="#476072" CornerRadius="10" Margin="20,0,20,10" Padding="10">
+            <RadioButton x:Name="rbUzbek" GroupName="LanguageGroup" 
+                         Content="O'zbek tili" Tag="uz-UZ"
+                         Checked="RadioButton_Checked"
+                         Style="{StaticResource MaterialDesignRadioButton}"
+                         FontSize="18" Foreground="{DynamicResource SecondaryTextColor}" 
+                         HorizontalAlignment="Left">
+                <RadioButton.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <md:PackIcon Kind="Flag" Width="24" Height="24" Margin="0,0,10,0" Foreground="#ADD8E6"/>
+                            <TextBlock Text="{Binding}" VerticalAlignment="Center" FontFamily="JetBrains Mono" Foreground="{DynamicResource SecondaryTextColor}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </RadioButton.ContentTemplate>
+            </RadioButton>
+        </Border>
+
+        <!-- Xitoy tili RadioButton -->
+        <Border Background="#476072" CornerRadius="10" Margin="20,0,20,10" Padding="10">
+            <RadioButton x:Name="rbChinese" GroupName="LanguageGroup" Content="中文" Tag="zh-CN" Checked="RadioButton_Checked" Style="{StaticResource MaterialDesignRadioButton}" FontSize="18" Foreground="White" HorizontalAlignment="Left">
+                <RadioButton.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <md:PackIcon Kind="Flag" Width="24" Height="24" Margin="0,0,10,0" Foreground="#ADD8E6"/>
+                            <TextBlock Text="{Binding}" VerticalAlignment="Center" FontFamily="JetBrains Mono" Foreground="{DynamicResource SecondaryTextColor}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </RadioButton.ContentTemplate>
+            </RadioButton>
+        </Border>
     </StackPanel>
-
 </Page>

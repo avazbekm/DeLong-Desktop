@@ -5,7 +5,9 @@ using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using DeLong_Desktop.Pages.Cashs;
+using DeLong_Desktop.Pages.Products;
 using System.Collections.ObjectModel;
+using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.Windows.DollarKurs;
 using DeLong_Desktop.ApiService.Helpers; // DebtEvents uchun qo‘shildi
 using DeLong_Desktop.ApiService.DTOs.Debts;
@@ -48,7 +50,7 @@ public partial class SalePracticePage : Page
     public ObservableCollection<ProductItem> Items { get; set; } = new();
 
     public event EventHandler SaleCompleted;
-    public static event EventHandler DebtUpdated; // Yangi event qo‘shildi
+    public static event EventHandler DebtUpdated;
 
     public SalePracticePage(IServiceProvider services)
     {
@@ -68,8 +70,11 @@ public partial class SalePracticePage : Page
         _cashTransferService = services.GetRequiredService<ICashTransferService>();
 
         ProductGrid.ItemsSource = Items;
-
         Items.CollectionChanged += (s, e) => UpdateTotalSum();
+
+        // Eventlarga obuna bo'lish
+        CustomersPage.CustomerAdded += OnCustomerAdded; // Mijozlar uchun
+        ProductsPage.ProductAdded += OnProductAdded;   // Mahsulotlar uchun
 
         LoadingProductData();
         LoadingCustomersData();
@@ -81,7 +86,7 @@ public partial class SalePracticePage : Page
         try
         {
             var latestRate = await _kursDollarService.RetrieveByIdAsync();
-            if (latestRate != null && latestRate.TodayDate.Equals(DateTime.Now.ToString("dd.MM.yyyy")))
+            if (latestRate != null)
             {
                 tbDolarKurs.Text = latestRate.SellingDollar.ToString("F2");
             }
@@ -90,7 +95,7 @@ public partial class SalePracticePage : Page
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Dollar kursini yuklashda xatolik: {ex.Message}");
+            MessageBox.Show($"Dollar kursini yuklashda xato: {ex.Message}");
         }
     }
 
@@ -116,11 +121,12 @@ public partial class SalePracticePage : Page
                 ProductName = char.ToUpper(product.Name[0]) + product.Name[1..]
             }).ToList();
 
-            cbxProduct.ItemsSource = comboboxItems;
+            cbxProduct.ItemsSource = null; // Eski ma'lumotlarni tozalash
+            cbxProduct.ItemsSource = comboboxItems; // Yangi ma'lumotlar bilan to'ldirish
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Xatolik: {ex.Message}");
+            MessageBox.Show($"Xato: {ex.Message}");
         }
     }
 
@@ -132,6 +138,7 @@ public partial class SalePracticePage : Page
             var customers = await _customerService.RetrieveAllAsync();
             var users = await _userService.RetrieveAllAsync();
 
+            allCustomers.Clear(); // Eski ma'lumotlarni tozalash
             if (customers != null)
             {
                 allCustomers.AddRange(customers.Select(customer => new ComboboxCustomerItem
@@ -151,14 +158,33 @@ public partial class SalePracticePage : Page
                 }));
             }
 
-            cbxPayment.ItemsSource = allCustomers;
+            cbxPayment.ItemsSource = null; // Eski ma'lumotlarni tozalash
+            cbxPayment.ItemsSource = allCustomers; // Yangi ma'lumotlar bilan to'ldirish
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Xatolik: {ex.Message}");
+            MessageBox.Show($"Xato: {ex.Message}");
         }
     }
 
+    // Mijoz qo'shilganda chaqiriladi
+    private void OnCustomerAdded(object sender, EventArgs e)
+    {
+        LoadingCustomersData(); // Mijozlar ro'yxatini yangilash
+    }
+
+    // Mahsulot qo'shilganda chaqiriladi
+    private void OnProductAdded(object sender, EventArgs e)
+    {
+        LoadingProductData(); // Mahsulotlar ro'yxatini yangilash
+    }
+
+    // Sahifa yopilganda eventlardan chiqish (memory leak oldini olish uchun)
+    private void Page_Unloaded(object sender, RoutedEventArgs e)
+    {
+        CustomersPage.CustomerAdded -= OnCustomerAdded;
+        ProductsPage.ProductAdded -= OnProductAdded;
+    }
     private async void btnProductSell_Click(object sender, RoutedEventArgs e)
     {
         try

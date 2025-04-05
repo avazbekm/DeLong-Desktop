@@ -12,6 +12,7 @@ using DeLong_Desktop.Pages.Customers;
 using DeLong_Desktop.Pages.SaleHistory;
 using DeLong_Desktop.Pages.SalesPractice;
 using DeLong_Desktop.Pages.AdditionalOperations;
+using DeLong_Desktop.Pages.Languages;
 
 namespace DeLong_Desktop;
 
@@ -20,8 +21,8 @@ namespace DeLong_Desktop;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private InputPage _inputPage;
     private CashPage _cashPage;
+    private InputPage _inputPage;
     private ProductsPage _productpage;
     private CustomersPage _customerPage;
     private SaleHistoryPage _saleHistoryPage;
@@ -29,86 +30,78 @@ public partial class MainWindow : Window
     private readonly IServiceProvider _services;
     private AdditionalOperationsPage _additionalOperationsPage;
 
-    // Tanlangan tilni saqlash uchun o'zgaruvchi
     private string _currentLanguage = "en";
 
     public MainWindow(IServiceProvider services)
     {
         InitializeComponent();
-        _services = services;
+        _services = services ?? throw new ArgumentNullException(nameof(services));
 
-        // Dastur boshlanganda tanlangan tilni sozlash
+        _cashPage = new CashPage(_services);
+        _inputPage = new InputPage(_services);
+        _productpage = new ProductsPage(_services);
+        _customerPage = new CustomersPage(_services);
+        _saleHistoryPage = new SaleHistoryPage(_services);
+        _salePracticePage = new SalePracticePage(_services);
+        _additionalOperationsPage = new AdditionalOperationsPage(_services);
+
         SetLanguage(_currentLanguage);
+        UpdateLanguage();
     }
 
-    /// <summary>
-    /// Tilni o'zgartirish va interfeysni moslashtirish
-    /// </summary>
-    private void LanguageAPP(object sender, SelectionChangedEventArgs e)
+    // PreviewMouseLeftButtonDown hodisasi bilan navigatsiya
+    private void TreeViewItem_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        if (languageComboBox.SelectedItem is ComboBoxItem selectedItem)
+        if (sender is TreeViewItem selectedItem && selectedItem.Tag != null)
         {
-            string selectedLanguage = selectedItem.Tag?.ToString();
-
-            if (!string.IsNullOrEmpty(selectedLanguage) && _currentLanguage != selectedLanguage)
+            switch (selectedItem.Tag.ToString())
             {
-                _currentLanguage = selectedLanguage;
-                SetLanguage(_currentLanguage);
-                UpdateLanguage(); // Interfeys matnlarini yangilash
+                case "SalesOperations":
+                    Navigator.Navigate(_salePracticePage);
+                    break;
+
+                case "SalesHistory":
+                    Navigator.Navigate(_saleHistoryPage);
+                    break;
+
+                case "ProductsList":
+                    Navigator.Navigate(_productpage);
+                    break;
+
+                case "Incoming":
+                    Navigator.Navigate(_inputPage);
+                    break;
+
+                case "Suppliers":
+                    Navigator.Navigate(new SuppliersPage(_services));
+                    break;
+
+                case "Customers":
+                    Navigator.Navigate(_customerPage);
+                    break;
+
+                case "Languages": // Yangilangan qator
+                    Navigator.Navigate(new LanguagePage(this)); // MainWindow'ni konstruktor sifatida uzatamiz
+                    break;
+
+                case "Branches":
+                    Navigator.Navigate(new BranchesPage(_services));
+                    break;
             }
+
+            UpdateLanguage();
+            e.Handled = true;
         }
     }
 
-    /// <summary>
-    /// Til sozlamalarini o'rnatadi.
-    /// </summary>
-    /// <param name="language">ISO formatida til kodi (masalan, "en", "uz-UZ")</param>
     private void SetLanguage(string language)
     {
         DeLong_Desktop.Resources.Resource.Culture = new CultureInfo(language);
     }
 
-    /// <summary>
-    /// Interfeys va sahifa matnlarini yangilash.
-    /// </summary>
     private void UpdateLanguage()
     {
-        if (_customerPage == null)
-        {
-            _customerPage = new CustomersPage(_services);
-        }
-
-        if (_salePracticePage == null)
-        {
-            _salePracticePage = new SalePracticePage(_services);
-        }
-
-        if (_productpage == null)
-        {
-            _productpage = new ProductsPage(_services);
-        }
-
-        if (_inputPage == null)
-        {
-            _inputPage = new InputPage(_services);
-        }
-
-        if (_additionalOperationsPage == null)
-        {
-            _additionalOperationsPage = new AdditionalOperationsPage(_services);
-        }
-
-        if (_saleHistoryPage == null)
-        {
-            _saleHistoryPage = new SaleHistoryPage(_services);
-        }
-
-        if (_cashPage == null)
-        {
-            _cashPage = new CashPage(_services);
-        }
-
-        #region  CashPage
+        #region CashPage
         _cashPage.tbkassaniboshqarish.Text = DeLong_Desktop.Resources.Resource.Kassani_boshqarish;
         _cashPage.OpenDayButton.Content = DeLong_Desktop.Resources.Resource.Kunni_ochish;
         _cashPage.tbkassaqoldiqlari.Text = DeLong_Desktop.Resources.Resource.Kassani_boshqarish;
@@ -117,34 +110,6 @@ public partial class MainWindow : Window
         _cashPage.TransferButton.Content = DeLong_Desktop.Resources.Resource.O_tkazish;
         _cashPage.tbzaxiradagipullar.Text = DeLong_Desktop.Resources.Resource.Zaxiradagi_pullar;
         HintAssist.SetHint(_cashPage.NoteTextBox, DeLong_Desktop.Resources.Resource.Izoh);
-
-        //if (_cashPage.CurrencyComboBox.Items.Count >= 3)
-        //{
-        //    ((ComboBoxItem)_cashPage.CurrencyComboBox.Items[0]).Content = DeLong_Desktop.Resources.Resource.Currency_Sum;
-        //    ((ComboBoxItem)_cashPage.CurrencyComboBox.Items[1]).Content = DeLong_Desktop.Resources.Resource.Currency_Plastic_;
-        //    ((ComboBoxItem)_cashPage.CurrencyComboBox.Items[2]).Content = DeLong_Desktop.Resources.Resource.Currency_Dollar_;
-        //}
-
-        //if (_cashPage.FromComboBox.Items.Count >= 3)
-        //{
-        //    ((ComboBoxItem)_cashPage.FromComboBox.Items[0]).Content = DeLong_Desktop.Resources.Resource.Kassadan;
-        //    ((ComboBoxItem)_cashPage.FromComboBox.Items[1]).Content = DeLong_Desktop.Resources.Resource.Zaxiradan;
-        //    ((ComboBoxItem)_cashPage.FromComboBox.Items[2]).Content = DeLong_Desktop.Resources.Resource.Boshqa;
-        //}
-
-        //if (_cashPage.CurrencyComboBox1.Items.Count >= 3)
-        //{
-        //    ((ComboBoxItem)_cashPage.CurrencyComboBox1.Items[0]).Content = DeLong_Desktop.Resources.Resource.Currency_Sum;
-        //    ((ComboBoxItem)_cashPage.CurrencyComboBox1.Items[1]).Content = DeLong_Desktop.Resources.Resource.Currency_Plastic_;
-        //    ((ComboBoxItem)_cashPage.CurrencyComboBox1.Items[2]).Content = DeLong_Desktop.Resources.Resource.Currency_Dollar_;
-        //}
-
-        //if (_cashPage.ToComboBox.Items.Count >= 3)
-        //{
-        //    ((ComboBoxItem)_cashPage.ToComboBox.Items[0]).Content = DeLong_Desktop.Resources.Resource.Kassaga;
-        //    ((ComboBoxItem)_cashPage.ToComboBox.Items[1]).Content = DeLong_Desktop.Resources.Resource.Zaxiraga;
-        //   // ((ComboBoxItem)_cashPage.ToComboBox.Items[2]).Content = DeLong_Desktop.Resources.Resource.Boshqa;
-        //}
         #endregion
 
         #region CustomerPage
@@ -155,7 +120,7 @@ public partial class MainWindow : Window
         _customerPage.userDataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.JSHSHIR;
         _customerPage.userDataGrid.Columns[5].Header = DeLong_Desktop.Resources.Resource.Address;
         _customerPage.userDataGrid.Columns[6].Header = DeLong_Desktop.Resources.Resource.Action;
-        HintAssist.SetHint(_customerPage.txtSearch, DeLong_Desktop.Resources.Resource.Search); // Hint ni yangilash
+        HintAssist.SetHint(_customerPage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
         _customerPage.btnAdd.Content = DeLong_Desktop.Resources.Resource.Add;
         _customerPage.btnExcel.Content = DeLong_Desktop.Resources.Resource.ToExcell;
         #endregion
@@ -184,7 +149,7 @@ public partial class MainWindow : Window
         _salePracticePage.ProductGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.Olchov_birligi;
         _salePracticePage.ProductGrid.Columns[5].Header = DeLong_Desktop.Resources.Resource.Umumiy_summasi_;
         _salePracticePage.ProductGrid.Columns[6].Header = DeLong_Desktop.Resources.Resource.Ochirish;
-        HintAssist.SetHint(_salePracticePage.cbxPayment,DeLong_Desktop.Resources.Resource.Mijozni_tanlang_);
+        HintAssist.SetHint(_salePracticePage.cbxPayment, DeLong_Desktop.Resources.Resource.Mijozni_tanlang_);
         _salePracticePage.lbljami.Content = DeLong_Desktop.Resources.Resource.Jami_summa_;
         _salePracticePage.lblnaqd.Content = DeLong_Desktop.Resources.Resource.Naqd_;
         _salePracticePage.lblplastik.Content = DeLong_Desktop.Resources.Resource.Plastik_;
@@ -209,17 +174,152 @@ public partial class MainWindow : Window
         #endregion
 
         #region MainWindow
-        btnSupplier.Content = DeLong_Desktop.Resources.Resource.Supplier;
-        btnBranch.Content = DeLong_Desktop.Resources.Resource.Branch;
         btnCash.Content = DeLong_Desktop.Resources.Resource.Cash;
-        btnChiqim.Content = DeLong_Desktop.Resources.Resource.Expense;
         btnChiqish.Content = DeLong_Desktop.Resources.Resource.Exit;
         btnHisobot.Content = DeLong_Desktop.Resources.Resource.Report;
-        btnMaxsulot.Content = DeLong_Desktop.Resources.Resource.Product;
-        btnMijoz.Content = DeLong_Desktop.Resources.Resource.Customer;
-        btnKirim.Content = DeLong_Desktop.Resources.Resource.Income;
-        btnSaleHistory.Content = DeLong_Desktop.Resources.Resource.SaleHistory;
         btnAdditionalOperations.Content = DeLong_Desktop.Resources.Resource.AdditionalOperations;
+
+        #region MainWindow Navigation Items
+        if (SidenavMenuSales.Items.Count > 0 && SidenavMenuSales.Items[0] is TreeViewItem salesItem)
+        {
+            if (salesItem.Header is StackPanel salesHeaderPanel && salesHeaderPanel.Children.Count > 1)
+            {
+                if (salesHeaderPanel.Children[1] is TextBlock salesText)
+                {
+                    salesText.Text = DeLong_Desktop.Resources.Resource.Sales;
+                }
+            }
+
+            if (salesItem.Items.Count > 0 && salesItem.Items[0] is TreeViewItem salesOperationsItem)
+            {
+                if (salesOperationsItem.Header is StackPanel operationsPanel && operationsPanel.Children.Count > 1)
+                {
+                    if (operationsPanel.Children[1] is TextBlock operationsText)
+                    {
+                        operationsText.Text = DeLong_Desktop.Resources.Resource.SalesOperations;
+                    }
+                }
+            }
+
+            if (salesItem.Items.Count > 1 && salesItem.Items[1] is TreeViewItem salesHistoryItem)
+            {
+                if (salesHistoryItem.Header is StackPanel historyPanel && historyPanel.Children.Count > 1)
+                {
+                    if (historyPanel.Children[1] is TextBlock historyText)
+                    {
+                        historyText.Text = DeLong_Desktop.Resources.Resource.SalesHistory;
+                    }
+                }
+            }
+        }
+
+        if (SidenavMenuProducts.Items.Count > 0 && SidenavMenuProducts.Items[0] is TreeViewItem productsItem)
+        {
+            if (productsItem.Header is StackPanel productsHeaderPanel && productsHeaderPanel.Children.Count > 1)
+            {
+                if (productsHeaderPanel.Children[1] is TextBlock productsText)
+                {
+                    productsText.Text = DeLong_Desktop.Resources.Resource.Product;
+                }
+            }
+
+            if (productsItem.Items.Count > 0 && productsItem.Items[0] is TreeViewItem productsList)
+            {
+                if (productsList.Header is StackPanel productsListPanel && productsListPanel.Children.Count > 1)
+                {
+                    if (productsListPanel.Children[1] is TextBlock productsListText)
+                    {
+                        productsListText.Text = DeLong_Desktop.Resources.Resource.Products;
+                    }
+                }
+            }
+
+            if (productsItem.Items.Count > 1 && productsItem.Items[1] is TreeViewItem incomingItem)
+            {
+                if (incomingItem.Header is StackPanel incomingPanel && incomingPanel.Children.Count > 1)
+                {
+                    if (incomingPanel.Children[1] is TextBlock incomingText)
+                    {
+                        incomingText.Text = DeLong_Desktop.Resources.Resource.Incoming;
+                    }
+                }
+            }
+        }
+
+        // Sozlash bo'limi uchun kod
+        if (settingsTreeItem != null)
+        {
+            // Sozlash header qismi
+            if (settingsTreeItem.Header is StackPanel settingsHeaderPanel && settingsHeaderPanel.Children.Count > 1)
+            {
+                if (settingsHeaderPanel.Children[1] is TextBlock settingsText)
+                {
+                    settingsText.Text = DeLong_Desktop.Resources.Resource.Settings;
+                }
+            }
+
+            // Tillar qismi
+            if (settingsTreeItem.Items.Count > 0 && settingsTreeItem.Items[0] is TreeViewItem languagesItem)
+            {
+                if (languagesItem.Header is StackPanel languagesPanel && languagesPanel.Children.Count > 1)
+                {
+                    if (languagesPanel.Children[1] is TextBlock languagesText)
+                    {
+                        languagesText.Text = DeLong_Desktop.Resources.Resource.Languages;
+                    }
+                }
+            }
+
+            // Filiallar qismi
+            if (settingsTreeItem.Items.Count > 1 && settingsTreeItem.Items[1] is TreeViewItem branchesItem)
+            {
+                if (branchesItem.Header is StackPanel branchesPanel && branchesPanel.Children.Count > 1)
+                {
+                    if (branchesPanel.Children[1] is TextBlock branchesText)
+                    {
+                        branchesText.Text = DeLong_Desktop.Resources.Resource.Branches;
+                    }
+                }
+            }
+        }
+
+        // Foydalanuvchilar bo'limi uchun kod
+        if (SidenavMenuUsers.Items.Count > 0 && SidenavMenuUsers.Items[0] is TreeViewItem usersItem)
+        {
+            // Foydalanuvchi header qismi
+            if (usersItem.Header is StackPanel usersHeaderPanel && usersHeaderPanel.Children.Count > 1)
+            {
+                if (usersHeaderPanel.Children[1] is TextBlock usersText)
+                {
+                    usersText.Text = DeLong_Desktop.Resources.Resource.Users;
+                }
+            }
+
+            // Taminotchilar qismi
+            if (usersItem.Items.Count > 0 && usersItem.Items[0] is TreeViewItem suppliersItem)
+            {
+                if (suppliersItem.Header is StackPanel suppliersPanel && suppliersPanel.Children.Count > 1)
+                {
+                    if (suppliersPanel.Children[1] is TextBlock suppliersText)
+                    {
+                        suppliersText.Text = DeLong_Desktop.Resources.Resource.Suppliers;
+                    }
+                }
+            }
+
+            // Mijozlar qismi
+            if (usersItem.Items.Count > 1 && usersItem.Items[1] is TreeViewItem customersItem)
+            {
+                if (customersItem.Header is StackPanel customersPanel && customersPanel.Children.Count > 1)
+                {
+                    if (customersPanel.Children[1] is TextBlock customersText)
+                    {
+                        customersText.Text = DeLong_Desktop.Resources.Resource.Customers;
+                    }
+                }
+            }
+        }
+        #endregion
         #endregion
 
         #region AdditionalOperationPage
@@ -259,7 +359,7 @@ public partial class MainWindow : Window
         _additionalOperationsPage.btnSaveTransfer.Content = DeLong_Desktop.Resources.Resource.Confirm;
         #endregion
 
-        #region  SaleHistoryPage
+        #region SaleHistoryPage
         _saleHistoryPage.tbsotuvlartarixi.Text = DeLong_Desktop.Resources.Resource.Sotuvlar_tarixi;
         _saleHistoryPage.saleDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Chek_Id;
         _saleHistoryPage.saleDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.ClientFullname;
@@ -270,160 +370,27 @@ public partial class MainWindow : Window
         #endregion
     }
 
-    /// <summary>
-    /// Mijozlar sahifasiga o'tish.
-    /// </summary>
-    private void bntMijoz_Click(object sender, RoutedEventArgs e)
-    {
-        if (_customerPage == null)
-        {
-            _customerPage = new CustomersPage(_services);
-        }
-
-        Navigator.Navigate(_customerPage);
-        UpdateLanguage(); // Matnlarni sahifaga moslashtirish
-
-        if (_customerPage.txtSearch != null)
-        {
-            HintAssist.SetHint(_customerPage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
-        }
-    }
-
-    /// <summary>
-    /// Dasturni yopish tugmasi.
-    /// </summary>
     private void btnChiqish_Click(object sender, RoutedEventArgs e)
     {
         Close();
     }
 
-    /// <summary>
-    /// Mahsulotlar sahifasiga o'tish.
-    /// </summary>
     private void btnMaxsulot_Click(object sender, RoutedEventArgs e)
     {
-        if (_productpage == null)
-        {
-            _productpage = new ProductsPage(_services);
-        }
         Navigator.Navigate(_productpage);
         UpdateLanguage();
-        if (_productpage.txtSearch != null)
-        {
-            HintAssist.SetHint(_productpage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
-            HintAssist.SetHint(_productpage.cmbCategory, DeLong_Desktop.Resources.Resource.Category);
-        }
-    }
-
-    /// <summary>
-    /// Kirim sahifasiga o'tish.
-    /// </summary>
-    private void btnKirim_Click(object sender, RoutedEventArgs e)
-    {
-        if (_inputPage == null)
-        {
-            _inputPage = new InputPage(_services);
-        }
-        Navigator.Navigate(_inputPage);
-        UpdateLanguage();
-        if (_inputPage.txtProductSearch != null)
-        {
-            HintAssist.SetHint(_inputPage.txtProductSearch, DeLong_Desktop.Resources.Resource.Mahsulotni_qidirish_);
-        }
-
-    }
-
-    private void languageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        // ComboBoxda tanlangan elementni olish
-        if (languageComboBox.SelectedItem is ComboBoxItem selectedItem)
-        {
-            // Tanlangan til kodini ComboBox elementining Tag qiymatidan olish
-            string selectedLanguage = selectedItem.Tag?.ToString();
-
-            // Agar tanlangan til avvalgi tildan farqli bo'lsa
-            if (!string.IsNullOrEmpty(selectedLanguage) && _currentLanguage != selectedLanguage)
-            {
-                // Hozirgi tanlangan tilni yangilash
-                _currentLanguage = selectedLanguage;
-
-                // Til sozlamalarini o'rnatish
-                SetLanguage(_currentLanguage);
-
-                // Interfeys matnlarini yangilash
-                UpdateLanguage();
-            }
-        }
-    }
-
-    private void btnChiqim_Click(object sender, RoutedEventArgs e)
-    {
-        if (_salePracticePage == null)
-        {
-            _salePracticePage = new SalePracticePage(_services);
-        }
-
-        Navigator.Navigate(_salePracticePage);
-        UpdateLanguage(); // Matnlarni sahifaga moslashtirish
-    }
-
-    private void btnSaleHistory_Click(object sender, RoutedEventArgs e)
-    {
-        if (_saleHistoryPage == null)
-        {
-            _saleHistoryPage = new SaleHistoryPage(_services);
-        }
-        Navigator.Navigate(_saleHistoryPage);
-        UpdateLanguage();
-        if (_saleHistoryPage.txtSearch != null)
-        {
-            HintAssist.SetHint(_saleHistoryPage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
-        }
     }
 
     private void OnAdditionalOperationsClick(object sender, RoutedEventArgs e)
     {
-        if (_additionalOperationsPage == null)
-        {
-            _additionalOperationsPage = new AdditionalOperationsPage(_services);
-        }
         Navigator.Navigate(_additionalOperationsPage);
         UpdateLanguage();
-        if (_additionalOperationsPage.tbSearchDebt != null)
-        {
-            HintAssist.SetHint(_additionalOperationsPage.tbSearchDebt, DeLong_Desktop.Resources.Resource.Search);
-            HintAssist.SetHint(_additionalOperationsPage.tbSaleId, DeLong_Desktop.Resources.Resource.Chek_Id);
-            HintAssist.SetHint(_additionalOperationsPage.tbReturnedFrom, DeLong_Desktop.Resources.Resource.Kimdan_qaytmoqda);
-            HintAssist.SetHint(_additionalOperationsPage.cbSalePriceProducts, DeLong_Desktop.Resources.Resource.Mahsulotni_tanlang_);
-            HintAssist.SetHint(_additionalOperationsPage.tbDollarPayment, DeLong_Desktop.Resources.Resource.Dollar);
-            HintAssist.SetHint(_additionalOperationsPage.tbCardPayment, DeLong_Desktop.Resources.Resource.Plastik_);
-            HintAssist.SetHint(_additionalOperationsPage.tbCashPayment, DeLong_Desktop.Resources.Resource.Naqd_);
-            HintAssist.SetHint(_additionalOperationsPage.tbReturnQuantity, DeLong_Desktop.Resources.Resource.Miqdori_);
-            HintAssist.SetHint(_additionalOperationsPage.tbUnitOfMeasure, DeLong_Desktop.Resources.Resource.Olchov_birligi);
-            HintAssist.SetHint(_additionalOperationsPage.tbReturnAmount, DeLong_Desktop.Resources.Resource.Umumiy_summasi_);
-            HintAssist.SetHint(_additionalOperationsPage.tbComment, DeLong_Desktop.Resources.Resource.Izoh);
-            HintAssist.SetHint(_additionalOperationsPage.cbProductList, DeLong_Desktop.Resources.Resource.Mahsulot_nomi_);
-            HintAssist.SetHint(_additionalOperationsPage.tbQuantity, DeLong_Desktop.Resources.Resource.Miqdori_);
-            HintAssist.SetHint(_additionalOperationsPage.cbToWarehouse, DeLong_Desktop.Resources.Resource.Qaysi_omborga);
-            HintAssist.SetHint(_additionalOperationsPage.cbTransactionType, DeLong_Desktop.Resources.Resource.TransactionType);
-            HintAssist.SetHint(_additionalOperationsPage.tbCommentProvodka, DeLong_Desktop.Resources.Resource.Izoh);
-            _additionalOperationsPage.btnAddProduct.Content = DeLong_Desktop.Resources.Resource.Add;
-        }
     }
 
     private void btnCash_Click(object sender, RoutedEventArgs e)
     {
-
-        if (_cashPage == null)
-        {
-            _cashPage = new CashPage(_services);
-        }
         Navigator.Navigate(_cashPage);
         UpdateLanguage();
-        if (_cashPage.NoteTextBox != null)
-        {
-            HintAssist.SetHint(_cashPage.NoteTextBox, DeLong_Desktop.Resources.Resource.Izoh);
-        }
     }
 
     private void btnReport_Click(object sender, RoutedEventArgs e)
@@ -432,15 +399,28 @@ public partial class MainWindow : Window
         Navigator.Navigate(reportPage);
     }
 
-    private void btnSupplier_Click(object sender, RoutedEventArgs e)
+
+    private void tbSaleHistory_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        var suppliersPage = new SuppliersPage(_services);
-        Navigator.Navigate(suppliersPage);
+        Navigator.Navigate(_saleHistoryPage);
+        UpdateLanguage();
     }
 
-    private void btnBranch_Click(object sender, RoutedEventArgs e)
+    private void tbSaleOperation_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        var branchesPage= new BranchesPage(_services);
-        Navigator.Navigate(branchesPage);
+        Navigator.Navigate(_salePracticePage);
+        UpdateLanguage();
+    }
+
+    private void tbProducts_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        Navigator.Navigate(_productpage);
+        UpdateLanguage();
+    }
+
+    private void tbIncoming_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+        Navigator.Navigate(_inputPage);
+        UpdateLanguage();
     }
 }

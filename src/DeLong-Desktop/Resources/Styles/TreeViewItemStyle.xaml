@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="TreeViewItemHeaderStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="FontFamily" Value="JetBrains Mono"/>
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5,0"/>
+    </Style>
+</ResourceDictionary>
