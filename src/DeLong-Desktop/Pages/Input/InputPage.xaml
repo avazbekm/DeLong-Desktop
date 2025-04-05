@@ -32,22 +32,30 @@
         </StackPanel>
 
         <!-- Kategoriya ComboBox va Mahsulotlar DataGrid -->
-        <StackPanel Grid.Column="0" Grid.Row="1" Margin="0 10 0 10">
+        <Grid Grid.Column="0" Grid.Row="1" Margin="0 10 0 10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- ComboBox uchun -->
+                <RowDefinition Height="*"/>
+                <!-- DataGrid uchun -->
+            </Grid.RowDefinitions>
+
             <ComboBox x:Name="cbxCategory"
-          Background="{DynamicResource SecondaryBackground}"
-          SelectedValuePath="Id"
-          MinWidth="235"
-          MaxWidth="300"
-          Padding="4"
-          Foreground="{DynamicResource PrimaryTextColor}"
-          BorderThickness="1"
-          BorderBrush="{DynamicResource SecondaryBorderColor}"
-          FontSize="22"
-          Margin="3 2"
-          Height="40"
-          IsEditable="False"
-          md:HintAssist.Hint="-- Kategoriya tanlang --"
-          SelectionChanged="cbxCategory_SelectionChanged">
+                      Grid.Row="0"
+                      Background="{DynamicResource SecondaryBackground}"
+                      SelectedValuePath="Id"
+                      MinWidth="235"
+                      MaxWidth="300"
+                      Padding="4"
+                      Foreground="{DynamicResource PrimaryTextColor}"
+                      BorderThickness="1"
+                      BorderBrush="{DynamicResource SecondaryBorderColor}"
+                      FontSize="22"
+                      Margin="3 2"
+                      Height="40"
+                      IsEditable="False"
+                      md:HintAssist.Hint="-- Kategoriya tanlang --"
+                      SelectionChanged="cbxCategory_SelectionChanged">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Category}" Foreground="#FFF"/>
@@ -71,7 +79,20 @@
                     </Style>
                 </ComboBox.ItemContainerStyle>
             </ComboBox>
-            <DataGrid x:Name="productDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="Black" RowHeight="40" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" EnableRowVirtualization="True" VirtualizingStackPanel.IsVirtualizing="True">
+
+            <DataGrid x:Name="productDataGrid" 
+                      Grid.Row="1"
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False" 
+                      CanUserAddRows="False" 
+                      Background="{DynamicResource SecondaryBackground}" 
+                      Foreground="Black" 
+                      RowHeight="40" 
+                      VerticalScrollBarVisibility="Auto" 
+                      HorizontalScrollBarVisibility="Auto" 
+                      EnableRowVirtualization="True" 
+                      VirtualizingStackPanel.IsVirtualizing="True"
+                      Margin="5">
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="FontSize" Value="20" />
@@ -100,7 +121,7 @@
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
-        </StackPanel>
+        </Grid>
 
         <!-- Narxlar va Qabul qilish DataGrid -->
         <Grid x:Name="spPrice" Grid.Row="1" Grid.Column="1" Margin="0 10">
@@ -108,9 +129,8 @@
                 <RowDefinition Height="220"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <ScrollViewer Grid.Row="0" Margin="5" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer Grid.Row="0" Margin="5" HorizontalScrollBarVisibility="Auto">
                 <StackPanel x:Name="wrpPrice" Orientation="Horizontal"/>
-                <!-- Vertikal narxlar -->
             </ScrollViewer>
             <StackPanel x:Name="spReciveProduct" Grid.Row="1" Margin="5">
                 <DataGrid x:Name="receiveDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Background="#548CA8" Foreground="Snow" RowHeight="40">
