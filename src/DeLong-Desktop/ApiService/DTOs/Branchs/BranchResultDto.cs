@@ -7,4 +7,5 @@ public class BranchResultDto
     public string Location { get; set; } = string.Empty;
     public DateTimeOffset CreatedAt { get; set; }
     public long CreatedBy { get; set; }
+    public IEnumerable<BranchChangeHistoryDto>? ChangeHistory { get; set; } // O‘zgarishlar tarixi
 }

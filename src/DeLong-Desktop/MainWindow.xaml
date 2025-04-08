@@ -21,35 +21,6 @@
         <Grid Grid.Column="0" Background="#334257">
             <StackPanel Margin="20">
 
-                <TreeView x:Name="SidenavMenuSales" FontSize="17" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource SecondaryTextColor}">
-                    <!-- Sotuv bo'limi -->
-                    <TreeViewItem x:Name="salesTreeItem" IsExpanded="False">
-                        <TreeViewItem.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <md:PackIcon Kind="Cart" Width="20" Height="20" Margin="5,0"/>
-                                <TextBlock Text="{DynamicResource Sales}" VerticalAlignment="Center" Margin="5,0"/>
-                            </StackPanel>
-                        </TreeViewItem.Header>
-                        <!-- Sub-item'lar -->
-                        <TreeViewItem x:Name="salesOperationsTreeItem" Tag="SalesOperations" PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
-                            <TreeViewItem.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <md:PackIcon Kind="CartPlus" Width="20" Height="20" Margin="5,0"/>
-                                    <TextBlock Text="{DynamicResource SalesOperations}" VerticalAlignment="Center" Margin="5,0"/>
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
-                        <TreeViewItem x:Name="salesHistoryTreeItem" Tag="SalesHistory" PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
-                            <TreeViewItem.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <md:PackIcon Kind="History" Width="20" Height="20" Margin="5,0"/>
-                                    <TextBlock Text="{DynamicResource SalesHistory}" VerticalAlignment="Center" Margin="5,0"/>
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
-                    </TreeViewItem>
-                </TreeView>
-
                 <TreeView x:Name="SidenavMenuProducts" FontSize="17" Background="Transparent" 
                           BorderThickness="0" Foreground="{DynamicResource SecondaryTextColor}">
                     <!-- Mahsulot bo'limi -->
@@ -76,6 +47,35 @@
                                 <StackPanel Orientation="Horizontal">
                                     <md:PackIcon Kind="PackageVariantClosed" Width="20" Height="20" Margin="5,0"/>
                                     <TextBlock Text="{DynamicResource Incoming}" VerticalAlignment="Center" Margin="5,0"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </TreeViewItem>
+                </TreeView>
+
+                <TreeView x:Name="SidenavMenuSales" FontSize="17" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource SecondaryTextColor}">
+                    <!-- Sotuv bo'limi -->
+                    <TreeViewItem x:Name="salesTreeItem" IsExpanded="False">
+                        <TreeViewItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <md:PackIcon Kind="Cart" Width="20" Height="20" Margin="5,0"/>
+                                <TextBlock Text="{DynamicResource Sales}" VerticalAlignment="Center" Margin="5,0"/>
+                            </StackPanel>
+                        </TreeViewItem.Header>
+                        <!-- Sub-item'lar -->
+                        <TreeViewItem x:Name="salesOperationsTreeItem" Tag="SalesOperations" PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <md:PackIcon Kind="CartPlus" Width="20" Height="20" Margin="5,0"/>
+                                    <TextBlock Text="{DynamicResource SalesOperations}" VerticalAlignment="Center" Margin="5,0"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem x:Name="salesHistoryTreeItem" Tag="SalesHistory" PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <md:PackIcon Kind="History" Width="20" Height="20" Margin="5,0"/>
+                                    <TextBlock Text="{DynamicResource SalesHistory}" VerticalAlignment="Center" Margin="5,0"/>
                                 </StackPanel>
                             </TreeViewItem.Header>
                         </TreeViewItem>

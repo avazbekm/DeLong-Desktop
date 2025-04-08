@@ -13,6 +13,7 @@ public partial class AddBranchWindow : Window
     {
         InitializeComponent();
         _branchService = services.GetRequiredService<IBranchService>();
+        txtBranchName.Focus();
     }
 
     private async void Save_Click(object sender, RoutedEventArgs e)

@@ -112,4 +112,25 @@ public class BranchService : IBranchService
             return Enumerable.Empty<BranchResultDto>();
         }
     }
+
+    public async ValueTask<IEnumerable<BranchChangeHistoryDto>> GetChangeHistoryAsync(long branchId)
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($"/api/Branch/history/{branchId}");
+
+            if (!response.IsSuccessStatusCode)
+                return Enumerable.Empty<BranchChangeHistoryDto>();
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<Response<List<BranchChangeHistoryDto>>>(jsonResponse);
+            return result?.Data ?? Enumerable.Empty<BranchChangeHistoryDto>();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Xatolik: {ex.Message}");
+            return Enumerable.Empty<BranchChangeHistoryDto>();
+        }
+    }
+
 }

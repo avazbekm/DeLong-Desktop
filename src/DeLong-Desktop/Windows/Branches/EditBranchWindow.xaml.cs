@@ -17,6 +17,7 @@ public partial class EditBranchWindow : Window
 
         txtBranchName.Text = branch.BranchName;
         txtLocation.Text = branch.Location;
+        txtBranchName.Focus();
     }
 
     private async void Save_Click(object sender, RoutedEventArgs e)

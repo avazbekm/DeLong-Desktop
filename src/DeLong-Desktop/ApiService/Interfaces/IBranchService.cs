@@ -37,4 +37,5 @@ public interface IBranchService
     /// <param name="id">O‘chiriladigan filial ID’si</param>
     /// <returns>O‘chirish muvaffaqiyatli bo‘lsa true</returns>
     ValueTask<bool> RemoveAsync(long id);
+    ValueTask<IEnumerable<BranchChangeHistoryDto>> GetChangeHistoryAsync(long branchId);
 }
