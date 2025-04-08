@@ -167,10 +167,11 @@ public partial class MainWindow : Window
         _productpage.btnAdd.Content = DeLong_Desktop.Resources.Resource.Add;
         _productpage.btnExcel.Content = DeLong_Desktop.Resources.Resource.ToExcell;
         _productpage.dataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Mahsulot_nomi_;
-        _productpage.dataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.Ombordagi_miqdor_;
-        _productpage.dataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.Kategoriya;
-        _productpage.dataGrid.Columns[3].Header = DeLong_Desktop.Resources.Resource.Faolligi_;
-        _productpage.dataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.Amallar_;
+        _productpage.dataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.ProductSign;
+        _productpage.dataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.Ombordagi_miqdor_;
+        _productpage.dataGrid.Columns[3].Header = DeLong_Desktop.Resources.Resource.Kategoriya;
+        _productpage.dataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.Faolligi_;
+        _productpage.dataGrid.Columns[5].Header = DeLong_Desktop.Resources.Resource.Amallar_;
         #endregion
 
         #region MainWindow

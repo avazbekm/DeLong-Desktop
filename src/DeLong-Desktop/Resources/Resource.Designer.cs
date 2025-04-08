@@ -646,7 +646,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ombordagi miqdor .
+        ///   Looks up a localized string similar to Mahsulot qoldiq.
         /// </summary>
         internal static string Ombordagi_miqdor_ {
             get {
@@ -741,6 +741,15 @@ namespace DeLong_Desktop.Resources {
         internal static string Products {
             get {
                 return ResourceManager.GetString("Products", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mahsulot belgisi.
+        /// </summary>
+        internal static string ProductSign {
+            get {
+                return ResourceManager.GetString("ProductSign", resourceCulture);
             }
         }
         

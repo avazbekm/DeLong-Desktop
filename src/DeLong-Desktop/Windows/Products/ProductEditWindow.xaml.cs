@@ -158,6 +158,7 @@ public partial class ProductEditWindow : Window
             ProductUpdateDto productUpdateDto = new ProductUpdateDto();
             productUpdateDto.Id = ProductInfo.ProductId;
             productUpdateDto.Name = txtbName.Text.ToLower();
+            productUpdateDto.ProductSign = txtbProductSign.Text.ToLower();
             productUpdateDto.MinStockLevel = string.IsNullOrWhiteSpace(txtbStock.Text)
              ? 0
              : decimal.Parse(txtbStock.Text);

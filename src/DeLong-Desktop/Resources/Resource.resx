@@ -247,7 +247,7 @@
     <value>Ombor nomi </value>
   </data>
   <data name="Ombordagi miqdor " xml:space="preserve">
-    <value>Ombordagi miqdor </value>
+    <value>Mahsulot qoldiq</value>
   </data>
   <data name="Pay" xml:space="preserve">
     <value>To'lash</value>
@@ -479,5 +479,8 @@
   </data>
   <data name="Branches" xml:space="preserve">
     <value>Filial</value>
+  </data>
+  <data name="ProductSign" xml:space="preserve">
+    <value>Mahsulot belgisi</value>
   </data>
 </root>

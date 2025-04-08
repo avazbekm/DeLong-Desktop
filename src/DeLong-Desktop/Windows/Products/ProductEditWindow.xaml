@@ -11,7 +11,7 @@
     <Grid  Background="{DynamicResource SelectedBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="210"/>
+            <RowDefinition Height="270"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!--radio buttonlar-->
@@ -31,6 +31,7 @@
             <StackPanel x:Name="spProduct" Visibility="Hidden"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
                 <Button x:Name="btnCategory" Content="Kategoriyani tanlang" BorderThickness="0" FontSize="17" Height="30" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Click="btnCategory_Click"/>
                 <TextBox x:Name="txtbName" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Mahsulot nomi" Background="#476072" Foreground="#EEEEEE"/>
+                <TextBox x:Name="txtbProductSign" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Mahsulot belgisi" Background="#476072" Foreground="#EEEEEE"/>
                 <TextBox x:Name="txtbStock" MaxLength="50" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Eng kam zahira qiymati" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}"/>
                 <Button x:Name="btnProductEdit" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0 20 0 0" Click="btnProductEdit_Click"/>
             </StackPanel>

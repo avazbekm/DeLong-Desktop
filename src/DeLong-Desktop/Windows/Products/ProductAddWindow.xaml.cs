@@ -289,7 +289,7 @@ public partial class ProductAddWindow : Window
             }
 
             productCreationDto.Name = txtbName.Text.Trim();
-            productCreationDto.Description = txtbDescription.Text.Trim();
+            productCreationDto.ProductSign = txtbDescription.Text.Trim();
             if (txtbStock.Text.Length > 0)
                 productCreationDto.MinStockLevel = decimal.Parse(txtbStock.Text);
             productCreationDto.IsActive = true;

@@ -480,4 +480,7 @@
   <data name="Branches" xml:space="preserve">
     <value>分支</value>
   </data>
+  <data name="ProductSign" xml:space="preserve">
+    <value>產品標誌</value>
+  </data>
 </root>
