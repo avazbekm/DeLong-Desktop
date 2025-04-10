@@ -38,19 +38,63 @@
             <Button x:Name="btnExcel" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Content="Excelga o'tkazish" Height="30" VerticalAlignment="Center" Background="#476072" Foreground="#EEEEEE" Click="btnExcel_Click"/>
         </StackPanel>
 
-        <DataGrid x:Name="dataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" FontSize="20">
+        <DataGrid x:Name="dataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" 
+          Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" FontSize="20">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Style.Triggers>
+                        <!-- Tanlangan qator uchun doimiy rang -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#476072"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <!-- Matn ko'rinishi uchun -->
+                        </Trigger>
+                        <!-- Fokus yo'qolgandagi oqarishni oldini olish -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#476072"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <!-- DataGridCell uchun ham qo'shimcha Style -->
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource SelectedBackground}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource SelectedBorderColor}"/>
+                            <!-- Chegarani ham moslashtirish -->
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Product Name" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Product Name" Binding="{Binding Name}" Width="*" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="18,0,0,0"/>
+                            <!-- Chapdan 5 piksel margin -->
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridTextColumn Header="ProductSign" Binding="{Binding MahsulotBelgisi}" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="StockLevel" Binding="{Binding Stock}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="StockLevel" Binding="{Binding Stock}" Width="*" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Margin" Value="40 0 0 0"/>
+
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridTextColumn Header="Kategoriya" Binding="{Binding Category}" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="IsActive" Binding="{Binding IsActive}" Width="0"/>
+                <DataGridTextColumn Header="IsActive" Visibility="Hidden" Binding="{Binding IsActive}" Width="0"/>
                 <DataGridTemplateColumn Header="Actions" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button x:Name="Edit_Button" Content="✍🏻" ToolTip="Edit" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="Black" Padding="0" Width="28" Height="28" Background="LightBlue" Click="Edit_Button_Click"/>
-                                <Button x:Name="Delete_Button" Content="🗑️" ToolTip="Delete" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="Black" Padding="0" Width="28" Height="28" Background="LightBlue" Margin="10 0 0 0"/>
+                            <StackPanel Margin="20 0 0 0" Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Button x:Name="Edit_Button" Content="✍🏻" ToolTip="O'zgartrish" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="Black" Padding="0" Width="28" Height="28" Background="LightBlue" Click="Edit_Button_Click"/>
+                                <Button x:Name="Delete_Button" Content="🗑️" ToolTip="O'chirish" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="Black" Padding="0" Width="28" Height="28" Background="LightBlue" Margin="10 0 0 0"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

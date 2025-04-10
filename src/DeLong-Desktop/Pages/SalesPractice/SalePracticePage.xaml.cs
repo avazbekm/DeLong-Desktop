@@ -102,9 +102,12 @@ public partial class SalePracticePage : Page
     private void UpdateTotalSum()
     {
         decimal totalSum = Items.Sum(item => item.TotalPrice);
-        tbTotalPrice.Text = totalSum.ToString("N2");
-    }
+        decimal totalQuantity = Items.Sum(item => item.Quantity);
 
+        tbTotalPrice.Text = totalSum.ToString("N2");
+        tbGridTotalSum.Text = totalSum.ToString("N2"); // DataGrid jami summasi
+        tbTotalQuantity.Text = totalQuantity.ToString("N2"); // DataGrid jami miqdori
+    }
     private async void LoadingProductData()
     {
         try
@@ -220,10 +223,9 @@ public partial class SalePracticePage : Page
                         BalanceAmount = price.Quantity
                     };
 
-                    // Quantity 0 yoki null bo'lsa qo'shmaslik
                     if (newItem.Quantity <= 0)
                     {
-                        continue; // Bu qatorni o'tkazib yuboramiz
+                        continue;
                     }
 
                     Items.Add(newItem);
@@ -244,10 +246,9 @@ public partial class SalePracticePage : Page
                         BalanceAmount = price.Quantity
                     };
 
-                    // Quantity 0 yoki null bo'lsa qo'shmaslik
                     if (newItem.Quantity <= 0)
                     {
-                        continue; // Bu qatorni o'tkazib yuboramiz
+                        continue;
                     }
 
                     Items.Add(newItem);
@@ -258,18 +259,20 @@ public partial class SalePracticePage : Page
                 }
             }
 
-            // Quantity 0 yoki null bo'lgan qatorlarni o'chirish
             var itemsToRemove = Items.Where(item => item.Quantity <= 0).ToList();
             foreach (var item in itemsToRemove)
             {
                 Items.Remove(item);
             }
+
+            UpdateTotalSum(); // Yangilash
         }
         catch (Exception ex)
         {
             MessageBox.Show($"Mahsulot qo‘shishda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+
     private void btnRemoveProduct_Click(object sender, RoutedEventArgs e)
     {
         var button = sender as Button;
@@ -278,9 +281,9 @@ public partial class SalePracticePage : Page
         if (item != null && ProductGrid.ItemsSource is ObservableCollection<ProductItem> items)
         {
             items.Remove(item);
+            UpdateTotalSum(); // Yangilash
         }
     }
-
     private void UpdateTotalSumm()
     {
         try
@@ -449,13 +452,12 @@ public partial class SalePracticePage : Page
                         else
                             productItem.Quantity = newQuantity;
 
-                        UpdateTotalSum();
+                        UpdateTotalSum(); // Yangilash
                     }
                 }
             }
         }
     }
-
     private T FindParent<T>(DependencyObject child) where T : DependencyObject
     {
         var parent = VisualTreeHelper.GetParent(child);

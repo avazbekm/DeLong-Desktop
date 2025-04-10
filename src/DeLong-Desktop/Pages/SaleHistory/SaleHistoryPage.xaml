@@ -10,9 +10,27 @@
       Title="Sotuvlar Tarixi"
       Background="{DynamicResource PrimaryBackground}">
 
+    <Page.Resources>
+        <!-- Custom DatePicker Style -->
+        <Style x:Key="CustomDatePickerStyle" TargetType="DatePicker" BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
+            <Setter Property="Foreground" Value="Snow"/>
+            <Setter Property="md:HintAssist.Foreground" Value="Snow"/>
+            <Setter Property="CalendarStyle">
+                <Setter.Value>
+                    <Style TargetType="Calendar">
+                        <Setter Property="Background" Value="Snow"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <!-- Kalendar raqamlari qora -->
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="55"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -26,23 +44,89 @@
 
                 <!-- Search -->
                 <Border Grid.Column="0" CornerRadius="5" Margin="15,2" Background="{DynamicResource OtherBackground}">
-                    <TextBox x:Name="txtSearch" md:HintAssist.Hint="Qidiruv" Padding="5 0"
-                             BorderThickness="0" Background="Transparent" TextChanged="SearchTextChanged"/>
+                    <TextBox x:Name="txtSearch" FontSize="20" md:HintAssist.Hint="Qidiruv" Padding="5 0" BorderThickness="0" Background="Transparent" TextChanged="SearchTextChanged"/>
                 </Border>
 
                 <!-- Sarlavha -->
-                <TextBlock x:Name="tbsotuvlartarixi" Grid.Column="1" Text="Sotuvlar Tarixi" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource SecondaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock x:Name="tbsotuvlartarixi" Grid.Column="1" Text="Sotuvlar Tarixi" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource SecondaryTextColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
         </Border>
 
+        <!-- Sanalar va Filtr tugmasi -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,5,10,5" HorizontalAlignment="Left">
+            <DatePicker x:Name="startDatePicker" Width="150" Margin="0,0,10,0" FontSize="16" md:HintAssist.Hint="Boshlang'ich sana" VerticalAlignment="Center" Style="{StaticResource CustomDatePickerStyle}"/>
+            <DatePicker x:Name="endDatePicker" Width="150" Margin="0,0,10,0" FontSize="16" md:HintAssist.Hint="Tugash sana" VerticalAlignment="Center" Style="{StaticResource CustomDatePickerStyle}"/>
+            <Button x:Name="filterButton" Padding="0" Content="{md:PackIcon Kind=Filter}" Width="40" Height="40" ToolTip="Filtrlash" BorderBrush="{DynamicResource SecondaryTextColor}" Click="FilterButton_Click" Style="{DynamicResource MaterialDesignPaperSecondaryLightButton}"/>
+        </StackPanel>
+
         <!-- DataGrid -->
-        <DataGrid x:Name="saleDataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" 
-                  Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}">
+        <DataGrid x:Name="saleDataGrid" Grid.Row="2" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" FontSize="20">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#476072"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#476072"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="True"/>
+                                <Condition Property="IsKeyboardFocusWithin" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="#476072"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </MultiTrigger>
+                    </Style.Triggers>
+                </Style>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="Background" Value="{DynamicResource SecondaryBackground}"/>
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Sotuv ID" IsReadOnly="True" Binding="{Binding Id}" Width="100"/>
-                <DataGridTextColumn Header="Mijoz" IsReadOnly="True" Binding="{Binding CustomerName}" Width="*"/>
-                <DataGridTextColumn Header="Umumiy Summa" IsReadOnly="True" Binding="{Binding TotalAmount, StringFormat=N2}" Width="150"/>
-                <DataGridTextColumn Header="Sana" IsReadOnly="True" Binding="{Binding CreatedAt, StringFormat=dd.MM.yyyy HH:mm}" Width="150"/>
+                <DataGridTextColumn Header="Sotuv ID" IsReadOnly="True" Binding="{Binding Id}" Width="100">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Margin" Value="30 0 0 0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Mijoz" IsReadOnly="True" Binding="{Binding CustomerName}" Width="2*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Margin" Value="100 0 0 0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Umumiy Summa" IsReadOnly="True" Binding="{Binding TotalAmount, StringFormat=N2}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Margin" Value="55 0 0 0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Sana" IsReadOnly="True" Binding="{Binding CreatedAt, StringFormat=dd.MM.yyyy HH:mm}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridTemplateColumn Header="Pechat" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

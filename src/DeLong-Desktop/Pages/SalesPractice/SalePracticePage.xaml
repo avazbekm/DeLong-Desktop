@@ -41,6 +41,10 @@
                 <Border Margin="5 1 5 5" Background="{StaticResource AccentBackground}" CornerRadius="0 0 5 5" MinHeight="90">
                     <DockPanel>
                         <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
+                            <Label x:Name="btnMijoz" Content="Mijoz" Foreground="{StaticResource TextForeground}" FontSize="20" Margin="10 2 10 2" MinWidth="150"/>
+                            <ComboBox x:Name="cbxPayment" Background="{DynamicResource SecondaryBackground}" SelectedValuePath="Id" DisplayMemberPath="Name" MinWidth="235" Padding="4" Foreground="{DynamicResource PrimaryTextColor}" BorderThickness="1" BorderBrush="{DynamicResource SecondaryBorderColor}" FontSize="20" HorizontalAlignment="Left" Margin="10 1 5 10" IsEditable="True" StaysOpenOnEdit="True" md:HintAssist.Hint="-- Mijozni tanlang --" PreviewKeyUp="cbxPayment_PreviewKeyUp" LostFocus="cbxPayment_LostFocus" SelectionChanged="cbxPayment_SelectionChanged"/>
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
                             <Label x:Name="btnMahsulot" Content="Mahsulot" Foreground="{StaticResource TextForeground}" FontSize="20" Margin="10 2 10 2" MinWidth="150"/>
                             <ComboBox x:Name="cbxProduct" Background="{DynamicResource SecondaryBackground}" SelectedValuePath="Id" MinWidth="235" MaxWidth="300" Padding="4" Foreground="{DynamicResource PrimaryTextColor}" BorderThickness="1" BorderBrush="{DynamicResource SecondaryBorderColor}" FontSize="20" Margin="10 1" IsEditable="True" StaysOpenOnEdit="True" md:HintAssist.Hint="-- Mahsulot tanlang --" DisplayMemberPath="ProductName" TextSearch.TextPath="ProductName"/>
                         </StackPanel>
@@ -102,13 +106,29 @@
             </StackPanel>
         </Border>
 
+        <!-- Miqdor va Jami summasi ko‘rsatiladigan qism -->
+        <Border Grid.Row="2" Margin="5 0" Background="{StaticResource PrimaryBackground}" CornerRadius="0">
+            <Border Background="{StaticResource AccentBackground}" Margin="5 0 5 2" BorderThickness="0 1 0 0" CornerRadius="5 5 0 0">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="10 5">
+                        <Label Content="Jami miqdor:" Foreground="{StaticResource TextForeground}" FontSize="18" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="tbTotalQuantity" Text="0" Foreground="{StaticResource TextForeground}" FontSize="18" Margin="10 0 0 0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="10 5">
+                        <Label Content="Jami summa:" Foreground="{StaticResource TextForeground}" FontSize="18" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="tbGridTotalSum" Text="0.00" Foreground="{StaticResource TextForeground}" FontSize="18" Margin="10 0 0 0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </Border>
+
         <!-- To‘lov qismi -->
-        <Border x:Name="brInProcessProducts" Grid.Row="2" Margin="5 0" Background="{StaticResource PrimaryBackground}" CornerRadius="0">
-            <Border Background="{StaticResource AccentBackground}" Margin="5 0 5 5" CornerRadius="5 5 0 0">
+        <Border x:Name="brInProcessProducts" Grid.Row="3" Margin="5 0 5 5" Background="{StaticResource PrimaryBackground}" CornerRadius="0 0 5 5">
+            <Border Background="{StaticResource AccentBackground}" Margin="5 0 5 5" CornerRadius="0 0 5 5">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Left" Margin="5 0 2 0">
                         <Label Name="lbljami" Content="Jami summa" Foreground="{StaticResource TextForeground}" FontSize="20"/>
-                        <Grid MinWidth="140" Height="35" Margin="0 0 0 7">
+                        <Grid MinWidth="135" Height="35" Margin="0 0 0 7">
                             <Border CornerRadius="7" Background="Transparent" BorderThickness="1" BorderBrush="Black">
                                 <TextBlock x:Name="tbTotalPrice" FontSize="18" Text="0.00" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" Padding="5" TextAlignment="Right" Height="33" VerticalAlignment="Bottom"/>
                             </Border>
@@ -116,7 +136,7 @@
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Left" Margin="2 0">
                         <Label Name="lblnaqd" Content="Naqd" Foreground="{StaticResource TextForeground}" FontSize="20"/>
-                        <Grid MinWidth="140" Height="35">
+                        <Grid MinWidth="135" Height="35">
                             <Border CornerRadius="7" Background="#F1F1F1">
                                 <TextBox x:Name="tbCrashSum" md:HintAssist.Hint="0.00" FontSize="18" Foreground="Black" Background="Transparent" Padding="5" BorderThickness="0" TextAlignment="Left" TextChanged="tbCrashSum_TextChanged"/>
                             </Border>
@@ -124,7 +144,7 @@
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Left">
                         <Label Name="lblplastik" Content="Plastik" Foreground="{StaticResource TextForeground}" FontSize="20"/>
-                        <Grid MinWidth="140" Height="35">
+                        <Grid MinWidth="135" Height="35">
                             <Border CornerRadius="7" Background="#F1F1F1">
                                 <TextBox x:Name="tbPlastikSum" md:HintAssist.Hint="0.00" FontSize="18" Foreground="Black" Background="Transparent" Padding="5" BorderThickness="0" TextAlignment="Left" TextChanged="tbPlastikSum_TextChanged"/>
                             </Border>
@@ -140,7 +160,7 @@
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Left">
                         <Label Name="lblqarz" Content="Qarz" Foreground="{StaticResource TextForeground}" FontSize="20"/>
-                        <Grid MinWidth="120" Height="35">
+                        <Grid MinWidth="115" Height="35">
                             <Border CornerRadius="7" Background="#F1F1F1">
                                 <TextBox x:Name="tbqarz" md:HintAssist.Hint="0.00" FontSize="18" Foreground="Black" Background="Transparent" Padding="5" BorderThickness="0" TextAlignment="Left" TextChanged="tbqarz_TextChanged"/>
                             </Border>
@@ -157,24 +177,15 @@
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Left" Margin="0 0 5 0">
                         <Label Name="lbltolov" Content="To'lov summasi" Foreground="{StaticResource TextForeground}" FontSize="20"/>
-                        <Grid MinWidth="170" Height="35" MaxWidth="200" HorizontalAlignment="Left">
+                        <Grid MinWidth="150" Height="35" MaxWidth="200" HorizontalAlignment="Left">
                             <Border CornerRadius="7" Margin="3 0 5 0" Background="{StaticResource AccentBackground}" BorderThickness="1" BorderBrush="Black">
                                 <TextBlock x:Name="tbQoldiq" Text="0.00" FontSize="20" Foreground="{StaticResource TextForeground}" Background="Transparent" Padding="5" TextAlignment="Right"/>
                             </Border>
                         </Grid>
                     </StackPanel>
-                </DockPanel>
-            </Border>
-        </Border>
-
-        <!-- Yakunlash tugmasi va Mijozlar -->
-        <Border Grid.Row="3" Margin="5 0" Background="{StaticResource PrimaryBackground}" CornerRadius="0 0 5 5">
-            <Border Background="{StaticResource AccentBackground}" Margin="5 0 5 5" BorderThickness="0 1 0 0" CornerRadius="0 0 5 5">
-                <DockPanel>
-                    <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Margin="5 2">
-                        <ComboBox x:Name="cbxPayment" Background="{DynamicResource SecondaryBackground}" SelectedValuePath="Id" DisplayMemberPath="Name" Width="235" Padding="4" Foreground="{DynamicResource PrimaryTextColor}" BorderThickness="1" BorderBrush="{DynamicResource SecondaryBorderColor}" FontSize="20" HorizontalAlignment="Left" Margin="0 5 0 5" IsEditable="True" StaysOpenOnEdit="True" md:HintAssist.Hint="-- Mijozni tanlang --" PreviewKeyUp="cbxPayment_PreviewKeyUp" LostFocus="cbxPayment_LostFocus" SelectionChanged="cbxPayment_SelectionChanged"/>
+                    <StackPanel DockPanel.Dock="Left" Margin="0 0 5 0">
+                        <Button x:Name="btnFinishSale" BorderThickness="0" Foreground="{StaticResource TextForeground}" Style="{DynamicResource MaterialDesignPaperSecondaryButton}" Background="{StaticResource ButtonBackground}" FontSize="20" Content="Yakunlash" md:ButtonAssist.CornerRadius="5" HorizontalAlignment="Right" MinWidth="100" Height="37" Margin="0,33,5,3" Click="btnFinishSale_Click" Grid.ColumnSpan="2"/>
                     </StackPanel>
-                    <Button x:Name="btnFinishSale" BorderThickness="0" Foreground="{StaticResource TextForeground}" Style="{DynamicResource MaterialDesignPaperSecondaryButton}" Background="{StaticResource ButtonBackground}" FontSize="20" Content="Yakunlash" md:ButtonAssist.CornerRadius="5" HorizontalAlignment="Right" MinWidth="170" Height="40" Margin="10 5" Click="btnFinishSale_Click" DockPanel.Dock="Right"/>
                 </DockPanel>
             </Border>
         </Border>
