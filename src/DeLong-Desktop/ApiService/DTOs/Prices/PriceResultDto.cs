@@ -12,6 +12,7 @@ public class PriceResultDto
 
     public long ProductId { get; set; }
     public ProductResultDto Product { get; set; }
+    public long CreatedBy { get; set; }
 
     public decimal CostPrice { get; set; }  // Kelish narxi
     public decimal SellingPrice { get; set; }  // Sotish narxi

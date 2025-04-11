@@ -8,6 +8,7 @@ public class CashWarehouseResultDto
     public decimal UzpBalance { get; set; } // Plastik qoldig‘i
     public decimal UsdBalance { get; set; } // Ombordagi dollar qoldig‘i
 
+    public long CreatedBy { get; set; }
     public DateTimeOffset CreatedAt { get; set; } // Ombor qachon yaratilgan
     public DateTimeOffset? UpdatedAt { get; set; } // Ombor qachon yangilangan (agar bo‘lsa)
 

@@ -13,6 +13,7 @@ public class SaleResultDto
     public decimal PaidAmount { get; set; } // to'langan qismi
     public decimal RemainingAmount { get; set; }
     public string Status { get; set; } = string.Empty;  // Enum string sifatida
+    public long CreatedBy { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
 
     public List<PaymentResultDto> Payments { get; set; } = new();

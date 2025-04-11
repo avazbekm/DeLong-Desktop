@@ -10,4 +10,5 @@ public class ProductResultDto
     public decimal? MinStockLevel { get; set; }  // minimal qoldiqni belgilab qo'yish
     public long CategoryId { get; set; }
     public bool IsActive { get; set; }
+    public long CreatedBy { get; set; }
 }

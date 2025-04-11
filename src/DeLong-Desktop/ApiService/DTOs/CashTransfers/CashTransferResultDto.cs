@@ -15,6 +15,7 @@ public class CashTransferResultDto
     public string Note { get; set; } = string.Empty;
     public CashTransferType TransferType { get; set; } // Yangi qo‘shildi
     public DateTimeOffset TransferDate { get; set; }
+    public long CreatedBy { get; set; }
     public DateTimeOffset CreatedAt { get; set; } // O‘tkazma qachon qilingan
     public DateTimeOffset? UpdatedAt { get; set; } // O‘tkazma qachon yangilangan (agar bo‘lsa)
 }

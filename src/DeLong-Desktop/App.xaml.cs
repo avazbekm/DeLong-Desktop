@@ -14,7 +14,7 @@ public partial class App : Application
         base.OnStartup(e);
 
         IServiceCollection services = new ServiceCollection();
-        var apiBaseUrl = new Uri("http://localhost:5208/");
+        var apiBaseUrl = new Uri("http://13.61.150.163/");
 
         // AuthDelegatingHandler qo‘shish
         services.AddTransient<AuthDelegatingHandler>();
