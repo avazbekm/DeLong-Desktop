@@ -4,10 +4,29 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:DeLong_Desktop.Pages.Cashs"
+      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:helpers="clr-namespace:DeLong_Desktop.ApiService.Helpers"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
       Title="Kassa bo'limi">
+
+    <Page.Resources>
+        <!-- UtcToUzbekistanTimeConverter ni bu yerda aniqlaymiz -->
+        <helpers:UtcToUzbekistanTimeConverter x:Key="UtcToUzbekistanTimeConverter"/>
+        <!-- Custom DatePicker Style -->
+        <Style x:Key="CustomDatePickerStyle" TargetType="DatePicker" BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
+            <Setter Property="Foreground" Value="Snow"/>
+            <Setter Property="md:HintAssist.Foreground" Value="Snow"/>
+            <Setter Property="CalendarStyle">
+                <Setter.Value>
+                    <Style TargetType="Calendar">
+                        <Setter Property="Background" Value="Snow"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -18,17 +37,15 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <!-- Matn uchun -->
                 <ColumnDefinition Width="Auto"/>
-                <!-- Tugma uchun -->
             </Grid.ColumnDefinitions>
 
             <TextBlock x:Name="tbkassaniboshqarish" Grid.Column="0" Text="Kassani boshqarish" FontSize="24" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" Margin="0,0,0,10" VerticalAlignment="Center"/>
 
             <Button x:Name="OpenDayButton" Grid.Column="1" Content="Kunni ochish" Width="150" Height="40" 
-            Background="{DynamicResource SelectedBackground}" Foreground="{StaticResource SecondaryTextColor}" 
-            BorderBrush="{StaticResource SelectedBorderColor}" md:ButtonAssist.CornerRadius="8" FontSize="16" 
-            FontWeight="Bold" Padding="5" Cursor="Hand" Click="OpenDayButton_Click" Margin="10,0,0,10">
+                    Background="{DynamicResource SelectedBackground}" Foreground="{StaticResource SecondaryTextColor}" 
+                    BorderBrush="{StaticResource SelectedBorderColor}" md:ButtonAssist.CornerRadius="8" FontSize="16" 
+                    FontWeight="Bold" Padding="5" Cursor="Hand" Click="OpenDayButton_Click" Margin="10,0,0,10">
                 <Button.Effect>
                     <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="3"/>
                 </Button.Effect>
@@ -36,21 +53,15 @@
         </Grid>
         <TabControl Grid.Row="1" Background="{StaticResource SecondaryBackground}" BorderBrush="{StaticResource PrimaryBorderColor}">
             <!-- Cash Registers Tab (Vertikal StackPanel ko‘rinishi) -->
-            <TabItem xmlns:helpers="clr-namespace:DeLong_Desktop.ApiService.Helpers">
+            <TabItem>
                 <TabItem.Header>
                     <TextBlock x:Name="tbkassaqoldiqlari" Text="Kassa qoldiqlari" Foreground="{StaticResource PrimaryTextColor}" FontSize="20" FontWeight="Bold"/>
                 </TabItem.Header>
-                <TabItem.Resources>
-                    <helpers:UtcToUzbekistanTimeConverter x:Key="UtcToUzbekistanTimeConverter"/>
-                </TabItem.Resources>
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <!-- Cash Registers -->
                         <RowDefinition Height="Auto"/>
-                        <!-- ComboBox va Button -->
                         <RowDefinition Height="*"/>
-                        <!-- Header, ListView va Jami summalar -->
                     </Grid.RowDefinitions>
 
                     <!-- Cash Registers List -->
@@ -70,10 +81,6 @@
                                                 <DropShadowEffect ShadowDepth="2" BlurRadius="2" Opacity="0.2"/>
                                             </TextBlock.Effect>
                                         </TextBlock>
-                                        <!--<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                            <TextBlock x:Name="ctbombor" Text="Ombor: " Foreground="{StaticResource PrimaryTextColor}" FontSize="20" FontWeight="SemiBold"/>
-                                            --><!--<TextBlock Text="{Binding WarehouseName}" Foreground="{StaticResource SecondaryTextColor}" FontSize="20"/>--><!--
-                                        </StackPanel>-->
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                                             <TextBlock Text="UZS: " Foreground="{StaticResource PrimaryTextColor}" FontSize="20" FontWeight="SemiBold"/>
                                             <TextBlock Text="{Binding UzsBalance, StringFormat={}{0:N0}}" Foreground="#28A745" FontSize="20"/>
@@ -102,16 +109,16 @@
                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
                         <Border Width="150" Height="40" Margin="5" Background="{DynamicResource OtherBackground}" CornerRadius="8" BorderBrush="{StaticResource SelectedBorderColor}" BorderThickness="2">
                             <ComboBox x:Name="CurrencyComboBox" Width="130" Height="40" SelectedIndex="0" Background="Transparent" 
-                          Foreground="{StaticResource PrimaryTextColor}" BorderBrush="{StaticResource OtherBackground}" FontSize="16" FontWeight="Bold">
+                                      Foreground="{StaticResource PrimaryTextColor}" BorderBrush="{StaticResource OtherBackground}" FontSize="16" FontWeight="Bold">
                                 <ComboBoxItem>So'm (UZS)</ComboBoxItem>
                                 <ComboBoxItem>Plastik (UZP)</ComboBoxItem>
                                 <ComboBoxItem>Dollar (USD)</ComboBoxItem>
                             </ComboBox>
                         </Border>
                         <Button x:Name="ShowTurnoverButton" Content="Kassa aylanmasi" Width="150" Height="40" Margin="5" 
-                    Background="{DynamicResource SelectedBackground}" Foreground="{StaticResource SecondaryTextColor}" 
-                    BorderBrush="{StaticResource SelectedBorderColor}" md:ButtonAssist.CornerRadius="8" FontSize="16" 
-                    FontWeight="Bold" Padding="5" Cursor="Hand" Click="ShowTurnoverButton_Click">
+                                Background="{DynamicResource SelectedBackground}" Foreground="{StaticResource SecondaryTextColor}" 
+                                BorderBrush="{StaticResource SelectedBorderColor}" md:ButtonAssist.CornerRadius="8" FontSize="16" 
+                                FontWeight="Bold" Padding="5" Cursor="Hand" Click="ShowTurnoverButton_Click">
                             <Button.Effect>
                                 <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="3"/>
                             </Button.Effect>
@@ -122,11 +129,8 @@
                     <Grid Grid.Row="2" Margin="5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <!-- Header -->
                             <RowDefinition Height="*"/>
-                            <!-- Scrollable ListView -->
                             <RowDefinition Height="Auto"/>
-                            <!-- Jami summalar -->
                         </Grid.RowDefinitions>
 
                         <!-- Header -->
@@ -134,19 +138,13 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="50"/>
-                                    <!-- T/R -->
                                     <ColumnDefinition Width="100"/>
-                                    <!-- Kimdan -->
                                     <ColumnDefinition Width="100"/>
-                                    <!-- Kimga -->
                                     <ColumnDefinition Width="300"/>
-                                    <!-- Maqsadi -->
                                     <ColumnDefinition Width="100"/>
-                                    <!-- Kirim -->
                                     <ColumnDefinition Width="100"/>
-                                    <!-- Chiqim -->
+                                    <ColumnDefinition Width="150"/>
                                     <ColumnDefinition Width="*"/>
-                                    <!-- Sana soati -->
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Grid.Column="0" Text="T/R" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -155,7 +153,8 @@
                                 <TextBlock Grid.Column="3" Text="Maqsadi" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center"/>
                                 <TextBlock Grid.Column="4" Text="Kirim" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                 <TextBlock Grid.Column="5" Text="Chiqim" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 15 0"/>
-                                <TextBlock Grid.Column="6" Text="To'langan vaqt" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="6" Text="Bajaruvchi" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="7" Text="To'langan vaqt" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
 
@@ -177,19 +176,13 @@
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="50"/>
-                                                    <!-- T/R -->
                                                     <ColumnDefinition Width="100"/>
-                                                    <!-- Kimdan -->
                                                     <ColumnDefinition Width="100"/>
-                                                    <!-- Kimga -->
                                                     <ColumnDefinition Width="300"/>
-                                                    <!-- Maqsadi -->
                                                     <ColumnDefinition Width="100"/>
-                                                    <!-- Kirim -->
                                                     <ColumnDefinition Width="100"/>
-                                                    <!-- Chiqim -->
+                                                    <ColumnDefinition Width="150"/>
                                                     <ColumnDefinition Width="*"/>
-                                                    <!-- Sana soati -->
                                                 </Grid.ColumnDefinitions>
 
                                                 <TextBlock Grid.Column="0" Text="{Binding SequenceNumber}" FontSize="14" FontWeight="Bold" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -198,7 +191,8 @@
                                                 <TextBlock Grid.Column="3" Text="{Binding Note}" FontSize="14" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                                                 <TextBlock Grid.Column="4" Text="{Binding Income, StringFormat={}{0:N0}}" FontSize="14" Foreground="#28A745" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                                 <TextBlock Grid.Column="5" Text="{Binding Expense, StringFormat={}{0:N0}}" FontSize="14" Foreground="#DC3545" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 15 0"/>
-                                                <TextBlock Grid.Column="6" Text="{Binding TransferDate, Converter={StaticResource UtcToUzbekistanTimeConverter}, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}}" FontSize="14" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="6" Text="{Binding ExecutorName}" FontSize="14" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="7" Text="{Binding TransferDate, Converter={StaticResource UtcToUzbekistanTimeConverter}, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}}" FontSize="14" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center"/>
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
@@ -216,19 +210,12 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="50"/>
-                                    <!-- T/R -->
                                     <ColumnDefinition Width="100"/>
-                                    <!-- Kimdan -->
                                     <ColumnDefinition Width="100"/>
-                                    <!-- Kimga -->
                                     <ColumnDefinition Width="300"/>
-                                    <!-- Maqsadi -->
                                     <ColumnDefinition Width="100"/>
-                                    <!-- Jami Kirim -->
                                     <ColumnDefinition Width="100"/>
-                                    <!-- Jami Chiqim -->
                                     <ColumnDefinition Width="*"/>
-                                    <!-- Sana soati -->
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Grid.Column="4" x:Name="tbTotalIncome" Text="0" FontSize="14" FontWeight="Bold" Foreground="#28A745" VerticalAlignment="Center" HorizontalAlignment="Right"/>
@@ -249,11 +236,11 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Border CornerRadius="10" Padding="15" Background="{StaticResource OtherBackground}" BorderBrush="{StaticResource PrimaryBorderColor}" BorderThickness="2" >
-                        <StackPanel Grid.Row="0" Orientation="Vertical" >
+                    <Border CornerRadius="10" Padding="15" Background="{StaticResource OtherBackground}" BorderBrush="{StaticResource PrimaryBorderColor}" BorderThickness="2">
+                        <StackPanel Grid.Row="0" Orientation="Vertical">
                             <!-- Qayerdan pul olinmoqda -->
                             <Border Width="280" Height="45" Margin="5" Background="{DynamicResource OtherBackground}" CornerRadius="8" BorderBrush="{StaticResource SelectedBorderColor}" BorderThickness="2">
-                                <ComboBox x:Name="FromComboBox" Width="260" Height="45" SelectedIndex="1" Background="Transparent" Foreground="{StaticResource PrimaryTextColor}" BorderBrush="{DynamicResource OtherBackground }" FontSize="16" FontWeight="Bold" SelectionChanged="FromComboBox_SelectionChanged">
+                                <ComboBox x:Name="FromComboBox" Width="260" Height="45" SelectedIndex="1" Background="Transparent" Foreground="{StaticResource PrimaryTextColor}" BorderBrush="{DynamicResource OtherBackground}" FontSize="16" FontWeight="Bold" SelectionChanged="FromComboBox_SelectionChanged">
                                     <ComboBoxItem>Kassadan</ComboBoxItem>
                                     <ComboBoxItem>Zaxiradan</ComboBoxItem>
                                     <ComboBoxItem>Boshqa</ComboBoxItem>
@@ -261,13 +248,12 @@
                             </Border>
                             <!-- Pul turi -->
                             <Border Width="280" Height="45" Margin="5" Background="{DynamicResource OtherBackground}" CornerRadius="8" BorderBrush="{StaticResource SelectedBorderColor}" BorderThickness="2">
-                                <ComboBox x:Name="CurrencyComboBox1" Width="260" Height="45" SelectedIndex="0" Background="Transparent" Foreground="{StaticResource PrimaryTextColor}" BorderBrush="{StaticResource OtherBackground}"  FontSize="16" FontWeight="Bold">
+                                <ComboBox x:Name="CurrencyComboBox1" Width="260" Height="45" SelectedIndex="0" Background="Transparent" Foreground="{StaticResource PrimaryTextColor}" BorderBrush="{StaticResource OtherBackground}" FontSize="16" FontWeight="Bold">
                                     <ComboBoxItem>So'm</ComboBoxItem>
                                     <ComboBoxItem>Plastik</ComboBoxItem>
                                     <ComboBoxItem>Dollar</ComboBoxItem>
                                 </ComboBox>
                             </Border>
-                            
                             <!-- Miqdor -->
                             <Border Width="280" Height="45" Margin="5" Background="{DynamicResource OtherBackground}" CornerRadius="8" BorderBrush="{StaticResource SelectedBorderColor}" BorderThickness="2">
                                 <TextBox x:Name="AmountTextBox" Width="260" Height="45" md:HintAssist.Hint="0.00" Foreground="{DynamicResource PrimaryTextColor}" Background="Transparent" BorderBrush="{StaticResource OtherBackground}" Padding="5" TextAlignment="Right" FontSize="18" FontWeight="Bold" TextChanged="AmountTextBox_TextChanged"/>
@@ -280,24 +266,22 @@
                                     <ComboBoxItem>Boshqa</ComboBoxItem>
                                 </ComboBox>
                             </Border>
-
                             <!-- Izoh -->
                             <Border Width="280" Height="45" Margin="5" Background="{DynamicResource OtherBackground}" CornerRadius="8" BorderBrush="{StaticResource SelectedBorderColor}" BorderThickness="2">
                                 <TextBox x:Name="NoteTextBox" Width="260" Height="45" md:HintAssist.Hint="Izoh" Foreground="{DynamicResource PrimaryTextColor}" Background="Transparent" BorderBrush="{StaticResource OtherBackground}" Padding="5" FontSize="16" FontWeight="Bold"/>
                             </Border>
-                            
-                             <!--O'tkazish tugmasi--> 
-                                <Button x:Name="TransferButton" Margin="0 5" Content="O'tkazish" Width="280" Height="45" Background="{DynamicResource SelectedBackground}" Foreground="{StaticResource SecondaryTextColor}" BorderBrush="{StaticResource SelectedBorderColor}" md:ButtonAssist.CornerRadius="8"  FontSize="18" FontWeight="Bold" Padding="5" Cursor="Hand" Click="TransferButton_Click">
-                                    <Button.Effect>
-                                        <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="3"/>
-                                    </Button.Effect>
-                                </Button>
+                            <!-- O'tkazish tugmasi -->
+                            <Button x:Name="TransferButton" Margin="0 5" Content="O'tkazish" Width="280" Height="45" Background="{DynamicResource SelectedBackground}" Foreground="{StaticResource SecondaryTextColor}" BorderBrush="{StaticResource SelectedBorderColor}" md:ButtonAssist.CornerRadius="8" FontSize="18" FontWeight="Bold" Padding="5" Cursor="Hand" Click="TransferButton_Click">
+                                <Button.Effect>
+                                    <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="3"/>
+                                </Button.Effect>
+                            </Button>
                         </StackPanel>
                     </Border>
                 </Grid>
             </TabItem>
             <!-- Cash Warehouses Tab -->
-            <TabItem >
+            <TabItem>
                 <TabItem.Header>
                     <TextBlock x:Name="tbzaxiradagipullar" Text="Zaxiradagi pullar" Foreground="{StaticResource PrimaryTextColor}" FontSize="20" FontWeight="Bold"/>
                 </TabItem.Header>
@@ -308,78 +292,188 @@
                     </Grid.RowDefinitions>
 
                     <!-- Cash Warehouses List -->
-                        <ItemsControl x:Name="CashWarehouseGrid" Background="{StaticResource SecondaryBackground}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Margin="5" 
-                                        CornerRadius="8" 
-                                        BorderBrush="{StaticResource PrimaryBorderColor}" 
-                                        BorderThickness="1" 
-                                        Padding="10">
-                                        <!-- Gradient Background -->
-                                        <Border.Background>
-                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                                <GradientStop Color="#F5F7FA" Offset="0"/>
-                                                <GradientStop Color="#E9ECEF" Offset="1"/>
-                                            </LinearGradientBrush>
-                                        </Border.Background>
-
-                                        <StackPanel  Orientation="Vertical">
-                                            <!-- Zaxiradagi pul qoldiqlari (Header) -->
-                                        <TextBlock  Text="Zaxiradagi pul qoldiqlar(库存现金余额)" 
-                                           Foreground="{StaticResource PrimaryTextColor}" 
-                                           FontWeight="Bold" 
-                                           FontSize="20" 
-                                           Margin="0,0,0,8">
-                                                <TextBlock.Effect>
-                                                    <DropShadowEffect ShadowDepth="2" BlurRadius="2" Opacity="0.2"/>
-                                                </TextBlock.Effect>
-                                            </TextBlock>
-
-                                            <!-- Hozirgi vaqt -->
-                                            <TextBlock Text="{Binding CurrentDateTime, StringFormat='Hozirgi vaqt: {0:dd.MM.yyyy HH:mm}'}" Foreground="{StaticResource PrimaryTextColor}" FontWeight="Bold" FontSize="20" Margin="0,0,0,8">
-                                                <TextBlock.Effect>
-                                                    <DropShadowEffect ShadowDepth="2" BlurRadius="2" Opacity="0.2"/>
-                                                </TextBlock.Effect>
-                                            </TextBlock>
-
-                                            <!-- UZS -->
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <ItemsControl x:Name="CashWarehouseGrid" Background="{StaticResource SecondaryBackground}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="5" CornerRadius="8" BorderBrush="{StaticResource PrimaryBorderColor}" BorderThickness="1" Padding="10">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                            <GradientStop Color="#F5F7FA" Offset="0"/>
+                                            <GradientStop Color="#E9ECEF" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="Zaxiradagi pul qoldiqlar(库存现金余额)" Foreground="{StaticResource PrimaryTextColor}" FontWeight="Bold" FontSize="20" Margin="0,0,0,8">
+                                            <TextBlock.Effect>
+                                                <DropShadowEffect ShadowDepth="2" BlurRadius="2" Opacity="0.2"/>
+                                            </TextBlock.Effect>
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding CurrentDateTime, StringFormat='Hozirgi vaqt: {0:dd.MM.yyyy HH:mm}'}" Foreground="{StaticResource PrimaryTextColor}" FontWeight="Bold" FontSize="20" Margin="0,0,0,8">
+                                            <TextBlock.Effect>
+                                                <DropShadowEffect ShadowDepth="2" BlurRadius="2" Opacity="0.2"/>
+                                            </TextBlock.Effect>
+                                        </TextBlock>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                                             <TextBlock Text="UZS: " Foreground="{StaticResource PrimaryTextColor}" FontSize="20" FontWeight="SemiBold"/>
-                                                <TextBlock Text="{Binding UzsBalance, StringFormat={}{0:N0}}" Foreground="#28A745" FontSize="20"/>
-                                            </StackPanel>
-
-                                            <!-- UZP -->
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                            <TextBlock Text="UZP: " Foreground="{StaticResource PrimaryTextColor}" FontSize="20" FontWeight="SemiBold"/>
-                                                <TextBlock Text="{Binding UzpBalance, StringFormat={}{0:N0}}" Foreground="#007BFF" FontSize="20"/>
-                                            </StackPanel>
-
-                                            <!-- USD -->
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                            <TextBlock Text="USD: " 
-                                               Foreground="{StaticResource PrimaryTextColor}" 
-                                               FontSize="20" 
-                                               FontWeight="SemiBold"/>
-                                                <TextBlock Text="{Binding UsdBalance, StringFormat={}{0:N0}}" 
-                                               Foreground="#FFC107" 
-                                               FontSize="20"/>
-                                            </StackPanel>
-
-                                            <!-- Separator -->
-                                            <Separator Background="{StaticResource PrimaryBorderColor}" Margin="0,5"/>
+                                            <TextBlock Text="{Binding UzsBalance, StringFormat={}{0:N0}}" Foreground="#28A745" FontSize="20"/>
                                         </StackPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                            <TextBlock Text="UZP: " Foreground="{StaticResource PrimaryTextColor}" FontSize="20" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding UzpBalance, StringFormat={}{0:N0}}" Foreground="#007BFF" FontSize="20"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                            <TextBlock Text="USD: " Foreground="{StaticResource PrimaryTextColor}" FontSize="20" FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding UsdBalance, StringFormat={}{0:N0}}" Foreground="#FFC107" FontSize="20"/>
+                                        </StackPanel>
+                                        <Separator Background="{StaticResource PrimaryBorderColor}" Margin="0,5"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </Grid>
+            </TabItem>
+            <!-- Cash History Tab -->
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock x:Name="tbkassatarixi" Text="Kassa tarixi" Foreground="{StaticResource PrimaryTextColor}" FontSize="20" FontWeight="Bold"/>
+                </TabItem.Header>
+                <Grid Margin="10" Background="{StaticResource SecondaryBackground}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                            <!-- ItemsPanel uchun vertikal joylashuv -->
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Vertical"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                    <!-- Filters Section -->
+                    <Border Grid.Row="0" CornerRadius="10" Padding="15" Background="{StaticResource PrimaryBackground}" BorderBrush="{StaticResource PrimaryBorderColor}" BorderThickness="2">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Boshlang‘ich sana -->
+                            <DatePicker x:Name="HistoryStartDatePicker" Width="150" Margin="5,0,10,0" FontSize="16" md:HintAssist.Hint="Boshlang‘ich sana" VerticalAlignment="Center" Style="{StaticResource CustomDatePickerStyle}"/>
+                            <!-- Tugash sana -->
+                            <DatePicker x:Name="HistoryEndDatePicker" Width="150" Margin="0,0,10,0" FontSize="16" md:HintAssist.Hint="Tugash sana" VerticalAlignment="Center" Style="{StaticResource CustomDatePickerStyle}"/>
+                            <!-- Valyuta -->
+                            <Border Width="150" Height="45" Margin="5" Background="{DynamicResource OtherBackground}" CornerRadius="8" BorderBrush="{StaticResource SelectedBorderColor}" BorderThickness="2">
+                                <ComboBox x:Name="HistoryCurrencyComboBox" Width="130" Height="45" SelectedIndex="0" Background="Transparent" Foreground="{StaticResource PrimaryTextColor}" BorderBrush="{StaticResource OtherBackground}" FontSize="16" FontWeight="Bold">
+                                    <ComboBoxItem>So'm (UZS)</ComboBoxItem>
+                                    <ComboBoxItem>Plastik (UZP)</ComboBoxItem>
+                                    <ComboBoxItem>Dollar (USD)</ComboBoxItem>
+                                </ComboBox>
+                            </Border>
+                            <!-- Kassa aylanmasi tugmasi -->
+                            <Button x:Name="ShowHistoryTurnoverButton" Content="Kassa aylanmasi" Width="150" Height="45" Margin="5" 
+                                    Background="{DynamicResource SelectedBackground}" Foreground="{StaticResource SecondaryTextColor}" 
+                                    BorderBrush="{StaticResource SelectedBorderColor}" md:ButtonAssist.CornerRadius="8" FontSize="16" 
+                                    FontWeight="Bold" Padding="5" Cursor="Hand" Click="ShowHistoryTurnoverButton_Click">
+                                <Button.Effect>
+                                    <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="3"/>
+                                </Button.Effect>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Turnover List Section -->
+                    <Grid Grid.Row="1" Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Header -->
+                        <Border x:Name="historyViewListHeader" Visibility="Hidden" Grid.Row="0" CornerRadius="10,10,0,0" BorderBrush="{StaticResource PrimaryBorderColor}" BorderThickness="1" Padding="10" Background="{StaticResource SelectedBackground}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="300"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="T/R" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="Kimdan" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="Kimga" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="3" Text="Maqsadi" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="4" Text="Kirim" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="5" Text="Chiqim" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 15 0"/>
+                                <TextBlock Grid.Column="6" Text="Bajaruvchi" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="7" Text="To'langan vaqt" FontSize="14" FontWeight="Bold" Foreground="{StaticResource SecondaryTextColor}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Scrollable ListView -->
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <ListView x:Name="HistoryTurnoverListView" Background="Transparent" BorderThickness="0" Visibility="Collapsed">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Margin="0,0,0,10" CornerRadius="0" BorderBrush="{StaticResource PrimaryBorderColor}" BorderThickness="1,0,1,1" Padding="10">
+                                            <Border.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Color="#FFFFFF" Offset="0"/>
+                                                    <GradientStop Color="#F8F9FA" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                            <Border.Effect>
+                                                <DropShadowEffect Color="Gray" BlurRadius="5" ShadowDepth="2" Opacity="0.3"/>
+                                            </Border.Effect>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="50"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="300"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="150"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Grid.Column="0" Text="{Binding SequenceNumber}" FontSize="14" FontWeight="Bold" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding From}" FontSize="14" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="2" Text="{Binding To}" FontSize="14" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="3" Text="{Binding Note}" FontSize="14" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Grid.Column="4" Text="{Binding Income, StringFormat={}{0:N0}}" FontSize="14" Foreground="#28A745" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                <TextBlock Grid.Column="5" Text="{Binding Expense, StringFormat={}{0:N0}}" FontSize="14" Foreground="#DC3545" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 15 0"/>
+                                                <TextBlock Grid.Column="6" Text="{Binding ExecutorName}" FontSize="14" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="7" Text="{Binding TransferDate, Converter={StaticResource UtcToUzbekistanTimeConverter}, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}}" FontSize="14" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                            </ListView>
+                        </ScrollViewer>
+
+                        <!-- Jami kirim va chiqim -->
+                        <Border x:Name="historyTotalSummary" Grid.Row="2" CornerRadius="0,0,10,10" BorderBrush="{StaticResource PrimaryBorderColor}" BorderThickness="1" Padding="10" Background="{StaticResource SelectedBackground}" Visibility="Hidden">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="300"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="4" x:Name="tbHistoryTotalIncome" Text="0" FontSize="14" FontWeight="Bold" Foreground="#28A745" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="5" x:Name="tbHistoryTotalExpense" Text="0" FontSize="14" FontWeight="Bold" Foreground="#DC3545" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 15 0"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
                 </Grid>
             </TabItem>
         </TabControl>

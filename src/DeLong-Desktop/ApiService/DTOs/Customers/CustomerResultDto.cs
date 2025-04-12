@@ -5,40 +5,18 @@ namespace DeLong_Desktop.ApiService.DTOs.Customers;
 
 public class CustomerResultDto
 {
-    [JsonPropertyName("id")]
     public long Id { get; set; }
-
-    [JsonPropertyName("name")]
-    public string Name { get; set; } = string.Empty;
-
-    [JsonPropertyName("inn")]
-    public int INN { get; set; }
-
-    [JsonPropertyName("mfo")]
-    public string MFO { get; set; } = string.Empty;
-
-    [JsonPropertyName("jshshir")]
-    public string JSHSHIR { get; set; } = string.Empty;
-
-    [JsonPropertyName("phone")]
-    public string Phone { get; set; } = string.Empty;
-
-    [JsonPropertyName("bankAccount")]
-    public string BankAccount { get; set; } = string.Empty;
-
-    [JsonPropertyName("bankName")]
-    public string BankName { get; set; } = string.Empty;
-
-    [JsonPropertyName("okonx")]
-    public string OKONX { get; set; } = string.Empty;
-
-    [JsonPropertyName("yurAddress")]
-    public string YurAddress { get; set; } = string.Empty;
-
-    // firma rahbari malumotlari
-    [JsonPropertyName("userId")]
-    public long UserId { get; set; }
-
-    [JsonPropertyName("user")]
-    public UserResultDto User { get; set; }
+    public string CompanyName { get; set; } = string.Empty;
+    public string ManagerName { get; set; } = string.Empty;
+    public string ManagerPhone { get; set; } = string.Empty;
+    public string? MFO { get; set; } = string.Empty;
+    public int? INN { get; set; }
+    public string? BankAccount { get; set; } = string.Empty;
+    public string? BankName { get; set; } = string.Empty;
+    public string? OKONX { get; set; }
+    public string? YurAddress { get; set; } = string.Empty;
+    public string? EmployeeName { get; set; } = string.Empty;
+    public string? EmployeePhone { get; set; } = string.Empty;
+    public long BranchId { get; set; }
+    public long CreatedBy { get; set; }
 }

@@ -10,6 +10,7 @@ public class ProductItem : INotifyPropertyChanged
     public long ProductId { get; set; }
     public decimal CostPrice {  get; set; } 
     public decimal BalanceAmount { get; set; }
+    public string ProductSign { get; set; } = string.Empty;
 
     private decimal _quantity;
     public decimal Quantity

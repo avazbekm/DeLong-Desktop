@@ -1,6 +1,9 @@
-﻿using System.Windows;
-using System.Windows.Media;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using DeLong_Desktop.ApiService.Helpers;
 using DeLong_Desktop.ApiService.Interfaces;
 using DeLong_Desktop.ApiService.DTOs.Enums;
@@ -16,6 +19,7 @@ public partial class CashPage : Page
     private readonly ICashRegisterService _cashRegisterService;
     private readonly ICashTransferService _cashTransferService;
     private readonly ICashWarehouseService _cashWarehouseService;
+    private readonly IUserService _userService;
     private long? _currentCashRegisterId = null;
 
     public CashPage(IServiceProvider services)
@@ -24,6 +28,7 @@ public partial class CashPage : Page
         _cashRegisterService = services.GetRequiredService<ICashRegisterService>();
         _cashTransferService = services.GetRequiredService<ICashTransferService>();
         _cashWarehouseService = services.GetRequiredService<ICashWarehouseService>();
+        _userService = services.GetRequiredService<IUserService>();
 
         FromComboBox.SelectionChanged -= FromComboBox_SelectionChanged;
         LoadWarehouseData();
@@ -31,7 +36,6 @@ public partial class CashPage : Page
         Loaded += CashPage_Loaded;
         FromComboBox.SelectionChanged += FromComboBox_SelectionChanged;
 
-        // Faqat shu qator qo‘shiladi (allaqachon mavjud)
         CashEvents.CashUpdated += async (s, e) => await RefreshCashData();
     }
 
@@ -336,30 +340,45 @@ public partial class CashPage : Page
                 return;
             }
 
-            var filteredTransfers = transfers
+            var filteredTransfers = new List<object>();
+            int sequenceNumber = 1;
+
+            foreach (var transfer in transfers
                 .Where(t => t.CashRegisterId == currentRegister.Id &&
                             t.TransferDate >= openedAt &&
                             t.Currency == selectedCurrency)
-                .OrderBy(t => t.TransferDate)
-                .Select((t, index) => new
+                .OrderBy(t => t.TransferDate))
+            {
+                string executorName = "Noma'lum";
+                if (transfer.CreatedBy > 0)
                 {
-                    SequenceNumber = index + 1,
-                    From = t.From,
-                    To = t.To,
-                    Note = t.Note,
-                    Income = t.TransferType == CashTransferType.Income ? t.Amount : 0,
-                    Expense = t.TransferType == CashTransferType.Expense ? t.Amount : 0,
-                    TransferDate = t.TransferDate
-                })
-                .ToList();
+                    var user = await _userService.RetrieveByIdAsync(transfer.CreatedBy);
+                    if (user != null)
+                    {
+                        executorName = $"{user.FirstName} {user.LastName}".Trim();
+                    }
+                }
+
+                filteredTransfers.Add(new
+                {
+                    SequenceNumber = sequenceNumber++,
+                    From = transfer.From,
+                    To = transfer.To,
+                    Note = transfer.Note,
+                    Income = transfer.TransferType == CashTransferType.Income ? transfer.Amount : 0,
+                    Expense = transfer.TransferType == CashTransferType.Expense ? transfer.Amount : 0,
+                    TransferDate = transfer.TransferDate,
+                    ExecutorName = executorName
+                });
+            }
 
             TurnoverListView.ItemsSource = filteredTransfers;
             TurnoverListView.Visibility = Visibility.Visible;
             viewListHeader.Visibility = Visibility.Visible;
             totalSummary.Visibility = Visibility.Visible;
 
-            decimal totalIncome = filteredTransfers.Sum(t => t.Income);
-            decimal totalExpense = filteredTransfers.Sum(t => t.Expense);
+            decimal totalIncome = filteredTransfers.Sum(t => (decimal)t.GetType().GetProperty("Income").GetValue(t));
+            decimal totalExpense = filteredTransfers.Sum(t => (decimal)t.GetType().GetProperty("Expense").GetValue(t));
 
             tbTotalIncome.Text = totalIncome.ToString("N0");
             tbTotalExpense.Text = totalExpense.ToString("N0");
@@ -367,6 +386,96 @@ public partial class CashPage : Page
             if (!filteredTransfers.Any())
             {
                 MessageBox.Show($"Tanlangan valyuta ({selectedCurrency}) bo‘yicha aylanma topilmadi!", "Xabar", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private async void ShowHistoryTurnoverButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            // Sanalarni tekshirish
+            if (!HistoryStartDatePicker.SelectedDate.HasValue || !HistoryEndDatePicker.SelectedDate.HasValue)
+            {
+                MessageBox.Show("Iltimos, boshlang‘ich va tugash sanalarni tanlang!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var startDate = HistoryStartDatePicker.SelectedDate.Value;
+            var endDate = HistoryEndDatePicker.SelectedDate.Value.AddDays(1).AddTicks(-1); // Tugash sanasi kun oxirigacha
+
+            if (startDate > endDate)
+            {
+                MessageBox.Show("Boshlang‘ich sana tugash sanadan katta bo‘lmasligi kerak!", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string selectedCurrency = (HistoryCurrencyComboBox.SelectedItem as ComboBoxItem)?.Content.ToString() switch
+            {
+                "So'm (UZS)" => "So'm",
+                "Plastik (UZP)" => "Plastik",
+                "Dollar (USD)" => "Dollar",
+                _ => "So'm"
+            };
+
+            var transfers = await _cashTransferService.RetrieveAllAsync();
+            if (transfers == null || !transfers.Any())
+            {
+                MessageBox.Show("Kassa aylanmasi ma’lumotlari topilmadi!", "Xabar", MessageBoxButton.OK, MessageBoxImage.Information);
+                HistoryTurnoverListView.Visibility = Visibility.Collapsed;
+                historyViewListHeader.Visibility = Visibility.Hidden;
+                historyTotalSummary.Visibility = Visibility.Hidden;
+                return;
+            }
+
+            var filteredTransfers = new List<object>();
+            int sequenceNumber = 1;
+
+            foreach (var transfer in transfers
+                .Where(t => t.TransferDate >= startDate && t.TransferDate <= endDate && t.Currency == selectedCurrency)
+                .OrderBy(t => t.TransferDate))
+            {
+                string executorName = "Noma'lum";
+                if (transfer.CreatedBy > 0)
+                {
+                    var user = await _userService.RetrieveByIdAsync(transfer.CreatedBy);
+                    if (user != null)
+                    {
+                        executorName = $"{user.FirstName} {user.LastName}".Trim();
+                    }
+                }
+
+                filteredTransfers.Add(new
+                {
+                    SequenceNumber = sequenceNumber++,
+                    From = transfer.From,
+                    To = transfer.To,
+                    Note = transfer.Note,
+                    Income = transfer.TransferType == CashTransferType.Income ? transfer.Amount : 0,
+                    Expense = transfer.TransferType == CashTransferType.Expense ? transfer.Amount : 0,
+                    TransferDate = transfer.TransferDate,
+                    ExecutorName = executorName
+                });
+            }
+
+            HistoryTurnoverListView.ItemsSource = filteredTransfers;
+            HistoryTurnoverListView.Visibility = Visibility.Visible;
+            historyViewListHeader.Visibility = Visibility.Visible;
+            historyTotalSummary.Visibility = Visibility.Visible;
+
+            decimal totalIncome = filteredTransfers.Sum(t => (decimal)t.GetType().GetProperty("Income").GetValue(t));
+            decimal totalExpense = filteredTransfers.Sum(t => (decimal)t.GetType().GetProperty("Expense").GetValue(t));
+
+            tbHistoryTotalIncome.Text = totalIncome.ToString("N0");
+            tbHistoryTotalExpense.Text = totalExpense.ToString("N0");
+
+            if (!filteredTransfers.Any())
+            {
+                MessageBox.Show($"Tanlangan valyuta ({selectedCurrency}) va sanalar bo‘yicha aylanma topilmadi!", "Xabar", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         catch (Exception ex)

@@ -136,11 +136,8 @@ public partial class MainWindow : Window
         _salePracticePage.tbdollorkursi.Text = DeLong_Desktop.Resources.Resource.Dollar_kursi_;
         _salePracticePage.btnDollarKurs.Content = DeLong_Desktop.Resources.Resource.Dollar_kursini_kiriting_;
         _salePracticePage.btnMiqdori.Content = DeLong_Desktop.Resources.Resource.Miqdori_;
-        _salePracticePage.lbChangeValyuta.Content = DeLong_Desktop.Resources.Resource.Valyutani_ayirboshlash_;
         HintAssist.SetHint(_salePracticePage.cbxProduct, DeLong_Desktop.Resources.Resource.Mahsulotni_tanlang_);
         _salePracticePage.btnProductSell.Content = DeLong_Desktop.Resources.Resource.Add;
-        _salePracticePage.btnBuyDollar.Content = DeLong_Desktop.Resources.Resource.Sotib_olish_;
-        _salePracticePage.btnSellDollar.Content = DeLong_Desktop.Resources.Resource.Sotish_;
         _salePracticePage.lblmahsulot.Content = DeLong_Desktop.Resources.Resource.Product;
         _salePracticePage.ProductGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.T_r_;
         _salePracticePage.ProductGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.Mahsulot_nomi_;

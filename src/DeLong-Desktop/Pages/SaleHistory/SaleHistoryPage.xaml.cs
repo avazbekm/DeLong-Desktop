@@ -84,7 +84,7 @@ public partial class SaleHistoryPage : Page
                     if (sale.CustomerId.HasValue)
                     {
                         var customer = await _customerService.RetrieveByIdAsync(sale.CustomerId.Value);
-                        customerName = customer != null ? $"{customer.Name}" : "Noma'lum";
+                        customerName = customer != null ? $"{customer.CompanyName}" : "Noma'lum";
                     }
                     else if (sale.UserId.HasValue)
                     {

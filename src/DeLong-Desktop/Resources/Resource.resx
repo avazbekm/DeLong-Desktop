@@ -483,4 +483,7 @@
   <data name="ProductSign" xml:space="preserve">
     <value>Mahsulot belgisi</value>
   </data>
+  <data name="Employees" xml:space="preserve">
+    <value>Hodim</value>
+  </data>
 </root>

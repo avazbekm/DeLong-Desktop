@@ -147,7 +147,7 @@ public partial class SalePracticePage : Page
                 allCustomers.AddRange(customers.Select(customer => new ComboboxCustomerItem
                 {
                     CustomerId = customer.Id,
-                    Name = $"{char.ToUpper(customer.Name[0]) + customer.Name[1..]} {customer.Phone}"
+                    Name = $"{char.ToUpper(customer.CompanyName[0]) + customer.CompanyName[1..]} {customer.ManagerPhone}"
                 }));
             }
 
@@ -468,17 +468,17 @@ public partial class SalePracticePage : Page
         return FindParent<T>(parent);
     }
 
-    private void btnSellDollar_Click(object sender, RoutedEventArgs e)
-    {
-        DollarSellWindow dollarSellWindow = new DollarSellWindow(services);
-        dollarSellWindow.ShowDialog();
-    }
+    //private void btnSellDollar_Click(object sender, RoutedEventArgs e)
+    //{
+    //    DollarSellWindow dollarSellWindow = new DollarSellWindow(services);
+    //    dollarSellWindow.ShowDialog();
+    //}
 
-    private void btnBuyDollar_Click(object sender, RoutedEventArgs e)
-    {
-        DollarBuyWindow dollarBuyWindow = new DollarBuyWindow(services);
-        dollarBuyWindow.ShowDialog();
-    }
+    //private void btnBuyDollar_Click(object sender, RoutedEventArgs e)
+    //{
+    //    DollarBuyWindow dollarBuyWindow = new DollarBuyWindow(services);
+    //    dollarBuyWindow.ShowDialog();
+    //}
 
     private void cbxPayment_PreviewKeyUp(object sender, KeyEventArgs e)
     {
@@ -1111,4 +1111,5 @@ public partial class SalePracticePage : Page
             SelectedCustomerId = null;
         }
     }
+
 }

@@ -483,4 +483,7 @@
   <data name="ProductSign" xml:space="preserve">
     <value>產品標誌</value>
   </data>
+  <data name="Employees" xml:space="preserve">
+    <value>員工</value>
+  </data>
 </root>
