@@ -14,7 +14,7 @@ public partial class App : Application
         base.OnStartup(e);
 
         IServiceCollection services = new ServiceCollection();
-        var apiBaseUrl = new Uri("http://13.61.150.163/");
+        var apiBaseUrl = new Uri("http://localhost:5208/");
 
         // AuthDelegatingHandler qo‘shish
         services.AddTransient<AuthDelegatingHandler>();
@@ -105,6 +105,18 @@ public partial class App : Application
                 .AddHttpMessageHandler<AuthDelegatingHandler>();
 
         services.AddHttpClient<ISupplierService, SupplierService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl)
+                .AddHttpMessageHandler<AuthDelegatingHandler>();
+
+        services.AddHttpClient<ICreditorDebtService, CreditorDebtService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl)
+                .AddHttpMessageHandler<AuthDelegatingHandler>();
+
+        services.AddHttpClient<ICreditorDebtPaymentService, CreditorDebtPaymentService>()
+                .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl)
+                .AddHttpMessageHandler<AuthDelegatingHandler>();
+
+        services.AddHttpClient<ITransactionProcessingService, TransactionProcessingService>()
                 .ConfigureHttpClient(client => client.BaseAddress = apiBaseUrl)
                 .AddHttpMessageHandler<AuthDelegatingHandler>();
 

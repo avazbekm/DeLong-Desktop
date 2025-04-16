@@ -4,7 +4,7 @@ namespace DeLong_Desktop.ApiService.Interfaces;
 
 interface IPriceService
 {
-    ValueTask<bool> AddAsync(PriceCreationDto dto);
+    ValueTask<PriceResultDto> AddAsync(PriceCreationDto dto);
     ValueTask<bool> ModifyAsync(PriceUpdateDto dto);
     ValueTask<bool> RemoveAsync(long id);
     ValueTask<PriceResultDto> RetrieveByIdAsync(long id);

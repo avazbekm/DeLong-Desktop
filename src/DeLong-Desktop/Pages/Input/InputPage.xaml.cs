@@ -1,15 +1,14 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.Companents;
 using DeLong_Desktop.Windows.Pirces;
 using DeLong_Desktop.ApiService.Interfaces;
-using DeLong_Desktop.ApiService.DTOs.Enums;
 using DeLong_Desktop.ApiService.DTOs.Prices;
 using DeLong_Desktop.ApiService.DTOs.Products;
 using DeLong_Desktop.ApiService.DTOs.Category;
 using Microsoft.Extensions.DependencyInjection;
-using DeLong_Desktop.ApiService.DTOs.Transactions;
-using DeLong_Desktop.ApiService.DTOs.TransactionItems;
+using System.Threading.Tasks;
 
 namespace DeLong_Desktop.Pages.Input;
 
@@ -20,8 +19,7 @@ public partial class InputPage : Page
     private readonly IPriceService _priceService;
     private readonly IProductService _productService;
     private readonly ICategoryService _categoryService;
-    private readonly ITransactionService _transactionService;
-    private readonly ITransactionItemService _transactionItemService;
+    private readonly ITransactionProcessingService _transactionProcessingService;
 
     public InputPage(IServiceProvider services)
     {
@@ -30,8 +28,7 @@ public partial class InputPage : Page
         _priceService = services.GetRequiredService<IPriceService>();
         _productService = services.GetRequiredService<IProductService>();
         _categoryService = services.GetRequiredService<ICategoryService>();
-        _transactionService = services.GetRequiredService<ITransactionService>();
-        _transactionItemService = services.GetRequiredService<ITransactionItemService>();
+        _transactionProcessingService = services.GetRequiredService<ITransactionProcessingService>();
 
         LoadCategoriesAsync();
         LoadProductsAsync();
@@ -102,9 +99,9 @@ public partial class InputPage : Page
         {
             InputInfo.CategoryId = selectedId;
             if (selectedId == 0)
-                LoadProductsAsync(); // Barcha mahsulotlar
+                LoadProductsAsync();
             else
-                LoadDataAsync(selectedId); // Tanlangan kategoriya mahsulotlari
+                LoadDataAsync(selectedId);
         }
     }
 
@@ -217,27 +214,37 @@ public partial class InputPage : Page
 
         try
         {
-            var transactionDto = new TransactionCreationDto
+            // SupplierId ni tekshirish
+            var validSuppliers = _receiveItems.Select(i => i.SupplierId).Distinct().Where(id => id > 0).ToList();
+            if (validSuppliers.Count > 1)
             {
-                SupplierIdFrom = InputInfo.SupplierId,
-                BranchId = InputInfo.BranchId,
-                BranchIdTo = InputInfo.BranchId,
-                TransactionType = TransactionType.Kirim,
-                Comment = "Yetkazib beruvchidan mahsulot keldi.",
-                Items = _receiveItems.Select(item => new TransactionItemCreationDto
-                {
-                    ProductId = item.ProductId,
-                    Quantity = item.Quantity,
-                    UnitOfMeasure = item.UnitOfMeasure,
-                    PriceProduct = item.CostPrice,
-                }).ToList()
-            };
+                MessageBox.Show("Turli yetkazib beruvchilar tanlangan. Iltimos, bitta yetkazib beruvchi tanlang.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (!validSuppliers.Any())
+            {
+                MessageBox.Show("Hech qanday yetkazib beruvchi tanlanmagan.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            var transaction = await _transactionService.AddAsync(transactionDto);
+            // Tranzaksiyani yuborish
+            var transaction = await _transactionProcessingService.ProcessTransactionAsync(_receiveItems);
+            if (transaction == null)
+            {
+                MessageBox.Show("Tranzaksiyani yakunlashda xato yuz berdi.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
+            // Muvaffaqiyatli yakunlanganda
             MessageBox.Show("Tranzaksiya muvaffaqiyatli yakunlandi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
             _receiveItems.Clear();
             RefreshReceiveDataGrid();
+
+            // ProductsPage ni yangilash
+            if (AppState.CurrentProductsPage != null)
+            {
+                await AppState.CurrentProductsPage.RefreshDataAsync();
+            }
         }
         catch (Exception ex)
         {

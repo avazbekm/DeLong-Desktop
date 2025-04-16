@@ -7,9 +7,69 @@
       mc:Ignorable="d" 
       xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Mijozlar ro'yxati oynasi">
+      Title="Mijozlar ro'yxati oynasi"
+      Background="{DynamicResource PrimaryBackground}">
 
-    <Grid Background="{DynamicResource PrimaryBackground}">
+    <Page.Resources>
+        <!-- DataGridRow uchun Style -->
+        <Style x:Key="CustomDataGridRowStyle" TargetType="{x:Type DataGridRow}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="18"/>
+            <!-- Itemlar shrift o‘lchami -->
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#476072"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <!-- Focus yo‘qolganda ham rangni saqlash -->
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsSelected" Value="True"/>
+                        <Condition Property="IsKeyboardFocusWithin" Value="False"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="#476072"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- DataGridCell uchun Style -->
+        <Style x:Key="CustomDataGridCellStyle" TargetType="{x:Type DataGridCell}">
+            <Setter Property="FontSize" Value="18"/>
+            <!-- Itemlar shrift o‘lchami -->
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#476072"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Trigger>
+                <!-- Focus yo‘qolganda ham rangni saqlash -->
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsSelected" Value="True"/>
+                        <Condition Property="IsKeyboardFocusWithin" Value="False"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="#476072"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- DataGridColumnHeader uchun Style -->
+        <Style x:Key="CustomDataGridColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="FontSize" Value="18"/>
+            <!-- Header shrift o‘lchami -->
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
+            <Setter Property="Background" Value="{DynamicResource SecondaryBackground}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="4"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
@@ -23,19 +83,72 @@
             <Button x:Name="btnExcel" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Content="Excelga o'tkazish" Height="30" VerticalAlignment="Center" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" Click="btnExcel_Click"/>
         </StackPanel>
 
-        <DataGrid x:Name="userDataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}">
+        <DataGrid x:Name="userDataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" 
+                  Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}"
+                  RowStyle="{StaticResource CustomDataGridRowStyle}"
+                  CellStyle="{StaticResource CustomDataGridCellStyle}"
+                  ColumnHeaderStyle="{StaticResource CustomDataGridColumnHeaderStyle}">
+            <DataGrid.Resources>
+                <!-- Standart tanlash ranglarini o‘zgartirish -->
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#476072"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#476072"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White"/>
+            </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Firma nomi" Binding="{Binding FirmaName}" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Mijoz F.I.O" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Telefon" Binding="{Binding Phone}" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Telegram raqam" Binding="{Binding TelegramPhone}" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="JSHSHIR" Binding="{Binding JSHSHIR}" Width="*" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Manzili" Binding="{Binding Adress}" Width="*" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Firma nomi" Binding="{Binding CompanyName}" Width="*" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Margin" Value="10 0 0 0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Hodim F.I.O." Binding="{Binding EmployeeName}" Width="*" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Margin" Value="10 0 0 0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Telefon" Binding="{Binding EmployeePhone}" Width="*" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Margin" Value="10 0 0 0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Rahbar F.I.O." Binding="{Binding ManagerName}" Width="*" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Margin" Value="10 0 0 0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Telefon" Binding="{Binding ManagerPhone}" Width="*" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Margin" Value="10 0 0 0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Manzili" Binding="{Binding YurAddress}" Width="*" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Margin" Value="10 0 0 0"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridTemplateColumn Header="Actions" Width="150">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button x:Name="Edit_Button" Content="✍🏻" ToolTip="Edit" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="{DynamicResource PrimaryTextColor}"  Padding="0" Width="28" Height="28" Background="LightBlue" Click="Edit_Button_Click" />
+                                <Button x:Name="Edit_Button" Content="✍🏻" ToolTip="Edit" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="{DynamicResource PrimaryTextColor}" Padding="0" Width="28" Height="28" Background="LightBlue" Click="Edit_Button_Click"/>
                                 <Button x:Name="Delete_Button" Content="🗑️" ToolTip="Delete" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="{DynamicResource PrimaryTextColor}" Padding="0" Width="28" Height="28" Background="LightBlue" Margin="10 0 0 0" Click="Delete_Button_Click"/>
                             </StackPanel>
                         </DataTemplate>

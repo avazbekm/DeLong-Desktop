@@ -35,9 +35,7 @@
         <Grid Grid.Column="0" Grid.Row="1" Margin="0 10 0 10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <!-- ComboBox uchun -->
                 <RowDefinition Height="*"/>
-                <!-- DataGrid uchun -->
             </Grid.RowDefinitions>
 
             <ComboBox x:Name="cbxCategory"
@@ -93,6 +91,37 @@
                       EnableRowVirtualization="True" 
                       VirtualizingStackPanel.IsVirtualizing="True"
                       Margin="5">
+                <DataGrid.Resources>
+                    <!-- DataGridRow uslubi -->
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#476072"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                    <!-- DataGridCell uslubi -->
+                    <Style TargetType="{x:Type DataGridCell}">
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#476072"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                    <Condition Property="IsKeyboardFocusWithin" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" Value="#476072"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </MultiTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="FontSize" Value="20" />
@@ -134,24 +163,99 @@
             </ScrollViewer>
             <StackPanel x:Name="spReciveProduct" Grid.Row="1" Margin="5">
                 <DataGrid x:Name="receiveDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" Background="#548CA8" Foreground="Snow" RowHeight="40">
-                    <DataGrid.ColumnHeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="FontSize" Value="16" />
-                            <Setter Property="Foreground" Value="Snow" />
-                            <Setter Property="Background" Value="#548CA8"/>
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <DataGrid.Resources>
+                        <!-- DataGridRow uslubi -->
+                        <Style TargetType="{x:Type DataGridRow}">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#476072"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
                         </Style>
-                    </DataGrid.ColumnHeaderStyle>
+                        <!-- DataGridCell uslubi -->
+                        <Style TargetType="{x:Type DataGridCell}">
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#476072"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsSelected" Value="True"/>
+                                        <Condition Property="IsKeyboardFocusWithin" Value="False"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Background" Value="#476072"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                </MultiTrigger>
+                            </Style.Triggers>
+                        </Style>
+                        <!-- DataGridColumnHeader uslubi -->
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="Foreground" Value="Snow"/>
+                            <Setter Property="Background" Value="#548CA8"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Mahsulot nomi" Binding="{Binding ProductName}" Width="*" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Miqdor" Binding="{Binding Quantity}" Width="80"/>
-                        <DataGridTextColumn Header="O'lchov birligi" Binding="{Binding UnitOfMeasure}" Width="100"/>
-                        <DataGridTextColumn Header="Tannarxi" Binding="{Binding CostPrice}" Width="80"/>
-                        <DataGridTextColumn Header="Jami" Binding="{Binding TotalAmount}" Width="100" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Mahsulot nomi" Binding="{Binding ProductName}" Width="*" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="Foreground" Value="Snow"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Margin" Value="10 0 0 0"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Miqdor" Binding="{Binding Quantity}" Width="80">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="Foreground" Value="Snow"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="O'lchov birligi" Binding="{Binding UnitOfMeasure}" Width="100">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="Foreground" Value="Snow"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Tannarxi" Binding="{Binding CostPrice}" Width="80">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="Foreground" Value="Snow"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Jami" Binding="{Binding TotalAmount}" Width="100" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="16"/>
+                                    <Setter Property="Foreground" Value="Snow"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                         <DataGridTemplateColumn Header="O'chirish" Width="80">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="🗑️" Padding="0" Background="red" Height="30" Click="DeleteRow_Click" Tag="{Binding}"/>
+                                    <Button Content="{md:PackIcon Kind=Delete}" Padding="0" Background="DarkRed" Foreground="Snow" Height="30" Width="30" Click="DeleteRow_Click" Tag="{Binding}" Style="{DynamicResource MaterialDesignFlatButton}" ToolTip="O'chirish"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

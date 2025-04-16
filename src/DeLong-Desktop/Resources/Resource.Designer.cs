@@ -205,15 +205,6 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mijoz FIO.
-        /// </summary>
-        internal static string ClientFullname {
-            get {
-                return ResourceManager.GetString("ClientFullname", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Izoh.
         /// </summary>
         internal static string Comment {
@@ -345,6 +336,24 @@ namespace DeLong_Desktop.Resources {
         internal static string DueData_ {
             get {
                 return ResourceManager.GetString("DueData ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hodim FIO.
+        /// </summary>
+        internal static string EmployeeFullname {
+            get {
+                return ResourceManager.GetString("EmployeeFullname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telefon.
+        /// </summary>
+        internal static string EmployeePhone {
+            get {
+                return ResourceManager.GetString("EmployeePhone", resourceCulture);
             }
         }
         
@@ -556,6 +565,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rahbar FIO.
+        /// </summary>
+        internal static string ManagerFullName {
+            get {
+                return ResourceManager.GetString("ManagerFullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mijoz nomi.
         /// </summary>
         internal static string Mijoz_nomi {
@@ -696,15 +714,6 @@ namespace DeLong_Desktop.Resources {
         internal static string Pechat {
             get {
                 return ResourceManager.GetString("Pechat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Telefon.
-        /// </summary>
-        internal static string Phone {
-            get {
-                return ResourceManager.GetString("Phone", resourceCulture);
             }
         }
         

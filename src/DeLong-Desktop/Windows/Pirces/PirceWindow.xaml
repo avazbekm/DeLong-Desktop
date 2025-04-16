@@ -6,78 +6,41 @@
         xmlns:local="clr-namespace:DeLong_Desktop.Windows.Pirces"
         mc:Ignorable="d"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Narx qo'shish oynasi" 
-        Background="#334257" Height="330" Width="400"
+        Title="Narx qo‘shish oynasi" Height="500" Width="400"
+        Background="#334257"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
-
-    <StackPanel x:Name="spPrice">
-        <StackPanel Orientation="Vertical">
-            <!-- Yetkazib beruvchi ComboBox -->
-            <Grid Margin="20 10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Yetkazib beruvchi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Column="0"/>
-                <ComboBox x:Name="cbSupplier" Grid.Column="1" Foreground="Snow" FontSize="16" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cbSupplier_SelectionChanged">
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="ComboBoxItem">
-                            <Setter Property="Background" Value="Gray"/>
+        ResizeMode="NoResize"
+        Closing="Window_Closing">
+    <StackPanel Margin="20">
+        <Label Content="Yetkazib beruvchi:" FontSize="16" VerticalAlignment="Center" Foreground="Snow"/>
+        <ComboBox x:Name="cbSupplier" Margin="0,10,0,0" FontSize="16" 
+                  md:HintAssist.Hint="Taminotchini tanlang" 
+                  Foreground="Snow" md:HintAssist.Foreground="Snow" 
+                  SelectionChanged="cbSupplier_SelectionChanged">
+            <ComboBox.ItemContainerStyle>
+                <Style TargetType="ComboBoxItem">
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryBackground}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Foreground" Value="Snow"/>
-                            <!-- Matn rangini oq saqlash uchun -->
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
-                </ComboBox>
-            </Grid>
-
-            <!-- Qabul qiluvchi ComboBox -->
-            <Grid Margin="20 0 20 10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Qabul qiluvchi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Column="0"/>
-                <ComboBox x:Name="cbReceiver" Grid.Column="1" Foreground="Snow" FontSize="16" DisplayMemberPath="Name" SelectedValuePath="Id">
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="ComboBoxItem">
-                            <Setter Property="Background" Value="Gray"/>
-                            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
-                            <!-- Matn rangini oq saqlash uchun -->
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
-                </ComboBox>
-            </Grid>
-
-            <Grid Margin="20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Kelish narxi -->
-                <Label Content="Tannarxi dollarda:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                <TextBox x:Name="tbIncomePrice" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbIncomePrice_TextChanged"/>
-
-                <!-- sotish narxi -->
-                <Label Content="Sotish narxi dollarda:" Foreground="{DynamicResource SecondaryTextColor}" FontSize="16" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
-                <TextBox x:Name="tbSellPrice" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbSellPrice_TextChanged"/>
-
-                <!-- Miqdori -->
-                <Label Content="Miqdori:" Foreground="{DynamicResource SecondaryTextColor}" FontSize="16" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
-                <TextBox x:Name="tbQuantity" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextChanged="tbQuantity_TextChanged"/>
-
-                <!-- o'lchov birligi -->
-                <Label Content="O'lchov birligi:" Foreground="{DynamicResource SecondaryTextColor}" FontSize="16" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
-                <TextBox x:Name="tbUnitOfMesure" md:HintAssist.Hint="( kg, dona, metr, litr, ... )" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" FontSize="16" Padding="5 0" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-            </Grid>
-            <Button x:Name="btnAddPrice" Content="Saqlash" Padding="0" FontSize="18" Style="{DynamicResource MaterialDesignPaperSecondaryLightButton}" Width="350" Foreground="{DynamicResource SecondaryTextColor}" Background="{DynamicResource SecondaryBackground}" BorderThickness="0" Height="30" Click="btnAddPrice_Click"/>
-        </StackPanel>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.ItemContainerStyle>
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Label Content="Kelish narxi:" FontSize="16" VerticalAlignment="Center" Foreground="Snow" Margin="0,10,0,0"/>
+        <TextBox x:Name="tbIncomePrice" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" Padding="5 0" VerticalAlignment="Center" Margin="0,10,0,0" TextChanged="tbIncomePrice_TextChanged"/>
+        <Label Content="Sotish narxi:" FontSize="16" VerticalAlignment="Center" Foreground="Snow" Margin="0,10,0,0"/>
+        <TextBox x:Name="tbSellPrice" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" Padding="5 0" VerticalAlignment="Center" Margin="0,10,0,0" TextChanged="tbSellPrice_TextChanged"/>
+        <Label Content="Miqdor:" FontSize="16" VerticalAlignment="Center" Foreground="Snow" Margin="0,10,0,0"/>
+        <TextBox x:Name="tbQuantity" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" Padding="5 0" VerticalAlignment="Center" Margin="0,10,0,0" TextChanged="tbQuantity_TextChanged"/>
+        <Label Content="O‘lchov birligi:" FontSize="16" VerticalAlignment="Center" Foreground="Snow" Margin="0,10,0,0"/>
+        <TextBox x:Name="tbUnitOfMesure" md:HintAssist.Hint="(dona, kg, litr, metr . . . )" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" Padding="5 0" VerticalAlignment="Center" Margin="0,10,0,0"/>
+        <Button Content="Qo‘shish" BorderThickness="0" FontSize="16" Background="#548CA8" Width="100" Height="30" HorizontalAlignment="Right" Margin="0,10,0,0" Click="btnAddPrice_Click"/>
     </StackPanel>
 </Window>

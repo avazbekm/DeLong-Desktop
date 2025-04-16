@@ -15,15 +15,20 @@ class PriceService : IPriceService
         _httpClient = httpClient;
     }
 
-    public async ValueTask<bool> AddAsync(PriceCreationDto dto)
+    public async ValueTask<PriceResultDto> AddAsync(PriceCreationDto dto)
     {
         var jsonContent = JsonConvert.SerializeObject(dto);
         var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
         var response = await _httpClient.PostAsync("api/Price/create", content);
         response.EnsureSuccessStatusCode();
-        return response.IsSuccessStatusCode;
+
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<PriceResultDto>(responseContent);
+
+        return result!;
     }
+
 
     public async ValueTask<bool> ModifyAsync(PriceUpdateDto dto)
     {

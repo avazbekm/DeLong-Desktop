@@ -1,0 +1,85 @@
+﻿<Window x:Class="DeLong_Desktop.Windows.Employees.EditEmployeeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Background="{DynamicResource PrimaryBackground}"
+        WindowStartupLocation="CenterScreen"
+        Width="600" Height="650"
+        Title="Xodimni Tahrirlash">
+
+    <!-- Resurslar qismi -->
+    <Window.Resources>
+        <!-- ComboBox itemlari uchun stil -->
+        <Style x:Key="ComboBoxItemStyle" TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="Background" Value="#E0E0E0"/>
+            <!-- Oq emas, och kulrang -->
+            <Setter Property="Foreground" Value="Black"/>
+            <!-- Qora rang -->
+            <Setter Property="Padding" Value="5"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource SelectedBackground}"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <!-- Qora rang saqlanadi -->
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource SelectedBackground}"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <!-- Qora rang saqlanadi -->
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <ScrollViewer>
+        <StackPanel Margin="15">
+            <TextBlock Text="Xodimni tahrirlash" FontSize="18" Foreground="{DynamicResource SecondaryTextColor}" Background="{DynamicResource SecondaryBackground}" Padding="8" TextAlignment="Center"/>
+            <Border Background="{DynamicResource OtherBackground}" Margin="3" Padding="10" CornerRadius="8" BorderBrush="{DynamicResource PrimaryBorderColor}" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="5">
+                        <TextBlock Text="Familiya*" FontSize="16" Foreground="DarkRed" Margin="0 5 0 3"/>
+                        <TextBox x:Name="txtLastName" md:HintAssist.Hint="Familiya" FontWeight="Medium" FontSize="16" Foreground="{DynamicResource PrimaryTextColor}" BorderBrush="{DynamicResource PrimaryBorderColor}" Style="{DynamicResource MaterialDesignOutlinedTextBox}"/>
+                        <TextBlock Text="Ism*" FontSize="16" Foreground="DarkRed" Margin="0 5 0 3"/>
+                        <TextBox x:Name="txtFirstName" md:HintAssist.Hint="Ism" FontWeight="Medium" FontSize="16" Foreground="{DynamicResource PrimaryTextColor}" BorderBrush="{DynamicResource PrimaryBorderColor}" Style="{DynamicResource MaterialDesignOutlinedTextBox}"/>
+                        <TextBlock Text="Jins*" FontSize="16" Foreground="DarkRed" Margin="0 5 0 3"/>
+                        <ComboBox x:Name="cmbGender" md:HintAssist.Hint="Jinsni tanlang" FontWeight="Medium" FontSize="16" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" BorderBrush="{DynamicResource PrimaryBorderColor}" Style="{DynamicResource MaterialDesignComboBox}" ItemContainerStyle="{StaticResource ComboBoxItemStyle}"/>
+                        <TextBlock Text="Telefon*" FontSize="16" Foreground="DarkRed" Margin="0 5 0 3"/>
+                        <TextBox x:Name="txtPhone" md:HintAssist.Hint="Telefon raqami" FontWeight="Medium" FontSize="16" Foreground="{DynamicResource PrimaryTextColor}" BorderBrush="{DynamicResource PrimaryBorderColor}" Style="{DynamicResource MaterialDesignOutlinedTextBox}" TextChanged="txtPhone_TextChanged" PreviewTextInput="txtPhone_PreviewTextInput"/>
+                        <TextBlock Text="Login*" FontSize="16" Foreground="DarkRed" Margin="0 5 0 3"/>
+                        <TextBox x:Name="txtUsername" md:HintAssist.Hint="Username" FontWeight="Medium" FontSize="16" Foreground="{DynamicResource PrimaryTextColor}" BorderBrush="{DynamicResource PrimaryBorderColor}" Style="{DynamicResource MaterialDesignOutlinedTextBox}"/>
+                        <TextBlock Text="Parol" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Margin="0 5 0 3"/>
+                        <PasswordBox x:Name="txtPassword" md:HintAssist.Hint="Parol (o‘zgartirish uchun kiriting)" FontWeight="Medium" FontSize="16" Foreground="{DynamicResource PrimaryTextColor}" BorderBrush="{DynamicResource PrimaryBorderColor}" Style="{DynamicResource MaterialDesignOutlinedPasswordBox}"/>
+                        <TextBlock Text="Rol*" FontSize="16" Foreground="DarkRed" Margin="0 5 0 3"/>
+                        <ComboBox x:Name="cmbRole" md:HintAssist.Hint="Rolni tanlang" FontWeight="Medium" FontSize="16" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" BorderBrush="{DynamicResource PrimaryBorderColor}" Style="{DynamicResource MaterialDesignComboBox}" ItemContainerStyle="{StaticResource ComboBoxItemStyle}"/>
+                        <TextBlock Text="Filial ID*" FontSize="16" Foreground="DarkRed" Margin="0 5 0 3"/>
+                        <ComboBox x:Name="cmbBranchId" md:HintAssist.Hint="Filialni tanlang" FontWeight="Medium" FontSize="16" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" BorderBrush="{DynamicResource PrimaryBorderColor}" Style="{DynamicResource MaterialDesignComboBox}" ItemContainerStyle="{StaticResource ComboBoxItemStyle}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="5">
+                        <TextBlock Text="Otasining ismi" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Margin="0 5 0 3"/>
+                        <TextBox x:Name="txtPatronymic" md:HintAssist.Hint="Otasining ismi" FontWeight="Medium" FontSize="16" Foreground="{DynamicResource PrimaryTextColor}" BorderBrush="{DynamicResource PrimaryBorderColor}" Style="{DynamicResource MaterialDesignOutlinedTextBox}"/>
+                        <TextBlock Text="Pasport seriyasi" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Margin="0 5 0 3"/>
+                        <TextBox x:Name="txtPassportSeries" md:HintAssist.Hint="Pasport seriyasi" FontWeight="Medium" FontSize="16" Foreground="{DynamicResource PrimaryTextColor}" BorderBrush="{DynamicResource PrimaryBorderColor}" Style="{DynamicResource MaterialDesignOutlinedTextBox}"/>
+                        <TextBlock Text="Tug‘ilgan sana" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Margin="0 5 0 3"/>
+                        <DatePicker x:Name="dpDateOfBirth" md:HintAssist.Hint="Tug'ulgan sanani kiriting" FontWeight="Medium" FontSize="16" BorderBrush="{DynamicResource PrimaryBorderColor}"/>
+                        <TextBlock Text="Pasport berilgan sana" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Margin="0 5 0 3"/>
+                        <DatePicker x:Name="dpDateOfIssue" md:HintAssist.Hint="Pasport berilgan sana kiriting" FontWeight="Medium" FontSize="16" BorderBrush="{DynamicResource PrimaryBorderColor}"/>
+                        <TextBlock Text="Pasport amal qilish muddati" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Margin="0 5 0 3"/>
+                        <DatePicker x:Name="dpDateOfExpiry" md:HintAssist.Hint="Pasport amal qilish muddati" FontWeight="Medium" FontSize="16" BorderBrush="{DynamicResource PrimaryBorderColor}"/>
+                        <TextBlock Text="Manzil" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Margin="0 5 0 3"/>
+                        <TextBox x:Name="txtAddress" md:HintAssist.Hint="Manzil" FontWeight="Medium" FontSize="16" Foreground="{DynamicResource PrimaryTextColor}" BorderBrush="{DynamicResource PrimaryBorderColor}" Style="{DynamicResource MaterialDesignOutlinedTextBox}"/>
+                        <TextBlock Text="JSHSHIR" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Margin="0 5 0 3"/>
+                        <TextBox x:Name="txtJshshir" md:HintAssist.Hint="JSHSHIR" FontWeight="Medium" FontSize="16" Foreground="{DynamicResource PrimaryTextColor}" BorderBrush="{DynamicResource PrimaryBorderColor}" Style="{DynamicResource MaterialDesignOutlinedTextBox}" TextChanged="txtJshshir_TextChanged" PreviewTextInput="txtJshshir_PreviewTextInput"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 5">
+                <Button x:Name="btnSave" Content="Saqlash" FontSize="16" Background="{DynamicResource ThreeBackground}" Foreground="{DynamicResource SecondaryTextColor}" Padding="8" Margin="3" md:ButtonAssist.CornerRadius="8" Click="btnSave_Click"/>
+                <Button x:Name="btnCancel" Content="Bekor qilish" FontSize="16" Background="{DynamicResource PrimaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Padding="8" Margin="3" md:ButtonAssist.CornerRadius="8" Click="CancelButton_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

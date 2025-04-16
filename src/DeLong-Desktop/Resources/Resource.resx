@@ -153,8 +153,8 @@
   <data name="Chegirma " xml:space="preserve">
     <value>Chegirma $ da</value>
   </data>
-  <data name="ClientFullname" xml:space="preserve">
-    <value>Mijoz FIO</value>
+  <data name="EmployeeFullname" xml:space="preserve">
+    <value>Hodim FIO</value>
   </data>
   <data name="Comment" xml:space="preserve">
     <value>Izoh</value>
@@ -255,7 +255,7 @@
   <data name="PayDebt" xml:space="preserve">
     <value>Qarzni to‘lash</value>
   </data>
-  <data name="Phone" xml:space="preserve">
+  <data name="EmployeePhone" xml:space="preserve">
     <value>Telefon</value>
   </data>
   <data name="Plastik " xml:space="preserve">
@@ -485,5 +485,8 @@
   </data>
   <data name="Employees" xml:space="preserve">
     <value>Hodim</value>
+  </data>
+  <data name="ManagerFullName" xml:space="preserve">
+    <value>Rahbar FIO</value>
   </data>
 </root>

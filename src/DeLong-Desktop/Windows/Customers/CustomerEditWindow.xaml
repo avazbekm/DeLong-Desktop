@@ -6,107 +6,121 @@
         xmlns:local="clr-namespace:DeLong_Desktop.Windows.Customers"
         mc:Ignorable="d"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Hamkorlarni o'zgartirish oynasi" Height="700" Width="400"
-        WindowStartupLocation="CenterScreen">
+        Title="Mijoz o'zgartirish oynasi" Height="615" Width="800"
+        WindowStartupLocation="CenterScreen" Background="{DynamicResource PrimaryBackground}">
 
-    <Grid  Background="#334257">
+    <Grid Margin="30">
+        <Border Background="{DynamicResource SecondaryBackground}" CornerRadius="12" Padding="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <!--qaytish button-->
-        <StackPanel x:Name="spQaytish" Margin="20 5 20 5" Visibility="Hidden"  Orientation="Horizontal" Grid.Row="0">
-            <Button x:Name="btnQaytish" Content="Qaytish" md:ButtonAssist.CornerRadius="15" BorderThickness="0" Background="#548CA8" Margin="2 0" Foreground="#EEEEEE" Height="30" Width="100" Click="btnQaytish_Click"/>
-        </StackPanel>
-        <StackPanel x:Name="spYurCutomer" Visibility="Hidden"  Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
-            <TextBox x:Name="txtYurINN" MaxLength="9" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="INN" Background="#476072" Foreground="#EEEEEE" TextChanged="txtYurINN_TextChanged"/>
-            <TextBox x:Name="txtYurNomi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Firma nomi" Background="#476072" Foreground="#EEEEEE"/>
-            <TextBox x:Name="txtYurPhone" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telefon nomer" Background="#476072" Foreground="#EEEEEE" TextChanged="txtYurPhone_TextChanged"/>
-            <TextBox x:Name="txtYurMFO" MaxLength="5" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Bank MFO" Background="#476072" Foreground="#E4E0E1" TextChanged="txtYurMFO_TextChanged"/>
-            <TextBox x:Name="txtYurXisobRaqam" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Xisob raqam" Background="#476072" Foreground="#E4E0E1" TextChanged="txtYurXisobRaqam_TextChanged"/>
-            <TextBox x:Name="txtYurBank" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Bank nomi" Background="#476072" Foreground="#EEEEEE"/>
-            <TextBox x:Name="txtYurOKONX" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="OKONX" Background="#476072" Foreground="#EEEEEE" TextChanged="txtYurOKONX_TextChanged"/>
-            <TextBox x:Name="txtYurFirmaAdres" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Firma manzili" Background="#476072" Foreground="#EEEEEE"/>
-            <Button x:Name="btnRahbar" Content="Firma rahbarini o'zgartirish" BorderThickness="0" FontSize="17" Height="30" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Click="btnRahbar_Click"/>
-            <Button x:Name="btnYurAdd" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0" Click="btnYurAdd_Click"/>
-        </StackPanel>
-            <!--YaTT-->
-        <StackPanel x:Name="spYattCutomer" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
-            <TextBox x:Name="txtYattJSHSHIR" MaxLength="14" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="JSHSHIR" Background="#476072" Foreground="#EEEEEE" TextChanged="txtYattJSHSHIR_TextChanged"/>
-            <TextBox x:Name="txtYattNomi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="YaTT Familiya Ismi Sharifi" Background="#476072" Foreground="#EEEEEE"/>
-            <TextBox x:Name="txtYattMFO" MaxLength="5" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Bank MFO" Background="#476072" Foreground="#E4E0E1" TextChanged="txtYattMFO_TextChanged"/>
-            <TextBox x:Name="txtYattXisobRaqam" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Xisob raqam" Background="#476072" Foreground="#E4E0E1" TextChanged="txtYattXisobRaqam_TextChanged"/>
-            <TextBox x:Name="txtYattBank" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Bank nomi" Background="#476072" Foreground="#EEEEEE"/>
-            <TextBox x:Name="txtYattFirmaAdres" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="YaTT manzili" Background="#476072" Foreground="#EEEEEE"/>
-            <TextBox x:Name="txtYattTelefon" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telefon nomer" Background="#476072" Foreground="#EEEEEE" TextChanged="txtYattTelefon_TextChanged"/>
-            <Button x:Name="btnYaTTRahbar" Content="YaTT rahbari" BorderThickness="0" FontSize="17" Height="30" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Click="btnYaTTRahbar_Click"/>
-            <Button x:Name="btnYattAdd" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0,20,0,0" Click="btnYattAdd_Click"/>
-        </StackPanel>
-            <!--Jismoniy shaxs-->
-        <StackPanel x:Name="spJisCutomer" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
-            <TextBox x:Name="txtJisJSHSHIR" MaxLength="14" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="JSHSHIR" Background="#476072" Foreground="#EEEEEE" TextChanged="txtJisJSHSHIR_TextChanged"/>
-            <TextBox x:Name="txtFamiliya" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Familiya" Background="#476072" Foreground="#EEEEEE" />
-            <TextBox x:Name="txtIsmi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Ismi" Background="#476072" Foreground="#EEEEEE"/>
-            <TextBox x:Name="txtSharifi" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Otasining ismi" Background="#476072" Foreground="#EEEEEE"/>
-            <TextBox x:Name="txtPasportSeria" MaxLength="9" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Pasport seria va raqami" Background="#476072" Foreground="#EEEEEE" TextChanged="txtPasportSeria_TextChanged"/>
-            <TextBox x:Name="txtJisAdres" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Manzili" Background="#476072" Foreground="#EEEEEE"/>
-            <TextBox x:Name="txtJisTelefon" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telefon nomer" Background="#476072" Foreground="#EEEEEE" TextChanged="txtJisTelefon_TextChanged"/>
-            <TextBox x:Name="txtJisTelegramRaqam" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telegram raqam" Background="#476072" Foreground="#EEEEEE" TextChanged="txtJisTelegramRaqam_TextChanged"/>
-            <StackPanel Orientation="Horizontal" Height="30" Margin="0 10 0 5" Background="#476072">
-                <RadioButton x:Name="rbtnErkak" Checked="RadioButton_Checked" Margin="30 0 70 0" Background="Snow" FontSize="18" Content="Erkak" Foreground="Snow" GroupName="Gender"/>
-                <RadioButton x:Name="rbtnAyol" Checked="RadioButton_Checked" Margin="20 0 30 0" Background="Snow" FontSize="18" Content="Ayol" Foreground="Snow" GroupName="Gender" />
-            </StackPanel>
-            <DatePicker x:Name="dateOfBirthPicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Tug'ilgan sana" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
-            <DatePicker x:Name="dateOfIssuePicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Pasport berilgan sana" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
-            <DatePicker x:Name="dateOfExpiryPicker" md:HintAssist.Foreground="Snow" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Amal qilish muddati" Margin="0 10 0 5" Background="#476072" Foreground="#EEEEEE" Height="30" />
-            <Button x:Name="btnJisAdd" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Height="30" Margin="0 20 0 0" Click="btnJisAdd_Click"/>
-        </StackPanel>
-        <!--Hodimlar-->
-        <StackPanel x:Name="spEmployee" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
-            <TextBox x:Name="txtEmployeeJSHSHIR" MaxLength="14" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="JSHSHIR" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" TextChanged="txtEmployeeJSHSHIR_TextChanged"/>
-            <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="txtEmployeLastname" FontSize="18" Width="170" Height="30" Margin="0 10 10 5" Padding="5 0 0 0" md:HintAssist.Hint="Familiya" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" />
-                <TextBox x:Name="txtEmployeFirstname" FontSize="18" Width="170" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Ismi" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="txtEmployeePatro" FontSize="18" Width="170" Height="30" Margin="0 10 10 5" Padding="5 0 0 0" md:HintAssist.Hint="Otasining ismi" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}"/>
-                <TextBox x:Name="txtEmployeePasportSeria" MaxLength="9" Width="170" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Pasport seriasi" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" TextChanged="txtEmployeePasportSeria_TextChanged"/>
-            </StackPanel>
-            <TextBox x:Name="txtEmployeeAddress" FontSize="18" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Manzili" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}"/>
-            <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="txtEmployeeTelefon" FontSize="18" Width="170" Height="30" Margin="0 10 10 5" Padding="5 0 0 0" md:HintAssist.Hint="Telefon nomer" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" TextChanged="txtEmployeeTelefon_TextChanged"/>
-                <TextBox x:Name="txtEmployeeTelegramRaqam" FontSize="18" Width="170" Height="30" Margin="0 10 0 5" Padding="5 0 0 0" md:HintAssist.Hint="Telegram raqam" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" TextChanged="txtEmployeeTelegramRaqam_TextChanged"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Height="30" Margin="0 10 0 5" Background="#476072">
-                <RadioButton x:Name="rbtnMale" Checked="RadioButton_Checked" Margin="30 0 70 0" Background="{DynamicResource OtherBackground}" FontSize="18" Content="Erkak" Foreground="{DynamicResource SecondaryTextColor}" GroupName="EmployeeGender"/>
-                <RadioButton x:Name="rbtnFemale" Checked="RadioButton_Checked" Margin="20 0 30 0" Background="{DynamicResource OtherBackground}" FontSize="18" Content="Ayol" Foreground="{DynamicResource SecondaryTextColor}" GroupName="EmployeeGender" />
-            </StackPanel>
-            <DatePicker x:Name="dateOfBirthPickerEmployee" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Tug'ilgan sana" Margin="0 10 0 5" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" Height="30" />
-            <DatePicker x:Name="dateOfIssuePickerEmployee" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Pasport berilgan sana" Margin="0 10 0 5" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" Height="30" />
-            <DatePicker x:Name="dateOfExpiryPickerEmployee" Padding="5 0 0 0" FontSize="17" md:HintAssist.Hint="Amal qilish muddati" Margin="0 10 0 5" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" Height="30" />
-            <StackPanel Orientation="Horizontal">
-                <ComboBox x:Name="cmbRoles" Height="30" Width="450" Margin="0 15 0 10" Foreground="{DynamicResource SecondaryTextColor}" md:HintAssist.Hint="-- Lavozimni tanlang --" FontSize="16" Padding="5 3 15 3"   Background="{DynamicResource SelectedBackground}">
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="ComboBoxItem">
-                            <Setter Property="Background" Value="{DynamicResource SecondaryBackground}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
-                </ComboBox>
-            </StackPanel>
-            <TextBox x:Name="txtLogin" FontSize="18" Height="30"  Margin="0 5" Padding="5 0 0 0" md:HintAssist.Hint="Login" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource PrimaryCursorColor}"/>
-            <TextBox x:Name="txtParol" FontSize="18" Height="30" Margin="0 10" Padding="5 0 0 0" md:HintAssist.Hint="Parol" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource PrimaryCursorColor}"/>
-            <Button x:Name="btnEmployeeUpdate" Visibility="Visible" Content="Yangilash" BorderThickness="0" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Height="30" Margin="0 5 0 0" Click="btnEmployeeUpdate_Click"/>
-        </StackPanel>
+                <TextBlock Text="Mijoz ma'lumotlarini o'zgartirish" FontSize="22" FontWeight="Bold"
+                           Foreground="{DynamicResource SecondaryTextColor}" Margin="0,0,0,20" HorizontalAlignment="Left"/>
 
-        <!--qo'shimcha buttonlar-->
-        <StackPanel x:Name="spJisNew" Visibility="Hidden" Grid.Row="1" Margin="20 0 20 20" VerticalAlignment="Top">
-            <Border x:Name="brQidiruvJ" Background="#476072" CornerRadius="15" Style="{DynamicResource MaterialDesignToolBarMainPanelBorderStyle}" Margin="0 0 10 0" Height="30">
-                <TextBox x:Name="txtSearchJ" MaxLength="14" Padding="3 0 0 0" FontSize="15" md:HintAssist.Hint="JSHSHIR"  md:HintAssist.Foreground="Snow"  Height="32" Width="310" VerticalAlignment="Center" Background="#476072" Foreground="#EEEEEE" TextChanged="txtSearchJ_TextChanged"/>
-            </Border>
-            <Button x:Name="btnSearch" md:ButtonAssist.CornerRadius="15" Content="Qidiruv" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0 20 0 0" Click="btnSearch_Click"/>
-            <Button x:Name="btnExistClient" md:ButtonAssist.CornerRadius="15" Visibility="Hidden" Content="Davom etish" BorderThickness="0" Background="#548CA8" Foreground="#EEEEEE" Width="180" Height="30" Margin="0 20 0 0" Click="btnExistClient_Click"/>
-        </StackPanel>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <!-- Company Name -->
+                            <StackPanel Orientation="Vertical" Margin="0">
+                                <TextBlock Text="*" Foreground="DarkRed" FontSize="16" Margin="0"/>
+                                <TextBox x:Name="txtbCompanyName" md:HintAssist.Hint="Kompaniya nomi"
+                                         FontSize="17" Width="350" Padding="8" Background="{DynamicResource ThreeBackground}"
+                                         Foreground="{DynamicResource SecondaryTextColor}" BorderThickness="0" 
+                                         CaretBrush="{DynamicResource SecondaryTextColor}" FontWeight="Medium"/>
+                            </StackPanel>
+
+                            <!-- Manager Name -->
+                            <StackPanel Orientation="Vertical" Margin="0,5,0,0">
+                                <TextBlock Text="*" Foreground="DarkRed" FontSize="16" Margin="0"/>
+                                <TextBox x:Name="txtbManagerName" md:HintAssist.Hint="Rahbar FIO"
+                                         FontSize="17" Width="350" Padding="8" Background="{DynamicResource ThreeBackground}"
+                                         Foreground="{DynamicResource SecondaryTextColor}" BorderThickness="0" 
+                                         CaretBrush="{DynamicResource SecondaryTextColor}" FontWeight="Medium"/>
+                            </StackPanel>
+
+                            <!-- Manager Phone -->
+                            <StackPanel Orientation="Vertical" Margin="0,5,0,10">
+                                <TextBlock Text="*" Foreground="DarkRed" FontSize="16" Margin="0"/>
+                                <TextBox x:Name="txtbManagerPhone" md:HintAssist.Hint="Rahbar telefon (+998 XX XXXXXXX)"
+                                         FontSize="17" Width="350" Padding="8" Background="{DynamicResource ThreeBackground}"
+                                         Foreground="{DynamicResource SecondaryTextColor}" BorderThickness="0" 
+                                         CaretBrush="{DynamicResource SecondaryTextColor}" FontWeight="Medium"
+                                         TextChanged="txtbManagerPhone_TextChanged" PreviewTextInput="txtbManagerPhone_PreviewTextInput"/>
+                            </StackPanel>
+
+                            <!-- MFO -->
+                            <TextBox x:Name="txtbMFO" MaxLength="5" md:HintAssist.Hint="MFO"
+                                     FontSize="17" Margin="0,10" Padding="8" Background="{DynamicResource ThreeBackground}"
+                                     Foreground="{DynamicResource SecondaryTextColor}" BorderThickness="0" 
+                                     CaretBrush="{DynamicResource SecondaryTextColor}" TextChanged="txtbMFO_TextChanged" FontWeight="Medium"/>
+
+                            <!-- INN -->
+                            <TextBox x:Name="txtbInn" MaxLength="9" md:HintAssist.Hint="INN"
+                                     FontSize="17" Margin="0,10" Padding="8" Background="{DynamicResource ThreeBackground}"
+                                     Foreground="{DynamicResource SecondaryTextColor}" BorderThickness="0" 
+                                     CaretBrush="{DynamicResource SecondaryTextColor}" TextChanged="txtbInn_TextChanged" FontWeight="Medium"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <!-- Bank Account -->
+                            <TextBox x:Name="txtbBankAccount" MaxLength="24" md:HintAssist.Hint="Bank hisob raqami"
+                                     FontSize="17" Margin="0,10" Padding="8" Background="{DynamicResource ThreeBackground}"
+                                     Foreground="{DynamicResource SecondaryTextColor}" BorderThickness="0" 
+                                     CaretBrush="{DynamicResource SecondaryTextColor}" TextChanged="txtbBankAccount_TextChanged" FontWeight="Medium"/>
+
+                            <!-- Bank Name -->
+                            <TextBox x:Name="txtbBankName" md:HintAssist.Hint="Bank nomi"
+                                     FontSize="17" Margin="0,10" Padding="8" Background="{DynamicResource ThreeBackground}"
+                                     Foreground="{DynamicResource SecondaryTextColor}" BorderThickness="0" 
+                                     CaretBrush="{DynamicResource SecondaryTextColor}" FontWeight="Medium"/>
+
+                            <!-- OKONX -->
+                            <TextBox x:Name="txtbOknx" md:HintAssist.Hint="OKONX"
+                                     FontSize="17" Margin="0,10" Padding="8" Background="{DynamicResource ThreeBackground}"
+                                     Foreground="{DynamicResource SecondaryTextColor}" BorderThickness="0" 
+                                     CaretBrush="{DynamicResource SecondaryTextColor}" TextChanged="txtbOknx_TextChanged" FontWeight="Medium"/>
+
+                            <!-- Yur Address -->
+                            <TextBox x:Name="txtbYurAddress" md:HintAssist.Hint="Yuridik manzil"
+                                     FontSize="17" Margin="0,10" Padding="8" Background="{DynamicResource ThreeBackground}"
+                                     Foreground="{DynamicResource SecondaryTextColor}" BorderThickness="0" FontWeight="Medium"/>
+
+                            <!-- Employee Name -->
+                            <TextBox x:Name="txtbEmployeeName" md:HintAssist.Hint="Xodim FIO"
+                                     FontSize="17" Margin="0,10" Padding="8" Background="{DynamicResource ThreeBackground}"
+                                     Foreground="{DynamicResource SecondaryTextColor}" BorderThickness="0" 
+                                     CaretBrush="{DynamicResource SecondaryTextColor}" FontWeight="Medium"/>
+
+                            <!-- Employee Phone -->
+                            <TextBox x:Name="txtbEmployeePhone" md:HintAssist.Hint="Xodim telefon (+998 XX XXXXXXX)"
+                                     FontSize="17" Margin="0,10" Padding="8" Background="{DynamicResource ThreeBackground}"
+                                     Foreground="{DynamicResource SecondaryTextColor}" BorderThickness="0" 
+                                     CaretBrush="{DynamicResource SecondaryTextColor}" TextChanged="txtbEmployeePhone_TextChanged" 
+                                     PreviewTextInput="txtbEmployeePhone_PreviewTextInput" FontWeight="Medium"/>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+
+                <!-- Save Button -->
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+                    <Button x:Name="btnQaytish" Content="Qaytish" FontSize="16" Height="45" Width="150"
+                            Background="{DynamicResource PrimaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" 
+                            md:ButtonAssist.CornerRadius="8" Margin="0,0,10,0" Click="btnQaytish_Click"/>
+                    <Button x:Name="btnYangilash" Content="Yangilash" FontSize="16" Height="45" Width="150"
+                            Background="{DynamicResource PrimaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" 
+                            md:ButtonAssist.CornerRadius="8" Click="btnYangilash_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

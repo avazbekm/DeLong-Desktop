@@ -15,14 +15,17 @@ class CustomerService : ICustomerService
     {
         _httpClient = httpClient;
     }
-    public async ValueTask<bool> AddAsync(CustomerCreationDto dto)
+    public async ValueTask<CustomerResultDto> AddAsync(CustomerCreationDto dto)
     {
         var jsonContent = JsonConvert.SerializeObject(dto);
         var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
         var response = await _httpClient.PostAsync("api/Customer/create", content);
         response.EnsureSuccessStatusCode();
-        return response.IsSuccessStatusCode;
+
+        var jsonResponse = await response.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<Response<CustomerResultDto>>(jsonResponse);
+        return result.Data;
     }
 
     public async ValueTask<bool> ModifyAsync(CustomerUpdateDto dto)
@@ -55,16 +58,6 @@ class CustomerService : ICustomerService
     public async ValueTask<CustomerResultDto> RetrieveByInnAsync(int INN)
     {
         var response = await _httpClient.GetAsync($"api/Customer/get/INN/{INN}");
-        response.EnsureSuccessStatusCode();
-
-        var jsonResponse = await response.Content.ReadAsStringAsync();
-        var result = JsonConvert.DeserializeObject<Response<CustomerResultDto>>(jsonResponse);
-        return result.Data;
-    }
-
-    public async ValueTask<CustomerResultDto> RetrieveByJshshirAsync(string jshshir)
-    {
-        var response = await _httpClient.GetAsync($"api/Customer/get/jshshir/{jshshir}");
         response.EnsureSuccessStatusCode();
 
         var jsonResponse = await response.Content.ReadAsStringAsync();

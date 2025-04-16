@@ -153,8 +153,8 @@
   <data name="Chegirma " xml:space="preserve">
     <value>折扣</value>
   </data>
-  <data name="ClientFullname" xml:space="preserve">
-    <value>客户姓名</value>
+  <data name="EmployeeFullname" xml:space="preserve">
+    <value>員工姓氏</value>
   </data>
   <data name="Comment" xml:space="preserve">
     <value>筆記</value>
@@ -255,7 +255,7 @@
   <data name="PayDebt" xml:space="preserve">
     <value>還清債務</value>
   </data>
-  <data name="Phone" xml:space="preserve">
+  <data name="EmployeePhone" xml:space="preserve">
     <value>电话 </value>
   </data>
   <data name="Plastik " xml:space="preserve">
@@ -485,5 +485,8 @@
   </data>
   <data name="Employees" xml:space="preserve">
     <value>員工</value>
+  </data>
+  <data name="ManagerFullName" xml:space="preserve">
+    <value>領導人的姓氏</value>
   </data>
 </root>

@@ -22,14 +22,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Taminotchi Tahrirlash" FontSize="22" FontWeight="Bold" Foreground="Snow" HorizontalAlignment="Center" Margin="0 0 0 20"/>
+        <TextBlock Text="Taminotchi tahrirlash" FontSize="22" FontWeight="Bold" Foreground="Snow" HorizontalAlignment="Center" Margin="0 0 0 20"/>
 
         <Border Grid.Row="1" Background="#548CA8" CornerRadius="5" Margin="0 0 0 15" Padding="5">
-            <TextBox x:Name="txtPhone" CaretBrush="{DynamicResource SecondaryTextColor}" BorderThickness="0" Background="Transparent" Foreground="Snow" md:HintAssist.Hint="Telefon raqami" FontSize="14"/>
+            <TextBox x:Name="txtPhone" CaretBrush="{DynamicResource SecondaryTextColor}" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource SecondaryTextColor}" md:HintAssist.Hint="Telefon raqami (+998 XX XXXXXXX)" FontSize="16" FontWeight="Medium"
+                     TextChanged="txtPhone_TextChanged" PreviewTextInput="txtPhone_PreviewTextInput"/>
         </Border>
 
         <Border Grid.Row="2" Background="#548CA8" CornerRadius="5" Margin="0 0 0 15" Padding="5">
-            <TextBox x:Name="txtName" CaretBrush="{DynamicResource SecondaryTextColor}" BorderThickness="0" Background="Transparent" Foreground="Snow" md:HintAssist.Hint="Taminotchi nomi" FontSize="14"/>
+            <TextBox x:Name="txtName" CaretBrush="{DynamicResource SecondaryTextColor}" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource SecondaryTextColor}" md:HintAssist.Hint="Taminotchi nomi" FontSize="16" FontWeight="Medium"/>
         </Border>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">

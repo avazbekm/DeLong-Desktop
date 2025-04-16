@@ -755,7 +755,7 @@ public partial class AdditionalOperationsPage : Page
             if (saleDetails != null && saleDetails.CustomerId.HasValue && saleDetails.CustomerId > 0)
             {
                 var customer = await _customerService.RetrieveByIdAsync(saleDetails.CustomerId.Value);
-                tbReturnedFrom.Text = customer?.Name.ToUpper() ?? string.Empty;
+                tbReturnedFrom.Text = customer?.CompanyName.ToUpper() ?? string.Empty;
             }
             else if (saleDetails != null && saleDetails.UserId.HasValue && saleDetails.UserId > 0)
             {

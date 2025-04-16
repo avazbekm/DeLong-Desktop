@@ -108,9 +108,16 @@
                                 </StackPanel>
                             </TreeViewItem.Header>
                         </TreeViewItem>
+                        <TreeViewItem x:Name="employeesTreeItem" Tag="Employees" PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <md:PackIcon Kind="AccountHardHat" Width="20" Height="20" Margin="5,0"/>
+                                    <TextBlock Text="Hodim" Style="{DynamicResource TreeViewItemHeaderStyle}" VerticalAlignment="Center" Margin="5,0"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
                     </TreeViewItem>
                 </TreeView>
-
                 <StackPanel Orientation="Horizontal">
                     <md:PackIcon Kind="Cash" Foreground="{DynamicResource SecondaryTextColor}" 
                  Width="20" Height="20" Margin="47 0 0 0" VerticalAlignment="Center"/>

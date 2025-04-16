@@ -6,13 +6,13 @@
              xmlns:local="clr-namespace:DeLong_Desktop.Companents"
              mc:Ignorable="d" 
              xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="230" d:DesignWidth="400">
+             d:DesignHeight="220" d:DesignWidth="350">
     <StackPanel x:Name="spPrice" Grid.Row="1" Grid.Column="2" Margin="0 10">
         <StackPanel Orientation="Vertical">
             <!-- Mahsulot nomi Label -->
 
             <!-- Chiziq (ostki chegara) uchun Border -->
-            <Border BorderThickness="0,0,0,1" BorderBrush="Snow" Margin="0,0,0,5" />
+            <!--<Border BorderThickness="0,0,0,1" BorderBrush="Snow" Margin="0,0,0,5" />-->
 
             <Grid Margin="20">
                 <Grid.RowDefinitions>
@@ -28,19 +28,19 @@
 
                 <!-- Kelish narxi -->
                 <Label Content="Tannarxi dollarda:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
-                <TextBox x:Name="tbIncomePrice" Text="0.00" Foreground="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                <TextBox x:Name="tbIncomePrice" Padding="5 0 0 0" Text="0.00" Foreground="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
                 <!-- sotish narxi -->
                 <Label Content="Sotish narxi dollarda:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
-                <TextBox x:Name="tbSellPrice" Text="0.00" Foreground ="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                <TextBox x:Name="tbSellPrice" Padding="5 0 0 0" Text="0.00" Foreground ="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
                 <!-- Miqdori -->
                 <Label Content="Miqdori:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
-                <TextBox x:Name="tbQuantity" Text="0.00" Foreground="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                <TextBox x:Name="tbQuantity" Padding="5 0 0 0" Text="0.00" Foreground="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
 
                 <!-- o'lchov birligi -->
                 <Label Content="O'lchov birligi:" Foreground="Snow" FontSize="16" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
-                <TextBox x:Name="tbUnitOfMesure" Text="kg" md:HintAssist.Hint="(kg, dona, metr)" Foreground="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+                <TextBox x:Name="tbUnitOfMesure" Padding="5 0 0 0" md:HintAssist.Hint="(kg, dona, metr, letr . . . )" Foreground="Snow" FontSize="16" BorderThickness="0,0,0,1" BorderBrush="Gray" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
             </Grid>
             <StackPanel Orientation="Horizontal" >
                 <Label x:Name="lbAddPrice" Content="Qo'shish" FontSize="18" Margin="50 0" Foreground="Green" MouseDown="OnAddClick">

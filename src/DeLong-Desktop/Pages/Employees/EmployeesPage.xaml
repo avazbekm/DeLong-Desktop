@@ -3,12 +3,154 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:local="clr-namespace:DeLong_Desktop.Pages.Employees"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="EmployeesPage">
+      Title="EmployeesPage"
+      Background="{DynamicResource PrimaryBackground}">
+
+    <Page.Resources>
+        <!-- UpperCase Converter -->
+        <local:UpperCaseConverter x:Key="UpperCaseConverter"/>
+
+        <!-- DataGridRow Style -->
+        <Style x:Key="CustomDataGridRowStyle" TargetType="{x:Type DataGridRow}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource SelectedBackground}"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsSelected" Value="True"/>
+                        <Condition Property="IsKeyboardFocusWithin" Value="False"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="{DynamicResource SelectedBackground}"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- DataGridCell Style -->
+        <Style x:Key="CustomDataGridCellStyle" TargetType="{x:Type DataGridCell}">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource SelectedBackground}"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsSelected" Value="True"/>
+                        <Condition Property="IsKeyboardFocusWithin" Value="False"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="{DynamicResource SelectedBackground}"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- DataGridColumnHeader Style -->
+        <Style x:Key="CustomDataGridColumnHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
+            <Setter Property="Background" Value="{DynamicResource SecondaryBackground}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="4"/>
+        </Style>
+    </Page.Resources>
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" Margin="10">
+            <Border x:Name="brQidiruv" Background="{DynamicResource SelectedBackground}" CornerRadius="10" Margin="0 0 10 0" Width="220" Height="30">
+                <TextBox x:Name="txtSearch" Padding="3 0 0 0" CaretBrush="{DynamicResource PrimaryCursorColor}" FontSize="15" md:HintAssist.Hint="Qidiruv" Style="{DynamicResource MaterialDesignFilledTextBox}" md:HintAssist.Foreground="{DynamicResource SecondaryTextColor}" Width="200" Height="32" Background="Transparent" Foreground="{DynamicResource SecondaryTextColor}" TextChanged="txtSearch_TextChanged"/>
+            </Border>
+            <Button x:Name="btnAdd" Content="Add" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Height="30" VerticalAlignment="Center" Margin="0 0 10 0" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" Click="btnAdd_Click"/>
+            <Button x:Name="btnExcel" md:ButtonAssist.CornerRadius="10" Style="{DynamicResource MaterialDesignPaperLightButton}" BorderThickness="0" Content="Excelga o'tkazish" Height="30" VerticalAlignment="Center" Background="{DynamicResource SelectedBackground}" Foreground="{DynamicResource SecondaryTextColor}" Click="btnExcel_Click"/>
+        </StackPanel>
+
+        <DataGrid x:Name="employeeDataGrid" Grid.Row="1" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" 
+                  Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}"
+                  RowStyle="{StaticResource CustomDataGridRowStyle}"
+                  CellStyle="{StaticResource CustomDataGridCellStyle}"
+                  ColumnHeaderStyle="{StaticResource CustomDataGridColumnHeaderStyle}">
+            <DataGrid.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#476072"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#476072"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="White"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="White"/>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Familiya" IsReadOnly="True" Binding="{Binding LastName, Converter={StaticResource UpperCaseConverter}}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="10 0 0 0"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Ism" IsReadOnly="True" Binding="{Binding FirstName, Converter={StaticResource UpperCaseConverter}}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="10 0 0 0"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Telefon" IsReadOnly="True" Binding="{Binding Phone, Converter={StaticResource UpperCaseConverter}}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="10 0 0 0"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Rol" IsReadOnly="True" Binding="{Binding Role}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="10 0 0 0"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Username" IsReadOnly="True" Binding="{Binding Username}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="Margin" Value="10 0 0 0"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn Header="Actions" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button x:Name="Edit_Button" Content="✍🏻" ToolTip="Edit" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="{DynamicResource PrimaryTextColor}" Padding="0" Width="28" Height="28" Background="LightBlue" Click="Edit_Button_Click"/>
+                                <Button x:Name="Delete_Button" Content="🗑️" ToolTip="Delete" Style="{DynamicResource MaterialDesignFlatSecondaryDarkButton}" Foreground="{DynamicResource PrimaryTextColor}" Padding="0" Width="28" Height="28" Background="LightBlue" Margin="10 0 0 0" Click="Delete_Button_Click"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>

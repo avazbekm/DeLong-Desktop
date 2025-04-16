@@ -7,4 +7,5 @@ public class TransactionItemCreationDto
     public decimal Quantity { get; set; }
     public string UnitOfMeasure { get; set; } = string.Empty;
     public decimal PriceProduct { get; set; }
+    public decimal SellingPrice { get; set; }
 }

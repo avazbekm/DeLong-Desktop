@@ -9,10 +9,11 @@ using DeLong_Desktop.Pages.Branches;
 using DeLong_Desktop.Pages.Products;
 using DeLong_Desktop.Pages.Suppliers;
 using DeLong_Desktop.Pages.Customers;
+using DeLong_Desktop.Pages.Languages;
 using DeLong_Desktop.Pages.SaleHistory;
 using DeLong_Desktop.Pages.SalesPractice;
 using DeLong_Desktop.Pages.AdditionalOperations;
-using DeLong_Desktop.Pages.Languages;
+using DeLong_Desktop.Pages.Employees;
 
 namespace DeLong_Desktop;
 
@@ -87,6 +88,10 @@ public partial class MainWindow : Window
                 case "Branches":
                     Navigator.Navigate(new BranchesPage(_services));
                     break;
+
+                case "Employees":
+                    Navigator.Navigate(new EmployeesPage(_services));
+                    break;
             }
 
             UpdateLanguage();
@@ -113,11 +118,11 @@ public partial class MainWindow : Window
         #endregion
 
         #region CustomerPage
-        _customerPage.userDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Customer;
-        _customerPage.userDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.ClientFullname;
-        _customerPage.userDataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.Phone;
-        _customerPage.userDataGrid.Columns[3].Header = DeLong_Desktop.Resources.Resource.Telegram_Phone_Number;
-        _customerPage.userDataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.JSHSHIR;
+        _customerPage.userDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.CustomerName;
+        _customerPage.userDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.EmployeeFullname;
+        _customerPage.userDataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.EmployeePhone;
+        _customerPage.userDataGrid.Columns[3].Header = DeLong_Desktop.Resources.Resource.ManagerFullName;
+        _customerPage.userDataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.EmployeePhone;
         _customerPage.userDataGrid.Columns[5].Header = DeLong_Desktop.Resources.Resource.Address;
         _customerPage.userDataGrid.Columns[6].Header = DeLong_Desktop.Resources.Resource.Action;
         HintAssist.SetHint(_customerPage.txtSearch, DeLong_Desktop.Resources.Resource.Search);
@@ -360,7 +365,7 @@ public partial class MainWindow : Window
         #region SaleHistoryPage
         _saleHistoryPage.tbsotuvlartarixi.Text = DeLong_Desktop.Resources.Resource.Sotuvlar_tarixi;
         _saleHistoryPage.saleDataGrid.Columns[0].Header = DeLong_Desktop.Resources.Resource.Chek_Id;
-        _saleHistoryPage.saleDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.ClientFullname;
+        _saleHistoryPage.saleDataGrid.Columns[1].Header = DeLong_Desktop.Resources.Resource.CustomerName;
         _saleHistoryPage.saleDataGrid.Columns[2].Header = DeLong_Desktop.Resources.Resource.Umumiy_summasi_;
         _saleHistoryPage.saleDataGrid.Columns[3].Header = DeLong_Desktop.Resources.Resource.Sana;
         _saleHistoryPage.saleDataGrid.Columns[4].Header = DeLong_Desktop.Resources.Resource.Pechat;

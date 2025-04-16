@@ -59,14 +59,23 @@ public partial class SaleHistoryPage : Page
             var salePracticePage = FindChild<SalePracticePage>(mainWindow);
             if (salePracticePage != null)
             {
-                salePracticePage.SaleCompleted += (s, e) => Refresh();
+                salePracticePage.SaleCompleted += async (s, e) => await RefreshAsync();
             }
         }
     }
 
-    public async void Refresh()
+    public async Task RefreshAsync()
     {
         await LoadSalesAsync();
+        // UI yangilanishini majburlash
+        Dispatcher.Invoke(() =>
+        {
+            if (collectionViewSource != null)
+            {
+                collectionViewSource.View?.Refresh();
+            }
+            saleDataGrid.Items.Refresh();
+        });
     }
 
     private async Task LoadSalesAsync()
@@ -101,17 +110,27 @@ public partial class SaleHistoryPage : Page
                     });
                 }
 
-                collectionViewSource.Source = allSaleItems;
-                saleDataGrid.ItemsSource = collectionViewSource.View;
+                // CollectionViewSource ni yangilash
+                Dispatcher.Invoke(() =>
+                {
+                    collectionViewSource.Source = allSaleItems;
+                    saleDataGrid.ItemsSource = collectionViewSource.View;
+                });
             }
             else
             {
-                MessageBox.Show("Hozircha sotuvlar mavjud emas!", "Ma'lumot", MessageBoxButton.OK, MessageBoxImage.Information);
+                Dispatcher.Invoke(() =>
+                {
+                    MessageBox.Show("Hozircha sotuvlar mavjud emas!", "Ma'lumot", MessageBoxButton.OK, MessageBoxImage.Information);
+                });
             }
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Sotuvlarni yuklashda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+            Dispatcher.Invoke(() =>
+            {
+                MessageBox.Show($"Sotuvlarni yuklashda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
+            });
         }
     }
 

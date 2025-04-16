@@ -139,7 +139,6 @@ public partial class SalePracticePage : Page
         try
         {
             var customers = await _customerService.RetrieveAllAsync();
-            var users = await _userService.RetrieveAllAsync();
 
             allCustomers.Clear(); // Eski ma'lumotlarni tozalash
             if (customers != null)
@@ -148,16 +147,6 @@ public partial class SalePracticePage : Page
                 {
                     CustomerId = customer.Id,
                     Name = $"{char.ToUpper(customer.CompanyName[0]) + customer.CompanyName[1..]} {customer.ManagerPhone}"
-                }));
-            }
-
-            if (users != null)
-            {
-                allCustomers.AddRange(users.Select(user => new ComboboxCustomerItem
-                {
-                    UserId = user.Id,
-                    Name = $"{char.ToUpper(user.FirstName[0]) + user.FirstName[1..]}  " +
-                           $"{char.ToUpper(user.LastName[0]) + user.LastName[1..]} {user.Phone}"
                 }));
             }
 

@@ -8,6 +8,7 @@ using DeLong_Desktop.Windows.Products;
 using Page = System.Windows.Controls.Page;
 using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 
 namespace DeLong_Desktop.Pages.Products;
 
@@ -15,7 +16,7 @@ public partial class ProductsPage : Page
 {
     private readonly IProductService productService;
     private readonly ICategoryService categoryService;
-    private readonly IPriceService priceService; // PriceService qo'shildi
+    private readonly IPriceService priceService;
     private readonly IServiceProvider services;
 
     public static event EventHandler ProductAdded;
@@ -26,10 +27,13 @@ public partial class ProductsPage : Page
         this.services = services;
         categoryService = services.GetRequiredService<ICategoryService>();
         productService = services.GetRequiredService<IProductService>();
-        priceService = services.GetRequiredService<IPriceService>(); // PriceService inizializatsiyasi
+        priceService = services.GetRequiredService<IPriceService>();
 
         LoadCategoriesAsync();
         LoadData();
+
+        // AppState ga joriy ProductsPage ni saqlash
+        AppState.CurrentProductsPage = this;
     }
 
     public async void LoadCategoriesAsync()
@@ -76,7 +80,7 @@ public partial class ProductsPage : Page
         List<Item> items = new List<Item>();
         var categories = await categoryService.RetrieveAllAsync();
         var products = await productService.RetrieveAllAsync();
-        var prices = await priceService.RetrieveAllAsync(); // Barcha narxlarni yuklash
+        var prices = await priceService.RetrieveAllAsync();
 
         if (products is not null)
         {
@@ -85,7 +89,6 @@ public partial class ProductsPage : Page
                 if (product.CategoryId == categoryId)
                 {
                     var category = categories.FirstOrDefault(p => p.Id.Equals(categoryId));
-                    // Mahsulotga tegishli barcha narxlarning Quantity yig'indisini hisoblash
                     var productPrices = prices.Where(p => p.ProductId == product.Id);
                     decimal totalStock = productPrices.Sum(p => p.Quantity);
 
@@ -93,8 +96,8 @@ public partial class ProductsPage : Page
                     {
                         Id = product.Id,
                         Name = product.Name.ToUpper(),
-                        MahsulotBelgisi = product.ProductSign.ToUpper(), // Mahsulot belgisi qo'shildi
-                        Stock = totalStock, // Price dagi Quantity yig'indisi
+                        MahsulotBelgisi = product.ProductSign.ToUpper(),
+                        Stock = totalStock,
                         Category = category.Name.ToUpper(),
                         IsActive = product.IsActive,
                         CategoryId = category.Id
@@ -111,14 +114,13 @@ public partial class ProductsPage : Page
         List<Item> items = new List<Item>();
         var categories = await categoryService.RetrieveAllAsync();
         var products = await productService.RetrieveAllAsync();
-        var prices = await priceService.RetrieveAllAsync(); // Barcha narxlarni yuklash
+        var prices = await priceService.RetrieveAllAsync();
 
         if (products is not null)
         {
             foreach (var product in products)
             {
                 var category = categories.FirstOrDefault(c => c.Id.Equals(product.CategoryId));
-                // Mahsulotga tegishli barcha narxlarning Quantity yig'indisini hisoblash
                 var productPrices = prices.Where(p => p.ProductId == product.Id);
                 decimal totalStock = productPrices.Sum(p => p.Quantity);
 
@@ -126,8 +128,8 @@ public partial class ProductsPage : Page
                 {
                     Id = product.Id,
                     Name = product.Name.ToUpper(),
-                    MahsulotBelgisi = product.ProductSign.ToUpper(), // Mahsulot belgisi qo'shildi
-                    Stock = totalStock, // Price dagi Quantity yig'indisi
+                    MahsulotBelgisi = product.ProductSign.ToUpper(),
+                    Stock = totalStock,
                     Category = category.Name.ToUpper(),
                     IsActive = product.IsActive,
                     CategoryId = category.Id
@@ -135,6 +137,21 @@ public partial class ProductsPage : Page
             }
         }
         dataGrid.ItemsSource = items;
+    }
+
+    public async Task RefreshDataAsync()
+    {
+        if (cmbCategory.SelectedValue is long selectedCategoryId)
+        {
+            if (selectedCategoryId == 0)
+                LoadData();
+            else
+                LoadData(selectedCategoryId);
+        }
+        else
+        {
+            LoadData();
+        }
     }
 
     private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -160,7 +177,7 @@ public partial class ProductsPage : Page
         productAddWindow.ShowDialog();
     }
 
-    private void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
+    private void txtSearch_TextChanged(object sender, RoutedEventArgs e)
     {
         string searchText = txtSearch.Text.Trim();
         FilterProducts(searchText);
@@ -177,7 +194,7 @@ public partial class ProductsPage : Page
         List<Item> items = new List<Item>();
         var categories = await categoryService.RetrieveAllAsync();
         var products = await productService.RetrieveAllAsync();
-        var prices = await priceService.RetrieveAllAsync(); // Barcha narxlarni yuklash
+        var prices = await priceService.RetrieveAllAsync();
 
         if (products is not null)
         {
@@ -185,9 +202,9 @@ public partial class ProductsPage : Page
             {
                 foreach (var product in products)
                 {
-                    var category = categories.FirstOrDefault(c => c.Id.Equals(product.CategoryId));
                     if (product.Name.ToLower().Contains(searchText.ToLower()))
                     {
+                        var category = categories.FirstOrDefault(c => c.Id.Equals(product.CategoryId));
                         var productPrices = prices.Where(p => p.ProductId == product.Id);
                         decimal totalStock = productPrices.Sum(p => p.Quantity);
 
@@ -195,8 +212,8 @@ public partial class ProductsPage : Page
                         {
                             Id = product.Id,
                             Name = product.Name.ToUpper(),
-                            MahsulotBelgisi = product.ProductSign.ToUpper(), // Mahsulot belgisi qo'shildi
-                            Stock = totalStock, // Price dagi Quantity yig'indisi
+                            MahsulotBelgisi = product.ProductSign.ToUpper(),
+                            Stock = totalStock,
                             Category = category.Name.ToUpper(),
                             IsActive = product.IsActive,
                             CategoryId = category.Id
@@ -218,8 +235,8 @@ public partial class ProductsPage : Page
                         {
                             Id = product.Id,
                             Name = product.Name.ToUpper(),
-                            MahsulotBelgisi = product.ProductSign.ToUpper(), // Mahsulot belgisi qo'shildi
-                            Stock = totalStock, // Price dagi Quantity yig'indisi
+                            MahsulotBelgisi = product.ProductSign.ToUpper(),
+                            Stock = totalStock,
                             Category = category.Name.ToUpper(),
                             IsActive = product.IsActive,
                             CategoryId = category.Id

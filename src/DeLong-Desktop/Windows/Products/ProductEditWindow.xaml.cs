@@ -39,6 +39,8 @@ public partial class ProductEditWindow : Window
         var product = await productService.RetrieveByIdAsync(ProductInfo.ProductId);
 
         txtbName.Text = product.Name.ToUpper();
+        txtbProductSign.Text = product.ProductSign.ToUpper();
+        txtbStock.Text = product.MinStockLevel.ToString();
     }
 
     private async void rbtnCategory_Click(object sender, RoutedEventArgs e)

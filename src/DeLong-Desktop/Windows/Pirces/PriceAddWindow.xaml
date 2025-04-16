@@ -6,13 +6,26 @@
         xmlns:local="clr-namespace:DeLong_Desktop.Windows.Pirces"
         mc:Ignorable="d"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="PriceAddWindow" Height="180" Width="400"
+        Title="Narx yangilash oynasi" Height="300" Width="400"
         Background="#334257"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
     <StackPanel Margin="20">
-        <Label Content="Miqdori:" FontSize="16" VerticalAlignment="Center" Foreground="Snow"/>
-        <TextBox x:Name="tbQuantity" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" Padding="5 0"  VerticalAlignment="Center" Margin="0,10,0,0" TextChanged="tbQuantity_TextChanged"/>
-        <Button Content="Saqlash" BorderThickness="0" FontSize="16" Background="#548CA8" Width="100" Height="30" HorizontalAlignment="Right" Click="Save_Click"/>
+        <Label Content="Yetkazib beruvchi:" FontSize="16" VerticalAlignment="Center" Foreground="Snow"/>
+        <ComboBox x:Name="cbSupplier" Margin="0,10,0,0" FontSize="16" md:HintAssist.Hint="Taminotchini tanlang" Foreground="Snow" md:HintAssist.Foreground="Snow">
+            <ComboBox.ItemContainerStyle>
+                <Style TargetType="ComboBoxItem">
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextColor}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Foreground" Value="Snow"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.ItemContainerStyle>
+        </ComboBox>
+        <Label Content="Qo‘shimcha miqdor:" FontSize="16" VerticalAlignment="Center" Foreground="Snow" Margin="0,10,0,0"/>
+        <TextBox x:Name="tbQuantity" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" CaretBrush="{DynamicResource SecondaryTextColor}" Padding="5 0" VerticalAlignment="Center" Margin="0,10,0,0" TextChanged="tbQuantity_TextChanged"/>
+        <Button Content="Saqlash" BorderThickness="0" FontSize="16" Background="#548CA8" Width="100" Height="30" HorizontalAlignment="Right" Margin="0,10,0,0" Click="Save_Click"/>
     </StackPanel>
 </Window>

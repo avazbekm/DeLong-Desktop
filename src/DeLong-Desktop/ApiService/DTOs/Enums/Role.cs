@@ -2,7 +2,6 @@
 
 public enum Role
 {
-    Mijoz,
     Agent,
     Omborchi,
     Sotuvchi,

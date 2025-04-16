@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using DeLong_Desktop.Pages.Input;
 using DeLong_Desktop.ApiService.Interfaces;
-using DeLong_Desktop.ApiService.DTOs.Prices;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DeLong_Desktop.Windows.Pirces;
@@ -10,8 +9,6 @@ namespace DeLong_Desktop.Windows.Pirces;
 public partial class PirceWindow : Window
 {
     private readonly IServiceProvider _services;
-    private readonly IPriceService _priceService;
-    private readonly IBranchService _branchService;
     private readonly ISupplierService _supplierService;
     public event EventHandler PriceAdded;
 
@@ -19,24 +16,15 @@ public partial class PirceWindow : Window
     {
         InitializeComponent();
         _services = services;
-        _priceService = services.GetRequiredService<IPriceService>();
-        _branchService = services.GetRequiredService<IBranchService>();
         _supplierService = services.GetRequiredService<ISupplierService>();
-
-        LoadSuppliersAndBranches();
-        LoadReceivers();
+        LoadSuppliersAsync();
     }
 
-    private async void LoadSuppliersAndBranches()
+    private async void LoadSuppliersAsync()
     {
         try
         {
             var supplierItems = new List<object> { new { Id = (long?)null, Name = "Tanlanmagan" } };
-            var branches = await _branchService.RetrieveAllAsync();
-            if (branches != null)
-            {
-                supplierItems.AddRange(branches.Select(b => new { Id = (long?)b.Id, Name = b.BranchName }));
-            }
             var suppliers = await _supplierService.RetrieveAllAsync();
             if (suppliers != null)
             {
@@ -51,22 +39,6 @@ public partial class PirceWindow : Window
         }
     }
 
-    private async void LoadReceivers()
-    {
-        try
-        {
-            var branches = await _branchService.RetrieveAllAsync();
-            if (branches != null)
-            {
-                cbReceiver.ItemsSource = branches.Select(b => new { Id = b.Id, Name = b.BranchName }).ToList();
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Qabul qiluvchilarni yuklashda xato: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-
     private void cbSupplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (cbSupplier.SelectedItem != null)
@@ -75,7 +47,7 @@ public partial class PirceWindow : Window
             long? selectedId = selectedItem?.Id;
             if (!selectedId.HasValue)
             {
-                cbReceiver.SelectedIndex = -1;
+                cbSupplier.SelectedIndex = -1;
             }
         }
     }
@@ -119,7 +91,7 @@ public partial class PirceWindow : Window
         }
     }
 
-    private async void btnAddPrice_Click(object sender, RoutedEventArgs e)
+    private void btnAddPrice_Click(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -132,26 +104,32 @@ public partial class PirceWindow : Window
                 return;
             }
 
+            if (!decimal.TryParse(tbQuantity.Text, out decimal quantity) || quantity <= 0)
+            {
+                MessageBox.Show("Miqdor 0 dan katta bo‘lishi kerak.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!decimal.TryParse(tbIncomePrice.Text, out decimal costPrice) || costPrice <= 0)
+            {
+                MessageBox.Show("Kelish narxi 0 dan katta bo‘lishi kerak.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!decimal.TryParse(tbSellPrice.Text, out decimal sellingPrice) || sellingPrice <= 0)
+            {
+                MessageBox.Show("Sotish narxi 0 dan katta bo‘lishi kerak.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             var selectedSupplier = cbSupplier.SelectedItem as dynamic;
             long? supplierId = selectedSupplier?.Id;
-            InputInfo.SupplierId = supplierId.Value;
-            var selectedReceiver = cbReceiver.SelectedItem as dynamic;
-            long? receiverId = selectedReceiver?.Id;
-            InputInfo.BranchId = receiverId.Value;
-
-            // Price qo‘shish
-            var priceCreationDto = new PriceCreationDto
+            if (!supplierId.HasValue)
             {
-                SupplierId = supplierId,
-                ProductId = InputInfo.ProductId,
-                CostPrice = decimal.Parse(tbIncomePrice.Text),
-                SellingPrice = decimal.Parse(tbSellPrice.Text),
-                UnitOfMeasure = tbUnitOfMesure.Text,
-                Quantity = decimal.Parse(tbQuantity.Text)
-            };
-            await _priceService.AddAsync(priceCreationDto);
+                MessageBox.Show("Yetkazib beruvchi tanlanmagan.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            // InputPage’dagi receiveDataGrid ga qo‘shish
             var inputPage = AppState.CurrentInputPage;
             if (inputPage != null)
             {
@@ -160,26 +138,35 @@ public partial class PirceWindow : Window
                 {
                     ProductId = InputInfo.ProductId,
                     ProductName = product?.Product ?? "Noma'lum",
-                    Quantity = decimal.Parse(tbQuantity.Text),
+                    Quantity = quantity,
                     UnitOfMeasure = tbUnitOfMesure.Text,
-                    CostPrice = decimal.Parse(tbIncomePrice.Text),
-                    TotalAmount = decimal.Parse(tbIncomePrice.Text) * decimal.Parse(tbQuantity.Text)
+                    CostPrice = costPrice,
+                    TotalAmount = costPrice * quantity,
+                    SupplierId = supplierId.Value,
+                    SellingPrice = sellingPrice,
+                    IsUpdate = false,
+                    PriceId = 0
                 });
                 inputPage.RefreshReceiveDataGrid();
             }
 
-            // UI ni tozalash
             tbIncomePrice.Text = "";
             tbSellPrice.Text = "";
             tbQuantity.Text = "";
             tbUnitOfMesure.Text = "";
+            cbSupplier.SelectedIndex = 0;
 
-            MessageBox.Show("Mahsulot qo‘shildi.", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
             PriceAdded?.Invoke(this, EventArgs.Empty);
+            Close();
         }
         catch (Exception ex)
         {
             MessageBox.Show($"Xatolik yuz berdi: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+    }
+
+    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        PriceAdded?.Invoke(this, EventArgs.Empty);
     }
 }

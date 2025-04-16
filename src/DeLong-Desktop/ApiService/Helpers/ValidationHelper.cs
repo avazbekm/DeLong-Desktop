@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -42,19 +43,6 @@ public static class ValidationHelper
 
         if (filteredText.Length > 9) filteredText = filteredText.Substring(0, 9);
 
-        if (textBox.Text != filteredText)
-        {
-            int caretIndex = textBox.CaretIndex;
-            textBox.Text = filteredText;
-            textBox.CaretIndex = Math.Min(caretIndex, textBox.Text.Length);
-        }
-    }
-
-    public static void ValidatePhone(TextBox textBox)
-    {
-        if (textBox == null) return;
-
-        string filteredText = new string(textBox.Text.Where(c => char.IsDigit(c) || c == ' ').ToArray());
         if (textBox.Text != filteredText)
         {
             int caretIndex = textBox.CaretIndex;
@@ -127,6 +115,28 @@ public static class ValidationHelper
             textBox.Text = filteredText.ToString();
             textBox.CaretIndex = Math.Min(oldCaretIndex, textBox.Text.Length);
         }
+    }
+    // Telefon raqamini UI da validatsiya qilish (rang o‘zgartirish)
+    public static void ValidatePhone(TextBox textBox)
+    {
+        if (textBox == null) return;
+
+        string text = textBox.Text?.Trim() ?? string.Empty;
+        if (!string.IsNullOrEmpty(text) && !Regex.IsMatch(text, @"^\+998 \d{2} \d{7}$"))
+        {
+            textBox.Foreground = System.Windows.Media.Brushes.DarkRed;
+        }
+        else
+        {
+            textBox.Foreground = System.Windows.Media.Brushes.Black;
+        }
+    }
+
+    // Telefon raqamini string sifatida validatsiya qilish
+    public static bool IsValidPhone(string phone)
+    {
+        if (string.IsNullOrEmpty(phone)) return false; // Bo‘sh telefon raqami noto‘g‘ri
+        return Regex.IsMatch(phone, @"^\+998 \d{2} \d{7}$");
     }
 
 }
