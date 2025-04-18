@@ -489,4 +489,7 @@
   <data name="ManagerFullName" xml:space="preserve">
     <value>領導人的姓氏</value>
   </data>
+  <data name="HistoryInput" xml:space="preserve">
+    <value>收入歷史</value>
+  </data>
 </root>

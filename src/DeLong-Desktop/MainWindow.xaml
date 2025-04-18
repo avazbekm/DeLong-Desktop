@@ -22,7 +22,7 @@
             <StackPanel Margin="20">
 
                 <TreeView x:Name="SidenavMenuProducts" FontSize="17" Background="Transparent" 
-                          BorderThickness="0" Foreground="{DynamicResource SecondaryTextColor}">
+          BorderThickness="0" Foreground="{DynamicResource SecondaryTextColor}">
                     <!-- Mahsulot bo'limi -->
                     <TreeViewItem x:Name="productsTreeItem" IsExpanded="False">
                         <TreeViewItem.Header>
@@ -33,7 +33,7 @@
                         </TreeViewItem.Header>
                         <!-- Sub-item'lar -->
                         <TreeViewItem x:Name="productsListTreeItem" Tag="ProductsList" 
-                                      PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
+                      PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
                             <TreeViewItem.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <md:PackIcon Kind="Package" Width="20" Height="20" Margin="5,0"/>
@@ -42,7 +42,7 @@
                             </TreeViewItem.Header>
                         </TreeViewItem>
                         <TreeViewItem x:Name="incomingTreeItem" Tag="Incoming" 
-                                      PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
+                      PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
                             <TreeViewItem.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <md:PackIcon Kind="PackageVariantClosed" Width="20" Height="20" Margin="5,0"/>
@@ -50,9 +50,17 @@
                                 </StackPanel>
                             </TreeViewItem.Header>
                         </TreeViewItem>
+                        <TreeViewItem x:Name="historyTreeItem" Tag="History" 
+                      PreviewMouseLeftButtonDown="TreeViewItem_PreviewMouseLeftButtonDown">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <md:PackIcon Kind="History" Width="20" Height="20" Margin="5,0"/>
+                                    <TextBlock Text="Kirim tarixi" VerticalAlignment="Center" Margin="5,0"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
                     </TreeViewItem>
                 </TreeView>
-
                 <TreeView x:Name="SidenavMenuSales" FontSize="17" Background="Transparent" BorderThickness="0" Foreground="{DynamicResource SecondaryTextColor}">
                     <!-- Sotuv bo'limi -->
                     <TreeViewItem x:Name="salesTreeItem" IsExpanded="False">

@@ -489,4 +489,7 @@
   <data name="ManagerFullName" xml:space="preserve">
     <value>Rahbar FIO</value>
   </data>
+  <data name="HistoryInput" xml:space="preserve">
+    <value>Kirim tarixi</value>
+  </data>
 </root>

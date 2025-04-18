@@ -6,4 +6,5 @@ namespace DeLong_Desktop.ApiService.Interfaces;
 public interface ITransactionProcessingService
 {
     Task<TransactionResultDto> ProcessTransactionAsync(List<ReceiveItem> receiveItems);
+    Task<TransactionResultDto> ProcessTransactionAsync(List<ReceiveItem> receiveItems, Guid? requestId);
 }

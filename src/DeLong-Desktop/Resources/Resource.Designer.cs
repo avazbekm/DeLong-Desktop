@@ -394,6 +394,15 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kirim tarixi.
+        /// </summary>
+        internal static string HistoryInput {
+            get {
+                return ResourceManager.GetString("HistoryInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kirim.
         /// </summary>
         internal static string Incoming {

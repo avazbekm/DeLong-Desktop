@@ -11,6 +11,7 @@ public class TransactionResultDto
     public long? BranchIdTo { get; set; } // Qabul qiluvchi filial ID
     public TransactionType TransactionType { get; set; } // Tranzaksiya turi
     public string Comment { get; set; } = string.Empty; // Izoh
+    public Guid? RequestId { get; set; } // Idempotentlik uchun qo‘shildi
     public List<TransactionItemResultDto> Items { get; set; } = new List<TransactionItemResultDto>(); // Tranzaksiya elementlari
     public long CreatedBy { get; set; }
     public DateTimeOffset CreatedAt { get; set; } // Yaratilgan vaqt (Auditable’dan)

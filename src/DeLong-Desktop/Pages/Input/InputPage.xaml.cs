@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using DeLong_Desktop.Companents;
@@ -8,7 +11,6 @@ using DeLong_Desktop.ApiService.DTOs.Prices;
 using DeLong_Desktop.ApiService.DTOs.Products;
 using DeLong_Desktop.ApiService.DTOs.Category;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
 
 namespace DeLong_Desktop.Pages.Input;
 
@@ -227,8 +229,17 @@ public partial class InputPage : Page
                 return;
             }
 
+            // TotalAmount ni hisoblash
+            foreach (var item in _receiveItems)
+            {
+                item.TotalAmount = item.CostPrice * item.Quantity;
+            }
+
+            // Idempotentlik uchun requestId
+            var requestId = Guid.NewGuid();
+
             // Tranzaksiyani yuborish
-            var transaction = await _transactionProcessingService.ProcessTransactionAsync(_receiveItems);
+            var transaction = await _transactionProcessingService.ProcessTransactionAsync(_receiveItems, requestId);
             if (transaction == null)
             {
                 MessageBox.Show("Tranzaksiyani yakunlashda xato yuz berdi.", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -236,7 +247,7 @@ public partial class InputPage : Page
             }
 
             // Muvaffaqiyatli yakunlanganda
-            MessageBox.Show("Tranzaksiya muvaffaqiyatli yakunlandi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show($"Tranzaksiya #{transaction.Id} muvaffaqiyatli yakunlandi va qarz ro‘yxatga olindi!", "Muvaffaqiyat", MessageBoxButton.OK, MessageBoxImage.Information);
             _receiveItems.Clear();
             RefreshReceiveDataGrid();
 
@@ -244,6 +255,12 @@ public partial class InputPage : Page
             if (AppState.CurrentProductsPage != null)
             {
                 await AppState.CurrentProductsPage.RefreshDataAsync();
+            }
+
+            // HistoryPage ni yangilash
+            if (AppState.CurrentHistoryPage != null)
+            {
+                AppState.CurrentHistoryPage.LoadHistoryAsync();
             }
         }
         catch (Exception ex)

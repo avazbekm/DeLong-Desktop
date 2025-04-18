@@ -14,6 +14,7 @@ using DeLong_Desktop.Pages.SaleHistory;
 using DeLong_Desktop.Pages.SalesPractice;
 using DeLong_Desktop.Pages.AdditionalOperations;
 using DeLong_Desktop.Pages.Employees;
+using DeLong_Desktop.Pages.InputHistories;
 
 namespace DeLong_Desktop;
 
@@ -91,6 +92,10 @@ public partial class MainWindow : Window
 
                 case "Employees":
                     Navigator.Navigate(new EmployeesPage(_services));
+                    break;
+
+                case "History":
+                    Navigator.Navigate(new HistoryPage(_services));
                     break;
             }
 
@@ -244,6 +249,16 @@ public partial class MainWindow : Window
                     if (incomingPanel.Children[1] is TextBlock incomingText)
                     {
                         incomingText.Text = DeLong_Desktop.Resources.Resource.Incoming;
+                    }
+                }
+            }
+            if (productsItem.Items.Count > 2 && productsItem.Items[2] is TreeViewItem historyItem)
+            {
+                if (historyItem.Header is StackPanel historyPanel && historyPanel.Children.Count > 2)
+                {
+                    if (historyPanel.Children[1] is TextBlock historyText)
+                    {
+                        historyText.Text = DeLong_Desktop.Resources.Resource.HistoryInput;
                     }
                 }
             }
