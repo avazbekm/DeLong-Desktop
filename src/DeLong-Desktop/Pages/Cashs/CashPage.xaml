@@ -189,8 +189,8 @@
                                                 <TextBlock Grid.Column="1" Text="{Binding From}" FontSize="14" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center"/>
                                                 <TextBlock Grid.Column="2" Text="{Binding To}" FontSize="14" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center"/>
                                                 <TextBlock Grid.Column="3" Text="{Binding Note}" FontSize="14" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                                                <TextBlock Grid.Column="4" Text="{Binding Income, StringFormat={}{0:N0}}" FontSize="14" Foreground="#28A745" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                                <TextBlock Grid.Column="5" Text="{Binding Expense, StringFormat={}{0:N0}}" FontSize="14" Foreground="#DC3545" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 15 0"/>
+                                                <TextBlock Grid.Column="4" Text="{Binding Income, StringFormat={}{0:N2}}" FontSize="14" Foreground="#28A745" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                <TextBlock Grid.Column="5" Text="{Binding Expense, StringFormat={}{0:N2}}" FontSize="14" Foreground="#DC3545" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 15 0"/>
                                                 <TextBlock Grid.Column="6" Text="{Binding ExecutorName}" FontSize="14" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center"/>
                                                 <TextBlock Grid.Column="7" Text="{Binding TransferDate, Converter={StaticResource UtcToUzbekistanTimeConverter}, StringFormat={}{0:dd.MM.yyyy HH:mm:ss}}" FontSize="14" Foreground="{StaticResource PrimaryTextColor}" VerticalAlignment="Center"/>
                                             </Grid>

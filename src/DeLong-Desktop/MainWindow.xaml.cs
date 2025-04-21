@@ -413,7 +413,7 @@ public partial class MainWindow : Window
 
     private void btnReport_Click(object sender, RoutedEventArgs e)
     {
-        var reportPage = new ReportPage();
+        var reportPage = new ReportPage(_services);
         Navigator.Navigate(reportPage);
     }
 

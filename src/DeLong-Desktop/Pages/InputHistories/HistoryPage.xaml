@@ -29,6 +29,15 @@
         <Style x:Key="ComboBoxItemBlackForeground" TargetType="ComboBoxItem">
             <Setter Property="Foreground" Value="Black"/>
         </Style>
+        <!-- TextBox Style for Payment Input and Comment -->
+        <Style x:Key="PaymentTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="Foreground" Value="Snow"/>
+            <Setter Property="md:HintAssist.Foreground" Value="Snow"/>
+            <Setter Property="md:TextFieldAssist.UnderlineBrush" Value="Snow"/>
+            <Setter Property="Background" Value="{DynamicResource OtherBackground}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
     </Page.Resources>
 
     <Grid>
@@ -36,6 +45,7 @@
             <RowDefinition Height="55"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Sarlavha va Search qatori -->
@@ -68,7 +78,7 @@
         </StackPanel>
 
         <!-- DataGrid -->
-        <DataGrid x:Name="historyDataGrid" Grid.Row="2" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" FontSize="20" >
+        <DataGrid x:Name="historyDataGrid" Grid.Row="2" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" FontSize="20" SelectionChanged="historyDataGrid_SelectionChanged">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridRow}">
                     <Setter Property="Background" Value="Transparent"/>
@@ -79,9 +89,12 @@
                         </Trigger>
                         <DataTrigger Binding="{Binding Status}" Value="To‘langan">
                             <Setter Property="Background" Value="LightGreen"/>
+                            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextColor}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Status}" Value="Qisman to‘langan">
-                            <Setter Property="Background" Value="LightYellow"/>
+                            <Setter Property="Background" Value="Yellow"/>
+                            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextColor}"/>
+
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Status}" Value="To‘lanmagan">
                             <Setter Property="Background" Value="LightCoral"/>
@@ -113,7 +126,7 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Yuk ID" IsReadOnly="True" Binding="{Binding Id}" Width="100">
+                <DataGridTextColumn Header="Yuk ID" IsReadOnly="True" Binding="{Binding TransactionId}" Width="100">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -160,6 +173,13 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
+                <DataGridTextColumn Header="Sana" IsReadOnly="True" Binding="{Binding Date, StringFormat=dd.MM.yyyy}" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridTemplateColumn Header="Tafsilotlar" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -169,5 +189,12 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+
+        <!-- To‘lov summasi, Izoh va To‘lash tugmasi -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="10,5,10,10" HorizontalAlignment="Left">
+            <TextBox x:Name="txtPaymentAmount" Foreground="{DynamicResource PrimaryTextColor}" Width="150" FontSize="16" md:HintAssist.Hint="To‘lov summasi" Style="{StaticResource PaymentTextBoxStyle}" ToolTip="To‘lov summasini kiriting" PreviewTextInput="txtPaymentAmount_PreviewTextInput"/>
+            <TextBox x:Name="txtComment" Foreground="{DynamicResource PrimaryTextColor}" Width="200" Margin="10,0,10,0" FontSize="16" md:HintAssist.Hint="Izoh" Style="{StaticResource PaymentTextBoxStyle}" ToolTip="To‘lov uchun izoh kiriting"/>
+            <Button x:Name="btnPay" Content="To‘lash" Padding="10,5" FontSize="16" Click="PayButton_Click" Style="{DynamicResource MaterialDesignPaperSecondaryLightButton}" ToolTip="Tanlangan qarzga to‘lov qilish"/>
+        </StackPanel>
     </Grid>
 </Page>

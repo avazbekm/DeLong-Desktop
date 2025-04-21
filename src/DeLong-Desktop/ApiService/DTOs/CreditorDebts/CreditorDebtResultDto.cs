@@ -6,6 +6,7 @@ public class CreditorDebtResultDto
 {
     public long Id { get; set; }
     public long SupplierId { get; set; }
+    public long TransactionId { get; set; }
     public string? SupplierName { get; set; } // Ta'minotchi nomi uchun (join orqali)
     public DateTimeOffset Date { get; set; }
     public decimal RemainingAmount { get; set; }

@@ -799,7 +799,7 @@ namespace DeLong_Desktop.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Qarzni tolash.
+        ///   Looks up a localized string similar to Nasiyani undirish.
         /// </summary>
         internal static string Qarzni_tolash {
             get {

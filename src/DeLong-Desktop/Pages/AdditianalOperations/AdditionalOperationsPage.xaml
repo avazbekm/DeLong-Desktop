@@ -96,9 +96,9 @@
         <!-- Tab’lar -->
         <TabControl Grid.Row="1" Margin="5">
             <!-- Tab 1: Qarzni To‘lash -->
-            <TabItem x:Name="debtTabItem"  Margin="4,0,0,0">
+            <TabItem x:Name="debtTabItem" Margin="4,0,0,0">
                 <TabItem.Header>
-                    <TextBlock x:Name="tbqarznitolash"  Text="Qarzni to‘lash" Padding="10 0" FontSize="16" />
+                    <TextBlock x:Name="tbqarznitolash" Text="Nasiyani undirish" Padding="10 0" FontSize="16"/>
                 </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -112,7 +112,6 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="60"/>
-                        <!-- Yangi Row qo‘shildi -->
                     </Grid.RowDefinitions>
 
                     <!-- Qidiruv qatori -->
@@ -123,14 +122,52 @@
 
                     <!-- Qarzlar ro‘yxati -->
                     <DataGrid x:Name="debtDataGrid" Grid.Row="1" Margin="5,5,5,5" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" Grid.ColumnSpan="5" SelectionChanged="DebtDataGrid_SelectionChanged">
+                        <DataGrid.Resources>
+                            <!-- DataGridRow Style -->
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#476072"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                            <!-- DataGridCell Style -->
+                            <Style TargetType="{x:Type DataGridCell}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#476072"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </Trigger>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="IsSelected" Value="True"/>
+                                            <Condition Property="IsKeyboardFocusWithin" Value="False"/>
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="Background" Value="#476072"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                    </MultiTrigger>
+                                </Style.Triggers>
+                            </Style>
+                            <!-- DataGridColumnHeader Style -->
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="FontSize" Value="16"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="Background" Value="{DynamicResource SecondaryBackground}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
+                            </Style>
+                        </DataGrid.Resources>
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="dtmijoznomi" Header="Mijoz nomi" IsReadOnly="True" Binding="{Binding CustomerName}" Width="250"/>
                             <DataGridTextColumn x:Name="dtqarzsummasi" Header="Qarz summasi" IsReadOnly="True" Binding="{Binding RemainingAmount, StringFormat=N2}" Width="150"/>
                             <DataGridTextColumn x:Name="dttolashmuddati" Header="To'lash muddat" IsReadOnly="True" Binding="{Binding DueDate, StringFormat=dd.MM.yyyy}" Width="150"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <!-- Yangi Row: Jami qarz va to‘lov summalari -->
-                    <Border Grid.Row="2" Grid.ColumnSpan="5" Background="{DynamicResource SecondaryBackground}"  Margin="5,5,5,5" CornerRadius="5">
+                    <!-- Jami qarz va to‘lov summalari -->
+                    <Border Grid.Row="2" Grid.ColumnSpan="5" Background="{DynamicResource SecondaryBackground}" Margin="5,5,5,5" CornerRadius="5">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -191,27 +228,20 @@
 
                             <!-- ProductName (ComboBox) -->
                             <md:Card Grid.Row="1" Grid.Column="0" Margin="10" Padding="10" Background="{DynamicResource SecondaryBackground}" md:ElevationAssist.Elevation="Dp16">
-                                <ComboBox x:Name="cbSalePriceProducts" md:HintAssist.Hint="Mahsulot tanlang" Width="220" Height="40" FontSize="16"  Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8">
+                                <ComboBox x:Name="cbSalePriceProducts" md:HintAssist.Hint="Mahsulot tanlang" Width="220" Height="40" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="5" md:HintAssist.HintOpacity="0.8">
                                     <!-- ComboBox elementlarining uslubi -->
                                     <ComboBox.ItemContainerStyle>
                                         <Style TargetType="ComboBoxItem">
                                             <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
-                                            <!-- Kulrang fon -->
                                             <Setter Property="Foreground" Value="{DynamicResource SecondaryTextColor}"/>
-                                            <!-- Matn rangi saqlanadi -->
                                             <Setter Property="Padding" Value="5"/>
-                                            <!-- Ichki bo‘shliq -->
                                             <Setter Property="BorderThickness" Value="0"/>
-                                            <!-- Chegara yo‘q -->
-                                            <!-- Hover va tanlanganda rang o‘zgarishi uchun Trigger -->
                                             <Style.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Setter Property="Background" Value="{DynamicResource SelectedBackground}"/>
-                                                    <!-- Hoverda biroz och kulrang -->
                                                 </Trigger>
                                                 <Trigger Property="IsSelected" Value="True">
                                                     <Setter Property="Background" Value="{DynamicResource PrimaryBackground}"/>
-                                                    <!-- Tanlanganda qoramtir kulrang -->
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
@@ -279,14 +309,14 @@
                     <!-- Yangi StackPanel: Mahsulot qo‘shish -->
                     <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,5,0,5" Grid.ColumnSpan="2">
                         <ComboBox x:Name="cbProductList" FontSize="16" md:HintAssist.Hint="Mahsulotlar ro‘yxati" Width="180" Margin="5" IsEditable="True" PreviewKeyUp="cbProductList_PreviewKeyUp"/>
-                        <TextBox x:Name="tbQuantity" CaretBrush="{DynamicResource  PrimaryCursorColor}" FontSize="16" TextAlignment="Center" md:HintAssist.Hint="Miqdor" Width="100" Margin="5"/>
+                        <TextBox x:Name="tbQuantity" CaretBrush="{DynamicResource PrimaryCursorColor}" FontSize="16" TextAlignment="Center" md:HintAssist.Hint="Miqdor" Width="100" Margin="5"/>
                         <Button x:Name="btnAddProduct" Content="Qo‘shish" Click="AddProductButton_Click" Margin="5"/>
                     </StackPanel>
 
                     <!-- Provodka ro‘yxati -->
                     <DataGrid x:Name="transferDataGrid" Grid.Row="1" Margin="5,5,5,5" AutoGenerateColumns="False" CanUserAddRows="False"
-                  Background="{DynamicResource SecondaryBackground}" 
-                  Foreground="{DynamicResource SecondaryTextColor}" Grid.ColumnSpan="4">
+                              Background="{DynamicResource SecondaryBackground}" 
+                              Foreground="{DynamicResource SecondaryTextColor}" Grid.ColumnSpan="4">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Mahsulot nomi" Binding="{Binding ProductName}" Width="150" IsReadOnly="True"/>
                             <DataGridTemplateColumn Header="Miqdor" Width="100">
@@ -318,7 +348,6 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-
         </TabControl>
     </Grid>
 </Page>

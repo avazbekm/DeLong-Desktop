@@ -480,7 +480,7 @@ public partial class AdditionalOperationsPage : Page
                     To = "Kassa",
                     Currency = "So'm",
                     Amount = cashAmount,
-                    Note = $"{customerName}ni qarzi to‘landi",
+                    Note = $"{customerName}ni nasiyasi olindi",
                     TransferDate = DateTimeOffset.UtcNow,
                     TransferType = CashTransferType.Income
                 };
@@ -497,7 +497,7 @@ public partial class AdditionalOperationsPage : Page
                     To = "Kassa",
                     Currency = "Plastik",
                     Amount = cardAmount,
-                    Note = $"{customerName}ni qarzi to‘landi",
+                    Note = $"{customerName}ni nasiyasi olindi",
                     TransferDate = DateTimeOffset.UtcNow,
                     TransferType = CashTransferType.Income
                 };
@@ -514,7 +514,7 @@ public partial class AdditionalOperationsPage : Page
                     To = "Kassa",
                     Currency = "Dollar",
                     Amount = dollarAmount,
-                    Note = $"{customerName}ni qarzi to‘landi",
+                    Note = $"{customerName}ni nasiyasi olindi",
                     TransferDate = DateTimeOffset.UtcNow,
                     TransferType = CashTransferType.Income
                 };

@@ -3,48 +3,111 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:DeLong_Desktop.Pages.Reports"
+      xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ReportPage" Background="#1E1E1E">
+      Title="Hisobotlar"
+      Background="{DynamicResource PrimaryBackground}">
+
+    <Page.Resources>
+        <Style x:Key="TileButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignPaperSecondaryLightButton}">
+            <Setter Property="Background" Value="{DynamicResource SecondaryBackground}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignDivider}"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="150"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ActionButton" TargetType="Button" BasedOn="{StaticResource MaterialDesignPaperSecondaryLightButton}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <!-- Tugma matni qora -->
+            <Setter Property="Background" Value="LightGray"/>
+            <!-- Tugma foni och kulrang -->
+        </Style>
+    </Page.Resources>
 
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Filtrlash qismi -->
-        <StackPanel Grid.Row="0" Margin="0 0 0 10">
-            <WrapPanel>
-                <Label Content="Boshlanish sanasi:" Foreground="White" VerticalAlignment="Center"/>
-                <DatePicker x:Name="StartDatePicker" Width="140" Margin="5 0" Background="#333" Foreground="White"/>
-                <Label Content="Tugash sanasi:" Foreground="White" VerticalAlignment="Center"/>
-                <DatePicker x:Name="EndDatePicker" Width="140" Margin="5 0" Background="#333" Foreground="White"/>
-                <Button x:Name="FilterButton" Content="Filtrlash" Width="120" Margin="10 0" Background="#6200EE" Foreground="White" Click="FilterButton_Click"/>
-            </WrapPanel>
-        </StackPanel>
+        <!-- Sarlavha -->
+        <TextBlock Grid.Row="0" Text="Hisobotlar" FontSize="24" FontWeight="Bold" Foreground="Black" Margin="0,0,0,10"/>
 
-        <!-- Statistikalar va DataGrid qismi -->
-        <Border Grid.Row="1" Background="#252526" Padding="10" CornerRadius="5">
-            <StackPanel>
-                <TextBlock Text="Hisobot Statistikasi" Foreground="White" FontSize="16" FontWeight="Bold" Margin="0 0 10 10"/>
-                <DataGrid x:Name="ReportDataGrid" AutoGenerateColumns="False" Margin="0 10"
-                          Background="#252526" Foreground="White" HeadersVisibility="Column" 
-                          GridLinesVisibility="All" BorderBrush="Gray" BorderThickness="1">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Ko'rsatkich" Binding="{Binding Indicator}" Width="*"/>
-                        <DataGridTextColumn Header="Qiymat" Binding="{Binding Value}" Width="*"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </StackPanel>
-        </Border>
- 
-        <!-- Export tugmalari -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 10 0 0" Grid.Row="2">
-            <Button x:Name="ExportExcelButton" Content="Excelga eksport" Width="150" Margin="5" Background="#03DAC6" Foreground="Black" Click="ExportExcelButton_Click"/>
-            <Button x:Name="ExportPdfButton" Content="PDFga eksport" Width="150" Margin="5" Background="#BB86FC" Foreground="Black" Click="ExportPdfButton_Click"/>
-        </StackPanel>
+        <!-- Kafellar va Hisobot -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Kafellar -->
+            <WrapPanel x:Name="TilePanel" Visibility="Visible">
+                <Button Style="{StaticResource TileButton}" Click="DebtReport_Click">
+                    <StackPanel>
+                        <md:PackIcon Kind="CurrencyUsd" Width="40" Height="40" Foreground="{DynamicResource SecondaryTextColor}"/>
+                        <TextBlock Text="Umumiy qarzdorlik" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" TextWrapping="Wrap" TextAlignment="Center"/>
+                        <TextBlock x:Name="TotalDebtAmount" Text="$0.00" FontSize="14" Foreground="{DynamicResource SecondaryTextColor}" TextAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource TileButton}" Click="ReceivableReport_Click">
+                    <StackPanel>
+                        <md:PackIcon Kind="Receipt" Width="40" Height="40" Foreground="{DynamicResource SecondaryTextColor}"/>
+                        <TextBlock Text="Umumiy Haqdorlik" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" TextWrapping="Wrap" TextAlignment="Center"/>
+                        <TextBlock x:Name="TotalReceivableAmount" Text="$0.00" FontSize="14" Foreground="{DynamicResource SecondaryTextColor}" TextAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource TileButton}" Click="ProductReport_Click">
+                    <StackPanel>
+                        <md:PackIcon Kind="PackageVariant" Width="40" Height="40" Foreground="{DynamicResource SecondaryTextColor}"/>
+                        <TextBlock Text="Mahsulotlar" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" TextWrapping="Wrap" TextAlignment="Center"/>
+                        <TextBlock x:Name="TotalProductCount" Text="0 ta" FontSize="14" Foreground="{DynamicResource SecondaryTextColor}" TextAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource TileButton}" Click="OverviewReport_Click">
+                    <StackPanel>
+                        <md:PackIcon Kind="ChartLine" Width="40" Height="40" Foreground="{DynamicResource SecondaryTextColor}"/>
+                        <TextBlock Text="Umumiy Holat" FontSize="16" Foreground="{DynamicResource SecondaryTextColor}" TextWrapping="Wrap" TextAlignment="Center"/>
+                        <TextBlock x:Name="TotalOverviewAmount" Text="$0.00" FontSize="14" Foreground="{DynamicResource SecondaryTextColor}" TextAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </WrapPanel>
+
+            <!-- Hisobot Paneli -->
+            <Border Grid.Row="1" x:Name="ReportPanel" Background="White" CornerRadius="8" Margin="0,10,0,0" Visibility="Collapsed">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <!-- Tugmalar -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
+                        <Button Content="Pechat" Padding="5" Height="30" Style="{StaticResource ActionButton}" Click="PrintReport_Click"/>
+                        <Button Content="Orqaga" Padding="5" Height="30" Style="{StaticResource ActionButton}" Click="BackToTiles_Click" Margin="10,0,0,0"/>
+                    </StackPanel>
+                    <!-- FlowDocument -->
+                    <FlowDocumentScrollViewer Grid.Row="1" x:Name="ReportViewer" Margin="10" Background="White" Foreground="Black">
+                        <FlowDocument x:Name="ReportDocument" FontFamily="Arial" PageWidth="827" PagePadding="30,20,20,20">
+                            <Paragraph FontSize="20" FontWeight="Bold" TextAlignment="Center" Foreground="Black">
+                                Hisobot
+                            </Paragraph>
+                        </FlowDocument>
+                    </FlowDocumentScrollViewer>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </Page>

@@ -20,7 +20,6 @@
                     <Style TargetType="Calendar">
                         <Setter Property="Background" Value="Snow"/>
                         <Setter Property="Foreground" Value="Black"/>
-                        <!-- Kalendar raqamlari qora -->
                     </Style>
                 </Setter.Value>
             </Setter>
@@ -59,8 +58,10 @@
             <Button x:Name="filterButton" Padding="0" Content="{md:PackIcon Kind=Filter}" Width="40" Height="40" ToolTip="Filtrlash" BorderBrush="{DynamicResource SecondaryTextColor}" Click="FilterButton_Click" Style="{DynamicResource MaterialDesignPaperSecondaryLightButton}"/>
         </StackPanel>
 
-        <!-- DataGrid -->
-        <DataGrid x:Name="saleDataGrid" Grid.Row="2" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" FontSize="20">
+        <!-- DataGrid (Virtualizatsiya yoqildi) -->
+        <DataGrid x:Name="saleDataGrid" Grid.Row="2" Margin="10" AutoGenerateColumns="False" CanUserAddRows="False" 
+                  Background="{DynamicResource SecondaryBackground}" Foreground="{DynamicResource SecondaryTextColor}" 
+                  FontSize="20" ItemsSource="{Binding SaleItems}" EnableRowVirtualization="True" EnableColumnVirtualization="True">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridRow}">
                     <Setter Property="Background" Value="Transparent"/>

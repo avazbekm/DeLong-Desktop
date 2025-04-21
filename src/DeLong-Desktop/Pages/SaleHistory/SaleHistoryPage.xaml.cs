@@ -1,22 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Controls;
-using System.Windows.Media;
+using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Media;
 using System.Windows.Threading;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using DeLong_Desktop.ApiService.Helpers;
-using DeLong_Desktop.Pages.SalesPractice;
 using DeLong_Desktop.ApiService.DTOs.Sales;
-using DeLong_Desktop.ApiService.Interfaces;
 using DeLong_Desktop.ApiService.DTOs.Debts;
 using DeLong_Desktop.ApiService.DTOs.Payments;
 using DeLong_Desktop.ApiService.DTOs.Discounts;
+using DeLong_Desktop.ApiService.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using DeLong_Desktop.Pages.SalesPractice;
 
 namespace DeLong_Desktop.Pages.SaleHistory;
 
-public partial class SaleHistoryPage : Page
+public partial class SaleHistoryPage : Page, INotifyPropertyChanged
 {
     private readonly ISaleService _saleService;
     private readonly IUserService _userService;
@@ -26,14 +33,23 @@ public partial class SaleHistoryPage : Page
     private readonly ICustomerService _customerService;
     private readonly ISaleItemService _saleItemService;
     private readonly IDiscountService _discountService;
-    private List<SaleDisplayItem> allSaleItems;
-    private string CustomerName;
-    private CollectionViewSource collectionViewSource;
-    private DispatcherTimer searchTimer;
+    private ObservableCollection<SaleDisplayItem> _saleItems;
+    private string _customerName;
+    private CollectionViewSource _collectionViewSource;
+    private DispatcherTimer _searchTimer;
+    private bool _isLoading;
+
+    public ObservableCollection<SaleDisplayItem> SaleItems
+    {
+        get => _saleItems;
+        set { _saleItems = value; OnPropertyChanged(); }
+    }
 
     public SaleHistoryPage(IServiceProvider services)
     {
         InitializeComponent();
+        DataContext = this;
+
         _saleService = services.GetRequiredService<ISaleService>();
         _userService = services.GetRequiredService<IUserService>();
         _customerService = services.GetRequiredService<ICustomerService>();
@@ -43,112 +59,161 @@ public partial class SaleHistoryPage : Page
         _debtService = services.GetRequiredService<IDebtService>();
         _discountService = services.GetRequiredService<IDiscountService>();
 
-        allSaleItems = new List<SaleDisplayItem>();
-        collectionViewSource = new CollectionViewSource();
-        searchTimer = new DispatcherTimer
+        SaleItems = new ObservableCollection<SaleDisplayItem>();
+        _collectionViewSource = new CollectionViewSource { Source = SaleItems };
+        saleDataGrid.ItemsSource = _collectionViewSource.View;
+
+        _searchTimer = new DispatcherTimer
         {
             Interval = TimeSpan.FromMilliseconds(300),
             IsEnabled = false
         };
-        searchTimer.Tick += async (s, e) => await FilterSalesAsync();
+        _searchTimer.Tick += async (s, e) => await FilterSalesAsync();
+
+        // Debug uchun TraceLevel
+        System.Diagnostics.PresentationTraceSources.SetTraceLevel(saleDataGrid.ItemContainerGenerator, System.Diagnostics.PresentationTraceLevel.High);
 
         this.Loaded += async (s, e) => await LoadSalesAsync();
+        this.Unloaded += (s, e) => Cleanup();
 
+        // SaleCompleted eventi subscribe
         if (Application.Current.MainWindow is Window mainWindow)
         {
             var salePracticePage = FindChild<SalePracticePage>(mainWindow);
             if (salePracticePage != null)
             {
-                salePracticePage.SaleCompleted += async (s, e) => await RefreshAsync();
+                salePracticePage.SaleCompleted -= SalePracticePage_SaleCompleted;
+                salePracticePage.SaleCompleted += SalePracticePage_SaleCompleted;
+            }
+        }
+    }
+
+    private async void SalePracticePage_SaleCompleted(object sender, EventArgs e)
+    {
+        if (!_isLoading)
+        {
+            await LoadSalesAsync(); // RefreshAsync o'rniga LoadSalesAsync ishlatamiz
+        }
+    }
+
+    private void Cleanup()
+    {
+        _searchTimer?.Stop();
+        SaleItems.Clear();
+        if (Application.Current.MainWindow is Window mainWindow)
+        {
+            var salePracticePage = FindChild<SalePracticePage>(mainWindow);
+            if (salePracticePage != null)
+            {
+                salePracticePage.SaleCompleted -= SalePracticePage_SaleCompleted;
             }
         }
     }
 
     public async Task RefreshAsync()
     {
+        if (_isLoading) return;
         await LoadSalesAsync();
-        // UI yangilanishini majburlash
-        Dispatcher.Invoke(() =>
-        {
-            if (collectionViewSource != null)
-            {
-                collectionViewSource.View?.Refresh();
-            }
-            saleDataGrid.Items.Refresh();
-        });
     }
 
-    private async Task LoadSalesAsync()
+    private async Task LoadSalesAsync(int pageSize = 100, int pageNumber = 1)
     {
+        if (_isLoading) return;
+        _isLoading = true;
+
         try
         {
-            var sales = await _saleService.RetrieveAllAsync();
-            allSaleItems.Clear();
+            Debug.WriteLine($"LoadSalesAsync started at {DateTime.Now}");
+            var stopwatch = Stopwatch.StartNew();
 
-            if (sales != null && sales.Any())
+            // Paginatsiya (API da qo‘llab-quvvatlanmasa, local filter)
+            var sales = await _saleService.RetrieveAllAsync(); // Agar API paginatsiyani qo‘llab-quvvatlasa, RetrievePagedAsync ishlatiladi
+            var pagedSales = sales?.OrderByDescending(s => s.CreatedAt) // Eng yangi sotuv birinchi keladi
+                                 .Skip((pageNumber - 1) * pageSize)
+                                 .Take(pageSize)
+                                 .ToList();
+
+            stopwatch.Stop();
+            Debug.WriteLine($"API call took {stopwatch.ElapsedMilliseconds} ms");
+
+            if (pagedSales == null || !pagedSales.Any())
             {
-                foreach (var sale in sales.OrderByDescending(s => s.CreatedAt))
+                await Dispatcher.InvokeAsync(() =>
                 {
-                    string customerName = "Noma'lum";
-                    if (sale.CustomerId.HasValue)
-                    {
-                        var customer = await _customerService.RetrieveByIdAsync(sale.CustomerId.Value);
-                        customerName = customer != null ? $"{customer.CompanyName}" : "Noma'lum";
-                    }
-                    else if (sale.UserId.HasValue)
-                    {
-                        var user = await _userService.RetrieveByIdAsync(sale.UserId.Value);
-                        customerName = user != null ? $"{user.FirstName} {user.LastName}" : "Noma'lum";
-                    }
+                    SaleItems.Clear();
+                    MessageBox.Show("Hozircha sotuvlar mavjud emas!", "Ma'lumot", MessageBoxButton.OK, MessageBoxImage.Information);
+                }, DispatcherPriority.Background);
+                return;
+            }
 
-                    allSaleItems.Add(new SaleDisplayItem
-                    {
-                        Id = sale.Id,
-                        CustomerName = customerName.ToUpper(),
-                        TotalAmount = sale.TotalAmount,
-                        CreatedAt = TimeHelper.ConvertToUzbekistanTime(sale.CreatedAt)
-                    });
+            // DataGrid ni vaqtincha freeze
+            await Dispatcher.InvokeAsync(() => saleDataGrid.IsEnabled = false, DispatcherPriority.Background);
+
+            var itemsToAdd = new List<SaleDisplayItem>();
+            foreach (var sale in pagedSales)
+            {
+                // Agar sotuv allaqachon ro'yxatda bo'lsa, qayta qo'shmaymiz
+                if (SaleItems.Any(item => item.Id == sale.Id))
+                    continue;
+
+                string customerName = "Noma'lum";
+                if (sale.CustomerId.HasValue)
+                {
+                    var customer = await _customerService.RetrieveByIdAsync(sale.CustomerId.Value);
+                    customerName = customer != null ? $"{customer.CompanyName}" : "Noma'lum";
+                }
+                else if (sale.UserId.HasValue)
+                {
+                    var user = await _userService.RetrieveByIdAsync(sale.UserId.Value);
+                    customerName = user != null ? $"{user.FirstName} {user.LastName}" : "Noma'lum";
                 }
 
-                // CollectionViewSource ni yangilash
-                Dispatcher.Invoke(() =>
+                itemsToAdd.Add(new SaleDisplayItem
                 {
-                    collectionViewSource.Source = allSaleItems;
-                    saleDataGrid.ItemsSource = collectionViewSource.View;
+                    Id = sale.Id,
+                    CustomerName = customerName.ToUpper(),
+                    TotalAmount = sale.TotalAmount,
+                    CreatedAt = TimeHelper.ConvertToUzbekistanTime(sale.CreatedAt)
                 });
             }
-            else
+
+            // Batch tarzda qo‘shish
+            await Dispatcher.InvokeAsync(() =>
             {
-                Dispatcher.Invoke(() =>
+                SaleItems.Clear(); // Ro'yxatni tozalaymiz va yangi tartibda qo'shamiz
+                foreach (var item in itemsToAdd.OrderByDescending(i => i.CreatedAt)) // Eng yangi birinchi
                 {
-                    MessageBox.Show("Hozircha sotuvlar mavjud emas!", "Ma'lumot", MessageBoxButton.OK, MessageBoxImage.Information);
-                });
-            }
+                    SaleItems.Add(item); // Yangi sotuvlar ro'yxat boshiga qo'shiladi
+                }
+                saleDataGrid.ItemsSource = _collectionViewSource.View;
+                saleDataGrid.IsEnabled = true;
+            }, DispatcherPriority.Background);
+
+            Debug.WriteLine($"LoadSalesAsync completed at {DateTime.Now}");
         }
         catch (Exception ex)
         {
-            Dispatcher.Invoke(() =>
+            await Dispatcher.InvokeAsync(() =>
             {
                 MessageBox.Show($"Sotuvlarni yuklashda xatolik: {ex.Message}", "Xatolik", MessageBoxButton.OK, MessageBoxImage.Error);
-            });
+                saleDataGrid.IsEnabled = true;
+            }, DispatcherPriority.Background);
         }
-    }
-
-    private void SearchTextChanged(object sender, TextChangedEventArgs e)
-    {
-        searchTimer.Stop();
-        searchTimer.Start();
+        finally
+        {
+            _isLoading = false;
+        }
     }
 
     private async Task FilterSalesAsync()
     {
-        searchTimer.Stop();
+        _searchTimer.Stop();
         string searchText = txtSearch.Text.ToLower();
 
-        if (collectionViewSource != null)
+        await Dispatcher.InvokeAsync(() =>
         {
-            collectionViewSource.Filter -= CollectionViewSource_Filter;
-            collectionViewSource.Filter += CollectionViewSource_Filter;
+            _collectionViewSource.Filter -= CollectionViewSource_Filter;
+            _collectionViewSource.Filter += CollectionViewSource_Filter;
 
             void CollectionViewSource_Filter(object s, FilterEventArgs args)
             {
@@ -162,8 +227,14 @@ public partial class SaleHistoryPage : Page
                 }
             }
 
-            collectionViewSource.View.Refresh();
-        }
+            _collectionViewSource.View.Refresh();
+        }, DispatcherPriority.Background);
+    }
+
+    private void SearchTextChanged(object sender, TextChangedEventArgs e)
+    {
+        _searchTimer.Stop();
+        _searchTimer.Start();
     }
 
     private void FilterButton_Click(object sender, RoutedEventArgs e)
@@ -183,10 +254,10 @@ public partial class SaleHistoryPage : Page
             return;
         }
 
-        if (collectionViewSource != null)
+        Dispatcher.Invoke(() =>
         {
-            collectionViewSource.Filter -= CollectionViewSource_Filter;
-            collectionViewSource.Filter += CollectionViewSource_Filter;
+            _collectionViewSource.Filter -= CollectionViewSource_Filter;
+            _collectionViewSource.Filter += CollectionViewSource_Filter;
 
             void CollectionViewSource_Filter(object s, FilterEventArgs args)
             {
@@ -202,8 +273,8 @@ public partial class SaleHistoryPage : Page
                 }
             }
 
-            collectionViewSource.View.Refresh();
-        }
+            _collectionViewSource.View.Refresh();
+        });
     }
 
     private async void PrintButton_Click(object sender, RoutedEventArgs e)
@@ -212,7 +283,7 @@ public partial class SaleHistoryPage : Page
         {
             try
             {
-                CustomerName = selectedSale.CustomerName;
+                _customerName = selectedSale.CustomerName;
 
                 if (sender is Button button)
                 {
@@ -381,7 +452,7 @@ public partial class SaleHistoryPage : Page
             Margin = new Thickness(0, 0, 0, 0),
             TextAlignment = TextAlignment.Left
         };
-        customerInfo.Inlines.Add(new Run($"Mijoz: {CustomerName.ToUpper()}"));
+        customerInfo.Inlines.Add(new Run($"Mijoz: {_customerName.ToUpper()}"));
         customerInfo.Inlines.Add(new Run(new string(' ', 100)));
         customerInfo.Inlines.Add(new Run($"Sana: {TimeHelper.ConvertToUzbekistanTime(createdAt):dd.MM.yyyy}"));
         doc.Blocks.Add(customerInfo);
@@ -500,5 +571,11 @@ public partial class SaleHistoryPage : Page
             if (result != null) return result;
         }
         return null;
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
